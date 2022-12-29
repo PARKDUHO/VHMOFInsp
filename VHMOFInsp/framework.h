@@ -8,6 +8,12 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // 일부 CString 생성자는 명시적으로 선언됩니다.
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// VS2013 이전 버전의 소스 사용 시 일부 Waning항목을 Error인식하는 문제점 개선
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 // MFC의 공통 부분과 무시 가능한 경고 메시지에 대한 숨기기를 해제합니다.
 #define _AFX_ALL_WARNINGS
 
@@ -28,9 +34,16 @@
 
 #include <afxcontrolbars.h>     // MFC의 리본 및 컨트롤 막대 지원
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <sdkddkver.h>					// 2020-04-23 직접 추가 필요
+#include <afxsock.h>
 
-
-
+#include "_GlobalDefine.h"
+#include "IniProfileAPI.h"
+#include "Struct.h"
+#include "GradientStatic.h"
+#include "XTabCtrl.h"
+#include "CommApi.h"
 
 
 

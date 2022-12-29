@@ -183,22 +183,60 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CInitialize.h" />
+    <ClInclude Include="CMessageError.h" />
+    <ClInclude Include="CModelChange.h" />
+    <ClInclude Include="CModelInfo.h" />
+    <ClInclude Include="CModelInfoData.h" />
+    <ClInclude Include="CModelInfoFusing.h" />
+    <ClInclude Include="CommApi.h" />
+    <ClInclude Include="CTestPattern.h" />
+    <ClInclude Include="CTestReady.h" />
+    <ClInclude Include="CUserID.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GradientStatic.h" />
+    <ClInclude Include="IniProfileAPI.h" />
+    <ClInclude Include="PatternView.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SocketTCP.h" />
+    <ClInclude Include="SocketTCPApp.h" />
+    <ClInclude Include="SocketUDP.h" />
+    <ClInclude Include="Struct.h" />
+    <ClInclude Include="T2CmdGen.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VHMOFInsp.h" />
     <ClInclude Include="VHMOFInspDlg.h" />
+    <ClInclude Include="XTabCtrl.h" />
+    <ClInclude Include="_GlobalDefine.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CInitialize.cpp" />
+    <ClCompile Include="CMessageError.cpp" />
+    <ClCompile Include="CModelChange.cpp" />
+    <ClCompile Include="CModelInfo.cpp" />
+    <ClCompile Include="CModelInfoData.cpp" />
+    <ClCompile Include="CModelInfoFusing.cpp" />
+    <ClCompile Include="CommApi.cpp" />
+    <ClCompile Include="CTestPattern.cpp" />
+    <ClCompile Include="CTestReady.cpp" />
+    <ClCompile Include="CUserID.cpp" />
+    <ClCompile Include="GradientStatic.cpp" />
+    <ClCompile Include="IniProfileAPI.cpp" />
+    <ClCompile Include="PatternView.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SocketTCP.cpp" />
+    <ClCompile Include="SocketTCPApp.cpp" />
+    <ClCompile Include="SocketUDP.cpp" />
+    <ClCompile Include="T2CmdGen.cpp" />
     <ClCompile Include="VHMOFInsp.cpp" />
     <ClCompile Include="VHMOFInspDlg.cpp" />
+    <ClCompile Include="XTabCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VHMOFInsp.rc" />
@@ -207,6 +245,19 @@
     <None Include="res\VHMOFInsp.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bitmap1.bmp" />
+    <Image Include="res\bitmap2.bmp" />
+    <Image Include="res\bmp00001.bmp" />
+    <Image Include="res\bmp00002.bmp" />
+    <Image Include="res\bmp00003.bmp" />
+    <Image Include="res\bmp00004.bmp" />
+    <Image Include="res\bmp00005.bmp" />
+    <Image Include="res\bmp00006.bmp" />
+    <Image Include="res\bmp00007.bmp" />
+    <Image Include="res\bmp00008.bmp" />
+    <Image Include="res\ico00001.ico" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\icon2.ico" />
     <Image Include="res\VHMOFInsp.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
