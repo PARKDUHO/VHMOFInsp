@@ -334,7 +334,7 @@ void CModelInfo::Lf_saveModel()
 
 	// Last Model Name을 변경한다.
 	lpSystemInfo->m_sLastModelName.Format(_T("%s"), strSaveModelName);
-	Write_SysIniFile(_T("SYSTEM_CONFIG"), _T("LAST_MODELNAME"), strSaveModelName);
+	Write_SysIniFile(_T("SYSTEM"), _T("LAST_MODELNAME"), strSaveModelName);
 
 	// Model/Fusing Data를 저장.
 	m_pModelInfoFusing->Gf_DataSaveModelFusing(strSaveModelName);

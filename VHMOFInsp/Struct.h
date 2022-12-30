@@ -108,41 +108,38 @@ typedef struct _ST_MODELINFO_{
 
 typedef struct _ST_SYSTEMINFO_{
 	// STATION 정보 설정 //
-	CString m_sStationNo;		// Station no 변수
+	CString m_sEqpName;					// EQP NAME
 
 	CString	m_sLastModelName;			// 마지막 M/C 모델명
 	int		m_nQuantityOK;
 	int		m_nQuantityNG;
 
-	// GMES 정보 설정 //
-	CString m_sGmesServicePort;
-	CString m_sGmesNetWork;
-	CString m_sGmesDaemonPort;
-	CString m_sGmesLocalSubject;
-	CString m_sGmesRemoteSubject;
-	CString m_sLocalIP;
+	// MES 정보 설정 //
+	CString m_sMesServicePort;
+	CString m_sMesNetWork;
+	CString m_sMesDaemonPort;
+	CString m_sMesLocalSubject;
+	CString m_sMesRemoteSubject;
+	CString m_sMesLocalIP;
 
 	// EAS 정보 설정 //
 	int		m_nEasUse;
-	CString m_sEasService;
-	CString m_sEasNetwork;
-	CString m_sEasDaemon;
-	CString m_sEasLocal;
-	CString m_sEasRemote;
+	CString m_sEasServicePort;
+	CString m_sEasNetWork;
+	CString m_sEasDaemonPort;
+	CString m_sEasLocalSubject;
+	CString m_sEasRemoteSubject;
 
 	// DFS 정보 설정 //
 	int		m_nDfsUse;
-	CString m_sDfsIPAddr;
-	CString m_sDfsName;
+	CString m_sDfsIPAddress;
+	CString m_sDfsUserId;
 	CString m_sDfsPassword;
 
 	// DATA FILE Download 설정 //
 	CString m_sDataFileModel;
 	CString m_sDataFilePattern;
-	CString m_sDataFileErrorCode;
-	CString m_sDataFileCombiCode;
-	CString m_sDataFileSoftware;
-	CString m_sDataFile_Main_Fw;
+	CString m_sDataFileEdid;
 
 	// HOT KEY 설정 //
 	CString m_sHotKeyPattern[HOTKEY_LIST_MAX];

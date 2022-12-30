@@ -286,6 +286,8 @@ void CInitialize::OnTimer(UINT_PTR nIDEvent)
 		delayMs(10);
 
 		//////////////////////////////////////////////////////////////////
+		AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+		//////////////////////////////////////////////////////////////////
 		// Initial NG 항목이 있으면 자동으로 창히지 않도록 한다.
 		for (int i = 0; i < INIT_MAX; i++)
 		{
@@ -417,6 +419,10 @@ void CInitialize::Lf_initFilePattern()
 void CInitialize::Lf_initConnPG()
 {
 	CString strmsg, ip;
+
+	if (DEBUG_TCP_RECEIVE_OK == 1)
+		return;
+
 	///////////////////////////////////////////////////////////////////////////////////
 	// CH1
 	m_pApp->m_pSocketTCPMain->tcp_Main_DisConnection(CH1);

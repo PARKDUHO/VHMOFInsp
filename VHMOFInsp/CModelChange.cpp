@@ -25,7 +25,7 @@ CModelChange::~CModelChange()
 void CModelChange::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDT_MC_MODEL_LIST, m_lstMcModelList);
+	DDX_Control(pDX, IDC_LST_MC_MODEL_LIST, m_lstMcModelList);
 	DDX_Control(pDX, IDC_CMB_MC_MODEL_INCH, m_cmbMcModelInch);
 	DDX_Control(pDX, IDC_BTN_MC_LOAD, m_btnMcLoad);
 }
@@ -116,12 +116,17 @@ HBRUSH CModelChange::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_DEEP_BLUE];
 			}
-			if ((pWnd->GetDlgCtrlID() == IDC_STT_MC_MODEL_INCH_TITLE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_MC_MODEL_LIST_TITLE))
+			if (pWnd->GetDlgCtrlID() == IDC_STT_MC_MODEL_INCH_TITLE)
 			{
 				pDC->SetBkColor(COLOR_BLUISH);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_BLUISH];
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_MC_MODEL_LIST_TITLE)
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_YELLOW);
+				return m_Brush[COLOR_IDX_BLACK];
 			}
 			if (pWnd->GetDlgCtrlID() == IDC_STT_MC_DRIVE_PATH)
 			{
@@ -193,7 +198,7 @@ void CModelChange::OnBnClickedBtnMcLoad()
 	m_lstMcModelList.GetText(m_lstMcModelList.GetCurSel(), modelName);
 
 	lpSystemInfo->m_sLastModelName = modelName;
-	Write_SysIniFile(_T("SYSTEM_CONFIG"), _T("LAST_MODELNAME"), modelName);
+	Write_SysIniFile(_T("SYSTEM"), _T("LAST_MODELNAME"), modelName);
 
 	CString strLog;
 	strLog.Format(_T("<M/C> Model Change : %s"), modelName);
@@ -220,18 +225,18 @@ void CModelChange::Lf_InitFontset()
 	GetDlgItem(IDC_STT_MC_TITLE)->SetFont(&m_Font[1]);
 
 	m_Font[2].CreateFont(36, 16, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_EDT_MC_MODEL_LIST)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_BTN_MC_LOAD)->SetFont(&m_Font[2]);
 
-	m_Font[3].CreateFont(24, 11, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_STT_MC_MODEL_INCH_TITLE)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_CMB_MC_MODEL_INCH)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_STT_MC_INCH)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_BTN_MC_ALL_MODEL)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_STT_MC_DRIVE_PATH)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_STT_MC_MODEL_LIST_TITLE)->SetFont(&m_Font[3]);
+	m_Font[3].CreateFont(28, 13, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_LST_MC_MODEL_LIST)->SetFont(&m_Font[3]);
 
-	m_Font[4].CreateFont(18, 7, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	m_Font[4].CreateFont(24, 11, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_STT_MC_MODEL_INCH_TITLE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_CMB_MC_MODEL_INCH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MC_INCH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_MC_ALL_MODEL)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MC_DRIVE_PATH)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MC_MODEL_LIST_TITLE)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(16, 6, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
@@ -239,6 +244,7 @@ void CModelChange::Lf_InitFontset()
 
 void CModelChange::Lf_InitColorBrush()
 {
+	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
 	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush(COLOR_GRAY240);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);

@@ -8,6 +8,9 @@
 #define CODE_QSPI_USE					0
 #define CODE_DIO_BOARD_USE				0
 #define CODE_PATTERN_POWER_SET_USE		0
+#define CODE_MAIN_UI_FW_VER_UPDATE		0
+#define CODE_DFS_SETTING_USE			0
+
 
 /////////////////////////////////////////////////////////////////////////////Đs
 #define PGM_VERSION						_T("1.0.0_R1")

@@ -51,7 +51,6 @@ protected:
 	BOOL Lf_PatternVoltageSetting();
 
 	void Lf_PtnTestEventView(CString Event);
-	void Lf_setPatternImageView(CString strPtnName);
 
 
 	////////////////////////////////////////////////////////////////////////
@@ -82,5 +81,4 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CListCtrl m_lstTpPatternList;
 	CListBox m_lstTpEventView;
-	CStatic m_picTpPtnImageView;
 };

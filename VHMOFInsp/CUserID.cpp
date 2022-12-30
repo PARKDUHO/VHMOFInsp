@@ -254,8 +254,6 @@ void CUserID::Lf_loginProcess()
 		m_pApp->m_bUserIdGieng = TRUE;
 		m_pApp->m_bUserIdPM = FALSE;
 		m_pApp->Gf_writeMLog(_T("<USER> UserID : Administrator"));
-		CDialog::OnOK();
-
 	}
 	// 20150112 라인 작업자 요청에 의해 삭제 CNZ
 	else if ((!strUserid.Compare(_T("PM"))) || (!strUserid.Compare(_T("pm"))))
@@ -264,7 +262,6 @@ void CUserID::Lf_loginProcess()
 		m_pApp->m_sLoginUserName = _T("");
 		m_pApp->m_bUserIdGieng = FALSE;
 		m_pApp->m_bUserIdPM = TRUE;
-		CDialog::OnOK();
 	}
 	else
 	{
@@ -346,6 +343,9 @@ void CUserID::Lf_loginProcess()
 		}
 #endif
 	}
+
+	CDialog::OnOK();
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 }
 
 

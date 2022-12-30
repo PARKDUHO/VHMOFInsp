@@ -29,6 +29,7 @@
 #define IDD_INITIALIZE                  157
 #define IDD_TEST_READY                  159
 #define IDD_TEST_PATTERN                161
+#define IDD_SYSTEM                      163
 #define IDC_BTN_MA_USERID               1000
 #define IDC_BTN_MA_MODEL_CHANGE         1001
 #define IDC_STT_USER_ID_TITLE           1001
@@ -105,12 +106,14 @@
 #define IDC_CMB_MD_I2C_LEVEL            1058
 #define IDC_CMB_MF_SIGNAL_ROTATE        1059
 #define IDC_CMB_MD_I2C_CLOCK            1059
+#define IDC_EDT_SY_EQP_NAME             1059
 #define IDC_CMB_MF_SIGNAL_TYPE          1060
 #define IDC_CMB_MD_PTN_NAME             1060
 #define IDC_CMB_MF_SIGNAL_FRS_MODE      1061
 #define IDC_CMB_MD_SPI_PULL_UP          1061
 #define IDC_CMB_MF_SIGNAL_BIT_SELECT    1062
 #define IDC_CMB_MD_SPI_LEVEL            1062
+#define IDC_CBO_SY_EAS_USE              1062
 #define IDC_EDT_MF_TIMING_FREQ          1063
 #define IDC_CMB_MD_SPI_CLOCK            1063
 #define IDC_EDT_MF_TIMING_VSYNC         1064
@@ -119,25 +122,35 @@
 #define IDC_CMB_MD_GPIO_LEVEL           1065
 #define IDC_EDT_MF_TIMING_HOR_ACTIVE    1066
 #define IDC_EDT_MD_PTN_VEL              1066
+#define IDC_EDT_SY_MES_SERVICEPORT      1066
 #define IDC_EDT_MF_TIMING_HOR_WIDTH     1067
 #define IDC_EDT_MD_PTN_ICC              1067
+#define IDC_EDT_SY_MES_NETWORK          1067
 #define IDC_EDT_MF_TIMING_HOR_BP        1068
 #define IDC_EDT_MD_PTN_IEL              1068
+#define IDC_EDT_SY_MES_DEMONPORT        1068
 #define IDC_EDT_MF_TIMING_HOR_FP        1069
 #define IDC_EDT_MD_PTN_LOCK_TIME        1069
+#define IDC_EDT_SY_MES_LOCALSUBJECT     1069
 #define IDC_EDT_MF_TIMING_VER_TOTAL     1070
 #define IDC_EDT_MD_PTN_MAX_TIME         1070
+#define IDC_EDT_SY_MES_REMOTESUBJECT    1070
 #define IDC_EDT_MF_TIMING_VER_ACTIVE    1071
 #define IDC_EDT_MD_PTN_VSYNC            1071
+#define IDC_EDT_SY_EAS_SERVICEPORT      1071
 #define IDC_EDT_MF_TIMING_VER_WIDTH     1072
 #define IDC_CMB_MD_PTN_ONOFF            1072
+#define IDC_EDT_SY_EAS_NETWORK          1072
 #define IDC_EDT_MF_TIMING_VER_BP        1073
 #define IDC_LST_MD_PTN_LIST             1073
+#define IDC_EDT_SY_EAS_DEMONPORT        1073
 #define IDC_EDT_MF_TIMING_VER_FP        1074
 #define IDC_BTN_MD_PTN_ADD              1074
-#define IDC_EDT_MC_MODEL_LIST           1075
+#define IDC_EDT_SY_EAS_LOCALSUBJECT     1074
+#define IDC_LST_MC_MODEL_LIST           1075
 #define IDC_EDT_MF_SIGNAL_CLOCK_DELAY   1075
 #define IDC_BTN_MD_PTN_MODIFY           1075
+#define IDC_EDT_SY_EAS_REMOTESUBJECT    1075
 #define IDC_BTN_LOAD                    1076
 #define IDC_BTN_MC_LOAD                 1076
 #define IDC_CMB_MF_PWR_OFF_DELAY_6      1076
@@ -171,8 +184,11 @@
 #define IDC_STT_TR_QTY_TOTAL_TITLE      1096
 #define IDC_STT_TR_QTY_OK_TITLE         1097
 #define IDC_STT_TR_QTY_NG_TITLE         1098
+#define IDC_BTN_SY_MODEL_FILE_PATH      1098
 #define IDC_STT_TR_QTY_TOTAL_VALUE      1099
+#define IDC_BTN_SY_PATTERN_FILE_PATH    1099
 #define IDC_STT_TR_QTY_OK_VALUE         1100
+#define IDC_BTN_SY_EDID_FILE_PATH       1100
 #define IDC_STT_TR_QTY_NG_VALUE         1101
 #define IDC_STT_TR_QTY_RESET            1102
 #define IDC_STT_TR_STATUS_MSG           1103
@@ -205,19 +221,18 @@
 #define IDC_STT_MODEL_INFO_TIT          1120
 #define IDC_STT_TP_GRAY_LEVEL_B_VALUE   1120
 #define IDC_STT_EQP_NAME_TIT            1121
-#define IDC_STT_TP_PRE_VIEW_TITLE       1121
 #define IDC_STT_OP_MODE_TIT             1122
-#define IDC_STT_TP_PRE_VIEW_SIZE        1122
 #define IDC_STT_USER_ID_TIT             1123
 #define IDC_STT_TP_TACT_TIME_VALUE      1123
 #define IDC_STT_USER_NAME_TIT           1124
-#define IDC_PIC_TP_PTN_IMAGE_VIEW       1124
 #define IDC_STT_MODEL_NAME_TIT          1125
 #define IDC_STT_TP_EVENT_MSG_TITLE      1125
 #define IDC_STT_RESOLUTION_TIT          1126
 #define IDC_LST_TP_EVENT_MSG            1126
 #define IDC_STT_SIGNALBIT_TIT           1127
+#define IDC_BTN_SY_SAVE_EXIT            1127
 #define IDC_STT_VOLT_TIT                1128
+#define IDC_BTN_SY_CANCEL               1128
 #define IDC_STT_VCC_TIT                 1130
 #define IDC_STT_VDD_TIT                 1131
 #define IDC_STT_VGH_TIT                 1132
@@ -233,7 +248,16 @@
 #define IDC_STT_MAIN_FPGA_VALUE         1142
 #define IDC_STT_MC_TITLE                1142
 #define IDC_STT_DP_FPGA_TIT             1145
+#define IDC_STT_SY_SYSTEM_TITLE         1145
 #define IDC_STT_DP_FPGA_VALUE           1146
+#define IDC_STT_SY_STATION_TIT          1156
+#define IDC_STT_SY_MES_TIT              1158
+#define IDC_IPD_SY_MES_LOCAL_IP         1159
+#define IDC_STT_SY_PATH_TIT             1160
+#define IDC_EDT_SY_MODEL_FILE_PATH      1161
+#define IDC_EDT_SY_PATTERN_FILE_PATH    1162
+#define IDC_EDT_SY_EDID_FILE_PATH       1163
+#define IDC_STT_SY_EAS_TIT              1165
 #define IDC_STT_MC_MODEL_INCH_TITLE     1230
 #define IDC_BTN_MC_ALL_MODEL            1231
 #define IDC_STT_MC_DRIVE_PATH           1232
@@ -244,9 +268,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        163
+#define _APS_NEXT_RESOURCE_VALUE        166
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1127
+#define _APS_NEXT_CONTROL_VALUE         1129
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

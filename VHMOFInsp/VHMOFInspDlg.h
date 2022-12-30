@@ -44,10 +44,16 @@ public:
 
 
 protected:
+	LPSYSTEMINFO		lpSystemInfo;
+	LPMODELINFO			lpModelInfo;
+	LPINSPWORKINFO		lpInspWorkInfo;
+
 	void Lf_InitFontSet();
 	void Lf_InitColorBrush();
 	void Lf_InitProgramTitle();
 	void Lf_InitItemValue();
+
+	void Lf_updateSystemInfo();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -73,6 +79,7 @@ public:
 	CBitmapButton m_btnMainExit;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CStatic m_sttMainMlogView;
+	afx_msg LRESULT OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedBtnMaUserid();
 	afx_msg void OnBnClickedBtnMaModelChange();
 	afx_msg void OnBnClickedBtnMaModelInfo();

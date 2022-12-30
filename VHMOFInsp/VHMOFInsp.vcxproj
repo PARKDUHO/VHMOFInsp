@@ -190,6 +190,7 @@
     <ClInclude Include="CModelInfoData.h" />
     <ClInclude Include="CModelInfoFusing.h" />
     <ClInclude Include="CommApi.h" />
+    <ClInclude Include="CSystem.h" />
     <ClInclude Include="CTestPattern.h" />
     <ClInclude Include="CTestReady.h" />
     <ClInclude Include="CUserID.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="CModelInfoData.cpp" />
     <ClCompile Include="CModelInfoFusing.cpp" />
     <ClCompile Include="CommApi.cpp" />
+    <ClCompile Include="CSystem.cpp" />
     <ClCompile Include="CTestPattern.cpp" />
     <ClCompile Include="CTestReady.cpp" />
     <ClCompile Include="CUserID.cpp" />

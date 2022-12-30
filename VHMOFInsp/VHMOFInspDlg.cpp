@@ -13,6 +13,7 @@
 #include "CModelInfo.h"
 #include "CTestReady.h"
 #include "CInitialize.h"
+#include "CSystem.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,6 +84,7 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_WM_CTLCOLOR()
 	ON_WM_TIMER()
+	ON_MESSAGE(WM_UPDATE_SYSTEM_INFO, OnUpdateSystemInfo)
 	ON_BN_CLICKED(IDC_BTN_MA_USERID, &CVHMOFInspDlg::OnBnClickedBtnMaUserid)
 	ON_BN_CLICKED(IDC_BTN_MA_MODEL_CHANGE, &CVHMOFInspDlg::OnBnClickedBtnMaModelChange)
 	ON_BN_CLICKED(IDC_BTN_MA_MODEL_INFO, &CVHMOFInspDlg::OnBnClickedBtnMaModelInfo)
@@ -127,6 +129,10 @@ BOOL CVHMOFInspDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	lpSystemInfo = m_pApp->GetSystemInfo();
+	lpModelInfo = m_pApp->GetModelInfo();
+	lpInspWorkInfo = m_pApp->GetInspWorkInfo();
+
 	Lf_InitProgramTitle();
 	Lf_InitItemValue();
 	Lf_InitFontSet();
@@ -209,6 +215,26 @@ HCURSOR CVHMOFInspDlg::OnQueryDragIcon()
 BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	// Alt+F4 동작하지 않도록 한다.
+	if (pMsg->message == WM_SYSKEYDOWN && pMsg->wParam == VK_F4)
+	{
+		if (::GetKeyState(VK_MENU) < 0)	return TRUE;
+	}
+
+	// 일반 Key 동작에 대한 Event
+	if (pMsg->message == WM_KEYDOWN)
+	{
+		switch (pMsg->wParam)
+		{
+			case VK_ESCAPE:		return 1;
+			case VK_RETURN:		return 1;
+			case VK_SPACE:
+			{
+				OnBnClickedBtnMaTest();
+				return 1;
+			}
+		}
+	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
@@ -250,9 +276,6 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SIGNALBIT_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VCC_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_VALUE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_VBL_VALUE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_VALUE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_DP_FPGA_VALUE)
@@ -281,9 +304,6 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_VCC_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_TIT)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_VBL_TIT)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_VGH_TIT)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_VGL_TIT)
 				)
 			{
 				pDC->SetBkColor(COLOR_LIGHT_BLUE);
@@ -322,12 +342,20 @@ void CVHMOFInspDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 	CDialogEx::OnTimer(nIDEvent);
 }
+LRESULT CVHMOFInspDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
+{
+	Lf_updateSystemInfo();
+
+	return (0);
+}
 
 void CVHMOFInspDlg::OnBnClickedBtnMaUserid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CUserID userid_dlg;
 	userid_dlg.DoModal();
+
+	Lf_updateSystemInfo();
 }
 
 
@@ -336,6 +364,8 @@ void CVHMOFInspDlg::OnBnClickedBtnMaModelChange()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CModelChange mc_dlg;
 	mc_dlg.DoModal();
+
+	Lf_updateSystemInfo();
 }
 
 
@@ -344,6 +374,8 @@ void CVHMOFInspDlg::OnBnClickedBtnMaModelInfo()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CModelInfo model_dlg;
 	model_dlg.DoModal();
+
+	Lf_updateSystemInfo();
 }
 
 
@@ -364,6 +396,10 @@ void CVHMOFInspDlg::OnBnClickedBtnMaMaint()
 void CVHMOFInspDlg::OnBnClickedBtnMaSystem()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CSystem system_dlg;
+	system_dlg.DoModal();
+
+	Lf_updateSystemInfo();
 }
 
 
@@ -485,14 +521,8 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_VOLT_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VCC_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VDD_TIT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_VBL_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_VBL_VALUE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_VGH_TIT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_VGL_TIT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_VGH_VALUE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_VGL_VALUE)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_MAIN_APP_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_FPGA_TIT)->SetFont(&m_Font[4]);
@@ -522,5 +552,61 @@ void CVHMOFInspDlg::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_LIGHT_BLUE].CreateSolidBrush(COLOR_LIGHT_BLUE);
 }
 
+void CVHMOFInspDlg::Lf_updateSystemInfo()
+{
+	CString sdata = _T("");
 
+	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetWindowText(lpSystemInfo->m_sEqpName);
+
+	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE))
+		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("OFF-LINE"));
+	else
+		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("IN-LINE"));
+
+	GetDlgItem(IDC_STT_USER_ID_VALUE)->SetWindowText(m_pApp->m_sLoginUserID);
+	GetDlgItem(IDC_STT_USER_NAME_VALUE)->SetWindowText(m_pApp->m_sLoginUserName);
+
+	GetDlgItem(IDC_STT_MODEL_NAME_VALUE)->SetWindowText(lpSystemInfo->m_sLastModelName);
+
+	sdata.Format(_T("%d x %d"), lpModelInfo->m_nTimingHorActive, lpModelInfo->m_nTimingVerActive);
+	GetDlgItem(IDC_STT_RESOLUTION_VALUE)->SetWindowText(sdata);
+
+	if (lpModelInfo->m_nSignalBit == SIG_6BIT)
+		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("6 Bit"));
+	else if (lpModelInfo->m_nSignalBit == SIG_8BIT)
+		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("8 Bit"));
+	else if (lpModelInfo->m_nSignalBit == SIG_10BIT)
+		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("10 Bit"));
+	else if (lpModelInfo->m_nSignalBit == SIG_12BIT)
+		GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetWindowText(_T("12 Bit"));
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fPowerVcc);
+	GetDlgItem(IDC_STT_VCC_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fPowerVel);
+	GetDlgItem(IDC_STT_VDD_VALUE)->SetWindowText(sdata);
+
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(_T(""));
+
+#if (CODE_MAIN_UI_FW_VER_UPDATE==1)
+	// Firmware Version
+	int npos = 0;
+	npos = lpInspWorkInfo->m_szFirmwareVer.ReverseFind(' ');
+	sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
+
+	// LVDS FPGA Version
+	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+
+	// DP FPGA Version
+	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
+	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
+	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
+#endif
+}
 

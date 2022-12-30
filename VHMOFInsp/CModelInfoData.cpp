@@ -328,7 +328,7 @@ void CModelInfoData::Lf_InitLocalValue()
 	// Preview 영역 초기화
 	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
 	m_pApp->m_pPatternView->InitPatternPath(_T(".\\Pattern\\Logical"));
-	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
+	m_pApp->m_pPatternView->InitBmpPatternPath(_T(".\\Pattern\\BMP"));
 
 	// Pattern Data 초기값 설정.
 	CString sdata;
@@ -341,7 +341,7 @@ void CModelInfoData::Lf_InitLocalValue()
 	m_edtMdPtnIel.SetWindowText(_T("0"));
 	m_edtMdPtnLockTime.SetWindowText(_T("0"));
 	m_edtMdPtnMaxTime.SetWindowText(_T("0"));
-	sdata.Format(_T("%d"), (int)((lpModelInfo->m_fTimingFrequency/(float)lpModelInfo->m_nTimingHorTotal)/(float)lpModelInfo->m_nTimingVerTotal)*1000000);
+	sdata.Format(_T("%d"), (int)(((lpModelInfo->m_fTimingFrequency * 1000000) /(float)lpModelInfo->m_nTimingHorTotal)/(float)lpModelInfo->m_nTimingVerTotal));
 	m_edtMdPtnVSync.SetWindowText(sdata);
 	m_cmbMdPtnOnOff.SetCurSel(0);
 }

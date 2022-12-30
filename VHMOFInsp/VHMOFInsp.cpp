@@ -99,6 +99,12 @@ BOOL CVHMOFInspApp::InitInstance()
 	// 적절한 내용으로 수정해야 합니다.
 	SetRegistryKey(_T("로컬 애플리케이션 마법사에서 생성된 애플리케이션"));
 
+	Gf_LoadSystemData();
+	Gf_LoadModelFile();
+	Gf_writeMLog(_T("*****************************:*****************************"));
+
+
+
 	CVHMOFInspDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
@@ -294,11 +300,33 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 {
 	CString sValue = _T("");
 
-	Read_SysIniFile(_T("SYSTEM_CONFIG"),	_T("LAST_MODELNAME"),			&lpSystemInfo->m_sLastModelName);
-	Read_SysIniFile(_T("SYSTEM_CONFIG"),	_T("STATION_NO"),				&lpSystemInfo->m_sStationNo);
+	Read_SysIniFile(_T("SYSTEM"),			_T("LAST_MODELNAME"),			&lpSystemInfo->m_sLastModelName);
+	Read_SysIniFile(_T("SYSTEM"),			_T("EQP_NAME"),					&lpSystemInfo->m_sEqpName);
+	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
+	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
+	Read_SysIniFile(_T("MES"),				_T("MES_DAEMON_PORT"),			&lpSystemInfo->m_sMesDaemonPort);
+	Read_SysIniFile(_T("MES"),				_T("MES_LOCAL_SUBJECT"),		&lpSystemInfo->m_sMesLocalSubject);
+	Read_SysIniFile(_T("MES"),				_T("MES_REMOTE_SUBJECT"),		&lpSystemInfo->m_sMesRemoteSubject);
+	Read_SysIniFile(_T("MES"),				_T("MES_LOCAL_IP"),				&lpSystemInfo->m_sMesLocalIP);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_USE"),					&lpSystemInfo->m_nEasUse);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_SERVICE"),				&lpSystemInfo->m_sEasServicePort);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_NETWORK"),				&lpSystemInfo->m_sEasNetWork);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_DAEMON_PORT"),			&lpSystemInfo->m_sEasDaemonPort);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_LOCAL_SUBJECT"),		&lpSystemInfo->m_sEasLocalSubject);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_REMOTE_SUBJECT"),		&lpSystemInfo->m_sEasRemoteSubject);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_USE"),					&lpSystemInfo->m_nDfsUse);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_IP_ADDRESS"),			&lpSystemInfo->m_sDfsIPAddress);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_USER_ID"),				&lpSystemInfo->m_sDfsUserId);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_PASSWORD"),				&lpSystemInfo->m_sDfsPassword);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MODEL_FILE_PATH"),			&lpSystemInfo->m_sDataFileModel);
+	Read_SysIniFile(_T("SYSTEM"),			_T("PATTERN_FILE_PATH"),		&lpSystemInfo->m_sDataFilePattern);
+	Read_SysIniFile(_T("SYSTEM"),			_T("EDID_PATH"),				&lpSystemInfo->m_sDataFileEdid);
 
 	Read_SysIniFile(_T("QUANTITY"),			_T("QTY_GOOD"),					&lpSystemInfo->m_nQuantityOK);
 	Read_SysIniFile(_T("QUANTITY"),			_T("QTY_NG"),					&lpSystemInfo->m_nQuantityNG);
+
+
+
 
 	return TRUE;
 }

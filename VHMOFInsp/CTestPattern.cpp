@@ -15,7 +15,7 @@ CTestPattern::CTestPattern(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_TEST_PATTERN, pParent)
 {
 	m_pDefaultFont = new CFont();
-	m_pDefaultFont->CreateFont(15, 6, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	m_pDefaultFont->CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 }
 
 CTestPattern::~CTestPattern()
@@ -31,7 +31,6 @@ void CTestPattern::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LST_TP_PATTERN_LIST, m_lstTpPatternList);
 	DDX_Control(pDX, IDC_LST_TP_EVENT_MSG, m_lstTpEventView);
-	DDX_Control(pDX, IDC_PIC_TP_PTN_IMAGE_VIEW, m_picTpPtnImageView);
 }
 
 
@@ -70,6 +69,7 @@ BOOL CTestPattern::OnInitDialog()
 	// 첫번째 Pattern 출력 및 POWER ON
 	m_pApp->commApi->main_setPGInfoPatternName(CH1, _T("BLACK"));
 	m_pApp->commApi->main_setPowerSequenceOnOff(CH1, POWER_ON);
+	Lf_sendPtnData();
 
 	SetTimer(1, 200, NULL);	// EDID
 	SetTimer(2, 1000, NULL);	// Power Measure
@@ -221,7 +221,6 @@ HBRUSH CTestPattern::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_BLACK];
 			}
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_TP_PATTERN_LIST_TITLE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_TP_PRE_VIEW_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_TP_EVENT_MSG_TITLE)
 				)
 			{
@@ -289,7 +288,6 @@ void CTestPattern::OnTimer(UINT_PTR nIDEvent)
 	else if (nIDEvent == 5)
 	{
 		KillTimer(5);
-		Lf_setPatternImageView(lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex]);
 	}
 	else if (nIDEvent == 99)
 	{
@@ -318,23 +316,6 @@ void CTestPattern::Lf_InitLocalValue()
 
 	lpInspWorkInfo->m_bEscDetect = false;
 	lpInspWorkInfo->m_bIsEdidFail = false;
-
-	// 제품의 해상도 설정
-	CRect rcLCD, rcFrame;
-
-	rcLCD.top = 0;
-	rcLCD.left = 0;
-	rcLCD.right = lpModelInfo->m_nTimingHorActive;
-	rcLCD.bottom = lpModelInfo->m_nTimingVerActive;
-
-	// Preview 영역 설정
-	GetDlgItem(IDC_STT_TP_PRE_VIEW_SIZE)->GetWindowRect(rcFrame);
-	ScreenToClient(rcFrame);
-
-	// Preview 영역 초기화
-	m_pApp->m_pPatternView->InitPatternRect(GetDC(), rcLCD, rcFrame);
-	m_pApp->m_pPatternView->InitPatternPath(_T(""));
-	m_pApp->m_pPatternView->InitBmpPatternPath(_T(""));
 }
 
 void CTestPattern::Lf_InitFontset()
@@ -346,10 +327,11 @@ void CTestPattern::Lf_InitFontset()
 	m_Font[2].CreateFont(34, 14, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
 	m_Font[3].CreateFont(30, 12, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_STT_TP_TACT_TIME_VALUE)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(24, 10, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
-	m_Font[5].CreateFont(16, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	m_Font[5].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 }
 
 void CTestPattern::Lf_InitColorBrush()
@@ -358,8 +340,11 @@ void CTestPattern::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush(COLOR_WHITE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush(COLOR_RED);
+	m_Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
 	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
 	m_Brush[COLOR_IDX_BLUE].CreateSolidBrush(COLOR_BLUE);
+	m_Brush[COLOR_IDX_BLUE128].CreateSolidBrush(COLOR_BLUE128);
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
 	m_Brush[COLOR_IDX_JADEGREEN].CreateSolidBrush(COLOR_JADEGREEN);
 	m_Brush[COLOR_IDX_LIGHT_RED].CreateSolidBrush(COLOR_LIGHT_RED);
@@ -403,7 +388,7 @@ void CTestPattern::Lf_insertListColum()
 	m_lstTpPatternList.InsertColumn(9, _T("ON/OFF"), LVCFMT_CENTER, -1, -1);
 
 	m_lstTpPatternList.SetColumnWidth(0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // NO
-	m_lstTpPatternList.SetColumnWidth(0, 50);
+	m_lstTpPatternList.SetColumnWidth(0, 40);
 
 	m_lstTpPatternList.SetColumnWidth(1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Pattern Name
 	m_lstTpPatternList.SetColumnWidth(1, 300);
@@ -485,8 +470,6 @@ void CTestPattern::Lf_sendPtnData()
 
 	Lf_PtnTestEventView(sdata);
 	m_pApp->commApi->main_setPGInfoPatternName(CH1, lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex]);
-
-	Lf_setPatternImageView(lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex]);
 }
 
 BOOL CTestPattern::Lf_updateMeasureInfo()
@@ -494,10 +477,13 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 	CString sdata = _T("");
 	CString strPacket;
 	int ch = CH1;
+
+	if (DEBUG_TCP_RECEIVE_OK == 1)
+		return TRUE;
+
 	if (m_pApp->commApi->main_getMeasurePowerAll(ch) == TRUE)
 	{
 		int nPos = PACKET_PT_DATA;
-
 		strPacket = char_To_wchar(m_pApp->commApi->gszRs232RcvPacket[ch]);
 		lpInspWorkInfo->m_nMeasureVCC[ch] = (int)_ttoi(strPacket.Mid(nPos, 5));
 		lpInspWorkInfo->m_nMeasureVEL[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 5));
@@ -583,6 +569,7 @@ void CTestPattern::Lf_excutePatternList(MSG* pMsg)
 	RemoveMessageFromQueue();
 	m_pApp->Gf_setPatStartCheckTime(m_nPatternIndex);
 	m_pApp->Gf_setStartPtnLockTime(m_nPatternIndex);
+	Lf_sendPtnData();
 }
 
 void CTestPattern::Lf_PtnTestEventView(CString Event)
@@ -842,23 +829,4 @@ BOOL CTestPattern::Lf_PatternCurrentCheck()
 	return TRUE;
 }
 
-void CTestPattern::Lf_setPatternImageView(CString strPtnName)
-{
-	if (strPtnName.Find(_T(".BMP")) != -1)
-	{
-		CRect rc;
-		CString sPath;
-		GetDlgItem(IDC_STT_TP_PRE_VIEW_SIZE)->GetWindowRect(rc);
-		ScreenToClient(rc);
-		rc.right -= 5;
-		rc.bottom -= 10;
-		sPath.Format(_T(".\\Pattern\\BMP\\%s"), strPtnName);
-		HBITMAP hBitmap = (HBITMAP)LoadImage(AfxGetInstanceHandle(), sPath, IMAGE_BITMAP, rc.Width(), rc.Height(), LR_LOADFROMFILE | LR_CREATEDIBSECTION);
-		m_picTpPtnImageView.SetBitmap(hBitmap);
-		m_picTpPtnImageView.Invalidate(FALSE);
-	}
-	else
-	{
-		m_pApp->m_pPatternView->drawPattern(strPtnName);
-	}
-}
+
