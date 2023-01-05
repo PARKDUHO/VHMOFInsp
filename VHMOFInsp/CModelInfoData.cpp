@@ -48,6 +48,9 @@ void CModelInfoData::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_MD_PTN_ONOFF, m_cmbMdPtnOnOff);
 	DDX_Control(pDX, IDC_LST_MD_PTN_LIST, m_lstMdPtnList);
 	DDX_Control(pDX, IDC_PIC_MD_PTN_PREVIEW, m_picMdPatternPreview);
+	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW2, m_edtMdPwmFrequency);
+	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW3, m_edtMdPwmDuty);
+	DDX_Control(pDX, IDC_CMB_MD_SPI_LEVEL2, m_cmbMdPwmLevel);
 }
 
 
@@ -155,6 +158,7 @@ HBRUSH CModelInfoData::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		case CTLCOLOR_STATIC:
 		{
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_MD_INTERFACE_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_PWM_SET_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_PATTERN_TITLE)
 				)
 			{
@@ -341,7 +345,11 @@ void CModelInfoData::Lf_InitLocalValue()
 	m_edtMdPtnIel.SetWindowText(_T("0"));
 	m_edtMdPtnLockTime.SetWindowText(_T("0"));
 	m_edtMdPtnMaxTime.SetWindowText(_T("0"));
-	sdata.Format(_T("%d"), (int)(((lpModelInfo->m_fTimingFrequency * 1000000) /(float)lpModelInfo->m_nTimingHorTotal)/(float)lpModelInfo->m_nTimingVerTotal));
+	float vsync;
+	vsync = (lpModelInfo->m_fTimingFrequency * 1000000);
+	vsync = vsync / (float)lpModelInfo->m_nTimingHorTotal;
+	vsync = vsync / (float)lpModelInfo->m_nTimingVerTotal;
+	sdata.Format(_T("%d"), (int)(vsync+0.01));
 	m_edtMdPtnVSync.SetWindowText(sdata);
 	m_cmbMdPtnOnOff.SetCurSel(0);
 }
@@ -356,6 +364,7 @@ void CModelInfoData::Lf_InitFontset()
 
 	m_Font[3].CreateFont(21, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_STT_MD_INTERFACE_TITLE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MD_PWM_SET_TITLE)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MD_PATTERN_TITLE)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -409,6 +418,16 @@ void CModelInfoData::Gf_DataSaveModelData(CString modelName)
 
 
 	//=====================================================================================================================
+	//PWM Setting
+	//=====================================================================================================================
+	m_edtMdPwmFrequency.GetWindowText(sValue);
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_FREQUENCY"), sValue);
+	m_edtMdPwmDuty.GetWindowText(sValue);
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_DUTY"), sValue);
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_LEVEL"), m_cmbMdPwmLevel.GetCurSel());
+
+
+	//=====================================================================================================================
 	//Pattern Info
 	//=====================================================================================================================
 	int nLbItemCnt = 0;
@@ -453,24 +472,42 @@ void CModelInfoData::Lf_loadPatternListToCombo()
 	WIN32_FIND_DATA wfd;
 	HANDLE hSearch;
 
-	hSearch = FindFirstFile(_T(".\\Pattern\\Logical\\*.pdb"), &wfd);
-
-	if (hSearch != INVALID_HANDLE_VALUE)
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_ALPLD)
 	{
-		if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
-		{
-			strfilename.Format(_T("%s"), wfd.cFileName);
-			m_cmbMdPtnName.AddString(strfilename.Mid(0, strfilename.GetLength() - 4));
-		}
-		while (FindNextFile(hSearch, &wfd))
+		m_cmbMdPtnName.AddString(_T("Black"));
+		m_cmbMdPtnName.AddString(_T("Blue"));
+		m_cmbMdPtnName.AddString(_T("Chess"));
+		m_cmbMdPtnName.AddString(_T("Cyan"));
+		m_cmbMdPtnName.AddString(_T("Gray_Hor"));
+		m_cmbMdPtnName.AddString(_T("Gray_Ver"));
+		m_cmbMdPtnName.AddString(_T("Green"));
+		m_cmbMdPtnName.AddString(_T("Magenta"));
+		m_cmbMdPtnName.AddString(_T("Rainbow_Hor"));
+		m_cmbMdPtnName.AddString(_T("Rainbow_Ver"));
+		m_cmbMdPtnName.AddString(_T("Red"));
+		m_cmbMdPtnName.AddString(_T("White"));
+		m_cmbMdPtnName.AddString(_T("Yellow"));
+	}
+	else
+	{
+		hSearch = FindFirstFile(_T(".\\Pattern\\Logical\\*.pdb"), &wfd);
+		if (hSearch != INVALID_HANDLE_VALUE)
 		{
 			if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
 			{
 				strfilename.Format(_T("%s"), wfd.cFileName);
 				m_cmbMdPtnName.AddString(strfilename.Mid(0, strfilename.GetLength() - 4));
 			}
+			while (FindNextFile(hSearch, &wfd))
+			{
+				if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+				{
+					strfilename.Format(_T("%s"), wfd.cFileName);
+					m_cmbMdPtnName.AddString(strfilename.Mid(0, strfilename.GetLength() - 4));
+				}
+			}
+			FindClose(hSearch);
 		}
-		FindClose(hSearch);
 	}
 
 	m_cmbMdPtnName.SetCurSel(0);
@@ -489,6 +526,11 @@ void CModelInfoData::Lf_InitDialogControl()
 	m_cmbSpiClock.SetCurSel(lpModelInfo->m_nSpiClock);
 	m_cmbGpioPullUp.SetCurSel(lpModelInfo->m_nGpioPullUp);
 	m_cmbGpioLevel.SetCurSel(lpModelInfo->m_nGpioLevel);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPwmFrequency);
+	m_edtMdPwmFrequency.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPwmDuty);
+	m_edtMdPwmDuty.SetWindowText(sdata);
+	m_cmbMdPwmLevel.SetCurSel(lpModelInfo->m_nPwmLevel);
 }
 
 void CModelInfoData::Lf_InitPatternListColum()
@@ -509,8 +551,8 @@ void CModelInfoData::Lf_InitPatternListColum()
 	GetDlgItem(IDC_EDT_MD_PTN_VCC)->GetWindowRect(&rect2);
 	m_lstMdPtnList.SetColumnWidth(nColum, rect2.Width());
 	nColum++;
-	m_lstMdPtnList.InsertColumn(nColum, _T("VEL"), LVCFMT_CENTER, -1, -1);
-	m_lstMdPtnList.SetColumnWidth(nColum, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // VEL
+	m_lstMdPtnList.InsertColumn(nColum, _T("VIN"), LVCFMT_CENTER, -1, -1);
+	m_lstMdPtnList.SetColumnWidth(nColum, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // VIN
 	GetDlgItem(IDC_EDT_MD_PTN_VEL)->GetWindowRect(&rect2);
 	m_lstMdPtnList.SetColumnWidth(nColum, rect2.Width());
 	nColum++;
@@ -519,8 +561,8 @@ void CModelInfoData::Lf_InitPatternListColum()
 	GetDlgItem(IDC_EDT_MD_PTN_ICC)->GetWindowRect(&rect2);
 	m_lstMdPtnList.SetColumnWidth(nColum, rect2.Width());
 	nColum++;
-	m_lstMdPtnList.InsertColumn(nColum, _T("IEL"), LVCFMT_CENTER, -1, -1);
-	m_lstMdPtnList.SetColumnWidth(nColum, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // IEL
+	m_lstMdPtnList.InsertColumn(nColum, _T("IIN"), LVCFMT_CENTER, -1, -1);
+	m_lstMdPtnList.SetColumnWidth(nColum, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // IIN
 	GetDlgItem(IDC_EDT_MD_PTN_IEL)->GetWindowRect(&rect2);
 	m_lstMdPtnList.SetColumnWidth(nColum, rect2.Width());
 	nColum++;
@@ -613,7 +655,7 @@ void CModelInfoData::Lf_getPatternDataToControl(int itemidx)
 	strbuf = m_lstMdPtnList.GetItemText(itemidx, subitem_idx++);
 	m_edtMdPtnVcc.SetWindowText(strbuf);
 
-	// subitem_idx=3. VEL
+	// subitem_idx=3. VIN
 	strbuf = m_lstMdPtnList.GetItemText(itemidx, subitem_idx++);
 	m_edtMdPtnVel.SetWindowText(strbuf);
 
@@ -621,7 +663,7 @@ void CModelInfoData::Lf_getPatternDataToControl(int itemidx)
 	strbuf = m_lstMdPtnList.GetItemText(itemidx, subitem_idx++);
 	m_edtMdPtnIcc.SetWindowText(strbuf);
 
-	// subitem_idx=5. IEL
+	// subitem_idx=5. IIN
 	strbuf = m_lstMdPtnList.GetItemText(itemidx, subitem_idx++);
 	m_edtMdPtnIel.SetWindowText(strbuf);
 

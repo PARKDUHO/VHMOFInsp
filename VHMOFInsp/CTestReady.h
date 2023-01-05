@@ -37,7 +37,9 @@ protected:
 	void Lf_InitColorBrush();
 	void Lf_InitDlgDesign();
 
-	void Lf_FinalTestStart();
+	BOOL Lf_FinalTestStart();
+	BOOL Lf_getControlBdReady(int ch);
+	BOOL Lf_getFirmwareVersion(int ch);
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -57,4 +59,5 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnStnClickedSttTrQtyReset();
 	afx_msg void OnBnClickedBtnTrTestStart();
+	CButton m_btnTrTestStart;
 };

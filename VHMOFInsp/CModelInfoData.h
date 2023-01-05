@@ -114,4 +114,7 @@ public:
 	afx_msg void OnLvnItemchangedLstMdPtnList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnCbnSelchangeCmbMdPtnName();
 	CStatic m_picMdPatternPreview;
+	CEdit m_edtMdPwmFrequency;
+	CEdit m_edtMdPwmDuty;
+	CComboBox m_cmbMdPwmLevel;
 };

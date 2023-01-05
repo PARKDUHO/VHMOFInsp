@@ -216,8 +216,18 @@ void CVHMOFInspApp::Gf_writeMLog(CString sLogData)
 	}
 }
 
-BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, CString strMessage)
+BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage)
 {
+	CString strKey, strMessage;
+
+	strKey.Format(_T("%d"), ErrorCode);
+	Read_ErrorCode(_T("EQP_ERROR"), strKey, &strMessage);
+	if (AppendMessage.GetLength() != 0)
+	{
+		strMessage.Append(_T("\r\n"));
+		strMessage.Append(AppendMessage);
+	}
+
 	CMessageError errDlg;
 	errDlg.m_nMessageType	= msg_type;
 	errDlg.m_sErrorTitle	= strTitle;
@@ -364,16 +374,22 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VCC"), &lpModelInfo->m_fPowerVcc);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL"), &lpModelInfo->m_fPowerVel);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD"), &lpModelInfo->m_fPowerVdd);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VCC_OFFSET"), &lpModelInfo->m_fPowerVccOffset);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL_OFFSET"), &lpModelInfo->m_fPowerVelOffset);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_OFFSET"), &lpModelInfo->m_fPowerVddOffset);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VCC_LIMIT_LOW"), &lpModelInfo->m_fLimitVccLow);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VCC_LIMIT_High"), &lpModelInfo->m_fLimitVccHigh);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL_LIMIT_LOW"), &lpModelInfo->m_fLimitVelLow);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL_LIMIT_High"), &lpModelInfo->m_fLimitVelHigh);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_LIMIT_LOW"), &lpModelInfo->m_fLimitVddLow);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_LIMIT_High"), &lpModelInfo->m_fLimitVddHigh);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_LOW"), &lpModelInfo->m_fLimitIccLow);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_High"), &lpModelInfo->m_fLimitIccHigh);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_LOW"), &lpModelInfo->m_fLimitIelLow);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_High"), &lpModelInfo->m_fLimitIelHigh);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_LOW"), &lpModelInfo->m_fLimitIddLow);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_High"), &lpModelInfo->m_fLimitIddHigh);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX1"), &lpModelInfo->m_nPowerOnSeq1);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX2"), &lpModelInfo->m_nPowerOnSeq2);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX3"), &lpModelInfo->m_nPowerOnSeq3);
@@ -405,6 +421,7 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("BIT_SELECT"), &lpModelInfo->m_nBitSelect);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("FRS_MODE"), &lpModelInfo->m_nFrsMode);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("CLOCK_DELAY"), &lpModelInfo->m_nClockDelay);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ALPDP_INIT_SCRIPT"), &lpModelInfo->m_nInitScript);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("TIMING_FRE"), &lpModelInfo->m_fTimingFrequency);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("TIMING_TOTAL_H"), &lpModelInfo->m_nTimingHorTotal);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("TIMING_ACTIVE_H"), &lpModelInfo->m_nTimingHorActive);
@@ -428,6 +445,10 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO_PULL_UP"), &lpModelInfo->m_nGpioPullUp);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO_LEVEL"), &lpModelInfo->m_nGpioLevel);
+
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_FREQUENCY"), &lpModelInfo->m_nPwmFrequency);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_DUTY"), &lpModelInfo->m_nPwmDuty);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_LEVEL"), &lpModelInfo->m_nPwmLevel);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Pattern File 
@@ -525,3 +546,136 @@ void CVHMOFInspApp::Gf_setPatEndCheckTime(int i)
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CVHMOFInspApp::main_tcpProcessPacket(int ch, char* recvPacket)
+{
+	char szbuf[10] = { 0, };
+	int recvCMD = 0;
+	int recvLen = 0;
+	int recvRet = 0;
+
+	sscanf_s(&recvPacket[PACKET_PT_CMD], "%02X%04X%01X", &recvCMD, &recvLen, &recvRet);
+
+	// Message 처리
+	switch (recvCMD)
+	{
+		case CMD_PG_PATTERN_INFO:
+		{
+			break;
+		}
+		case CMD_IF_CABLE_OPEN:
+		{
+			break;
+		}
+		case CMD_IF_I2C_WRITE:
+		{
+			break;
+		}
+		case CMD_IF_I2C_READ:
+		{
+			break;
+		}
+		case CMD_IF_I2C_IRREGULAR_WRITE:
+		{
+			break;
+		}
+		case CMD_CTRL_FUSING_SYSTEM:
+		{
+			break;
+		}
+		case CMD_CTRL_POWER_VOLTAGE_SET:
+		{
+			break;
+		}
+		case CMD_CTRL_POWER_SEQUENCE_ONOFF:
+		{
+			break;
+		}
+		case CMD_CTRL_MEASURE_ITEM_POWER:
+		{
+			break;
+		}
+		case CMD_CTRL_MEASURE_ALL_POWER:
+		{
+			main_parse_PowerMeasureAll(ch, recvPacket);
+			break;
+		}
+		case CMD_CTRL_ARE_YOU_READY:
+		{
+			main_parse_AreYouReady(ch, recvPacket);
+			break;
+		}
+		case CMD_IF_SRUN_STATUS_READ:
+		{
+			break;
+		}
+		case CMD_IF_SRUN_DATA_WRITE:
+		{
+			break;
+		}
+		case CMD_IF_SRUN_DATA_READ:
+		{
+			break;
+		}
+		case CMD_CTRL_GOTO_BOOT_SECTION:
+		{
+			break;
+		}
+		case CMD_CTRL_FW_VERSION:
+		{
+			main_parse_FirmwareVersion(ch, recvPacket);
+			break;
+		}
+	}
+
+	// ACK Receive Check는 모든 Packet처리가 완료된 이후 Set한다.
+	//m_nAckCmd[recvCMD] = TRUE;
+
+	return TRUE;
+}
+
+void CVHMOFInspApp::main_parse_AreYouReady(int ch, char* recvPacket)
+{
+	if (recvPacket[PACKET_PT_DATA] == '0')
+	{
+		lpInspWorkInfo->m_bAreYouReady = TRUE;
+	}
+}
+
+void CVHMOFInspApp::main_parse_PowerMeasureAll(int ch, char* recvPacket)
+{
+	CString strPacket;
+	int nPos = PACKET_PT_DATA;
+
+	strPacket.Format(_T("%S"), recvPacket);
+	if (strPacket.GetLength() >= 51)	// 잘못된 Packet이 입력되면 Return 시킨다.
+	{
+		lpInspWorkInfo->m_nMeasureVCC[ch] = (int)_ttoi(strPacket.Mid(nPos, 5));
+		lpInspWorkInfo->m_nMeasureVEL[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 5));
+		lpInspWorkInfo->m_nMeasureVDD[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 5));
+		lpInspWorkInfo->m_nMeasureICC[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 5));
+		lpInspWorkInfo->m_nMeasureIEL[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 5));
+		lpInspWorkInfo->m_nMeasureIDD[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 5));
+		lpInspWorkInfo->m_nMeasureErrName[ch] = (int)_ttoi(strPacket.Mid(nPos += 5, 1));
+		lpInspWorkInfo->m_nMeasureErrCh[ch] = (int)_ttoi(strPacket.Mid(nPos += 1, 1));
+		lpInspWorkInfo->m_nMeasureErrValue[ch] = (int)_ttoi(strPacket.Mid(nPos += 1, 5));
+	}
+}
+
+void CVHMOFInspApp::main_parse_FirmwareVersion(int ch, char* recvPacket)
+{
+	CString strPacket;
+	int nPos = PACKET_PT_DATA;
+
+	strPacket.Format(_T("%S"), recvPacket);
+
+	m_pApp->m_sPgFWVersion[ch] = strPacket.Mid(PACKET_PT_DATA, 19);
+
+
+	CString strLog = _T("");
+
+	strLog.Format(_T("<PG> MCU Version [%s]"), m_pApp->m_sPgFWVersion[ch]);
+	m_pApp->Gf_writeMLog(strLog);
+
+}

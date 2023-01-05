@@ -14,6 +14,9 @@
 #include "CTestReady.h"
 #include "CInitialize.h"
 #include "CSystem.h"
+#include "CMaintenance.h"
+#include "CAutoFirmware.h"
+#include "CPassword.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -233,6 +236,63 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 				OnBnClickedBtnMaTest();
 				return 1;
 			}
+			case 'a':
+			case 'A':
+			{
+				//CAutoFirmware autofwDlg;
+				//autofwDlg.DoModal();
+				return TRUE;
+			}
+			case 'c':
+			case 'C':
+			{
+				CModelChange mcDlg;
+				mcDlg.DoModal();
+				return TRUE;
+			}
+			case 'd':
+			case 'D':
+			{
+				CModelInfo modelDlg;
+				modelDlg.DoModal();
+				return TRUE;
+			}
+			case 'i':
+			case 'I':
+			{
+				CInitialize initDlg;
+				initDlg.DoModal();
+				return TRUE;
+			}
+			case 'l':
+			case 'L':
+			{
+				Lf_openToDayMLog();
+				return TRUE;
+			}
+			case 'm':
+			case 'M':
+			{
+				//CMaint maintDlg;
+				//maintDlg.DoModal();
+				return TRUE;
+			}
+			case 's':
+			case 'S':
+			{
+				CSystem systemDlg;
+				systemDlg.DoModal();
+				return TRUE;
+			}
+			case 'u':
+			case 'U':
+			{
+				CUserID userDlg;
+				userDlg.DoModal();
+				return TRUE;
+			}
+			default:
+				return TRUE;
 		}
 	}
 
@@ -275,10 +335,10 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_RESOLUTION_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SIGNALBIT_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VCC_VALUE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_VEL_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_VALUE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_DP_FPGA_VALUE)
 				)
 			{
 				pDC->SetBkColor(COLOR_WHITE);
@@ -295,7 +355,6 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VOLT_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_TIT)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_DP_FPGA_TIT)
 				)
 			{
 				pDC->SetBkColor(COLOR_LIGHT_YELLOW);
@@ -303,6 +362,7 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_LIGHT_YELLOW];
 			}
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_VCC_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_VEL_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_TIT)
 				)
 			{
@@ -356,6 +416,7 @@ void CVHMOFInspDlg::OnBnClickedBtnMaUserid()
 	userid_dlg.DoModal();
 
 	Lf_updateSystemInfo();
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
@@ -366,16 +427,22 @@ void CVHMOFInspDlg::OnBnClickedBtnMaModelChange()
 	mc_dlg.DoModal();
 
 	Lf_updateSystemInfo();
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
 void CVHMOFInspDlg::OnBnClickedBtnMaModelInfo()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CModelInfo model_dlg;
-	model_dlg.DoModal();
+	CPassword passwor_dlg;
+	if (passwor_dlg.DoModal() == IDOK)
+	{
+		CModelInfo model_dlg;
+		model_dlg.DoModal();
 
-	Lf_updateSystemInfo();
+		Lf_updateSystemInfo();
+	}
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
@@ -384,22 +451,33 @@ void CVHMOFInspDlg::OnBnClickedBtnMaTest()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CTestReady ready_dlg;
 	ready_dlg.DoModal();
+
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
 void CVHMOFInspDlg::OnBnClickedBtnMaMaint()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMaintenance maint_dlg;
+	maint_dlg.DoModal();
+
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
 void CVHMOFInspDlg::OnBnClickedBtnMaSystem()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CSystem system_dlg;
-	system_dlg.DoModal();
+	CPassword passwor_dlg;
+	if (passwor_dlg.DoModal() == IDOK)
+	{
+		CSystem system_dlg;
+		system_dlg.DoModal();
 
-	Lf_updateSystemInfo();
+		Lf_updateSystemInfo();
+	}
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
@@ -408,18 +486,25 @@ void CVHMOFInspDlg::OnBnClickedBtnMaInitial()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CInitialize init_dlg;
 	init_dlg.DoModal();
+
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
 void CVHMOFInspDlg::OnBnClickedBtnMaFirmware()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CAutoFirmware firmware_dlg;
+	firmware_dlg.DoModal();
+
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
 
 void CVHMOFInspDlg::OnBnClickedBtnMaExit()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	::SendMessage(this->m_hWnd, WM_CLOSE, NULL, NULL);
 }
 
 
@@ -451,7 +536,7 @@ void CVHMOFInspDlg::Lf_InitProgramTitle()
 	}
 	CString m_sSoftwareVersion;
 	m_sSoftwareVersion.Format(_T("%s - %s"), char_To_wchar(Date_String), PGM_VERSION);
-	strPGMTitle.Format(_T("VH NK BA ( %s )"), m_sSoftwareVersion);
+	strPGMTitle.Format(_T("VH Medium OLED ( %s )"), m_sSoftwareVersion);
 
 	//m_pApp->Gf_writeLogData(_T("Program Version"), m_sSoftwareVersion);
 
@@ -520,16 +605,16 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_SIGNALBIT_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VOLT_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VCC_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_VEL_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VDD_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_VEL_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_MAIN_APP_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_FPGA_TIT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_DP_FPGA_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetFont(&m_Font[4]);
 
 }
 
@@ -584,29 +669,32 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 	GetDlgItem(IDC_STT_VCC_VALUE)->SetWindowText(sdata);
 
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fPowerVel);
+	GetDlgItem(IDC_STT_VEL_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%.2f"), lpModelInfo->m_fPowerVdd);
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetWindowText(sdata);
 
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(_T(""));
 	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
-	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(_T(""));
 
-#if (CODE_MAIN_UI_FW_VER_UPDATE==1)
 	// Firmware Version
 	int npos = 0;
-	npos = lpInspWorkInfo->m_szFirmwareVer.ReverseFind(' ');
-	sdata = lpWorkInfo->m_sFirmwareVersion.Left(npos);
-	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(sdata);
-
-	// LVDS FPGA Version
-	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
-	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
-	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(sdata);
-	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
-
-	// DP FPGA Version
-	npos = lpWorkInfo->m_sFpgaVersion.Find(_T(" "));
-	sdata = lpWorkInfo->m_sFpgaVersion.Left(npos);
-	GetDlgItem(IDC_STT_DP_FPGA_VALUE)->SetWindowText(sdata);
-#endif
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(m_pApp->m_sPgFWVersion[CH1]);
 }
 
+void CVHMOFInspDlg::Lf_openToDayMLog()
+{
+	CString filePath;
+	CTime time = CTime::GetCurrentTime();
+
+	filePath.Format(_T(".\\Logs\\MLog\\%s_%04d%02d%02d.txt"), lpSystemInfo->m_sEqpName, time.GetYear(), time.GetMonth(), time.GetDay());
+
+	SHELLEXECUTEINFO sel;
+	sel.cbSize = sizeof(sel);
+	sel.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT;
+	sel.lpFile = filePath;
+	sel.hwnd = NULL;
+	sel.lpVerb = _T("open");
+	sel.nShow = SW_NORMAL;
+	ShellExecuteEx(&sel);
+}

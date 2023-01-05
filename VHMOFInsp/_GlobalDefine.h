@@ -20,17 +20,17 @@
 #define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_TCP_RECEIVE_OK			1
-#define DEBUG_TCP_COMM_LOG				0
+#define DEBUG_TCP_RECEIVE_OK			0
+#define DEBUG_TCP_COMM_LOG				1
 #define DEBUG_TCP_PACKET_LOG			0
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_DIO_SKIP					0
 
 /////////////////////////////////////////////////////////////////////////////
-#define TCP_MAIN_1_BOARD_IP			_T("192.168.1.15")
-#define TCP_MAIN_2_BOARD_IP			_T("192.168.1.16")
-#define TCP_MAIN_PORT				50001
+#define TCP_MAIN_1_BOARD_IP				_T("192.168.1.10")
+#define TCP_MAIN_2_BOARD_IP				_T("192.168.1.11")
+#define TCP_MAIN_PORT					50001
 
 /////////////////////////////////////////////////////////////////////////////
 #define PACKET_SIZE						1024*64
@@ -62,12 +62,14 @@
 #define IN_LINE							1
 
 /////////////////////////////////////////////////////////////////////////////
-#define SIG_TYPE_TMDS					0
-#define SIG_TYPE_LVDS					1
-#define SIG_TYPE_DP						2
-#define SIG_TYPE_EDP					3
-#define SIG_TYPE_MIPI					4
-#define SIG_TYPE_ALPLD					5
+#define SIGNAL_TYPE_LVDS				0
+#define SIGNAL_TYPE_DP					1
+#define SIGNAL_TYPE_ALPLD				2
+
+/////////////////////////////////////////////////////////////////////////////
+#define ALPDP_INIT_NONE					0
+#define ALPDP_INIT_X2146				1
+#define ALPDP_INIT_X2180				2
 
 /////////////////////////////////////////////////////////////////////////////
 #define SINGLE							0
@@ -270,6 +272,7 @@ typedef enum _COLOR_IDX_{
 
 #define CMD_IF_FUSING_SYSTEM				0x20
 #define CMD_IF_CABLE_OPEN					0x29
+
 #define CMD_IF_I2C_WRITE					0x30
 #define CMD_IF_I2C_READ						0x31
 #define CMD_IF_I2C_IRREGULAR_WRITE			0x34
@@ -305,18 +308,13 @@ typedef enum _COLOR_IDX_{
 #define CMD_QSPI_GET_FW_VERSION				0xFE
 
 #define CMD_CTRL_FUSING_SYSTEM				0xA0
-#define CMD_CTRL_POWER_VOLTAGE_SET			0xAA//0xA5
-#define CMD_CTRL_POWER_SEQUENCE_ONOFF		0xAC//0xA8
-#define CMD_CTRL_LG_DISM_SELECT				0xAF
+#define CMD_CTRL_POWER_VOLTAGE_SET			0xA5
+#define CMD_CTRL_POWER_SEQUENCE_ONOFF		0xA8
+#define CMD_CTRL_MEASURE_ITEM_POWER			0xA9
+#define CMD_CTRL_MEASURE_ALL_POWER			0xAA
 #define CMD_CTRL_BIT_SELECT					0xB0
 #define CMD_CTRL_SIGNAL_ONOFF				0xB1
 #define CMD_CTRL_PWM_SETTING				0xB2
-#define CMD_CTRL_POWER_ONOFF_SET			0xB3//0xA6
-#define CMD_CTRL_MEASURE_ITEM_POWER			0xB5//0xA9
-#define CMD_CTRL_MEASURE_ALL_POWER			0xBD//0xAA
-#define CMD_CTRL_ZONE_SET					0xB7//0xB0
-#define CMD_CTRL_SET_LOGICAL_BMP			0xBA
-#define	CMD_CTRL_WRITE_BMP					0xBB		//0xD3
 
 #define CMD_CTRL_ARE_YOU_READY				0xC0
 #define CMD_CTRL_POWER_SEND_PACKET_BYPASS	0xCF // POWER CAL. BY Pass CMD (21.03.04)
@@ -400,5 +398,59 @@ enum
 #define GOOD_CNT								0
 #define BAD_CNT									1
 
+enum
+{
+	ERROR_CODE_0 = 0,
+	ERROR_CODE_1,
+	ERROR_CODE_2,
+	ERROR_CODE_3,
+	ERROR_CODE_4,
+	ERROR_CODE_5,
+	ERROR_CODE_6,
+	ERROR_CODE_7,
+	ERROR_CODE_8,
+	ERROR_CODE_9,
+	ERROR_CODE_10,
+	ERROR_CODE_11,
+	ERROR_CODE_12,
+	ERROR_CODE_13,
+	ERROR_CODE_14,
+	ERROR_CODE_15,
+	ERROR_CODE_16,
+	ERROR_CODE_17,
+	ERROR_CODE_18,
+	ERROR_CODE_19,
+	ERROR_CODE_20,
+	ERROR_CODE_21,
+	ERROR_CODE_22,
+	ERROR_CODE_23,
+	ERROR_CODE_24,
+	ERROR_CODE_25,
+	ERROR_CODE_26,
+	ERROR_CODE_27,
+	ERROR_CODE_28,
+	ERROR_CODE_29,
+	ERROR_CODE_30,
+	ERROR_CODE_31,
+	ERROR_CODE_32,
+	ERROR_CODE_33,
+	ERROR_CODE_34,
+	ERROR_CODE_35,
+	ERROR_CODE_36,
+	ERROR_CODE_37,
+	ERROR_CODE_38,
+	ERROR_CODE_39,
+	ERROR_CODE_40,
+	ERROR_CODE_41,
+	ERROR_CODE_42,
+	ERROR_CODE_43,
+	ERROR_CODE_44,
+	ERROR_CODE_45,
+	ERROR_CODE_46,
+	ERROR_CODE_47,
+	ERROR_CODE_48,
+	ERROR_CODE_49,
+	ERROR_CODE_MAX
+};
 
 #endif

@@ -8,18 +8,24 @@
 typedef struct _ST_MODELINFO_{
 
 	float	m_fPowerVcc;
-	float	m_fPowerVel;
 	float	m_fPowerVccOffset;
+	float	m_fPowerVel;
 	float	m_fPowerVelOffset;
+	float	m_fPowerVdd;
+	float	m_fPowerVddOffset;
 
 	float	m_fLimitVccLow;
 	float	m_fLimitVccHigh;
 	float	m_fLimitVelLow;
 	float	m_fLimitVelHigh;
+	float	m_fLimitVddLow;
+	float	m_fLimitVddHigh;
 	float	m_fLimitIccLow;
 	float	m_fLimitIccHigh;
 	float	m_fLimitIelLow;
 	float	m_fLimitIelHigh;
+	float	m_fLimitIddLow;
+	float	m_fLimitIddHigh;
 
 	int		m_nPowerOnSeq1;
 	int		m_nPowerOnSeq2;
@@ -53,6 +59,7 @@ typedef struct _ST_MODELINFO_{
 	int		m_nBitSelect;
 	int		m_nFrsMode;
 	int		m_nClockDelay;
+	int		m_nInitScript;
 
 	float	m_fTimingFrequency;
 	int		m_nTimingHorTotal;
@@ -77,6 +84,10 @@ typedef struct _ST_MODELINFO_{
 
 	int		m_nGpioPullUp;
 	int		m_nGpioLevel;
+
+	int		m_nPwmFrequency;
+	int		m_nPwmDuty;
+	int		m_nPwmLevel;
 
 	int		m_nPatternListCount;
 	CString	m_sLbPtnListNAME[PTN_LIST_MAX];
@@ -171,6 +182,7 @@ typedef struct _ST_INSPWORKINFO_{
 	char  m_szPLTPanelID[50];
 	char  m_szLPIRProcessCode[50];
 
+	BOOL  m_bAreYouReady;
 	BOOL  bPowerOnOffStatus;		// LCM Power OnOff 상태
 	bool  bPowerOnOffCheck;			// LCM Power OnOff 검사 완료 Flag
 	DWORD nTickPatternStart[PTN_LIST_MAX];	// Pattern Start Time
@@ -229,10 +241,12 @@ typedef struct _ST_INSPWORKINFO_{
 	// Power Measure
 	int	m_nMeasureVCC[2];
 	int m_nMeasureVEL[2];
+	int m_nMeasureVDD[2];
 	int m_nMeasureICC[2];
 	int m_nMeasureIEL[2];
+	int m_nMeasureIDD[2];
 	int m_nMeasureErrName[2];
-	int m_nMeasureErrResult[2];
+	int m_nMeasureErrCh[2];
 	int m_nMeasureErrValue[2];
 
 	// Fimrware(Main, FPGA, Power) Download

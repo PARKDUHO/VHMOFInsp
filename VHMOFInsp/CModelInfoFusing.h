@@ -65,14 +65,20 @@ public:
 	CEdit m_edtMfVccOffset;
 	CEdit m_edtMfVel;
 	CEdit m_edtMfVelOffset;
+	CEdit m_edtMfVdd;
+	CEdit m_edtMfVddOffset;
 	CEdit m_edtMfLimitVccLow;
 	CEdit m_edtMfLimitVccHigh;
 	CEdit m_edtMfLimitVelLow;
 	CEdit m_edtMfLimitVelHigh;
+	CEdit m_edtMfLimitVddLow;
+	CEdit m_edtMfLimitVddHigh;
 	CEdit m_edtMfLimitIccLow;
 	CEdit m_edtMfLimitIccHigh;
 	CEdit m_edtMfLimitIelLow;
 	CEdit m_edtMfLimitIelHigh;
+	CEdit m_edtMfLimitIddLow;
+	CEdit m_edtMfLimitIddHigh;
 	CComboBox m_cmbMfPowerOnSeq1;
 	CComboBox m_cmbMfPowerOnSeq2;
 	CComboBox m_cmbMfPowerOnSeq3;
@@ -125,4 +131,5 @@ public:
 	afx_msg void OnEnChangeEdtMfTimingVerWidth();
 	afx_msg void OnEnChangeEdtMfTimingVerBp();
 	afx_msg void OnEnChangeEdtMfTimingVerFp();
+	CComboBox m_cmbMfInitScript;
 };

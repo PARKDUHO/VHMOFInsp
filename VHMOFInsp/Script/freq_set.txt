@@ -1,0 +1,2820 @@
+g_1080_start
+	1080 1 8 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1080_end
+g_1134_start
+	1134 1 8 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1134_end
+g_1188_start
+	1188 1 8 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1188_end
+g_1242_start
+	1242 1 8 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1242_end
+g_1296_start
+	1296 1 8 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1296_end
+g_1350_start
+	1350 1 8 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1350_end
+g_1404_start
+	1404 1 8 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1404_end
+g_1458_start
+	1458 1 8 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1458_end
+g_1512_start
+	1512 1 8 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1512_end
+g_1566_start
+	1566 1 8 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1566_end
+g_1620_start
+	1620 1 8 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1620_end
+g_1674_start
+	1674 0 8 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1674_end
+g_1728_start
+	1728 0 8 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1728_end
+g_1782_start
+	1782 0 8 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1782_end
+g_1836_start
+	1836 0 8 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1836_end
+g_1890_start
+	1890 0 8 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1890_end
+g_1944_start
+	1944 0 8 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1944_end
+g_1998_start
+	1998 0 8 120
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (8),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (120),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_1998_end
+g_2052_start
+	2052 1 4 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_2052_end
+g_2106_start
+	2106 1 4 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2106_end
+g_2160_start
+	2160 1 4 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2160_end
+g_2214_start
+	2214 1 4 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2214_end
+g_2268_start
+	2268 1 4 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2268_end
+g_2322_start
+	2322 1 4 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2322_end
+g_2376_start
+	2376 1 4 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2376_end
+g_2430_start
+	2430 1 4 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2430_end
+g_2484_start
+	2484 1 4 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2484_end
+g_2538_start
+	2538 1 4 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2538_end
+g_2592_start
+	2592 1 4 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2592_end
+g_2646_start
+	2646 1 4 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2646_end
+g_2700_start
+	2700 1 4 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2700_end
+g_2754_start
+	2754 1 4 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2754_end
+g_2808_start
+	2808 1 4 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2808_end
+g_2862_start
+	2862 1 4 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2862_end
+g_2916_start
+	2916 1 4 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2916_end
+g_2970_start
+	2970 1 4 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_2970_end
+g_3024_start
+	3024 1 4 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3024_end
+g_3078_start
+	3078 1 4 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3078_end
+g_3132_start
+	3132 1 4 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3132_end
+g_3186_start
+	3186 1 4 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3186_end
+g_3240_start
+	3240 1 4 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3240_end
+g_3294_start
+	3294 0 4 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3294_end
+g_3348_start
+	3348 0 4 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3348_end
+g_3402_start
+	3402 0 4 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3402_end
+g_3456_start
+	3456 0 4 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3456_end
+g_3510_start
+	3510 0 4 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3510_end
+g_3564_start
+	3564 0 4 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3564_end
+g_3618_start
+	3618 0 4 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3618_end
+g_3672_start
+	3672 0 4 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3672_end
+g_3726_start
+	3726 0 4 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3726_end
+g_3780_start
+	3780 0 4 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3780_end
+g_3834_start
+	3834 0 4 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3834_end
+g_3888_start
+	3888 0 4 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3888_end
+g_3942_start
+	3942 0 4 120
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (120),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3942_end
+g_3996_start
+	3996 0 4 120
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (4),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (120),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_3996_end
+g_4050_start
+	4050 1 2 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_4050_end
+g_4104_start
+	4104 1 2 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_4104_end
+g_4158_start
+	4158 1 2 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_4158_end
+g_4212_start
+	4212 1 2 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4212_end
+g_4266_start
+	4266 1 2 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4266_end
+g_4320_start
+	4320 1 2 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4320_end
+g_4374_start
+	4374 1 2 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4374_end
+g_4428_start
+	4428 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4428_end
+g_4482_start
+	4482 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4482_end
+g_4536_start
+	4536 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4536_end
+g_4590_start
+	4590 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4590_end
+g_4644_start
+	4644 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4644_end
+g_4698_start
+	4698 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4698_end
+g_4752_start
+	4752 1 2 66
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (66),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4752_end
+g_4806_start
+	4806 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4806_end
+g_4860_start
+	4860 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4860_end
+g_4914_start
+	4914 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4914_end
+g_4968_start
+	4968 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_4968_end
+g_5022_start
+	5022 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5022_end
+g_5076_start
+	5076 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5076_end
+g_5130_start
+	5130 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5130_end
+g_5184_start
+	5184 1 2 75
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (75),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5184_end
+g_5238_start
+	5238 1 2 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5238_end
+g_5292_start
+	5292 1 2 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5292_end
+g_5346_start
+	5346 1 2 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5346_end
+g_5400_start
+	5400 1 2 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5400_end
+g_5454_start
+	5454 1 2 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5454_end
+g_5508_start
+	5508 1 2 80
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5508_end
+g_5562_start
+	5562 1 2 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5562_end
+g_5616_start
+	5616 1 2 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5616_end
+g_5670_start
+	5670 1 2 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5670_end
+g_5724_start
+	5724 1 2 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5724_end
+g_5778_start
+	5778 1 2 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5778_end
+g_5832_start
+	5832 1 2 84
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (84),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5832_end
+g_5886_start
+	5886 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5886_end
+g_5940_start
+	5940 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5940_end
+g_5994_start
+	5994 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_5994_end
+g_6048_start
+	6048 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6048_end
+g_6102_start
+	6102 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6102_end
+g_6156_start
+	6156 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6156_end
+g_6210_start
+	6210 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6210_end
+g_6264_start
+	6264 1 2 90
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (90),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6264_end
+g_6318_start
+	6318 1 2 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6318_end
+g_6372_start
+	6372 1 2 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6372_end
+g_6426_start
+	6426 1 2 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6426_end
+g_6480_start
+	6480 1 2 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6480_end
+g_6534_start
+	6534 0 2 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6534_end
+g_6588_start
+	6588 0 2 96
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (96),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6588_end
+g_6642_start
+	6642 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6642_end
+g_6696_start
+	6696 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6696_end
+g_6750_start
+	6750 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6750_end
+g_6804_start
+	6804 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6804_end
+g_6858_start
+	6858 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6858_end
+g_6912_start
+	6912 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6912_end
+g_6966_start
+	6966 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_6966_end
+g_7020_start
+	7020 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7020_end
+g_7074_start
+	7074 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7074_end
+g_7128_start
+	7128 0 2 100
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (100),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7128_end
+g_7182_start
+	7182 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7182_end
+g_7236_start
+	7236 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7236_end
+g_7290_start
+	7290 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7290_end
+g_7344_start
+	7344 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7344_end
+g_7398_start
+	7398 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7398_end
+g_7452_start
+	7452 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7452_end
+g_7506_start
+	7506 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7506_end
+g_7560_start
+	7560 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7560_end
+g_7614_start
+	7614 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7614_end
+g_7668_start
+	7668 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7668_end
+g_7722_start
+	7722 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7722_end
+g_7776_start
+	7776 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7776_end
+g_7830_start
+	7830 0 2 112
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (112),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7830_end
+g_7884_start
+	7884 0 2 120
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (120),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7884_end
+g_7938_start
+	7938 0 2 120
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (120),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7938_end
+g_7992_start
+	7992 0 2 120
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b0),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b1111000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (2),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0111111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (120),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000011011),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010010111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_7992_end
+g_8046_start
+	8046 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8046_end
+g_8100_start
+	8100 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8100_end
+g_8154_start
+	8154 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8154_end
+g_8208_start
+	8208 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8208_end
+g_8262_start
+	8262 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8262_end
+g_8316_start
+	8316 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8316_end
+g_8370_start
+	8370 1 1 60
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (60),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0000011111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111110),
+	com_end
+g_8370_end
+g_8424_start
+	8424 1 1 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_8424_end
+g_8478_start
+	8478 1 1 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_8478_end
+g_8532_start
+	8532 1 1 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_8532_end
+g_8586_start
+	8586 1 1 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_8586_end
+g_8640_start
+	8640 1 1 64
+	chl_start
+		  .GTHE3_CHANNEL_TXPI_CFG3                      (1'b1),
+		  .GTHE3_CHANNEL_CPLL_CFG2                      (16'b0101000000000111),
+		  .GTHE3_CHANNEL_TXOUT_DIV                      (1),
+	chl_end
+	com_start
+		  .GTHE3_COMMON_QPLL1_FBDIV                     (64),
+		  .GTHE3_COMMON_QPLL1_CFG4                      (16'b0000000000000000),
+		  .GTHE3_COMMON_QPLL1_CP                        (10'b0001111111),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_FBDIV                     (80),
+		  .GTHE3_COMMON_QPLL0_CFG4                      (16'b0000000000001001),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG                  (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL0_LOCK_CFG_G3               (16'b0010000111101000),
+		  .GTHE3_COMMON_QPLL1_LPF                       (10'b1111111100),
+	com_end
+g_8640_end

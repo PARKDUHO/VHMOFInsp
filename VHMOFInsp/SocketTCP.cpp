@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "VHMOFInsp.h"
 #include "SocketTcp.h"
 #include <winsock2.h>
 
@@ -503,8 +504,14 @@ BOOL CSocketTCP::eth_SpiSendQuery(int socketID, char *data, int nDataLen)
 
 	// Receive Buff를 Clear 한다.
 	rcvDataLen[socketID] = 0;
-	if (DEBUG_TCP_PACKET_LOG)	Gf_DEBUGfucWriteMLog(data);
-	
+
+	if (DEBUG_TCP_COMM_LOG)
+	{
+		CString sLog;
+		sLog.Format(_T("<SPI SEND> Socket(%d) : %s"), socketID, data);
+		m_pApp->Gf_writeMLog(sLog);
+	}
+
 	// Socket Send
 	sendlength = send(hSocket[socketID], data, nDataLen, 0);
 
@@ -554,13 +561,20 @@ BOOL CSocketTCP::eth_MainSendQuery(int socketID, char* data, int nDataLen)
 
 	// Receive Buff를 Clear 한다.
 	rcvDataLen[socketID] = 0;
-	if (DEBUG_TCP_PACKET_LOG)	Gf_DEBUGfucWriteMLog(data);
+
+	if (DEBUG_TCP_COMM_LOG)
+	{
+		CString sLog;
+		sLog.Format(_T("<MAIN SEND> Socket(%d) : %S"), socketID, data);
+		m_pApp->Gf_writeMLog(sLog);
+	}
+
 
 	// Socket Send
 	sendlength = send(hSocket[socketID], data, nDataLen, 0);
 
 	if (sendlength == 0)	return FALSE;
-	else				return TRUE;
+	else					return TRUE;
 }
 
 BOOL CSocketTCP::eth_getMainRcvPacket(int socketID, char* szRcvPacket)
@@ -657,7 +671,13 @@ BOOL CSocketTCP::eth_DIOSendQuery(char* data, int nDataLen, int socketID)
 
 	// Receive Buff를 Clear 한다.
 	rcvDataLen[socketID] = 0;
-	//if (DEBUG_TCP_PACKET_LOG)	Gf_DEBUGfucWriteMLog(ch, data);
+
+	if (DEBUG_TCP_COMM_LOG)
+	{
+		CString sLog;
+		sLog.Format(_T("<DIO SEND> Socket(%d) : %s"), socketID, data);
+		m_pApp->Gf_writeMLog(sLog);
+	}
 
 	// Socket Send
 	sendlength = send(hSocket[socketID], data, nDataLen, 0);

@@ -292,7 +292,11 @@ void CInitialize::OnTimer(UINT_PTR nIDEvent)
 		for (int i = 0; i < INIT_MAX; i++)
 		{
 			if (nSysInitResult[i] == INIT_NG)
+			{
+				GetDlgItem(IDC_BTN_INI_RETRY)->EnableWindow(TRUE);
+				GetDlgItem(IDC_BTN_INI_CANCEL)->EnableWindow(TRUE);
 				return;
+			}
 		}
 		CDialog::OnOK();
 		//////////////////////////////////////////////////////////////////
@@ -305,6 +309,9 @@ void CInitialize::OnBnClickedBtnIniRetry()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	memset(nSysInitResult, INIT_NONE, sizeof(nSysInitResult));
 	Invalidate(FALSE);
+
+	GetDlgItem(IDC_BTN_INI_RETRY)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_INI_CANCEL)->EnableWindow(FALSE);
 
 	SetTimer(1, 200, NULL);
 }
@@ -426,7 +433,7 @@ void CInitialize::Lf_initConnPG()
 	///////////////////////////////////////////////////////////////////////////////////
 	// CH1
 	m_pApp->m_pSocketTCPMain->tcp_Main_DisConnection(CH1);
-	delayMs(1000);
+	delayMs(200);
 	ip.Format(TCP_MAIN_1_BOARD_IP);
 	strmsg.Format(_T("IP:%s Port:%d"), ip, TCP_MAIN_PORT);
 	if (m_pApp->m_pSocketTCPMain->tcp_Main_Connection(ip, TCP_MAIN_PORT, CH1) == TRUE)
@@ -445,7 +452,7 @@ void CInitialize::Lf_initConnPG()
 	///////////////////////////////////////////////////////////////////////////////////
 	// CH2
 	m_pApp->m_pSocketTCPMain->tcp_Main_DisConnection(CH2);
-	delayMs(1000);
+	delayMs(200);
 	ip.Format(TCP_MAIN_2_BOARD_IP);
 	strmsg.Format(_T("IP:%s Port:%d"), ip, TCP_MAIN_PORT);
 	if (m_pApp->m_pSocketTCPMain->tcp_Main_Connection(ip, TCP_MAIN_PORT, CH2) == TRUE)

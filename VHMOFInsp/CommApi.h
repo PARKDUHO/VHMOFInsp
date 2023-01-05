@@ -24,6 +24,7 @@ public:
 	int main_makeI2cClock(int index);
 
 	// Control Function
+	BOOL main_getAreYouReady(int ch);
 	BOOL main_setSystemFusing(int ch);
 	BOOL main_setPowerSequenceOnOff(int ch, int onoff, BOOL bAck=ACK);
 	BOOL main_getMeasurePowerAll(int ch,BOOL bAck=ACK);
@@ -31,7 +32,6 @@ public:
 	BOOL main_setPGInfoPatternString(int ch, CString szPatternString, BOOL bAck = ACK);
 	
 	BOOL main_setBmpAddress(int ch, CString strPtnString);
-	BOOL main_setBmpDisplay(int ch, int index);
 	BOOL main_setBmpComplete(int ch);
 	BOOL main_setI2cWrite(int ch, int level, int pullup, int devAddr, int regAddr, char* pData);
 
@@ -92,9 +92,15 @@ public:
 
 	int  nDio_DO_Data[MAX_CH];
 
-	int	 Main_setSendQuery(int nCommand, int nLength, char* pData, int ch);
-	BOOL Main_getReceivePacket(char* m_szRcvPacket, int ch);
+	int	 main_setSendQuery(int nCommand, int nLength, char* pData, int ch);
+	BOOL main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime);
 	char gszMainRcvPacket[MAX_CH][256];
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ALPDP Function
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	BOOL alpdp_executePythonScript(int ch, CString strPara);
+
 
 protected:
 

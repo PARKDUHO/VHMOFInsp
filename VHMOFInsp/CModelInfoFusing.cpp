@@ -33,14 +33,20 @@ void CModelInfoFusing::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_MF_VCC_OFFSET, m_edtMfVccOffset);
 	DDX_Control(pDX, IDC_EDT_MF_VEL, m_edtMfVel);
 	DDX_Control(pDX, IDC_EDT_MF_VEL_OFFSET, m_edtMfVelOffset);
+	DDX_Control(pDX, IDC_EDT_MF_VDD, m_edtMfVdd);
+	DDX_Control(pDX, IDC_EDT_MF_VDD_OFFSET, m_edtMfVddOffset);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_VCC_LOW, m_edtMfLimitVccLow);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_VCC_HIGH, m_edtMfLimitVccHigh);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_VEL_LOW, m_edtMfLimitVelLow);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_VEL_HIGH, m_edtMfLimitVelHigh);
+	DDX_Control(pDX, IDC_EDT_MF_LIMIT_VDD_LOW, m_edtMfLimitVddLow);
+	DDX_Control(pDX, IDC_EDT_MF_LIMIT_VDD_HIGH, m_edtMfLimitVddHigh);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_ICC_LOW, m_edtMfLimitIccLow);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_ICC_HIGH, m_edtMfLimitIccHigh);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IEL_LOW, m_edtMfLimitIelLow);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IEL_HIGH, m_edtMfLimitIelHigh);
+	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW, m_edtMfLimitIddLow);
+	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_HIGH, m_edtMfLimitIddHigh);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_1, m_cmbMfPowerOnSeq1);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_2, m_cmbMfPowerOnSeq2);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_3, m_cmbMfPowerOnSeq3);
@@ -84,6 +90,7 @@ void CModelInfoFusing::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_MF_TIMING_VER_WIDTH, m_edtMfTimingVerWidth);
 	DDX_Control(pDX, IDC_EDT_MF_TIMING_VER_BP, m_edtMfTimingVerBackPorch);
 	DDX_Control(pDX, IDC_EDT_MF_TIMING_VER_FP, m_edtMfTimingVerFrontPorch);
+	DDX_Control(pDX, IDC_CMB_MF_INIT_SCRIPT, m_cmbMfInitScript);
 }
 
 
@@ -397,10 +404,14 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfVcc.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fPowerVel);
 	m_edtMfVel.SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), lpModelInfo->m_fPowerVdd);
+	m_edtMfVdd.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fPowerVccOffset);
 	m_edtMfVccOffset.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fPowerVelOffset);
 	m_edtMfVelOffset.SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), lpModelInfo->m_fPowerVddOffset);
+	m_edtMfVddOffset.SetWindowText(sdata);
 
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVccLow);
 	m_edtMfLimitVccLow.SetWindowText(sdata);
@@ -410,6 +421,10 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfLimitVelLow.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVelHigh);
 	m_edtMfLimitVelHigh.SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVddLow);
+	m_edtMfLimitVddLow.SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVddHigh);
+	m_edtMfLimitVddHigh.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIccLow);
 	m_edtMfLimitIccLow.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIccHigh);
@@ -418,6 +433,10 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfLimitIelLow.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIelHigh);
 	m_edtMfLimitIelHigh.SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIddLow);
+	m_edtMfLimitIddLow.SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIddHigh);
+	m_edtMfLimitIddHigh.SetWindowText(sdata);
 
 	m_cmbMfPowerOnSeq1.SetCurSel(lpModelInfo->m_nPowerOnSeq1);
 	m_cmbMfPowerOnSeq2.SetCurSel(lpModelInfo->m_nPowerOnSeq2);
@@ -465,6 +484,7 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_cmbMfFrsMode.SetCurSel(lpModelInfo->m_nFrsMode);
 	sdata.Format(_T("%d"), lpModelInfo->m_nClockDelay);
 	m_edtMfClockDelay.SetWindowText(sdata);
+	m_cmbMfInitScript.SetCurSel(lpModelInfo->m_nInitScript);
 
 	sdata.Format(_T("%.2f"), lpModelInfo->m_fTimingFrequency);
 	m_edtMfTimingFrequency.SetWindowText(sdata);
@@ -563,11 +583,17 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	m_edtMfVel.GetWindowText(sValue);						sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL"), sValue);
 
+	m_edtMfVdd.GetWindowText(sValue);						sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD"), sValue);
+
 	m_edtMfVccOffset.GetWindowText(sValue);					sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VCC_OFFSET"), sValue);
 
 	m_edtMfVelOffset.GetWindowText(sValue);					sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL_OFFSET"), sValue);
+
+	m_edtMfVddOffset.GetWindowText(sValue);					sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_OFFSET"), sValue);
 
 	//=====================================================================================================================
 	//POWER Limit
@@ -584,6 +610,12 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	m_edtMfLimitVelHigh.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL_LIMIT_HIGH"), sValue);
 
+	m_edtMfLimitVddLow.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_LIMIT_LOW"), sValue);
+
+	m_edtMfLimitVddHigh.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_LIMIT_HIGH"), sValue);
+
 	m_edtMfLimitIccLow.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_LOW"), sValue);
 
@@ -595,6 +627,12 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 
 	m_edtMfLimitIelHigh.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_HIGH"), sValue);
+
+	m_edtMfLimitIddLow.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_LOW"), sValue);
+
+	m_edtMfLimitIddHigh.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_HIGH"), sValue);
 
 	//=====================================================================================================================
 	//POWER Sequence ON
@@ -657,12 +695,13 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	//=====================================================================================================================
 	//SIGNAL Info
 	//=====================================================================================================================
-	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("SIGNAL_TYPE"),		m_cmbMfSignalType.GetCurSel());
-	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PXEL_TYPE"),		m_cmbMfPixel.GetCurSel());
-	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("SIGNAL_BIT"),		m_cmbMfSignalBit.GetCurSel());
-	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("ROTATE"),			m_cmbMfRotate.GetCurSel());
-	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("BIT_SELECT"),		m_cmbMfBitSelect.GetCurSel());
-	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("FRS_MODE"),		m_cmbMfFrsMode.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("SIGNAL_TYPE"),			m_cmbMfSignalType.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PXEL_TYPE"),			m_cmbMfPixel.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("SIGNAL_BIT"),			m_cmbMfSignalBit.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("ROTATE"),				m_cmbMfRotate.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("BIT_SELECT"),			m_cmbMfBitSelect.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("FRS_MODE"),			m_cmbMfFrsMode.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("ALPDP_INIT_SCRIPT"),	m_cmbMfInitScript.GetCurSel());
 
 	m_edtMfClockDelay.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("CLOCK_DELAY"), sValue);

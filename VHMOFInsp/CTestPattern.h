@@ -50,8 +50,11 @@ protected:
 	BOOL Lf_PatternCurrentCheck();
 	BOOL Lf_PatternVoltageSetting();
 
+	BOOL Lf_sendAlpdpInitScript();
+
 	void Lf_PtnTestEventView(CString Event);
 
+	void Lf_setPowerOnAnd1stPattern();
 
 	////////////////////////////////////////////////////////////////////////
 	int m_nPatternIndex;

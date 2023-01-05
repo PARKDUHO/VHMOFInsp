@@ -1,5 +1,6 @@
 #include "pch.h"
 
+#include "VHMOFInsp.h"
 #include "SocketTcpApp.h"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,12 +54,23 @@ BOOL CSocketTcpApp::tcp_Main_SendQuery(int ch, char* data, int nDataLen)
 
 BOOL CSocketTcpApp::tcp_Main_GetReceivePacketData(int ch, char* szRcvPacket)
 {
+	BOOL bRet;
 	int socketID;
 
 	if (ch == CH1)	socketID = SOC_MAIN_BD_1;
 	else        	socketID = SOC_MAIN_BD_2;
 
-	return pSocketTcp->eth_getMainRcvPacket(socketID, szRcvPacket);;
+	bRet = pSocketTcp->eth_getMainRcvPacket(socketID, szRcvPacket);
+
+	// Receive Log¸¦ ±â·Ï
+	if (DEBUG_TCP_COMM_LOG)
+	{
+		CString sLog;
+		sLog.Format(_T("<MAIN RECV> Socket(%d) : %S"), socketID, szRcvPacket);
+		m_pApp->Gf_writeMLog(sLog);
+	}
+
+	return bRet;
 }
 
 int CSocketTcpApp::tcp_Main_GetReceivePacketSize(int ch)

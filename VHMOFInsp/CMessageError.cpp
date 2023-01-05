@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CMessageError, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BTN_ERR_CLOSE, &CMessageError::OnBnClickedBtnErrClose)
 END_MESSAGE_MAP()
 
 
@@ -155,6 +156,12 @@ void CMessageError::OnTimer(UINT_PTR nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
+void CMessageError::OnBnClickedBtnErrClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDialog::OnCancel();
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMessageError::Lf_InitLocalValue()
@@ -207,3 +214,4 @@ void CMessageError::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
 	m_Brush[COLOR_IDX_DARK_ORANGE].CreateSolidBrush(COLOR_DARK_ORANGE);
 }
+

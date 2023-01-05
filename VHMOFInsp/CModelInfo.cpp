@@ -211,7 +211,7 @@ void CModelInfo::OnBnClickedBtnMiSaveExit()
 	m_pApp->Gf_writeMLog(_T("<WND> BUTTON Click => Model Data 'Save&&Exit'"));
 
 	Lf_saveModel();
-	CDialog::OnOK();
+	//CDialog::OnOK();
 }
 
 
@@ -258,7 +258,8 @@ void CModelInfo::Lf_InitFontset()
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
 	m_Font[5].CreateFont(16, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-
+	GetDlgItem(IDC_STT_MI_FUSING_PG1)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MI_FUSING_PG2)->SetFont(&m_Font[5]);
 }
 
 void CModelInfo::Lf_InitColorBrush()
@@ -383,7 +384,9 @@ void CModelInfo::Lf_systemFusing()
 {
 	Lf_saveModel();
 
-	GetDlgItem(IDC_BTN_MF_FUSING)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_MI_FUSING)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_MI_SAVE_EXIT)->EnableWindow(FALSE);
+	GetDlgItem(IDC_BTN_MI_CANCEL)->EnableWindow(FALSE);
 
 	m_bFusingResult[0] = FUSING_READY;
 	m_bFusingResult[1] = FUSING_READY;
@@ -395,18 +398,34 @@ void CModelInfo::Lf_systemFusing()
 
 	for (int ch = CH1; ch < MAX_CH; ch++)
 	{
-		if (m_pApp->commApi->main_setSystemFusing(ch) == TRUE)
+		if (m_pApp->m_bPgConnectStatus[ch] == FALSE)
 		{
-			m_bFusingResult[ch] = FUSING_OK;
+			if (ch == CH1)	GetDlgItem(IDC_STT_MI_FUSING_PG1)->SetWindowText(_T("SKIP"));
+			if (ch == CH2)	GetDlgItem(IDC_STT_MI_FUSING_PG2)->SetWindowText(_T("SKIP"));
+			continue;
 		}
 		else
 		{
-			m_bFusingResult[ch] = FUSING_NG;
+			if (m_pApp->commApi->main_setSystemFusing(ch) == TRUE)
+			{
+				m_bFusingResult[ch] = FUSING_OK;
+
+				if (ch == CH1)	GetDlgItem(IDC_STT_MI_FUSING_PG1)->SetWindowText(_T("OK"));
+				if (ch == CH2)	GetDlgItem(IDC_STT_MI_FUSING_PG2)->SetWindowText(_T("OK"));
+			}
+			else
+			{
+				m_bFusingResult[ch] = FUSING_NG;
+
+				if (ch == CH1)	GetDlgItem(IDC_STT_MI_FUSING_PG1)->SetWindowText(_T("NG"));
+				if (ch == CH2)	GetDlgItem(IDC_STT_MI_FUSING_PG2)->SetWindowText(_T("NG"));
+			}
 		}
 	}
 	GetDlgItem(IDC_STT_MI_FUSING_PG1)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_MI_FUSING_PG2)->Invalidate(FALSE);
 
-	GetDlgItem(IDC_BTN_MF_FUSING)->EnableWindow(TRUE);
-
+	GetDlgItem(IDC_BTN_MI_FUSING)->EnableWindow(TRUE);
+	GetDlgItem(IDC_BTN_MI_SAVE_EXIT)->EnableWindow(TRUE);
+	GetDlgItem(IDC_BTN_MI_CANCEL)->EnableWindow(TRUE);
 }

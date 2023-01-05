@@ -39,7 +39,7 @@ public:
 public:
 	void Gf_writeMLog(char* szLogData);
 	void Gf_writeMLog(CString sLogData);
-	BOOL Gf_ShowMessageBox(int msg_type, CString strTitle, CString strMessage);
+	BOOL Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage=_T(""));
 
 	void Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor1, long bkColor2, long fontColor, CFont* pFont, BOOL bSplit);
 
@@ -50,6 +50,11 @@ public:
 	void Gf_setEndPtnLockTime(int nPtnNum);
 	void Gf_setPatStartCheckTime(int i);
 	void Gf_setPatEndCheckTime(int i);
+
+	BOOL main_tcpProcessPacket(int ch, char* recvPacket);
+	void main_parse_AreYouReady(int ch, char* recvPacket);
+	void main_parse_PowerMeasureAll(int ch, char* recvPacket);
+	void main_parse_FirmwareVersion(int ch, char* recvPacket);
 
 	LPMODELINFO				GetModelInfo();
 	LPSYSTEMINFO			GetSystemInfo();

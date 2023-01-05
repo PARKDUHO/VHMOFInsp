@@ -25,6 +25,7 @@ CTestReady::~CTestReady()
 void CTestReady::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BTN_TR_TEST_START, m_btnTrTestStart);
 }
 
 
@@ -226,6 +227,7 @@ void CTestReady::OnBnClickedBtnTrTestStart()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTestReady::Lf_InitLocalValue()
 {
+	ZeroMemory(lpInspWorkInfo, sizeof(LPINSPWORKINFO));
 }
 
 void CTestReady::Lf_InitFontset()
@@ -284,15 +286,80 @@ void CTestReady::Lf_InitDlgDesign()
 // 	m_pApp->Gf_setGradientStatic(&m_sttUserIDInput, RGB(0, 192, 0), RGB(0, 128, 0), COLOR_WHITE, &mFontH1[1], FALSE);
 // 
 // 	// Button ICON
-// 	m_btnUserConfirm.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
+ 	m_btnTrTestStart.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
 // 	m_btnUserCancel.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
 }
 
-void CTestReady::Lf_FinalTestStart()
+BOOL CTestReady::Lf_FinalTestStart()
 {
+	int ch = CH1;
+
+	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("PM MODE"), ERROR_CODE_0);
+	}
+
+	if (Lf_getControlBdReady(ch) == FALSE)
+	{
+		return FALSE;
+	}
+
+	if (Lf_getFirmwareVersion(ch) == FALSE)
+	{
+		return FALSE;
+	}
+
 	CTestPattern pattern_dlg;
 	if (pattern_dlg.DoModal() == IDOK)
 	{
 
 	}
+
+
+	return TRUE;
 }
+
+BOOL CTestReady::Lf_getControlBdReady(int ch)
+{
+	int nCnt = 0;
+
+	m_pApp->Gf_writeMLog(_T("<PG> CTRL B/D Ready Check START"));
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("CTRL B/D Ready Check"));
+
+	if (DEBUG_TCP_RECEIVE_OK)
+		return TRUE;
+
+	while (lpInspWorkInfo->m_bAreYouReady == FALSE)
+	{
+		if (m_pApp->commApi->main_getAreYouReady(ch) == TRUE)
+			break;
+
+		delayMs(20);
+
+		if (nCnt > 3)
+		{
+			GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("No Response PG!"));
+
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("Communication Error"), ERROR_CODE_18);
+			return FALSE;
+
+		}
+		nCnt++;
+	}
+	m_pApp->Gf_writeMLog(_T("<PG> CTRL B/D Ready Check OK."));
+
+	return TRUE;
+}
+
+BOOL CTestReady::Lf_getFirmwareVersion(int ch)
+{
+	if (m_pApp->commApi->main_getCtrlFWVersion(ch) == FALSE)
+	{
+		return FALSE;
+	}
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	return TRUE;
+}
+

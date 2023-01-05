@@ -65,7 +65,8 @@ void CCommApi::makeFusingData(char* pszData)
 		case 2: // Quad
 			nInterface = 2;		fMclk = (float)(lpModelInfo->m_fTimingFrequency / 4.0f);		break;
 	}
-	//if (lpModelInfo->m_nGfd100Use == _ON_)	fMclk = fMclk / 2;
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_DP)	fMclk = fMclk / 2;
+
 	nMode = 0;
 	nBitSwap = (lpModelInfo->m_nSignalRotate<<4);
 
@@ -87,26 +88,16 @@ void CCommApi::makeFusingData(char* pszData)
 	stBuff.Format(_T("%03d"), lpModelInfo->m_nClockDelay);						stFusingStr += stBuff;	// Clock Delay Time (ns)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Aging
-	stBuff.Format(_T("0000"));													stFusingStr += stBuff;	// Aging Total time
-	stBuff.Format(_T("000"));													stFusingStr += stBuff;	// Aging next pattern
-	stBuff.Format(_T("000"));													stFusingStr += stBuff;	// Aging Start LCM
-	stBuff.Format(_T("000"));													stFusingStr += stBuff;	// Aging Auto On Time
-	stBuff.Format(_T("000"));													stFusingStr += stBuff;	// Aging Auto Off Time
-	stBuff.Format(_T("00"));													stFusingStr += stBuff;	// Aging NG Count
-	
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Signal
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nSignalType);						stFusingStr += stBuff;	// Signal Type
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nSignalBit);						stFusingStr += stBuff;	// Signal Bit
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nPixelType);						stFusingStr += stBuff;	// Pixel Type
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nSignalRotate);					stFusingStr += stBuff;	// LG/DISM
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nBitSelect);						stFusingStr += stBuff;	// Bit Sel
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// Cable Open
+	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// Cable Open Check
 	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// AGP
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// SPI Mode
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// AGP BIST
+	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// Power On SPI Mode Set
+	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// AGP BIST Active
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Power/ Sequence
@@ -114,20 +105,22 @@ void CCommApi::makeFusingData(char* pszData)
 	nData = (int)((lpModelInfo->m_fPowerVcc * 100) + (lpModelInfo->m_fPowerVccOffset * 100));
 	stBuff.Format(_T("%04d"), nData);											stFusingStr += stBuff;	// VCC
 	nData = (int)((lpModelInfo->m_fPowerVel * 100) + (lpModelInfo->m_fPowerVccOffset * 100));
-	stBuff.Format(_T("%04d"), nData);											stFusingStr += stBuff;	// VEL
-	
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq1);						stFusingStr += stBuff;	// Power Sequence On VCC
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq2);						stFusingStr += stBuff;	// Power Sequence On SIGNAL
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq3);						stFusingStr += stBuff;	// Power Sequence On VEL
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq4);						stFusingStr += stBuff;	// Power Sequence On 
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq5);						stFusingStr += stBuff;	// Power Sequence On
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq6);						stFusingStr += stBuff;	// Power Sequence On 
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq1);					stFusingStr += stBuff;	// Power Sequence Off VEL
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq2);					stFusingStr += stBuff;	// Power Sequence Off SIGNAL
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq3);					stFusingStr += stBuff;	// Power Sequence Off VCC
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq4);					stFusingStr += stBuff;	// Power Sequence Off 
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq5);					stFusingStr += stBuff;	// Power Sequence Off
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq6);					stFusingStr += stBuff;	// Power Sequence Off 
+	stBuff.Format(_T("%04d"), nData);											stFusingStr += stBuff;	// VIN
+	nData = (int)((lpModelInfo->m_fPowerVdd * 100) + (lpModelInfo->m_fPowerVddOffset * 100));
+	stBuff.Format(_T("%04d"), nData);											stFusingStr += stBuff;	// VDD
+
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq1);						stFusingStr += stBuff;	// Power Sequence On 1
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq2);						stFusingStr += stBuff;	// Power Sequence On 2
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq3);						stFusingStr += stBuff;	// Power Sequence On 3
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq4);						stFusingStr += stBuff;	// Power Sequence On 4
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq5);						stFusingStr += stBuff;	// Power Sequence On 5
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq6);						stFusingStr += stBuff;	// Power Sequence On 6
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq1);					stFusingStr += stBuff;	// Power Sequence Off 1
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq2);					stFusingStr += stBuff;	// Power Sequence Off 2
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq3);					stFusingStr += stBuff;	// Power Sequence Off 3
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq4);					stFusingStr += stBuff;	// Power Sequence Off 4
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq5);					stFusingStr += stBuff;	// Power Sequence Off 5
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq6);					stFusingStr += stBuff;	// Power Sequence Off 6
 	
 	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay1);					stFusingStr += stBuff;	// Power Sequence On Time
 	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay2);					stFusingStr += stBuff;	// Power Sequence On Time
@@ -143,21 +136,20 @@ void CCommApi::makeFusingData(char* pszData)
 	// Power Limit Setting
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVccLow * 100));		stFusingStr += stBuff;	// VCC Limit Low
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVccHigh * 100));		stFusingStr += stBuff;	// VCC Limit High
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVelLow * 100));		stFusingStr += stBuff;	// VEL Limit Low
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVelHigh * 100));		stFusingStr += stBuff;	// VEL Limit High
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVelLow * 100));		stFusingStr += stBuff;	// VIN Limit Low
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVelHigh * 100));		stFusingStr += stBuff;	// VIN Limit High
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVddLow * 100));		stFusingStr += stBuff;	// VDD Limit Low
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVddHigh * 100));		stFusingStr += stBuff;	// VDD Limit High
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIccLow * 100));		stFusingStr += stBuff;	// ICC Limit Low
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIccHigh * 100));		stFusingStr += stBuff;	// ICC Limit High
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIelLow * 100));		stFusingStr += stBuff;	// IEL Limit Low
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIelHigh * 100));		stFusingStr += stBuff;	// IEL Limit High
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIelLow * 100));		stFusingStr += stBuff;	// IIN Limit Low
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIelHigh * 100));		stFusingStr += stBuff;	// IIN Limit High
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIddLow * 100));		stFusingStr += stBuff;	// IDD Limit Low
+	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIddHigh * 100));		stFusingStr += stBuff;	// IDD Limit High
 
-	//stBuff.Format(_T("00"));													stFusingStr += stBuff;	// PWM Duty min(%)
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Interface
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// Type
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// Sync En/Dis
-	stBuff.Format(_T("00000"));													stFusingStr += stBuff;	// PWM Duty Frequency (Hz)
-	stBuff.Format(_T("000"));													stFusingStr += stBuff;	// PWM Duty (%)
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// PWM Level
+	stBuff.Format(_T("%05d"), lpModelInfo->m_nPwmFrequency);					stFusingStr += stBuff;	// PWM Frequency
+	stBuff.Format(_T("%03d"), lpModelInfo->m_nPwmDuty);							stFusingStr += stBuff;	// PWM Duty
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nPwmLevel);						stFusingStr += stBuff;	// PWM Level
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Maintenance Info
@@ -175,19 +167,13 @@ void CCommApi::makeFusingData(char* pszData)
 	stBuff.Format(_T("%03d"), nI2cFre);											stFusingStr += stBuff;	// I2C Frequency.(KHz)
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// I2C Interface Function
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	// I2C PullUp.
-//	stBuff.Format(_T("%01d"), lpModelInfo->m_nI2cLine);							stFusingStr += stBuff;	// I2C Line. I2C Option은 일단 Fix한다.
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nSpiPullUp);						stFusingStr += stBuff;	// SPI PullUp Enable
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nGpioPullUp);						stFusingStr += stBuff;	// GPIO PullUp Enable
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nI2cLevel);						stFusingStr += stBuff;	// I2C PullUp Level
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nSpiLevel);						stFusingStr += stBuff;	//  SPI PullUp Level
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nGpioLevel);						stFusingStr += stBuff;	//  GPIO PullUp Level
-
-	stBuff.Format(_T("0"));														stFusingStr += stBuff;	//  BIST OnOff
-	stBuff.Format(_T("00"));													stFusingStr += stBuff;	//  BIST Interval
-	stBuff.Format(_T("00"));													stFusingStr += stBuff;	//  BIST Count
-	stBuff.Format(_T("00"));													stFusingStr += stBuff;	//  BIST Pattern Index
+	// Pull-up Enable Expend
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nI2cPullUp);						stFusingStr += stBuff;	// I2C Pull Up
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nSpiPullUp);						stFusingStr += stBuff;	// SPI Pull Up
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nGpioPullUp);						stFusingStr += stBuff;	// GPIO Pull Up
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nI2cLevel);						stFusingStr += stBuff;	// I2C Level
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nSpiLevel);						stFusingStr += stBuff;	// SPI Level
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nGpioLevel);						stFusingStr += stBuff;	// GPIO Level
 	
 
 	wchar_To_char(stFusingStr.GetBuffer(0), pszData);
@@ -206,7 +192,14 @@ CString CCommApi::makePGPatternString(CString ptn_name)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CCommApi::main_getAreYouReady(int ch)
+{
+	BOOL bRtnCode = FALSE;
 
+	bRtnCode = main_setSendQuery(CMD_CTRL_ARE_YOU_READY, 0, "", ch);
+
+	return bRtnCode;
+}
 
 BOOL CCommApi::main_setSystemFusing(int ch)
 {
@@ -217,12 +210,7 @@ BOOL CCommApi::main_setSystemFusing(int ch)
 	makeFusingData(szPacket);
 	length = (int)strlen(szPacket);
 
-	ret = Main_setSendQuery(CMD_CTRL_FUSING_SYSTEM, length, szPacket, ch);
-	
-	if (DEBUG_TCP_COMM_LOG)
-	{
-		m_pApp->Gf_writeMLog(szPacket);
-	}
+	ret = main_setSendQuery(CMD_CTRL_FUSING_SYSTEM, length, szPacket, ch);
 
 	delayMs(10);
 	return ret;
@@ -239,7 +227,7 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 	length = (int)strlen(szPacket);
 
 	//ret = m_pApp->rs232_sendPacket(ch,CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, bAck);
-	ret = Main_setSendQuery(CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, ch);
 
 	// Firmware에서는 Power Sequence On/Off에서 Delay를 가져가지 않고 ACK를 바로 전달한다.
 	// 따라서, Power On/Off Sequence Delay는 S/W에서 가져간다.
@@ -267,9 +255,8 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 
 BOOL CCommApi::main_getMeasurePowerAll(int ch,BOOL bAck)
 {
-	//return main_udp_wait(UDP_MAIN_IP, TARGET_MAIN, UDP_CTRL_ID, CMD_CTRL_MEASURE_ALL_POWER, 0, "");
 	BOOL ret;
-	ret = Main_setSendQuery(CMD_CTRL_MEASURE_ALL_POWER, 0, "", bAck);
+	ret = main_setSendQuery(CMD_CTRL_MEASURE_ALL_POWER, 0, "", ch);
 	return ret;
 }
 
@@ -292,7 +279,7 @@ BOOL CCommApi::main_setPGInfoPatternName(int ch, CString ptn_name, BOOL Ack)
 	length = (int)strlen(szPacket);
 
 	//ret= m_pApp->rs232_sendPacket(ch, CMD_PG_PATTERN_INFO, length, szPacket, Ack); // 화면 Display Fail 대응. 2019.08.20
-	ret = Main_setSendQuery(CMD_PG_PATTERN_INFO, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_PG_PATTERN_INFO, length, szPacket, ch);
 
 	return ret;	
 }
@@ -307,7 +294,7 @@ BOOL CCommApi::main_setPGInfoPatternString(int ch, CString strPtnString, BOOL bA
 	wchar_To_char(strPtnString.GetBuffer(0), szPacket);
 
 	//ret = m_pApp->rs232_sendPacket(ch,CMD_PG_PATTERN_INFO, length, szPacket, bAck);
-	ret = Main_setSendQuery(CMD_PG_PATTERN_INFO, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_PG_PATTERN_INFO, length, szPacket, ch);
 
 	return ret;
 }
@@ -322,25 +309,7 @@ BOOL CCommApi::main_setBmpAddress(int ch, CString strPtnString)
 	wchar_To_char(strPtnString.GetBuffer(0), szPacket);
 
 	//ret = m_pApp->rs232_sendPacket(ch,CMD_PG_PATTERN_INFO, length, szPacket, bAck);
-	ret = Main_setSendQuery(CMD_PG_BMP_SET_WRITE_ADDR, length, szPacket, ch);
-
-	return ret;
-}
-
-BOOL CCommApi::main_setBmpDisplay(int ch, int index)
-{
-	int ret;
-	char szPacket[4096];
-	int dummy = 0x0000;
-	int vStart = 0x00;
-	int hActive = 2560;
-	int vActive = 1665;
-	int length;
-
-	sprintf_s(szPacket, "%01d%04X%04X%04d%04d", 2, dummy, vStart, hActive, vActive);
-	length = (int)strlen(szPacket);
-
-	ret = Main_setSendQuery(CMD_CTRL_SET_LOGICAL_BMP, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_PG_BMP_SET_WRITE_ADDR, length, szPacket, ch);
 
 	return ret;
 }
@@ -358,7 +327,7 @@ BOOL CCommApi::main_setBmpComplete(int ch)
 	sprintf_s(szPacket, "%01d", 0x01);
 	length = (int)strlen(szPacket);
 
-	ret = Main_setSendQuery(CMD_PG_BMP_WRITE_COMPLETE, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_PG_BMP_WRITE_COMPLETE, length, szPacket, ch);
 
 	return ret;
 }
@@ -372,7 +341,7 @@ BOOL CCommApi::main_setI2cWrite(int ch, int level, int pullup, int devAddr, int 
 	sprintf_s(szPacket, "%01d", 0x01);
 	length = (int)strlen(szPacket);
 
-	ret = Main_setSendQuery(CMD_PG_BMP_WRITE_COMPLETE, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_PG_BMP_WRITE_COMPLETE, length, szPacket, ch);
 
 	return ret;
 }
@@ -644,7 +613,7 @@ BOOL CCommApi::main_setJumpBootSection(int ch)
 
 	//main_udp_wait();
 	//ret = m_pApp->rs232_sendPacket(ch,CMD_CTRL_GOTO_BOOT_SECTION, 0, "");
-	ret = Main_setSendQuery(CMD_CTRL_GOTO_BOOT_SECTION, 0, "", ch);
+	ret = main_setSendQuery(CMD_CTRL_GOTO_BOOT_SECTION, 0, "", ch);
 
 	return ret;
 }
@@ -662,7 +631,7 @@ BOOL CCommApi::main_setDownloadFirmware(int ch, int packetPoint, unsigned char* 
 
 	//main_udp_wait();
 	//ret = m_pApp->rs232_sendPacket(ch, CMD_CTRL_FW_DOWNLOAD, (dataSize+headLen), szPacket, ACK, 2000);
-	ret = Main_setSendQuery(CMD_CTRL_FW_DOWNLOAD, (dataSize + headLen), szPacket, ch);
+	ret = main_setSendQuery(CMD_CTRL_FW_DOWNLOAD, (dataSize + headLen), szPacket, ch);
 
 	return ret;
 }
@@ -673,7 +642,7 @@ BOOL CCommApi::main_setDownloadComplete(int ch)
 
 	//main_udp_wait();
 	//ret = m_pApp->rs232_sendPacket(ch, CMD_CTRL_FW_COMPLETE, 0, "");
-	ret = Main_setSendQuery(CMD_CTRL_FW_COMPLETE, 0, "", ch);
+	ret = main_setSendQuery(CMD_CTRL_FW_COMPLETE, 0, "", ch);
 
 	return ret;
 }
@@ -684,7 +653,7 @@ BOOL CCommApi::main_setControlrReset(int ch)
 
 	//main_udp_wait();
 	//ret = m_pApp->rs232_sendPacket(ch, CMD_CTRL_BOARD_RESET, 0, "");
-	ret = Main_setSendQuery(CMD_CTRL_BOARD_RESET, 0, "", ch);
+	ret = main_setSendQuery(CMD_CTRL_BOARD_RESET, 0, "", ch);
 
 	return ret;
 }
@@ -699,23 +668,7 @@ BOOL CCommApi::main_getCtrlFWVersion(int ch)
 	m_pApp->m_sPgFWVersion[ch].Empty();
 	memset(szbuf, 0x00, sizeof(szbuf));
 	
-	//ret = m_pApp->rs232_sendPacket(ch, CMD_CTRL_FW_VERSION, 0, "");
-	ret = Main_setSendQuery(CMD_CTRL_FW_VERSION, 0, "", ch);
-
-	if (ret == FALSE)
-	{
-		return FALSE;
-	}
-	int nDataLen;
-	sscanf_s(&gszMainRcvPacket[ch][PACKET_PT_LEN], "%04X", &nDataLen);
-	memcpy(szbuf, &gszMainRcvPacket[ch][PACKET_PT_DATA], nDataLen-2);
-	m_pApp->m_sPgFWVersion[ch] = char_To_wchar(szbuf);
-	
-	
-	CString strLog=_T("");
-
-	strLog.Format(_T("<PG> MCU Version [%s]"), m_pApp->m_sPgFWVersion);
-	m_pApp->Gf_writeMLog(strLog);
+	ret = main_setSendQuery(CMD_CTRL_FW_VERSION, 0, "", ch);
 
 	return TRUE;
 }
@@ -1010,7 +963,7 @@ BOOL CCommApi::DIO_getInputPort(int* DI_Data, int ch)
 
 //////////////////////////////////////////////////////////////////////
 // New Gooil Main Board (22.12.08)
-int  CCommApi::Main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
+int  CCommApi::main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 {
 	char szpacket[4096] = { 0, };
 	int  packetlen;
@@ -1048,17 +1001,18 @@ int  CCommApi::Main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 
 	ret = m_pApp->m_pSocketTCPMain->tcp_Main_SendQuery(ch, szpacket, packetlen);
 
-	// Fusing은 약 3초정도 걸림
-	if (nCommand == CMD_CTRL_FUSING_SYSTEM)
-	{
-		Sleep(3000);
-	}
-
 	if (DEBUG_TCP_RECEIVE_OK == 1)
 		return TRUE;
 
+	// Fusing은 약 3초정도 걸림
+	int ackWaitTime = ETH_ACK_NOR_WAIT_TIME;
+	if (nCommand == CMD_CTRL_FUSING_SYSTEM)
+	{
+		ackWaitTime = 3000;
+	}
+
 	memset(gszMainRcvPacket[ch], 0x00, sizeof(gszMainRcvPacket[ch]));
-	if (Main_getReceivePacket(gszMainRcvPacket[ch], ch) == TRUE)
+	if (main_getReceivePacket(gszMainRcvPacket[ch], ch, ackWaitTime) == TRUE)
 	{
 		return ret;
 	}
@@ -1069,7 +1023,7 @@ int  CCommApi::Main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 	}
 }
 
-BOOL CCommApi::Main_getReceivePacket(char* m_szRcvPacket, int ch)
+BOOL CCommApi::main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime)
 {
 	BOOL  ret = FALSE;
 	DWORD sTick, eTick;
@@ -1087,10 +1041,7 @@ BOOL CCommApi::Main_getReceivePacket(char* m_szRcvPacket, int ch)
 			memset(m_szRcvPacket, 0, sizeof(m_szRcvPacket));
 			m_pApp->m_pSocketTCPMain->tcp_Main_GetReceivePacketData(ch, m_szRcvPacket);
 
-			// Receive Log를 기록
-			//if (DEBUG_ETHERNET_COM_LOG == 1)
-			//	m_pMltvApp->Gf_LogDataWrite("DIO Recv", m_szRcvPacket);
-
+			m_pApp->main_tcpProcessPacket(ch, m_szRcvPacket);
 			if (m_szRcvPacket[PACKET_PT_RET] == '0')
 			{
 				ret = TRUE;
@@ -1105,7 +1056,7 @@ BOOL CCommApi::Main_getReceivePacket(char* m_szRcvPacket, int ch)
 
 		// Ack를 기다린다. Wait Time안에 Ack가 들어오지 않으면 False를 Return한다.
 		eTick = ::GetTickCount();
-		if ((sTick + ETH_ACK_NOR_WAIT_TIME) < eTick)
+		if ((sTick + ackWaitTime) < eTick)
 		{
 			ret = FALSE;
 			break;
@@ -1116,3 +1067,58 @@ BOOL CCommApi::Main_getReceivePacket(char* m_szRcvPacket, int ch)
 
 	return ret;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CCommApi::alpdp_executePythonScript(int ch, CString strPara)
+{
+	if (lpModelInfo->m_nSignalType != SIGNAL_TYPE_ALPLD)
+		return TRUE;
+
+	// Param Setting
+	TCHAR szCurPath[2048] = { 0, };
+	CString exeFile;
+	CString strCurPath;
+
+	// Parameter Set
+	GetCurrentDirectory(2048, szCurPath);
+
+	strCurPath.Format(_T("%s\\Script"), szCurPath);
+
+	// Exe File
+	exeFile.Format(_T("python.exe"));
+
+	// Shell Execute
+	SetCurrentDirectory(strCurPath);// strPathFull);
+
+	SHELLEXECUTEINFO sel;
+	memset(&sel, 0, sizeof(sel));
+	sel.cbSize = sizeof(sel);
+	sel.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT;
+	sel.lpFile = exeFile;
+	sel.lpParameters = strPara;
+	sel.hwnd = NULL;
+	sel.lpVerb = _T("open");
+	sel.nShow = SW_HIDE;// SW_SHOW;
+	ShellExecuteEx(&sel);
+	SetCurrentDirectory(szCurPath);
+
+	// command view
+	CString sLog;
+	sLog.Format(_T("<SHELL> %s %s"), exeFile, strPara);
+	m_pApp->Gf_writeMLog(sLog);
+
+	// wait for converter complete
+	DWORD dwResult = ::WaitForSingleObject(sel.hProcess, 500);
+	while (1)
+	{
+		if (dwResult == WAIT_OBJECT_0)	break;
+		else	dwResult = ::WaitForSingleObject(sel.hProcess, 500);
+	}
+
+	return TRUE;
+}
+
+
+

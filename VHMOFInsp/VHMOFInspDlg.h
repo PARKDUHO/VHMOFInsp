@@ -54,6 +54,7 @@ protected:
 	void Lf_InitItemValue();
 
 	void Lf_updateSystemInfo();
+	void Lf_openToDayMLog();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

@@ -174,6 +174,10 @@ void CUserID::OnBnClickedBtnUiCancel()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CUserID::Lf_InitLocalValue()
 {
+	CString sdata;
+	Read_SysIniFile(_T("SYSTEM"), _T("LOGIN_USERID"), &sdata);
+
+	GetDlgItem(IDC_EDT_UI_USER_ID)->SetWindowText(sdata);
 }
 
 void CUserID::Lf_InitFontset()
@@ -235,9 +239,9 @@ void CUserID::Lf_loginProcess()
 	CString strUserid, szpassword;
 
 	GetDlgItem(IDC_EDT_UI_USER_ID)->GetWindowText(strUserid);
-	if (strUserid.GetLength() == 0)
+	if (strUserid.GetLength() <= 4)
 	{
-		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("'USER ID' ERROR"), _T("Please input again."));
+		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("USER ID WRONG"), ERROR_CODE_19);
 		return;
 	}
 
@@ -339,10 +343,12 @@ void CUserID::Lf_loginProcess()
 		else
 		{
 			CString strErrMsg = m_pApp->Lf_getErrorCodeData(_T("EQP_GOOIL"), EQP_ERROR_CODE59);
-			m_pObmApp->Gf_ShowMessageBox(ERROR_DIALOG, _T("'USER ID' ERROR"), strErrMsg);
+			m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("USER ID WRONG"), ERROR_CODE_19);
 		}
 #endif
 	}
+
+	Write_SysIniFile(_T("SYSTEM"), _T("LOGIN_USERID"), strUserid);
 
 	CDialog::OnOK();
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
