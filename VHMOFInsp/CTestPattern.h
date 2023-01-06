@@ -26,7 +26,7 @@ protected:
 // 사용자 정의 Function
 ///////////////////////////////////////////////////////////////////////////
 public:
-
+	int m_nTargetCh;
 
 protected:
 	LPINSPWORKINFO	lpInspWorkInfo;

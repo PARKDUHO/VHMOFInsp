@@ -1,45 +1,48 @@
-﻿// CMessageError.cpp: 구현 파일
+﻿// CMessageQuestion.cpp: 구현 파일
 //
 
 #include "pch.h"
 #include "VHMOFInsp.h"
-#include "CMessageError.h"
+#include "CMessageQuestion.h"
 #include "afxdialogex.h"
 
 
-// CMessageError 대화 상자
+// CMessageQuestion 대화 상자
 
-IMPLEMENT_DYNAMIC(CMessageError, CDialog)
+IMPLEMENT_DYNAMIC(CMessageQuestion, CDialog)
 
-CMessageError::CMessageError(CWnd* pParent /*=nullptr*/)
-	: CDialog(IDD_MESSAGE_ERROR, pParent)
+CMessageQuestion::CMessageQuestion(CWnd* pParent /*=nullptr*/)
+	: CDialog(IDD_MESSAGE_QUESTION, pParent)
 {
 
 }
 
-CMessageError::~CMessageError()
+CMessageQuestion::~CMessageQuestion()
 {
 }
 
-void CMessageError::DoDataExchange(CDataExchange* pDX)
+void CMessageQuestion::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BTN_MQ_CONFIRM, m_btnMqConfirm);
+	DDX_Control(pDX, IDC_BTN_MQ_CANCEL, m_btnMqCancel);
 }
 
 
-BEGIN_MESSAGE_MAP(CMessageError, CDialog)
+BEGIN_MESSAGE_MAP(CMessageQuestion, CDialog)
 	ON_WM_DESTROY()
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_BTN_ERR_CLOSE, &CMessageError::OnBnClickedBtnErrClose)
+	ON_BN_CLICKED(IDC_BTN_MQ_CONFIRM, &CMessageQuestion::OnBnClickedBtnMqConfirm)
+	ON_BN_CLICKED(IDC_BTN_MQ_CANCEL, &CMessageQuestion::OnBnClickedBtnMqCancel)
 END_MESSAGE_MAP()
 
 
-// CMessageError 메시지 처리기
+// CMessageQuestion 메시지 처리기
 
 
-BOOL CMessageError::OnInitDialog()
+BOOL CMessageQuestion::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -54,7 +57,7 @@ BOOL CMessageError::OnInitDialog()
 }
 
 
-void CMessageError::OnDestroy()
+void CMessageQuestion::OnDestroy()
 {
 	CDialog::OnDestroy();
 
@@ -71,7 +74,7 @@ void CMessageError::OnDestroy()
 }
 
 
-BOOL CMessageError::PreTranslateMessage(MSG* pMsg)
+BOOL CMessageQuestion::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	if (pMsg->message == WM_SYSKEYDOWN && pMsg->wParam == VK_F4)
@@ -94,7 +97,7 @@ BOOL CMessageError::PreTranslateMessage(MSG* pMsg)
 }
 
 
-HBRUSH CMessageError::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CMessageQuestion::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -112,37 +115,20 @@ HBRUSH CMessageError::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		case CTLCOLOR_BTN:
 			break;
 		case CTLCOLOR_STATIC:		// Static, CheckBox control
-			if (pWnd->GetDlgCtrlID() == IDC_STT_ERR_TITLE)
+			if (pWnd->GetDlgCtrlID() == IDC_STT_MQ_MESSAGE)
 			{
 				pDC->SetBkColor(COLOR_DEEP_BLUE);
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_DEEP_BLUE];
 			}
-			if (pWnd->GetDlgCtrlID() == IDC_EDT_ERR_MESSAGE)
-			{
-				if (m_nMessageType == MSG_ERROR)
-				{
-					pDC->SetBkColor(COLOR_RED128);
-					pDC->SetTextColor(COLOR_WHITE);
-					return m_Brush[COLOR_IDX_RED128];
-				}
-				else if (m_nMessageType == MSG_WARNING)
-				{
-					pDC->SetBkColor(COLOR_DARK_MAGENTA);
-					pDC->SetTextColor(COLOR_WHITE);
-					return m_Brush[COLOR_IDX_DARK_MAGENTA];
-				}
-
-			}
 			break;
 	}
-
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
 
 
-void CMessageError::OnPaint()
+void CMessageQuestion::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
@@ -150,51 +136,52 @@ void CMessageError::OnPaint()
 }
 
 
-void CMessageError::OnTimer(UINT_PTR nIDEvent)
+void CMessageQuestion::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CMessageError::OnBnClickedBtnErrClose()
+void CMessageQuestion::OnBnClickedBtnMqConfirm()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDialog::OnOK();
+}
+
+void CMessageQuestion::OnBnClickedBtnMqCancel()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialog::OnCancel();
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMessageError::Lf_InitLocalValue()
+void CMessageQuestion::Lf_InitLocalValue()
 {
-	GetDlgItem(IDC_STT_ERR_TITLE)->SetWindowText(m_sErrorTitle);
-	GetDlgItem(IDC_EDT_ERR_MESSAGE)->SetWindowText(m_sErrorMessage);
+	GetDlgItem(IDC_STT_MQ_MESSAGE)->SetWindowText(m_strQMessage);
+
+	if (m_strLButton.GetLength() != 0)		GetDlgItem(IDC_BTN_MQ_CONFIRM)->SetWindowText(m_strLButton);
+	if (m_strRButton.GetLength() != 0)		GetDlgItem(IDC_BTN_MQ_CANCEL)->SetWindowText(m_strRButton);
 
 	CString sLog;
-	if (m_nMessageType == MSG_ERROR)
-	{
-		sLog.Format(_T("<ERROR> %s - %s"), m_sErrorTitle, m_sErrorMessage);
-	}
-	else if (m_nMessageType == MSG_WARNING)
-	{
-		sLog.Format(_T("<WARNING> %s - %s"), m_sErrorTitle, m_sErrorMessage);
-	}
-	sLog.Replace(_T("\r\n"), _T(" | "));
+	sLog.Format(_T("<RETRY> %s"), m_strQMessage);
 	m_pApp->Gf_writeMLog(sLog);
 }
 
-void CMessageError::Lf_InitFontset()
+void CMessageQuestion::Lf_InitFontset()
 {
 	m_Font[0].CreateFont(150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
 	m_Font[1].CreateFont(50, 23, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_STT_ERR_TITLE)->SetFont(&m_Font[1]);
 
 	m_Font[2].CreateFont(36, 16, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_BTN_ERR_CLOSE)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_BTN_MQ_CONFIRM)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_BTN_MQ_CANCEL)->SetFont(&m_Font[3]);
 
 	m_Font[3].CreateFont(27, 12, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_EDT_ERR_MESSAGE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MQ_MESSAGE)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(18, 7, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
@@ -202,7 +189,7 @@ void CMessageError::Lf_InitFontset()
 
 }
 
-void CMessageError::Lf_InitColorBrush()
+void CMessageQuestion::Lf_InitColorBrush()
 {
 	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
@@ -217,9 +204,11 @@ void CMessageError::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_DARK_MAGENTA].CreateSolidBrush(COLOR_DARK_MAGENTA);
 }
 
-void CMessageError::Lf_InitDlgDesign()
+void CMessageQuestion::Lf_InitDlgDesign()
 {
 	// Button ICON
-// 	m_btnAfDownloadStart.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
-// 	m_btnAfClose.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
+ 	m_btnMqConfirm.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
+	m_btnMqCancel.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
 }
+
+

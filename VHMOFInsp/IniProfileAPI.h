@@ -141,7 +141,6 @@ static void Write_ProfileString(LPCWSTR lpFileName, LPCWSTR lpTitle, LPCWSTR lpK
 
 static void Write_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, LPCWSTR lpValue)
 {
-
 	::WritePrivateProfileString(lpTitle, lpKey, lpValue, _T(".\\Operation.ini"));
 }
 
@@ -163,7 +162,6 @@ static void Write_CB_CICFile(LPCWSTR lpTitle, LPCWSTR lpKey, long nData)
 static void Read_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, char *szRetString)
 {
 	wchar_t wszData[100] = {0,};
-
 
 	memset(szRetString,'\0',sizeof(szRetString));
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\Operation.ini"));
@@ -378,7 +376,7 @@ static void Read_ErrorCode(LPCWSTR lpTitle, LPCWSTR lpKey, CString *szRetString)
 {
 	wchar_t wszData[100] = {0,};
 
-	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\ErrorCode\\Error_Code.ini"));
+	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\ErrorCode\\ErrorCode.ini"));
 
 	szRetString->Format(_T("%s"), wszData);
 }

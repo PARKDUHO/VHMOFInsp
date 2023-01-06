@@ -440,6 +440,8 @@ void CInitialize::Lf_initConnPG()
 	{
 		nSysInitResult[INIT_PG1] = INIT_OK;
 		m_pApp->m_bPgConnectStatus[CH1] = TRUE;
+
+		m_pApp->commApi->main_getCtrlFWVersion(CH1);
 	}
 	else
 	{
@@ -459,6 +461,8 @@ void CInitialize::Lf_initConnPG()
 	{
 		nSysInitResult[INIT_PG2] = INIT_OK;
 		m_pApp->m_bPgConnectStatus[CH2] = TRUE;
+
+		m_pApp->commApi->main_getCtrlFWVersion(CH2);
 	}
 	else
 	{

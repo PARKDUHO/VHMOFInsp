@@ -679,7 +679,7 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 
 	// Firmware Version
 	int npos = 0;
-	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(m_pApp->m_sPgFWVersion[CH1]);
+	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(m_pApp->m_sPgFWVersion[CH1].Left(19));
 }
 
 void CVHMOFInspDlg::Lf_openToDayMLog()

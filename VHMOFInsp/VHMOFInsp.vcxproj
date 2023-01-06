@@ -184,9 +184,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAutoFirmware.h" />
+    <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="CInitialize.h" />
     <ClInclude Include="CMaintenance.h" />
     <ClInclude Include="CMessageError.h" />
+    <ClInclude Include="CMessageQuestion.h" />
     <ClInclude Include="CModelChange.h" />
     <ClInclude Include="CModelInfo.h" />
     <ClInclude Include="CModelInfoData.h" />
@@ -216,9 +218,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAutoFirmware.cpp" />
+    <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="CInitialize.cpp" />
     <ClCompile Include="CMaintenance.cpp" />
     <ClCompile Include="CMessageError.cpp" />
+    <ClCompile Include="CMessageQuestion.cpp" />
     <ClCompile Include="CModelChange.cpp" />
     <ClCompile Include="CModelInfo.cpp" />
     <ClCompile Include="CModelInfoData.cpp" />

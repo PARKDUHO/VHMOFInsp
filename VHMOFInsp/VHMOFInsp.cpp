@@ -7,6 +7,7 @@
 #include "VHMOFInsp.h"
 #include "VHMOFInspDlg.h"
 #include "CMessageError.h"
+#include "CMessageQuestion.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -36,6 +37,7 @@ CVHMOFInspApp::CVHMOFInspApp()
 	m_pPatternView		= new CPatternView();
 	m_pSocketTCPMain	= new CSocketTcpApp;		// TCP Socket Class 생성(Main Board 1)(22.12.08)
 	commApi				= new CCommApi;
+	m_pCimNet			= new CCimNetCommApi;
 
 
 	m_pStaticMainLog = NULL;
@@ -104,6 +106,15 @@ BOOL CVHMOFInspApp::InitInstance()
 	Gf_writeMLog(_T("*****************************:*****************************"));
 
 
+	// GMES DLL Initialize
+	if (Gf_gmesInitServer(SERVER_MES) == FALSE)
+	{
+		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
+	}
+	if (Gf_gmesInitServer(SERVER_EAS) == FALSE)
+	{
+		AfxMessageBox(_T("TIB Driver Init Fail.\r\nPlease check whether you have installed the TibDriver and registered the MES DLL."), MB_ICONERROR);
+	}
 
 	CVHMOFInspDlg dlg;
 	m_pMainWnd = &dlg;
@@ -120,8 +131,8 @@ BOOL CVHMOFInspApp::InitInstance()
 	}
 	else if (nResponse == -1)
 	{
-		TRACE(traceAppMsg, 0, "경고: 대화 상자를 만들지 못했으므로 애플리케이션이 예기치 않게 종료됩니다.\n");
-		TRACE(traceAppMsg, 0, "경고: 대화 상자에서 MFC 컨트롤을 사용하는 경우 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS를 수행할 수 없습니다.\n");
+		TRACE(traceAppMsg, 0, _T("경고: 대화 상자를 만들지 못했으므로 애플리케이션이 예기치 않게 종료됩니다.\n"));
+		TRACE(traceAppMsg, 0, _T("경고: 대화 상자에서 MFC 컨트롤을 사용하는 경우 #define _AFX_NO_MFC_CONTROLS_IN_DIALOGS를 수행할 수 없습니다.\n"));
 	}
 
 	// 위에서 만든 셸 관리자를 삭제합니다.
@@ -182,6 +193,9 @@ void CVHMOFInspApp::Gf_writeMLog(CString sLogData)
 	CFile file;
 	USHORT nShort = 0xfeff;
 	CString strFileName, strLog, path;
+
+	// 엔터 Key 값이 있으면 문자를 변경 시키낟.
+	sLogData.Replace(_T("\r\n"), _T(" | "));
 
 	SYSTEMTIME sysTime;
 	::GetSystemTime(&sysTime);
@@ -512,12 +526,257 @@ BOOL CVHMOFInspApp::Gf_LoadModelFile()
 	{
 		ret = FALSE;
 
-		CString sMsg;
-		sMsg.Format(_T("'%s' Model File Not Found !"), lpSystemInfo->m_sLastModelName);
-		AfxMessageBox(sMsg, MB_ICONERROR);
+		CString AppendMessage;
+		AppendMessage.Format(_T("(Model\\%s)"), lpSystemInfo->m_sLastModelName);
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("MODEL LOAD ERROR"), ERROR_CODE_35, AppendMessage);
 	}
 
 	return ret;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MES Function
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CVHMOFInspApp::Gf_gmesInitServer(BOOL nServerType)
+{
+	if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_MES))
+	{
+		m_pCimNet->SetMachineName(lpSystemInfo->m_sEqpName);
+		m_pCimNet->SetLocalTest(nServerType);
+	}
+	else if ((DEBUG_GMES_TEST_SERVER == TRUE) && (nServerType == SERVER_EAS))
+	{
+		m_pCimNet->SetLocalTest(nServerType);
+	}
+
+
+	if (m_pCimNet->Init(nServerType) == TRUE)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+BOOL CVHMOFInspApp::Gf_gmesConnect(int nServerType)
+{
+	char szBuffer[64] = { 0, };
+
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sEqpName);
+
+	if (m_pCimNet->ConnectTibRv(nServerType) == TRUE)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+BOOL CVHMOFInspApp::Gf_gmesDisConnect(int nServerType)
+{
+	return m_pCimNet->CloseTibRv(nServerType);
+}
+
+void CVHMOFInspApp::Gf_setGMesGoodInfo()
+{
+	m_pCimNet->SetPF(_T("P"));
+}
+
+void CVHMOFInspApp::Gf_setGMesBGradeInfo()
+{
+	m_pCimNet->SetPF(_T("P"));
+}
+
+void CVHMOFInspApp::Gf_setGMesBadInfo()
+{
+	m_pCimNet->SetPF(_T("F"));
+}
+
+void CVHMOFInspApp::Lf_setGmesValuePCHK()
+{
+	m_pCimNet->SetMachineName(lpSystemInfo->m_sEqpName);
+
+	m_pCimNet->SetPanelID(char_To_wchar(lpInspWorkInfo->m_szPanelID));
+	m_pCimNet->SetSerialNumber(char_To_wchar(lpInspWorkInfo->m_szSerialNum));
+}
+
+void CVHMOFInspApp::Lf_setEasValueAPDR()
+{
+	CString sAPDInfo;
+
+	m_pCimNet->SetPanelID(char_To_wchar(lpInspWorkInfo->m_szPanelID));
+	m_pCimNet->SetSerialNumber(char_To_wchar(lpInspWorkInfo->m_szSerialNum));
+	m_pCimNet->SetBLID(_T(""));
+	m_pCimNet->SetPalletID(_T(""));
+
+	m_pCimNet->SetAPDInfo(sAPDInfo);
+}
+void CVHMOFInspApp::Lf_setGmesValueEICR()
+{
+	m_pCimNet->SetPanelID(char_To_wchar(lpInspWorkInfo->m_szPanelID));
+	m_pCimNet->SetSerialNumber(char_To_wchar(lpInspWorkInfo->m_szSerialNum));
+	m_pCimNet->SetBLID(_T(""));
+	m_pCimNet->SetPalletID(_T(""));
+
+	// 양품/불량 설정.
+	if (!m_pCimNet->GetRwkCode().Compare(_T("")))
+	{
+		m_pCimNet->SetPF(_T("P"));
+		m_pCimNet->SetDefectPattern(_T(""));
+	}
+	else
+	{
+		m_pCimNet->SetPF(_T("F"));
+		// 불량 Pattern 정보 설정.
+		CString strBadPtn;
+		strBadPtn.Format(_T("%s"), char_To_wchar(lpInspWorkInfo->m_szBadPattern));
+		strBadPtn.Replace(_T(" "), _T("_"));
+		m_pCimNet->SetDefectPattern(strBadPtn.GetBuffer(0));
+	}
+
+	m_pCimNet->SetPvcomAdjustValue(_T(""));
+	m_pCimNet->SetPvcomAdjustDropValue(_T(""));
+
+	// Pattern 정보 설정
+	m_pCimNet->SetPatternInfo(Lf_getGmesPatternData());
+}
+
+CString CVHMOFInspApp::Lf_getGmesPatternData()
+{
+	CString sdata1 = _T(""), sdata2 = _T(""), rtnData = _T("");
+	int cnt = 0, Num = 0;
+	float chk = 0.0;
+
+	while (cnt < lpModelInfo->m_nPatternListCount)
+	{
+		cnt++;
+		chk = (float)(m_nPatTime[Num] * 0.001);
+		if (chk != 0)
+		{
+			Num++;
+			sdata1.Format(_T("%d:%s:%2.2f,"), Num, lpModelInfo->m_sLbPtnListNAME[Num - 1], chk);
+			sdata2.Append(sdata1);
+		}
+	}
+
+	rtnData = sdata2.Left(sdata2.GetLength() - 1);
+	return rtnData;
+}
+
+CString CVHMOFInspApp::Gf_getGmesRTNCD()
+{
+	CString strBuff;
+
+	m_pCimNet->GetFieldData(&strBuff, _T("RTN_CD"));
+	return strBuff;
+}
+
+void CVHMOFInspApp::Gf_showLocalErrorMsg()
+{
+	CString strMsg;
+
+	m_pCimNet->GetFieldData(&strMsg, _T("ERR_MSG_LOC"));	//ERR_MSG_ENG	ERR_MSG_LOC
+	Gf_ShowMessageBox(MSG_ERROR, _T("MES ERROR"), ERROR_CODE_36, strMsg);
+}
+
+BOOL CVHMOFInspApp::Gf_sendGmesHost(int nHostCmd)
+{
+	int nRtnCD;
+	CString sLog;
+	CString strBuff;
+	char Luc_PF = 0;
+
+	if (m_bUserIdGieng == TRUE || m_bUserIdPM == TRUE)
+		return TRUE;
+
+Send_RETRY:
+
+	if (nHostCmd == HOST_EAYT)
+	{
+		nRtnCD = m_pCimNet->EAYT();
+	}
+	else if (nHostCmd == HOST_UCHK)
+	{
+		nRtnCD = m_pCimNet->UCHK();
+		if (nRtnCD == 0)
+		{
+			m_pCimNet->GetFieldData(&m_pApp->m_sLoginUserName, _T("USER_NAME"));
+			m_pCimNet->SetUserId(m_pApp->m_sLoginUserID);
+		}
+	}
+	else if (nHostCmd == HOST_EDTI)
+	{
+		nRtnCD = m_pCimNet->EDTI();
+	}
+	else if (nHostCmd == HOST_PCHK)
+	{
+		Lf_setGmesValuePCHK();
+		nRtnCD = m_pCimNet->PCHK();
+
+		if (nRtnCD == RTN_OK)
+		{
+			m_pCimNet->GetFieldData(&strBuff, _T("RTN_PID"));
+			sLog.Format(_T("<MES> RTN_PID : %s"), strBuff);
+			Gf_writeMLog(sLog);
+
+			m_pCimNet->GetFieldData(&strBuff, _T("TOP_MODEL_NAME"));
+			sprintf_s(lpInspWorkInfo->m_szHostTopModelName, "%s", wchar_To_char(strBuff.GetBuffer(0)));
+			sLog.Format(_T("<MES> TOP_MODEL_NAME : %s"), strBuff);
+			Gf_writeMLog(sLog);
+		}
+	}
+	else if (nHostCmd == HOST_EICR)
+	{
+		Lf_setGmesValueEICR();
+		nRtnCD = m_pCimNet->EICR();
+	}
+	else if (nHostCmd == HOST_APDR)
+	{
+		Lf_setEasValueAPDR();
+		nRtnCD = m_pCimNet->APDR();
+	}
+	sLog.Format(_T("<HOST_R> %s"), m_pCimNet->GetHostRecvMessage());
+	Gf_writeMLog(sLog);
+
+	if (nRtnCD == RTN_OK)
+	{
+		return TRUE;
+	}
+	else if (nRtnCD == RTN_MSG_NOT_SEND)
+	{
+		CString strVal;
+		CMessageQuestion start_dlg;
+
+		start_dlg.m_strQMessage.Format(_T("Failed to send message. "));
+		start_dlg.m_strLButton = _T(" Retry");
+
+		Read_ErrorCode(_T("EQP"), _T("0"), &strVal);
+
+		if (start_dlg.DoModal() == IDOK)
+			goto Send_RETRY;
+		else
+			return FALSE;
+	}
+	else if (nRtnCD == RTN_RCV_TIMEOUT)
+	{
+		CString strVal;
+		CMessageQuestion start_dlg;
+
+		start_dlg.m_strQMessage.Format(_T("No response frome MES Host"));
+		start_dlg.m_strLButton = _T(" Retry");
+
+		Read_ErrorCode(_T("EQP"), _T("1"), &strVal);
+		if (start_dlg.DoModal() == IDOK)
+			goto Send_RETRY;
+		else
+			return FALSE;
+	}
+	else
+	{
+		Gf_showLocalErrorMsg();
+	}
+	return FALSE;
 }
 
 
@@ -543,7 +802,6 @@ void CVHMOFInspApp::Gf_setPatEndCheckTime(int i)
 {
 	m_nEndCheckTime[i] = ::GetTickCount();
 }
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -620,6 +878,7 @@ BOOL CVHMOFInspApp::main_tcpProcessPacket(int ch, char* recvPacket)
 		}
 		case CMD_CTRL_GOTO_BOOT_SECTION:
 		{
+			main_parse_GoToBootSection(ch, recvPacket);
 			break;
 		}
 		case CMD_CTRL_FW_VERSION:
@@ -670,7 +929,7 @@ void CVHMOFInspApp::main_parse_FirmwareVersion(int ch, char* recvPacket)
 
 	strPacket.Format(_T("%S"), recvPacket);
 
-	m_pApp->m_sPgFWVersion[ch] = strPacket.Mid(PACKET_PT_DATA, 19);
+	m_pApp->m_sPgFWVersion[ch] = strPacket.Mid(PACKET_PT_DATA, strPacket.GetLength()-17);
 
 
 	CString strLog = _T("");
@@ -678,4 +937,15 @@ void CVHMOFInspApp::main_parse_FirmwareVersion(int ch, char* recvPacket)
 	strLog.Format(_T("<PG> MCU Version [%s]"), m_pApp->m_sPgFWVersion[ch]);
 	m_pApp->Gf_writeMLog(strLog);
 
+}
+
+void CVHMOFInspApp::main_parse_GoToBootSection(int ch, char* recvPacket)
+{
+	CString strPacket;
+	int nPos = PACKET_PT_RET;
+
+	if (recvPacket[PACKET_PT_RET] == '0')
+	{
+		m_nDownloadReadyAckCount++;
+	}
 }

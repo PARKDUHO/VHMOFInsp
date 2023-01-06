@@ -239,11 +239,11 @@ void CUserID::Lf_loginProcess()
 	CString strUserid, szpassword;
 
 	GetDlgItem(IDC_EDT_UI_USER_ID)->GetWindowText(strUserid);
-	if (strUserid.GetLength() <= 4)
-	{
-		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("USER ID WRONG"), ERROR_CODE_19);
-		return;
-	}
+// 	if (strUserid.GetLength() <= 4)
+// 	{
+// 		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("USER ID WRONG"), ERROR_CODE_19);
+// 		return;
+// 	}
 
 	// Button을 비활성화 시킨다.
 	GetDlgItem(IDC_EDT_UI_USER_ID)->EnableWindow(FALSE);
@@ -273,9 +273,9 @@ void CUserID::Lf_loginProcess()
 		//MES Connect
 		if (m_pApp->m_bIsGmesConnect == FALSE) {
 
-			if (m_pApp->Gf_gmesConnect(SERVER_MES) == FALSE) {
-
-				AfxMessageBox(_T("MES CONNECTION FAIL - MES can not be connected."), MB_ICONERROR);
+			if (m_pApp->Gf_gmesConnect(SERVER_MES) == FALSE)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("MES CONNECTION FAIL"), ERROR_CODE_29);
 
 				CString sLog;
 				sLog.Format(_T("[GMES] Connection Fail"));
@@ -291,7 +291,7 @@ void CUserID::Lf_loginProcess()
 			{
 				if (m_pApp->Gf_gmesConnect(SERVER_EAS) == FALSE)
 				{
-					AfxMessageBox(_T("EAS CONNECTION FAIL - EAS can not be connected."), MB_ICONERROR);
+					m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("EAS CONNECTION FAIL"), ERROR_CODE_30);
 
 					CString sLog;
 					sLog.Format(_T("[EAS] Connection Fail"));

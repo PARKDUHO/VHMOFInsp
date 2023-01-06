@@ -643,7 +643,7 @@ void CModelInfoData::Lf_getPatternDataToControl(int itemidx)
 	find_idx = m_cmbMdPtnName.FindStringExact(0, strPtnName);
 	if (find_idx == -1)
 	{
-		AfxMessageBox(_T("The selected pattern information was not found."), MB_ICONERROR);
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("PATTERN FILE ERROR"), ERROR_CODE_28);
 		m_cmbMdPtnName.SetCurSel(0);
 	}
 	else

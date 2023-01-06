@@ -34,6 +34,7 @@
 #define IDB_BMP_PASSWORD                168
 #define IDD_MAINTENANCE                 169
 #define IDD_AUTO_FIRMWARE               171
+#define IDD_MESSAGE_QUESTION            174
 #define IDC_BTN_MA_USERID               1000
 #define IDC_BTN_MA_MODEL_CHANGE         1001
 #define IDC_STT_USER_ID_TITLE           1001
@@ -288,6 +289,13 @@
 #define IDC_STT_SY_SYSTEM_TITLE         1145
 #define IDC_STT_AF_PERCENT              1145
 #define IDC_STT_DP_FPGA_VALUE           1146
+#define IDC_BTN_AF_CLOSE                1146
+#define IDC_STT_AF_STATUS               1147
+#define IDC_STT_AF_CH_SELECT            1148
+#define IDC_CMB_AF_CH_SELECT            1149
+#define IDC_STT_MQ_MESSAGE              1150
+#define IDC_BTN_MQ_CONFIRM              1151
+#define IDC_BTN_MQ_CANCEL               1152
 #define IDC_STT_SY_STATION_TIT          1156
 #define IDC_STT_SY_MES_TIT              1158
 #define IDC_IPD_SY_MES_LOCAL_IP         1159
@@ -306,9 +314,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        173
+#define _APS_NEXT_RESOURCE_VALUE        176
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1146
+#define _APS_NEXT_CONTROL_VALUE         1152
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

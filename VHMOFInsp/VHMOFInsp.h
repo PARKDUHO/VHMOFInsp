@@ -14,6 +14,7 @@
 #include "SocketTCP.h"
 #include "SocketTCPApp.h"
 #include "SocketUDP.h"
+#include "CIMNetCommApp.h"
 
 
 // CVHMOFInspApp:
@@ -46,6 +47,18 @@ public:
 	BOOL Gf_LoadSystemData();
 	BOOL Gf_LoadModelFile();
 
+	// Global GMES Function
+	BOOL Gf_gmesInitServer(BOOL nServerType);
+	BOOL Gf_gmesConnect(int nServerType);
+	BOOL Gf_gmesDisConnect(int nServerType);
+	void Gf_setGMesGoodInfo();
+	void Gf_setGMesBGradeInfo();
+	void Gf_setGMesBadInfo();
+	CString Gf_getGmesRTNCD();
+	void Gf_showLocalErrorMsg();
+	BOOL Gf_sendGmesHost(int nHostCmd);
+
+
 	void Gf_setStartPtnLockTime(int nPtnNum);
 	void Gf_setEndPtnLockTime(int nPtnNum);
 	void Gf_setPatStartCheckTime(int i);
@@ -55,6 +68,7 @@ public:
 	void main_parse_AreYouReady(int ch, char* recvPacket);
 	void main_parse_PowerMeasureAll(int ch, char* recvPacket);
 	void main_parse_FirmwareVersion(int ch, char* recvPacket);
+	void main_parse_GoToBootSection(int ch, char* recvPacket);
 
 	LPMODELINFO				GetModelInfo();
 	LPSYSTEMINFO			GetSystemInfo();
@@ -65,6 +79,7 @@ public:
 	CSocketTcpApp*			m_pSocketDIO;
 	CSocketTcpApp*			m_pSocketTCPMain;
 	CCommApi* commApi;
+	CCimNetCommApi*			m_pCimNet;
 
 	HANDLE					m_hAppMutex;
 
@@ -79,10 +94,20 @@ public:
 	BOOL m_bUserIdGieng;
 	BOOL m_bUserIdPM;
 
-	// FW Version
+	// MES Status
+	BOOL m_bMesComuCheck;
+	BOOL m_bIsGmesConnect;
+	BOOL m_bIsEasConnect;
+
+
+	// Firmware Version
 	CString m_sQspiFWVersion[MAX_CH];
 	CString m_sPgFWVersion[MAX_CH];
 	CString m_sSwVersion;
+
+	// Firmware Download
+	int	m_nDownloadReadyAckCount;
+	int	m_nDownloadCountUp;
 
 	int m_nSLockTime, m_nELockTime, m_nPtnLockTime[PTN_LIST_MAX], m_nPatLock[PTN_LIST_MAX];
 	int m_nStartCheckTime[PTN_LIST_MAX], m_nEndCheckTime[PTN_LIST_MAX], m_nPatTime[PTN_LIST_MAX];
@@ -96,6 +121,12 @@ protected:
 	BOOL Lf_FindModelFile();
 	void Lf_parsingModFileData(CString szData, TCHAR(*szParseData)[255]);
 	void Lf_LoadModelData(CString modelName);
+
+	// Local MES Function
+	void Lf_setGmesValueEICR();
+	void Lf_setEasValueAPDR();
+	void Lf_setGmesValuePCHK();
+	CString Lf_getGmesPatternData();
 
 private:
 

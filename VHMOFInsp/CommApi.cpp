@@ -607,7 +607,7 @@ BOOL CCommApi::Lf_getQSPI_FW_Ver(int ch)
 #endif
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CCommApi::main_setJumpBootSection(int ch)
+BOOL CCommApi::main_setGoToBootSection(int ch)
 {
 	BOOL ret;
 
@@ -618,20 +618,11 @@ BOOL CCommApi::main_setJumpBootSection(int ch)
 	return ret;
 }
 
-BOOL CCommApi::main_setDownloadFirmware(int ch, int packetPoint, unsigned char* szData, int dataSize)
+BOOL CCommApi::main_setDownloadFirmware(int ch, char* szData, int dataSize)
 {
 	BOOL ret;
-	int  headLen;
-	char szPacket[4096]={0,};
 
-	sprintf_s(szPacket, "%05X", packetPoint);
-	headLen = (int)strlen(szPacket);
-
-	memcpy(&szPacket[headLen], szData, dataSize);
-
-	//main_udp_wait();
-	//ret = m_pApp->rs232_sendPacket(ch, CMD_CTRL_FW_DOWNLOAD, (dataSize+headLen), szPacket, ACK, 2000);
-	ret = main_setSendQuery(CMD_CTRL_FW_DOWNLOAD, (dataSize + headLen), szPacket, ch);
+	ret = main_setSendQuery(CMD_CTRL_FW_DOWNLOAD, dataSize, szData, ch);
 
 	return ret;
 }

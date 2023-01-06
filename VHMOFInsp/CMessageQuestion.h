@@ -1,19 +1,19 @@
 ﻿#pragma once
 
 
-// CMessageError 대화 상자
+// CMessageQuestion 대화 상자
 
-class CMessageError : public CDialog
+class CMessageQuestion : public CDialog
 {
-	DECLARE_DYNAMIC(CMessageError)
+	DECLARE_DYNAMIC(CMessageQuestion)
 
 public:
-	CMessageError(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CMessageError();
+	CMessageQuestion(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CMessageQuestion();
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MESSAGE_ERROR };
+	enum { IDD = IDD_MESSAGE_QUESTION };
 #endif
 
 protected:
@@ -27,9 +27,9 @@ protected:
 // 사용자 정의 Function
 ///////////////////////////////////////////////////////////////////////////
 public:
-	BOOL m_nMessageType;
-	CString m_sErrorTitle;
-	CString m_sErrorMessage;
+	CString m_strQMessage;
+	CString m_strLButton;
+	CString m_strRButton;
 
 protected:
 	void Lf_InitLocalValue();
@@ -46,6 +46,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////
 
 
+
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
@@ -53,5 +54,8 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnBnClickedBtnErrClose();
+	CButton m_btnMqConfirm;
+	CButton m_btnMqCancel;
+	afx_msg void OnBnClickedBtnMqConfirm();
+	afx_msg void OnBnClickedBtnMqCancel();
 };

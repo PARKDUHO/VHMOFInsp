@@ -2,6 +2,7 @@
 //
 
 #include "pch.h"
+#include "VHMOFInsp.h"
 #if (DEBUG_RECV_COUNT==1)
 #include "GORTAutoAging.h"
 #endif
@@ -40,7 +41,7 @@ CSocketUDP::~CSocketUDP()
 
 BOOL CSocketUDP::CreatSocket(UINT nSocketPort, int nSocketType)
 {
-	CString m_stError;
+	CString m_LastErrCode;
 
 	ZeroMemory(m_sendBuf, sizeof(m_sendBuf)); // 버퍼초기화
 
@@ -48,8 +49,8 @@ BOOL CSocketUDP::CreatSocket(UINT nSocketPort, int nSocketType)
 //	if (!Create(nSocketPort, nSocketType, FD_READ|FD_WRITE|FD_OOB|FD_ACCEPT|FD_CONNECT|FD_CLOSE, _T("192.168.10.98")))
 	if (!Create(nSocketPort, nSocketType))
 	{ // 소켓 생성이 실패하면
-		m_stError.Format(_T("Socket Create Fail -> %d"), GetLastError());
-		AfxMessageBox(m_stError);
+		m_LastErrCode.Format(_T("Last Error Code : %d"), GetLastError());
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UDP SOCKET ERROR"), ERROR_CODE_31, m_LastErrCode);
 		return FALSE;
 	}
 
@@ -59,17 +60,16 @@ BOOL CSocketUDP::CreatSocket(UINT nSocketPort, int nSocketType)
 
 	if (!SetSockOpt(SO_BROADCAST, &flag, sizeof(int)))
 	{
-		m_stError.Format(_T("SetSockOpt failed to set SO_BROADCAST:% d"), GetLastError());
-		AfxMessageBox (m_stError);
-
+		m_LastErrCode.Format(_T("Last Error Code : %d"), GetLastError());
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UDP SOCKET ERROR"), ERROR_CODE_32, m_LastErrCode);
 		return FALSE;
 	}
 
 	len = sizeof(rflag);
 	if (!GetSockOpt(SO_BROADCAST, &rflag, &len) && rflag == 0)
 	{
-		m_stError.Format(_T("GetSockOpt failed to get SO_BROADCAST:% d"), GetLastError());
-		AfxMessageBox (m_stError);
+		m_LastErrCode.Format(_T("Last Error Code : %d"), GetLastError());
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UDP SOCKET ERROR"), ERROR_CODE_33, m_LastErrCode);
 
 		return FALSE;
 	}
@@ -137,7 +137,7 @@ void CSocketUDP::getLocalGateWay()
     {
         if(!(pAdapterInfo = (PIP_ADAPTER_INFO)malloc(ulSizeAdapterInfo)))
         {
-            AfxMessageBox(_T("Get Gateway Address Error"));
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UDP SOCKET ERROR"), ERROR_CODE_34);
         }
  
         dwStatus = GetAdaptersInfo(pAdapterInfo,&ulSizeAdapterInfo);

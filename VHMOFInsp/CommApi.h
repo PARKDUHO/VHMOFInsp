@@ -35,8 +35,8 @@ public:
 	BOOL main_setBmpComplete(int ch);
 	BOOL main_setI2cWrite(int ch, int level, int pullup, int devAddr, int regAddr, char* pData);
 
-	BOOL main_setJumpBootSection(int ch);
-	BOOL main_setDownloadFirmware(int ch, int packetPoint, unsigned char* szPacket, int packetSizeint);
+	BOOL main_setGoToBootSection(int ch);
+	BOOL main_setDownloadFirmware(int ch, char* szData, int dataSize);
 	BOOL main_setDownloadComplete(int ch);
 	BOOL main_setControlrReset(int ch);
 	BOOL main_getCtrlFWVersion(int ch);

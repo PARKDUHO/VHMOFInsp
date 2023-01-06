@@ -292,7 +292,7 @@ void CTestReady::Lf_InitDlgDesign()
 
 BOOL CTestReady::Lf_FinalTestStart()
 {
-	int ch = CH1;
+	int ch = CH2;
 
 	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
 	{
@@ -310,6 +310,7 @@ BOOL CTestReady::Lf_FinalTestStart()
 	}
 
 	CTestPattern pattern_dlg;
+	pattern_dlg.m_nTargetCh = ch;
 	if (pattern_dlg.DoModal() == IDOK)
 	{
 

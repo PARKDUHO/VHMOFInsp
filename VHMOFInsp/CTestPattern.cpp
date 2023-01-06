@@ -16,6 +16,8 @@ CTestPattern::CTestPattern(CWnd* pParent /*=nullptr*/)
 {
 	m_pDefaultFont = new CFont();
 	m_pDefaultFont->CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+
+	m_nTargetCh = CH1;
 }
 
 CTestPattern::~CTestPattern()
@@ -101,7 +103,7 @@ void CTestPattern::OnDestroy()
 		m_Font[i].DeleteObject();
 	}
 
-	m_pApp->commApi->main_setPowerSequenceOnOff(CH1, POWER_OFF);
+	m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_OFF);
 }
 
 void CTestPattern::RemoveMessageFromQueue()
@@ -457,7 +459,6 @@ void CTestPattern::Lf_insertListItem()
 
 void CTestPattern::Lf_sendPtnData()
 {
-	int ch = CH1;
 	CString sdata = _T("");
 
 	CString strPacket;
@@ -482,12 +483,12 @@ void CTestPattern::Lf_sendPtnData()
 	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_ALPLD)
 	{
 		CString scriptName;
-		scriptName.Format(_T("log_%s_CH%d.py"), lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex], (ch + 1));
-		m_pApp->commApi->alpdp_executePythonScript(ch, scriptName);
+		scriptName.Format(_T("log_%s_CH%d.py"), lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex], (m_nTargetCh + 1));
+		m_pApp->commApi->alpdp_executePythonScript(m_nTargetCh, scriptName);
 	}
 	else
 	{
-		m_pApp->commApi->main_setPGInfoPatternName(ch, lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex]);
+		m_pApp->commApi->main_setPGInfoPatternName(m_nTargetCh, lpModelInfo->m_sLbPtnListNAME[m_nPatternIndex]);
 	}
 }
 
@@ -495,17 +496,16 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 {
 	CString sdata = _T("");
 	CString strPacket;
-	int ch = CH1;
 
 	if (DEBUG_TCP_RECEIVE_OK == 1)
 		return TRUE;
 
-	if (m_pApp->commApi->main_getMeasurePowerAll(ch) == TRUE)
+	if (m_pApp->commApi->main_getMeasurePowerAll(m_nTargetCh) == TRUE)
 	{
-		if (lpInspWorkInfo->m_nMeasureErrName[ch] != 0)
+		if (lpInspWorkInfo->m_nMeasureErrName[m_nTargetCh] != 0)
 		{
 			CString strSection, strErrMsg, strValue;
-			if (lpInspWorkInfo->m_nMeasureErrName[ch] == 5)
+			if (lpInspWorkInfo->m_nMeasureErrName[m_nTargetCh] == 5)
 			{
 				strSection.Format(_T("POWER ALARM"));
 				m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_14);
@@ -513,16 +513,16 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 			else
 			{
 				int errName, errCh;
-				errName = lpInspWorkInfo->m_nMeasureErrName[ch];
-				errCh = lpInspWorkInfo->m_nMeasureErrCh[ch];
+				errName = lpInspWorkInfo->m_nMeasureErrName[m_nTargetCh];
+				errCh = lpInspWorkInfo->m_nMeasureErrCh[m_nTargetCh];
 				strSection.Format(_T("POWER LIMIT ALARM"));
 
 
 				// VCC, I_VCC Limit Error
 				if ((errName == 1) || (errName == 2))
-					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVccLow, lpModelInfo->m_fLimitVccHigh, lpInspWorkInfo->m_nMeasureErrValue[ch] / 1000.0);
+					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVccLow, lpModelInfo->m_fLimitVccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 				else if ((errName == 3) || (errName == 4))
-					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIccLow, lpModelInfo->m_fLimitIccHigh, lpInspWorkInfo->m_nMeasureErrValue[ch] / 1000.0);
+					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIccLow, lpModelInfo->m_fLimitIccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 
 				if ((errCh == 1) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_2, strValue);
 				if ((errCh == 1) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_3, strValue);
@@ -532,9 +532,9 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 
 				// VIN, I_VIN Limit Error
 				if ((errName == 1) || (errName == 2))
-					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVelLow, lpModelInfo->m_fLimitVelHigh, lpInspWorkInfo->m_nMeasureErrValue[ch] / 1000.0);
+					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVelLow, lpModelInfo->m_fLimitVelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 				else if ((errName == 3) || (errName == 4))
-					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIelLow, lpModelInfo->m_fLimitIelHigh, lpInspWorkInfo->m_nMeasureErrValue[ch] / 1000.0);
+					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIelLow, lpModelInfo->m_fLimitIelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 
 				if ((errCh == 2) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_6, strValue);
 				if ((errCh == 2) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_7, strValue);
@@ -544,9 +544,9 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 
 				// VDD, I_VDD Limit Error
 				if ((errName == 1) || (errName == 2))
-					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVddLow, lpModelInfo->m_fLimitVddHigh, lpInspWorkInfo->m_nMeasureErrValue[ch] / 1000.0);
+					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVddLow, lpModelInfo->m_fLimitVddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 				else if ((errName == 3) || (errName == 4))
-					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIddLow, lpModelInfo->m_fLimitIddHigh, lpInspWorkInfo->m_nMeasureErrValue[ch] / 1000.0);
+					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIddLow, lpModelInfo->m_fLimitIddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 
 				if ((errCh == 3) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_10, strValue);
 				if ((errCh == 3) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_11, strValue);
@@ -556,15 +556,15 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 
 			return FALSE;
 		}
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVCC[ch] / 1000.f));
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVCC[m_nTargetCh] / 1000.f));
 		GetDlgItem(IDC_STT_TP_MEAS_VCC_VALUE)->SetWindowText(sdata);
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVEL[ch] / 1000.f));
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVEL[m_nTargetCh] / 1000.f));
 		GetDlgItem(IDC_STT_TP_MEAS_VEL_VALUE)->SetWindowText(sdata);
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVDD[ch] / 1000.f));
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVDD[m_nTargetCh] / 1000.f));
 		GetDlgItem(IDC_STT_TP_MEAS_VDD_VALUE)->SetWindowText(sdata);
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureICC[ch] / 1000.f));
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureICC[m_nTargetCh] / 1000.f));
 		GetDlgItem(IDC_STT_TP_MEAS_ICC_VALUE)->SetWindowText(sdata);
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureIDD[ch] / 1000.f));
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureIDD[m_nTargetCh] / 1000.f));
 		GetDlgItem(IDC_STT_TP_MEAS_IDD_VALUE)->SetWindowText(sdata);
 	}
 	return TRUE;
@@ -685,11 +685,6 @@ void CTestPattern::Lf_setPatternGrayLevel(int wParam)
 	if (B_Val < 0)			B_Val = 0;
 	if (B_Val > upLimit)	B_Val = upLimit;
 
-	// 6. 현재의 Gray Level 값을 Update 한다.
-	/*if (colorConf & 0x04)		nPtnGrayLevel = R_Val;
-	if (colorConf & 0x02)		nPtnGrayLevel = G_Val;
-	if (colorConf & 0x01)		nPtnGrayLevel = B_Val;*/
-
 	// 6. PG에 전달할 String을 만든다.
 	int nBitShift;
 	if (lpModelInfo->m_nSignalBit == SIG_6BIT) // 6bit
@@ -725,7 +720,7 @@ void CTestPattern::Lf_setPatternGrayLevel(int wParam)
 	strPacket.Format(_T("CFG%04X%04X%04X"), R_Val, G_Val, B_Val);
 
 	BOOL ret;
-	ret = m_pApp->commApi->main_setPGInfoPatternString(CH1, strPacket, FALSE);
+	ret = m_pApp->commApi->main_setPGInfoPatternString(m_nTargetCh, strPacket, FALSE);
 	// 7. Pattern Data를 PG에 전송한다.
 	if (ret == TRUE)
 	{
@@ -836,7 +831,6 @@ BOOL CTestPattern::Lf_PatternVoltageSetting()
 
 BOOL CTestPattern::Lf_PatternCurrentCheck()
 {
-	int ch = CH1;
 	CString strmsg;
 	int nIcc, nIel;
 	nIcc = (int)_ttoi(lpModelInfo->m_sLbPtnListICC[m_nPatternIndex]);
@@ -852,20 +846,20 @@ BOOL CTestPattern::Lf_PatternCurrentCheck()
 	}
 	if (nIcc > 0)
 	{
-		if (nIcc < lpInspWorkInfo->m_nMeasureICC[ch])
+		if (nIcc < lpInspWorkInfo->m_nMeasureICC[m_nTargetCh])
 		{
-			m_pApp->commApi->main_setPowerSequenceOnOff(ch, POWER_OFF);
-			strmsg.Format(_T("ICC Setting[%dmA]  ICC Measure[%dmA]"), nIcc, lpInspWorkInfo->m_nMeasureICC[ch]);
+			m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_OFF);
+			strmsg.Format(_T("ICC Setting[%dmA]  ICC Measure[%dmA]"), nIcc, lpInspWorkInfo->m_nMeasureICC[m_nTargetCh]);
 			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ICC CHECK ERROR"), ERROR_CODE_16, strmsg);
 			return FALSE;
 		}
 	}
 	if (nIel > 0)
 	{
-		if (nIel < lpInspWorkInfo->m_nMeasureIEL[ch])
+		if (nIel < lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh])
 		{
-			m_pApp->commApi->main_setPowerSequenceOnOff(ch, POWER_OFF);
-			strmsg.Format(_T("IIN Setting[%dmA]  IIN Measure[%dmA]"), nIel, lpInspWorkInfo->m_nMeasureIEL[ch]);
+			m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_OFF);
+			strmsg.Format(_T("IIN Setting[%dmA]  IIN Measure[%dmA]"), nIel, lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh]);
 			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("IIN CHECK ERROR"), ERROR_CODE_17, strmsg);
 			return FALSE;
 		}
@@ -881,15 +875,14 @@ BOOL CTestPattern::Lf_sendAlpdpInitScript()
 	if (lpModelInfo->m_nInitScript == ALPDP_INIT_NONE)
 		return TRUE;
 
-	int ch = CH1;
 	CString scriptName;
 
 	if (lpModelInfo->m_nInitScript == ALPDP_INIT_X2146)
-		scriptName.Format(_T("X2146_CH%d.py"), (ch+1));
+		scriptName.Format(_T("X2146_CH%d.py"), (m_nTargetCh + 1));
 	else if (lpModelInfo->m_nInitScript == ALPDP_INIT_X2180)
-		scriptName.Format(_T("X2180_CH%d.py"), (ch + 1));
+		scriptName.Format(_T("X2180_CH%d.py"), (m_nTargetCh + 1));
 
-	m_pApp->commApi->alpdp_executePythonScript(ch, scriptName);
+	m_pApp->commApi->alpdp_executePythonScript(m_nTargetCh, scriptName);
 
 	return TRUE;
 }
@@ -899,7 +892,7 @@ void CTestPattern::Lf_setPowerOnAnd1stPattern()
 	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_ALPLD)
 	{
 		// ALPDP는 Power ON이후 Link Training 및 Pattern 전송을 해야한다.
-		m_pApp->commApi->main_setPowerSequenceOnOff(CH1, POWER_ON);
+		m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_ON);
 		Lf_sendAlpdpInitScript();
 		Lf_sendPtnData();
 	}
@@ -907,7 +900,7 @@ void CTestPattern::Lf_setPowerOnAnd1stPattern()
 	{
 		// DP는 Pattern을 출력후 Power On 하도록 한다.
 		Lf_sendPtnData();
-		m_pApp->commApi->main_setPowerSequenceOnOff(CH1, POWER_ON);
+		m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_ON);
 	}
 
 }
