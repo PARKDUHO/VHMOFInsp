@@ -1,50 +1,42 @@
 ﻿#pragma once
 
-#include "afxcmn.h"
-#include "afxwin.h"
-#include "CMaintenancePG.h"
-#include "CMaintenanceDIO.h"
 
+// CMaintenanceDIO 대화 상자
 
-// CMaintenance 대화 상자
-
-class CMaintenance : public CDialog
+class CMaintenanceDIO : public CDialog
 {
-	DECLARE_DYNAMIC(CMaintenance)
+	DECLARE_DYNAMIC(CMaintenanceDIO)
 
 public:
-	CMaintenance(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CMaintenance();
+	CMaintenanceDIO(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CMaintenanceDIO();
 
 // 대화 상자 데이터입니다.
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MAINTENANCE };
-#endif
+//#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_MAINTENANCE_DIO };
+//#endif
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
 
+
 ///////////////////////////////////////////////////////////////////////////
 // 사용자 정의 Function
 ///////////////////////////////////////////////////////////////////////////
 public:
 
+
 protected:
 	void Lf_InitLocalValue();
 	void Lf_InitFontset();
 	void Lf_InitColorBrush();
-	void Lf_InitDlgDesign();
+	void Lf_initListDIN();
 
-	void Lf_InitTabControl();
-
-
-
-	CMaintenancePG* m_pMaintenancePG;
-	CMaintenanceDIO* m_pMaintenanceDIO;
-
-
+	void Lf_setListCheck();
+	void Lf_updateStautsDio1In();
+	void Lf_updateStautsDio2In();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -55,6 +47,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////
 
 
+
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
@@ -62,6 +55,14 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnBnClickedBtnMtClose();
-	CXTabCtrl m_tabMtMaintenance;
+	afx_msg void OnNMCustomdrawLstMoDio1In(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMCustomdrawLstMoDio1Out(NMHDR* pNMHDR, LRESULT* pResult);
+	CListCtrl m_lstMoDio1In;
+	CListCtrl m_lstMoDio1Out;
+	CListCtrl m_lstMoDio2In;
+	CListCtrl m_lstMoDio2Out;
+	afx_msg void OnNMCustomdrawLstMoDio2In(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnNMCustomdrawLstMoDio2Out(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBnClickedBtnMoWriteDio1();
+	afx_msg void OnBnClickedBtnMoWriteDio2();
 };

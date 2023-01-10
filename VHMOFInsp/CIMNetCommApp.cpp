@@ -234,10 +234,12 @@ BOOL CCimNetCommApi::Init(int nServerType)
 
 		SetMesHostInterface();
 		
+#if (DEBUG_GMES_TEST_SERVER==1)
+		m_strLocalSubjectMesF = (_T("EQP.TEST"));
+#else
 		m_strLocalSubjectMesF.Format(_T("%s.%s"), m_strLocalSubject, m_strLocalSubjectIP);
+#endif
 
-		// MES Test Mode일때 필요. CNZ
-		//m_strLocalSubjectMesF = (_T("EQP.TEST"));
 		HRESULT mesHr = CoCreateInstance(CLSID_DllGmes, NULL, CLSCTX_INPROC_SERVER, IID_ICallGmesClass, reinterpret_cast<void**>(&gmes));
 		
 		if (SUCCEEDED(mesHr)){
@@ -270,7 +272,11 @@ BOOL CCimNetCommApi::Init(int nServerType)
 		
 		SetEasHostInterface();
 		
+#if (DEBUG_GMES_TEST_SERVER==1)
+		m_strLocalSubjectEasF = (_T("EQP.TEST"));
+#else
 		m_strLocalSubjectEasF.Format(_T("%s.%s"), m_strLocalSubjectEAS, m_strLocalSubjectIP);
+#endif
 
 		HRESULT easHr = CoCreateInstance(CLSID_DllEas, NULL, CLSCTX_INPROC_SERVER, IID_ICallEASClass, reinterpret_cast<void**>(&eas));
 

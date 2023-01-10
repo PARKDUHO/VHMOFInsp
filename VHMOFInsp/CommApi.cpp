@@ -12,7 +12,7 @@
 
 CMutex g_mutex(FALSE, NULL);
 
-CCriticalSection Critical_Dio;//DIO Board  (22.11.17)
+CCriticalSection Critical_Dio[2];//DIO Board  (22.11.17)
 
 // CCommApi
 IMPLEMENT_DYNAMIC(CCommApi, CCmdTarget)
@@ -23,14 +23,6 @@ CCommApi::CCommApi()
 	lpModelInfo		= m_pApp->GetModelInfo();
 	lpSystemInfo	= m_pApp->GetSystemInfo();
 	lpInspWorkInfo	= m_pApp->GetInspWorkInfo();
-
-	m_bDioCommStatus[0] = WORK_IDLE;
-	m_bDioCommStatus[1] = WORK_IDLE;
-
-	m_bDioEthInit = false;
-
-	nDio_DO_Data[0] = 0;
-	nDio_DO_Data[1] = 0;
 }
 
 CCommApi::~CCommApi()
@@ -665,295 +657,89 @@ BOOL CCommApi::main_getCtrlFWVersion(int ch)
 }
 
 
-#if (CODE_DIO_BOARD_USE==1)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // DIO
-void CCommApi::Lf_setDioOutput(unsigned int OutBit, int onoff, int ch)
-{	
-	if (m_pApp->m_bDio7230Init == FALSE && m_bDioEthInit == FALSE)//조건 Init 추가(22.08.26)
-	{
-		return;
-	}
-		
-	int outBit = OutBit;
-	
-	if (onoff == _ON_)
-	{
-		m_pApp->m_nDioOutBit[ch] |= OutBit;
-	}
-	else
-	{
-		m_pApp->m_nDioOutBit[ch] &= ~OutBit;
-	}	
-	
-	/// <summary>
-	///  IO 보드 구분(22.08.24)
-	/// </summary>	
-	if (lpSystemInfo->m_nDIO_Board == IO_CARD_7230)
-	{
-		m_pApp->m_pDio7230->Dio_DO_WritePort(m_pApp->m_nDioOutBit[ch], ch);
-	}
-	else if (lpSystemInfo->m_nDIO_Board == DIO_BOARD)
-	{
-		if (onoff == _ON_)	DIO_setOutputChannel(outBit, ch);		
-		else  DIO_setClearChannel(outBit, ch);
-
-	}
-		
-}
-
-//Add(22.08.26)
-void CCommApi::Lf_getDioInputPortRead(int ch)
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 {
-	int ret = 0;
-	int DI_port = 0;
-
-	if (m_bDioCommStatus[ch] == WORK_BUSY)
-		return;
-
-	m_bDioCommStatus[ch] = WORK_BUSY;
-
-	Critical_Dio[ch].Lock();//(22.11.18)
-	ret = DIO_getInputPort(&DI_port, ch);
-	Critical_Dio[ch].Unlock();//(22.11.18)
-
-	if (ret != FALSE)
-	{
-		// Board에서 B점접으로 들어옴
-		m_pApp->m_nDioInBit[ch] = ~DI_port;//Bit 반전(22.08.26)
-	}
-
-	m_bDioCommStatus[ch] = WORK_IDLE;
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// GI DIO 보드 적용=> IT OLED OC 추가분 4대 적용(22.08.08)
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CCommApi::DIO_setConnection(int ch)
-{
-	int ret;
+	BOOL ret = FALSE;
+	int length = 0;
+	char szPacket[128] = { 0, };
 	CString ipAddr;
 
-	DIO_setDisConnection(ch);
-	Sleep(200);
+	if (ch == CH1)			ipAddr.Format(_T("%s"), UDP_DIO_BOARD1_IP);
+	else if (ch == CH2)		ipAddr.Format(_T("%s"), UDP_DIO_BOARD2_IP);
 
-	if (ch == CH1)
+	m_pApp->m_nDioOutBit[ch][0] = (BYTE)(OutData >> 0);
+	m_pApp->m_nDioOutBit[ch][1] = (BYTE)(OutData >> 8);
+	m_pApp->m_nDioOutBit[ch][2] = (BYTE)(OutData >> 16);
+
+	sprintf_s(szPacket, "%02X00%02X00%02X00", m_pApp->m_nDioOutBit[ch][2], m_pApp->m_nDioOutBit[ch][1], m_pApp->m_nDioOutBit[ch][0]);
+	length = (int)strlen(szPacket);
+
+	Critical_Dio[ch].Lock();//(22.11.18)
+	ret = m_pApp->udp_sendPacketUDP_DIO(ipAddr, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
+	Critical_Dio[ch].Unlock();//(22.11.18)
+
+	return ret;
+}
+
+
+BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
+{
+	BOOL ret = FALSE;
+	int length = 0;
+	char szPacket[128] = { 0, };
+	CString ipAddr;
+
+	if (ch == CH1)			ipAddr.Format(_T("%s"), UDP_DIO_BOARD1_IP);
+	else if (ch == CH2)		ipAddr.Format(_T("%s"), UDP_DIO_BOARD2_IP);
+
+	if (onoff == _ON_)
 	{
-		ipAddr = TCP_DIO_1_BOARD_IP;
+		m_pApp->m_nDioOutBit[ch][0] |= (BYTE)(OutBit >> 0);
+		m_pApp->m_nDioOutBit[ch][1] |= (BYTE)(OutBit >> 8);
+		m_pApp->m_nDioOutBit[ch][2] |= (BYTE)(OutBit >> 16);
 	}
 	else
 	{
-		ipAddr = TCP_DIO_2_BOARD_IP;
+		OutBit = ~OutBit;
+		m_pApp->m_nDioOutBit[ch][0] &= (BYTE)(OutBit >> 0);
+		m_pApp->m_nDioOutBit[ch][1] &= (BYTE)(OutBit >> 8);
+		m_pApp->m_nDioOutBit[ch][2] &= (BYTE)(OutBit >> 16);
 	}
 
-	ret = m_pApp->m_pSocketDIO->tcp_DIO_Connection(ipAddr, TCP_DIO_PORT, ch);
+	sprintf_s(szPacket, "%02X00%02X00%02X00", m_pApp->m_nDioOutBit[ch][2], m_pApp->m_nDioOutBit[ch][1], m_pApp->m_nDioOutBit[ch][0]);
+	length = (int)strlen(szPacket);
+
+	Critical_Dio[ch].Lock();//(22.11.18)
+	ret = m_pApp->udp_sendPacketUDP_DIO(ipAddr, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
+	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
 }
 
-BOOL CCommApi::DIO_setDisConnection(int ch)
+BOOL CCommApi::dio_readDioInput(int ch)
 {
-	m_pApp->m_pSocketDIO->tcp_DIO_DisConnection(ch);
-	
-	return TRUE;
-}
+	BOOL ret = FALSE;
+	int length = 0;
+	char szPacket[128] = { 0, };
+	CString ipAddr;
 
-void CCommApi::DIO_waitIdleStatus(int ch)
-{
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
+	if (ch == CH1)			ipAddr.Format(_T("%s"), UDP_DIO_BOARD1_IP);
+	else if (ch == CH2)		ipAddr.Format(_T("%s"), UDP_DIO_BOARD2_IP);
 
-	// Ethernet 통신상태가 IDLE될때까지 기다린다.(max 500ms)
-	while (1)
-	{
-		if (m_bDioCommStatus[ch] == WORK_IDLE)
-			break;
-
-		eTick = ::GetTickCount();
-		if ((sTick + 500) < eTick)
-		{
-			break;
-		}
-	}
-}
-
-int  CCommApi::DIO_setSendQuery(int nCommand, int nLength, char* pData, int ch)
-{
-	char szpacket[4096] = { 0, };
-	int  packetlen;
-	char lpbuff[20] = { 0, };
-	BYTE nChkSum = 0;
-
-	// DIO 초기화 실패시 Ethernet으로 Data를 보내지 않는다.
-	if (m_bDioEthInit == false)	return 0;
-
-	// Checksum 앞까지 Packet 생성
-	sprintf_s(szpacket, "%cA1%02X00%02X%04X%s", 0x02, TARGET_DIO, nCommand, nLength, pData);
-
-	// 생성된 Packet을 이용하여 CheckSum을 구한다.
-	packetlen = (int)strlen(szpacket);
-	for (int j = 1; j < packetlen; j++)		// Check Sum
-	{
-		nChkSum += szpacket[j];
-	}
-
-	// Checksum과 ETX를 붙여 다시 Packet을 만든다.
-	sprintf_s(szpacket, "%cA1%02X00%02X%04X%s%02X%c", 0x02, TARGET_DIO, nCommand, nLength, pData, nChkSum, 0x03);
-	packetlen = (int)strlen(szpacket);
-
-	// Ehternet 상태가 IDLE 상태가 될때까지 기다린다.
-	DIO_waitIdleStatus(ch);
-
-	CString strIOLog, strIOLogPacket, strIOLogTitle;
-
-	
-
-	// Send Log를 기록
-	if (0)//DEBUG_ETHERNET_COM_LOG == 1)
-	{
-		//////////////////////////////////////////////////////////
-		strIOLogTitle = _T("IO Packet set:");
-		strIOLogPacket = szpacket;
-		strIOLog.Append(strIOLogTitle);// +szpacket;// _T("IO Packet:")
-		strIOLog.Append(strIOLogPacket);//
-		m_pApp->Gf_writeMLog(strIOLog);
-	}
-		
-
-	///////////////////////////////////////////////////////////
-
-	// 생성된 Packet을 전송.
-	int ret = 0;
-
- 	ret = m_pApp->m_pSocketDIO->tcp_DIO_SendQuery(szpacket, packetlen, ch);
-
-	memset(gszdioRcvPacket, 0x00, sizeof(gszdioRcvPacket));
-	if (DIO_getReceivePacket(gszdioRcvPacket, ch) == TRUE)
-	{
-		return ret;
-	}
-	else
-	{
-		//		m_bDioEthInit = false;
-		return 0;
-	}
-}
-
-
-BOOL CCommApi::DIO_getReceivePacket(char* m_szRcvPacket, int ch)
-{
-	BOOL  ret = FALSE;
-	DWORD sTick, eTick;
-	int rcvSize = 0;
-
-	sTick = ::GetTickCount();
-
-	m_bDioCommStatus[ch] = WORK_BUSY;
-	while (1)
-	{
-		rcvSize = m_pApp->m_pSocketDIO->tcp_DIO_GetReceivePacketSize(ch);
-		
-		if (rcvSize != 0)
-		{
-			// Receive Data를 가져온다.
-			memset(m_szRcvPacket, 0, sizeof(m_szRcvPacket));
-			m_pApp->m_pSocketDIO->tcp_DIO_GetReceivePacketData(m_szRcvPacket, ch);
-			
-			// Receive Log를 기록
-			//if (DEBUG_ETHERNET_COM_LOG == 1)
-			//	m_pMltvApp->Gf_LogDataWrite("DIO Recv", m_szRcvPacket);
-
-			if (m_szRcvPacket[13] == '0')
-			{
-				ret = TRUE;
-				break;
-			}
-			else
-			{
-				ret = FALSE;
-				break;
-			}
-		}
-
-		// Ack를 기다린다. Wait Time안에 Ack가 들어오지 않으면 False를 Return한다.
-		eTick = ::GetTickCount();
-		if ((sTick + ETH_ACK_NOR_WAIT_TIME) < eTick)
-		{
-			ret = FALSE;
-			break;
-		}
-
-		ProcessMessage();
-	}
-	m_bDioCommStatus[ch] = WORK_IDLE;
+	Critical_Dio[ch].Lock();//(22.11.18)
+	ret = m_pApp->udp_sendPacketUDP_DIO(ipAddr, TARGET_DIO, 0, CMD_DIO_INPUT, 0, NULL, ACK);
+	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
 }
 
-BOOL CCommApi::DIO_setOutputChannel(int DO_bit, int ch)
-{
-	char szCmd[100] = { 0, };
-
-	nDio_DO_Data[ch] = nDio_DO_Data[ch] | DO_bit;
-	nDio_DO_Data[ch] = nDio_DO_Data[ch] & 0x00FFFFFF;
-	sprintf_s(szCmd, "%06X", nDio_DO_Data[ch]);
-
-	int ret = 0;
-	Critical_Dio[ch].Lock();//(22.11.17)
-
-	ret = DIO_setSendQuery(CMD_DIO_OUTPUT, (int)strlen(szCmd), szCmd, ch);
-
-	Critical_Dio[ch].Unlock();//(22.11.17)
-
-	return ret;
-}
-
-BOOL CCommApi::DIO_setClearChannel(int DO_bit, int ch)
-{
-	char szCmd[100] = { 0, };
-
-	nDio_DO_Data[ch] = nDio_DO_Data[ch] & ~DO_bit;
-	nDio_DO_Data[ch] = nDio_DO_Data[ch] & 0x00FFFFFF;
-	sprintf_s(szCmd, "%06X", nDio_DO_Data[ch]);
-
-	int ret = 0;
-	Critical_Dio[ch].Lock();//(22.11.17)
-
-	ret = DIO_setSendQuery(CMD_DIO_OUTPUT, (int)strlen(szCmd), szCmd, ch);
-
-	Critical_Dio[ch].Unlock();//(22.11.17)
-
-	return ret;
-}
-
-BOOL CCommApi::DIO_getInputPort(int* DI_Data, int ch)
-{
-	char szCmd[100] = { 0, };
-
-	sprintf_s(szCmd, "%06X", nDio_DO_Data[ch]);
-
-	int ret = 0;
-	ret = DIO_setSendQuery(CMD_DIO_INPUT, 0, "", ch);
-
-	// Receive Packet이 있으면 Packet을 Parsing한다.
-	if (ret != 0)
-	{
-		int data;
-		sscanf_s(&gszdioRcvPacket[13], "%01d%06X", &ret, &data);
-		// Packet의 Result 값이 0이면 DI Port의 값을 Update한다.
-		if (ret == 0)
-		{
-			*DI_Data = data;
-			return TRUE;
-		}
-	}
-	return FALSE;
-}
-#endif
 
 //////////////////////////////////////////////////////////////////////
 // New Gooil Main Board (22.12.08)
+//////////////////////////////////////////////////////////////////////
 int  CCommApi::main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 {
 	char szpacket[4096] = { 0, };

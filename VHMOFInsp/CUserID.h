@@ -38,7 +38,7 @@ protected:
 	LPINSPWORKINFO	lpInspWorkInfo;
 	LPSYSTEMINFO	lpSystemInfo;
 
-	void Lf_loginProcess();
+	BOOL Lf_loginProcess();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

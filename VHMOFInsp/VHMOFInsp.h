@@ -51,12 +51,11 @@ public:
 	BOOL Gf_gmesInitServer(BOOL nServerType);
 	BOOL Gf_gmesConnect(int nServerType);
 	BOOL Gf_gmesDisConnect(int nServerType);
-	void Gf_setGMesGoodInfo();
-	void Gf_setGMesBGradeInfo();
-	void Gf_setGMesBadInfo();
-	CString Gf_getGmesRTNCD();
-	void Gf_showLocalErrorMsg();
-	BOOL Gf_sendGmesHost(int nHostCmd);
+	void Gf_gmesSetGoodInfo();
+	void Gf_gmesSetBadInfo();
+	CString Gf_gmesGetRTNCD();
+	void Gf_gmesShowLocalErrorMsg();
+	BOOL Gf_gmesSendHost(int nHostCmd);
 
 
 	void Gf_setStartPtnLockTime(int nPtnNum);
@@ -64,11 +63,23 @@ public:
 	void Gf_setPatStartCheckTime(int i);
 	void Gf_setPatEndCheckTime(int i);
 
+	// TCP/IP 통신 Protocol (Main Board)
 	BOOL main_tcpProcessPacket(int ch, char* recvPacket);
 	void main_parse_AreYouReady(int ch, char* recvPacket);
 	void main_parse_PowerMeasureAll(int ch, char* recvPacket);
 	void main_parse_FirmwareVersion(int ch, char* recvPacket);
 	void main_parse_GoToBootSection(int ch, char* recvPacket);
+
+
+	// UDP 통신 Protocol (DIO Board)
+	void Lf_initCreateUdpSocket();
+	BOOL Lf_initLocalHostIPAddress();
+	BOOL udp_sendPacketUDP_DIO(CString ip, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 1000);
+	BOOL udp_procWaitRecvACK_DIO(int cmd, DWORD waitTime);
+	void udp_processDioPacket(int ch, CString strPacket);
+	BOOL udp_procParseDIO(int ch, CString packet);
+
+
 
 	LPMODELINFO				GetModelInfo();
 	LPSYSTEMINFO			GetSystemInfo();
@@ -78,6 +89,7 @@ public:
 	CSocketTcpApp*			m_pSocketTCPAppCh1;
 	CSocketTcpApp*			m_pSocketDIO;
 	CSocketTcpApp*			m_pSocketTCPMain;
+	CSocketUDP*				m_pUDPSocket;
 	CCommApi* commApi;
 	CCimNetCommApi*			m_pCimNet;
 
@@ -94,10 +106,16 @@ public:
 	BOOL m_bUserIdGieng;
 	BOOL m_bUserIdPM;
 
+	// DIO Board Data
+	int m_nAckCmdDio;
+	BYTE m_nDioOutBit[2][3];	// 2CH, 24Bit(3Byte) 선언이다.
+	BYTE m_nDioInBit[2][5];		// 2CH, 40Bit(5Byte) 선언이다.
+
 	// MES Status
 	BOOL m_bMesComuCheck;
 	BOOL m_bIsGmesConnect;
 	BOOL m_bIsEasConnect;
+	BOOL m_bIsSendEAYT;
 
 
 	// Firmware Version
@@ -118,15 +136,16 @@ protected:
 	LPSYSTEMINFO			lpSystemInfo;
 	LPINSPWORKINFO			lpInspWorkInfo;
 
+	void Lf_initGlobalVariable();
 	BOOL Lf_FindModelFile();
 	void Lf_parsingModFileData(CString szData, TCHAR(*szParseData)[255]);
 	void Lf_LoadModelData(CString modelName);
 
 	// Local MES Function
-	void Lf_setGmesValueEICR();
-	void Lf_setEasValueAPDR();
-	void Lf_setGmesValuePCHK();
-	CString Lf_getGmesPatternData();
+	void Lf_gmesSetValueEICR();
+	void Lf_gmesSetValueAPDR();
+	void Lf_gmesSetValuePCHK();
+	CString Lf_gmesGetPatternData();
 
 private:
 

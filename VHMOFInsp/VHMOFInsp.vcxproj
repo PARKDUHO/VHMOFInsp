@@ -187,6 +187,8 @@
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="CInitialize.h" />
     <ClInclude Include="CMaintenance.h" />
+    <ClInclude Include="CMaintenanceDIO.h" />
+    <ClInclude Include="CMaintenancePG.h" />
     <ClInclude Include="CMessageError.h" />
     <ClInclude Include="CMessageQuestion.h" />
     <ClInclude Include="CModelChange.h" />
@@ -221,6 +223,8 @@
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="CInitialize.cpp" />
     <ClCompile Include="CMaintenance.cpp" />
+    <ClCompile Include="CMaintenanceDIO.cpp" />
+    <ClCompile Include="CMaintenancePG.cpp" />
     <ClCompile Include="CMessageError.cpp" />
     <ClCompile Include="CMessageQuestion.cpp" />
     <ClCompile Include="CModelChange.cpp" />

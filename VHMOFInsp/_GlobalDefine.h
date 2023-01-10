@@ -4,9 +4,7 @@
 #define _GOLBAL_DEFINE_
 
 
-#define CODE_MES_EAS_USE				0
 #define CODE_QSPI_USE					0
-#define CODE_DIO_BOARD_USE				0
 #define CODE_PATTERN_POWER_SET_USE		0
 #define CODE_MAIN_UI_FW_VER_UPDATE		0
 #define CODE_DFS_SETTING_USE			0
@@ -21,15 +19,19 @@
 
 /////////////////////////////////////////////////////////////////////////////
 #define DEBUG_TCP_RECEIVE_OK			0
+#define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_TCP_COMM_LOG				1
 #define DEBUG_TCP_PACKET_LOG			0
-#define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_DIO_SKIP					0
 
 /////////////////////////////////////////////////////////////////////////////
 #define TCP_MAIN_1_BOARD_IP				_T("192.168.1.10")
 #define TCP_MAIN_2_BOARD_IP				_T("192.168.1.11")
+
+#define UDP_DIO_BOARD1_IP				_T("192.168.1.200")
+#define UDP_DIO_BOARD2_IP				_T("192.168.1.201")
+
 #define TCP_MAIN_PORT					50001
 
 /////////////////////////////////////////////////////////////////////////////
@@ -88,36 +90,152 @@
 /////////////////////////////////////////////////////////////////////////////
 //DIO
 /////////////////////////////////////////////////////////////////////////////
-#define DIO_OUT_RESET	0x0000
+#define DIN_D1_EMO_SWITCH							(0x01 << 1)
+#define DIN_D1_START_SWITCH							(0x01 << 2)
+#define DIN_D1_RESET_SWITCH							(0x01 << 3)
+#define DIN_D1_MUTTING_SWITCH						(0x01 << 4)
+#define DIN_D1_LIGHT_CURTAIN						(0x01 << 5)
+#define DIN_D1_LEFT_SAFETY_DOOR						(0x01 << 6)
+#define DIN_D1_RIGHT_SAFETY_DOOR					(0x01 << 7)
+#define DIN_D1_LEFT_SHUTTER_HOLDING_SENSOR			(0x01 << 8)
 
-#define DIO_OUT_01		(1<<0)
-#define DIO_OUT_02		(1<<1)
-#define DIO_OUT_03		(1<<2)
-#define DIO_OUT_04		(1<<3)
-#define DIO_OUT_05		(1<<4)
-#define DIO_OUT_06		(1<<5)
-#define DIO_OUT_07		(1<<6)
-#define DIO_OUT_08		(1<<7)
+#define DIN_D1_RIGHT_SHUTTER_HOLDING_SENSOR			(0x01 << 1)
+#define DIN_D1_FAN_IN_ALARM							(0x01 << 2)
+#define DIN_D1_FAN_OUT_ALARM						(0x01 << 3)
+#define DIN_D1_TEMPATURE_HIGH_ALARM					(0x01 << 4)
+#define DIN_D1_MAIN_AIR_DIGITAL_PRESSURE_GAGE		(0x01 << 5)
+#define DIN_D1_IONIZER_AIR_DIGITAL_PRESSURE_GAGE	(0x01 << 6)
+#define DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE		(0x01 << 7)
+#define DIN_D1_JIG_DIGITAL_PRESSURE_GAGE			(0x01 << 8)
 
-#define DIO_IN_01		(1<<0)
-#define DIO_IN_02		(1<<1)
-#define DIO_IN_03		(1<<2)
-#define DIO_IN_04		(1<<3)
-#define DIO_IN_05		(1<<4)
-#define DIO_IN_06		(1<<5)
-#define DIO_IN_07		(1<<6)
-#define DIO_IN_08		(1<<7)
+#define DIN_D1_IONIZER_CLEANSING_ALARM				(0x01 << 1)
+#define DIN_D1_IONIZER_HIGH_VOLTAGE_ALARM			(0x01 << 2)
+#define DIN_D1_ROBOT_IN_SENSOR_1					(0x01 << 3)
+#define DIN_D1_ROBOT_IN_SENSOR_2					(0x01 << 4)
+#define DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD			(0x01 << 5)
+#define DIN_D1_FRONT_SHUTTER_LEFT_FORWARD			(0x01 << 6)
+#define DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD			(0x01 << 7)
+#define DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD			(0x01 << 8)
 
-#define DI_START_READY		DIO_IN_01
-#define DI_BCR_READ_DONE	DIO_IN_02
-#define DI_PANEL_OUT_OK		DIO_IN_03
-#define DI_PANEL_OUT_NG		DIO_IN_04
-#define DI_TEST_SWITCH1		DIO_IN_05
-#define DI_TEST_SWITCH2		DIO_IN_06
+#define DIN_D1_REAR_SHUTTER_LEFT_BACKWARD			(0x01 << 1)
+#define DIN_D1_REAR_SHUTTER_LEFT_FORWARD			(0x01 << 2)
+#define DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD			(0x01 << 3)
+#define DIN_D1_REAR_SHUTTER_RIGHT_FORWARD			(0x01 << 4)
+#define DIN_D1_JIG_DOWN_1_SENSOR					(0x01 << 5)
+#define DIN_D1_JIG_UP_1_SENSOR						(0x01 << 6)
+#define DIN_D1_JIG_DOWN_2_SENSOR					(0x01 << 7)
+#define DIN_D1_JIG_UP_2_SENSOR						(0x01 << 8)
 
-#define DO_TEST_JUDGE_OK	DIO_OUT_01
-#define DO_TEST_JUDGE_NG	DIO_OUT_02
-#define DO_TEST_TESTING		DIO_OUT_03
+#define DIN_D1_JIG_DOWN_3_SENSOR					(0x01 << 1)
+#define DIN_D1_JIG_UP_3_SENSOR						(0x01 << 2)
+#define DIN_D1_SPARE1								(0x01 << 3)
+#define DIN_D1_SPARE2								(0x01 << 4)
+#define DIN_D1_SPARE3								(0x01 << 5)
+#define DIN_D1_SPARE4								(0x01 << 6)
+#define DIN_D1_SPARE5								(0x01 << 7)
+#define DIN_D1_SPARE6								(0x01 << 8)
+
+////////////////////////////////////////////////////////////////////////////////
+#define	DOUT_D1_TOWER_LAMP_RED						0x000001
+#define	DOUT_D1_TOWER_LAMP_YELLOW					0x000002
+#define	DOUT_D1_TOWER_LAMP_GREEN					0x000004
+#define	DOUT_D1_TOWER_LAMP_BUZZER					0x000008
+#define	DOUT_D1_MUTTING_1							0x000010
+#define	DOUT_D1_MUTTING_2							0x000020
+#define	DOUT_D1_LEFT_SAFETY_DOOR_OPEN				0x000040
+#define	DOUT_D1_RIGHT_SAFETY_DOOR_OPEN				0x000080
+#define	DOUT_D1_FRONT_SHUTTER_DOWN					0x000100
+#define	DOUT_D1_FRONT_SHUTTER_UP					0x000200
+#define	DOUT_D1_REAR_SHUTTER_DOWN					0x000400
+#define	DOUT_D1_REAR_SHUTTER_UP						0x000800
+#define	DOUT_D1_JIG_TILTING01_DOWN					0x001000
+#define	DOUT_D1_JIG_TILTING01_UP					0x002000
+#define	DOUT_D1_JIG_TILTING02_DOWN					0x004000
+#define	DOUT_D1_JIG_TILTING02_UP					0x008000
+#define	DOUT_D1_IONIZER_BLOW						0x010000
+#define	DOUT_D1_IONIZER_ON_OFF						0x020000
+#define	DOUT_D1_LED_ON_OFF							0x040000
+#define	DOUT_D1_ROBOT_IN_SENSOR_LAMP				0x080000		// 사용여부 확인 필요
+#define	DOUT_D1_SPARE1								0x100000
+#define	DOUT_D1_SPARE2								0x200000
+#define	DOUT_D1_SPARE3								0x400000
+#define	DOUT_D1_SPARE4								0x800000
+
+////////////////////////////////////////////////////////////////////////////////
+#define DIN_D2_JIG_SENSOR							(0x01 << 1)
+#define DIN_D2_JIG_DOOR_SENSOR						(0x01 << 2)
+#define DIN_D2_TILTING_60_SENSOR					(0x01 << 3)
+#define DIN_D2_TILTING_70_SENSOR					(0x01 << 4)
+#define DIN_D2_CH1_JIG_TRAY_IN_SENSOR				(0x01 << 5)
+#define DIN_D2_CH2_JIG_TRAY_IN_SENSOR				(0x01 << 6)
+#define DIN_D2_CH1_TRAY_UNCLAMP1					(0x01 << 7)
+#define DIN_D2_CH1_TRAY_UNCLAMP2					(0x01 << 8)
+
+#define DIN_D2_CH1_TRAY_UNCLAMP3					(0x01 << 1)
+#define DIN_D2_CH1_TRAY_UNCLAMP4					(0x01 << 2)
+#define DIN_D2_CH1_TRAY_UNCLAMP5					(0x01 << 3)
+#define DIN_D2_CH1_TRAY_UNCLAMP6					(0x01 << 4)
+#define DIN_D2_CH2_TRAY_UNCLAMP1					(0x01 << 5)
+#define DIN_D2_CH2_TRAY_UNCLAMP2					(0x01 << 6)
+#define DIN_D2_CH2_TRAY_UNCLAMP3					(0x01 << 7)
+#define DIN_D2_CH2_TRAY_UNCLAMP4					(0x01 << 8)
+
+#define DIN_D2_CH2_TRAY_UNCLAMP5					(0x01 << 1)
+#define DIN_D2_CH2_TRAY_UNCLAMP6					(0x01 << 2)
+#define DIN_D2_SPARE1								(0x01 << 3)
+#define DIN_D2_SPARE2								(0x01 << 4)
+#define DIN_D2_SPARE3								(0x01 << 5)
+#define DIN_D2_SPARE4								(0x01 << 6)
+#define DIN_D2_SPARE5								(0x01 << 7)
+#define DIN_D2_SPARE6								(0x01 << 8)
+
+#define DIN_D2_CH1_PENDANT_AUTO_MANUAL				(0x01 << 1)
+#define DIN_D2_CH1_PENDANT_BACK						(0x01 << 2)
+#define DIN_D2_CH1_PENDANT_NEXT						(0x01 << 3)
+#define DIN_D2_CH1_PENDANT_REPEAT					(0x01 << 4)
+#define DIN_D2_CH1_PENDANT_RESET					(0x01 << 5)
+#define DIN_D2_CH1_PENDANT_UP						(0x01 << 6)
+#define DIN_D2_CH1_PENDANT_DOWN						(0x01 << 7)
+#define DIN_D2_CH1_PENDANT_SEND						(0x01 << 8)
+
+#define DIN_D2_CH2_PENDANT_AUTO_MANUAL				(0x01 << 1)
+#define DIN_D2_CH2_PENDANT_BACK						(0x01 << 2)
+#define DIN_D2_CH2_PENDANT_NEXT						(0x01 << 3)
+#define DIN_D2_CH2_PENDANT_REPEAT					(0x01 << 4)
+#define DIN_D2_CH2_PENDANT_RESET					(0x01 << 5)
+#define DIN_D2_CH2_PENDANT_UP						(0x01 << 6)
+#define DIN_D2_CH2_PENDANT_DOWN						(0x01 << 7)
+#define DIN_D2_CH2_PENDANT_SEND						(0x01 << 8)
+
+////////////////////////////////////////////////////////////////////////////////
+#define	DOUT_D2_CH1_TRAY_UNCLAMP_1					0x000001
+#define	DOUT_D2_CH1_TRAY_UNCLAMP_2					0x000002
+#define	DOUT_D2_CH1_TRAY_UNCLAMP_3					0x000004
+#define	DOUT_D2_CH1_TRAY_UNCLAMP_4					0x000008
+#define	DOUT_D2_CH1_TRAY_UNCLAMP_5					0x000010
+#define	DOUT_D2_CH1_TRAY_UNCLAMP_6					0x000020
+#define	DOUT_D2_CH2_TRAY_UNCLAMP_1					0x000040
+#define	DOUT_D2_CH2_TRAY_UNCLAMP_2					0x000080
+#define	DOUT_D2_CH2_TRAY_UNCLAMP_3					0x000100
+#define	DOUT_D2_CH2_TRAY_UNCLAMP_4					0x000200
+#define	DOUT_D2_CH2_TRAY_UNCLAMP_5					0x000400
+#define	DOUT_D2_CH2_TRAY_UNCLAMP_6					0x000800
+#define	DOUT_D2_SPARE1								0x001000
+#define	DOUT_D2_SPARE2								0x002000
+#define	DOUT_D2_SPARE3								0x004000
+#define	DOUT_D2_SPARE4								0x008000
+#define	DOUT_D2_SPARE5								0x010000
+#define	DOUT_D2_SPARE6								0x020000
+#define	DOUT_D2_SPARE7								0x040000
+#define	DOUT_D2_SPARE8								0x080000
+#define	DOUT_D2_SPARE9								0x100000
+#define	DOUT_D2_SPARE10								0x200000
+#define	DOUT_D2_SPARE11								0x400000
+#define	DOUT_D2_SPARE12								0x800000
+
+
+
+
 ////////////////////////////////////////////
 //------------GMES DEFINE-------------------
 #define	HOST_EAYT					0
@@ -231,12 +349,12 @@ typedef enum _COLOR_IDX_{
 #define FONT_IDX_MAX			10
 
 /////////////////////////////////////////////////////////////////////////////
-// UD Pattern Generator Control Command
+// Control Target Command
 /////////////////////////////////////////////////////////////////////////////
 #define TARGET_PC								0xA1
 #define TARGET_MAIN								0xA2
 #define TARGET_IF								0xA3
-#define TARGET_GFD250							0xAB
+#define TARGET_DIO								0xA9
 
 #define PACKET_STX								0x02
 #define PACKET_ETX								0x03
@@ -253,7 +371,7 @@ typedef enum _COLOR_IDX_{
 #define PACKET_PT_DATA							14//+6
 
 /////////////////////////////////////////////////////////////////////////////
-// Command Packet
+// PG Command Packet
 /////////////////////////////////////////////////////////////////////////////
 // Command Define
 #define FLASH_PAGE_SIZE						(1024*32)
@@ -327,6 +445,13 @@ typedef enum _COLOR_IDX_{
 #define CMD_CTRL_GOTO_BOOT_UPLOAD			0xF4
 #define CMD_CTRL_BOARD_RESET				0xFD
 #define CMD_CTRL_FW_VERSION					0xFE
+
+/////////////////////////////////////////////////////////////////////////////
+// DIO Command Packet
+/////////////////////////////////////////////////////////////////////////////
+#define CMD_DIO_OUTPUT						0x02	// DIO Board Output
+#define CMD_DIO_INPUT						0x03	// DIO Board Input
+#define CMD_DIO_TIME_OUT					0xFF
 
 //----------------------------------------------------------------------------
 // LED B/L 점등기 제어 Command

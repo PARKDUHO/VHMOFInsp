@@ -41,6 +41,11 @@ public:
 	BOOL main_setControlrReset(int ch);
 	BOOL main_getCtrlFWVersion(int ch);
 
+	int	 main_setSendQuery(int nCommand, int nLength, char* pData, int ch);
+	BOOL main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime);
+	char gszMainRcvPacket[MAX_CH][256];
+
+
 	BOOL Lf_setQSPI_SPI_Init(int ch);
 	BOOL Lf_setQSPI_RelayOnOff(int ch, int onoff);
 	BOOL Lf_setQSPI_FlashEraseSector(int ch, int start, int end);
@@ -61,10 +66,13 @@ public:
 	BOOL Lf_sendQSPI_AreYouReady(int ch);
 	BOOL Lf_getQSPI_FW_Ver(int ch);
 
-	void Lf_setDioOutput(unsigned int OutBit, int onoff, int ch);
+
+	//GI DIO Board 변경
+	BOOL dio_writeDioOutput(int ch, int OutData);
+	BOOL dio_readDioInput(int ch);
+	BOOL dio_writeDioPortOnOff(int ch, int OutBit, int onoff);
 
 	
-	//BOOL UDP_setControlrIP(int sockSID, CString IPstring);
 
 	char gszRs232RcvPacket[2][1024 * 64];
 	char gsztcpRcvPacket[2][1024 * 64];
@@ -72,29 +80,7 @@ public:
 	int	 m_nI2cReadRtnCodeCh1;
 	int	 m_nI2cReadRtnCodeCh2;
 
-	//추가 (22.08.24)
-	void Lf_getDioInputPortRead(int ch);//(22.08.26)
 
-	//GI DIO Board 변경(IT OLED 추가분 4대적용)(22.08.08)
-	void DIO_waitIdleStatus(int ch);
-	BOOL DIO_setConnection(int ch);
-	BOOL DIO_setDisConnection(int ch);
-	int  DIO_setSendQuery(int nCommand, int nLength, char* pData, int ch);
-	BOOL DIO_getReceivePacket(char* m_szRcvPacket, int ch);
-
-	BOOL DIO_setOutputChannel(int DO_bit, int ch);
-	BOOL DIO_setClearChannel(int DO_bit, int ch);
-	BOOL DIO_getInputPort(int* DI_data, int ch);
-
-	BOOL m_bDioCommStatus[MAX_CH];//(22.08.08)
-	bool m_bDioEthInit;//(22.08.08)
-	char gszdioRcvPacket[256];
-
-	int  nDio_DO_Data[MAX_CH];
-
-	int	 main_setSendQuery(int nCommand, int nLength, char* pData, int ch);
-	BOOL main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime);
-	char gszMainRcvPacket[MAX_CH][256];
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// ALPDP Function

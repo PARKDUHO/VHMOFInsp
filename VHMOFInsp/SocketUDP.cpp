@@ -17,6 +17,7 @@ CSocketUDP::CSocketUDP()
 {
 	ZeroMemory(m_sendBuf, sizeof(m_sendBuf));
 	ZeroMemory(m_recvBuf, sizeof(m_recvBuf));
+	ZeroMemory(m_recvIP, sizeof(m_recvIP));
 
 	m_bEthernetInit		= TRUE;
 	m_bUDPSendFail		= FALSE;
@@ -157,7 +158,7 @@ void CSocketUDP::getLocalGateWay()
 }
 
 // CSocketUDP 멤버 함수
-void CSocketUDP::parseReceivePacket(int nRead, char* buf)
+void CSocketUDP::parseReceivePacket(CString recvIP, int nRead, char* buf)
 {
 	int source, dest;
 	CString recvpacket=_T("");
@@ -201,10 +202,9 @@ void CSocketUDP::parseReceivePacket(int nRead, char* buf)
 		}
 	}
 
-	// IPAddress와 Message 같이 전달한다.
-//	char szmsg[1024*8] = {0,};
-//	sprintf_s(szmsg, "%s", szipa, m_recvBuf);
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UDP_RECEIVE, (WPARAM)m_recvBuf, (LPARAM)m_recvSize);
+	// DIO에서 입력된는 Message는 ASCII코드만 입력되므로 LPARAM에 Receive Size 대신에 Ch 번호를 전달한다.
+	sprintf_s(m_recvIP, "%s", wchar_To_char(recvIP.GetBuffer(0)));
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UDP_DIO_RECEIVE, (WPARAM)m_recvBuf, (LPARAM)m_recvIP);
 
 
 	// 변수를 초기화 한다.
@@ -270,7 +270,7 @@ void CSocketUDP::OnReceive(int nErrorCode)
 		{
 			if (nRead != SOCKET_ERROR && nRead != 0)
 			{
-				parseReceivePacket(nRead, buf);
+				parseReceivePacket(recvIP, nRead, buf);
 			}
 		}
 	}

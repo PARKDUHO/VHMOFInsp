@@ -239,6 +239,48 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_GRAY159];
 			}
 		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_INI_CONN_DIO1)
+		{
+			if (nSysInitResult[INIT_DIO1] == INIT_NG)
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_RED128];
+			}
+			else if (nSysInitResult[INIT_DIO1] == INIT_OK)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY159);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY159];
+			}
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_INI_CONN_DIO2)
+		{
+			if (nSysInitResult[INIT_DIO2] == INIT_NG)
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_RED128];
+			}
+			else if (nSysInitResult[INIT_DIO2] == INIT_OK)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY159);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY159];
+			}
+		}
 
 
 		break;
@@ -351,7 +393,8 @@ void CInitialize::Lf_InitFontset()
 	GetDlgItem(IDC_STT_INI_CONN_PG1)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_PG2)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_QSPI)->SetFont(&m_Font[2]);
-	GetDlgItem(IDC_STT_INI_CONN_DIO)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_STT_INI_CONN_DIO1)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_STT_INI_CONN_DIO2)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_MELSEC)->SetFont(&m_Font[2]);
 
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -482,8 +525,25 @@ void CInitialize::Lf_initConnQspi()
 
 void CInitialize::Lf_initConnDIO()
 {
+	if (m_pApp->commApi->dio_readDioInput(CH1) == TRUE)
+	{
+		nSysInitResult[INIT_DIO1] = INIT_OK;
+	}
+	else
+	{
+		nSysInitResult[INIT_DIO1] = INIT_NG;
+	}
+	GetDlgItem(IDC_STT_INI_CONN_DIO1)->Invalidate(FALSE);
 
-	nSysInitResult[INIT_DIO] = INIT_OK;
+	if (m_pApp->commApi->dio_readDioInput(CH2) == TRUE)
+	{
+		nSysInitResult[INIT_DIO2] = INIT_OK;
+	}
+	else
+	{
+		nSysInitResult[INIT_DIO2] = INIT_NG;
+	}
+	GetDlgItem(IDC_STT_INI_CONN_DIO2)->Invalidate(FALSE);
 }
 
 

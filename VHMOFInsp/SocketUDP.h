@@ -1,9 +1,9 @@
 #pragma once
 
 // CSocketUDP 명령 대상입니다.
-#define WM_UDP_RECEIVE				(WM_USER+200)
-#define UDP_SOCKET_PORT				50001
-#define LOCAL_HOST_IP				_T("127.0.0.1")
+#define WM_UDP_DIO_RECEIVE				(WM_USER+200)
+#define UDP_SOCKET_PORT					50001
+#define LOCAL_HOST_IP					_T("127.0.0.1")
 
 
 
@@ -25,6 +25,7 @@ public:
 	BOOL m_bUDPSendFail;
 	char m_sendBuf[PACKET_SIZE];	// 보낼 데이터를 저장
 
+	char m_recvIP[20];
 	char m_recvBuf[PACKET_SIZE*4];	// 받은 데이터를 저장
 	int  m_recvSize;				// 받은 데이터의 Size
 	int  m_recvCommand;				// 받은 Command
@@ -40,7 +41,7 @@ public:
 	void getLocalIPAddress();
 	void getLocalGateWay();
 
-	void parseReceivePacket(int nRead, char* buf);
+	void parseReceivePacket(CString recvIP, int nRead, char* buf);
 
 	BOOL CreatSocket(UINT nSocketPort, int nSocketType);
 	BOOL CloseSocket();

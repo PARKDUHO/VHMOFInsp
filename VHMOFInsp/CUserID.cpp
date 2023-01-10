@@ -101,7 +101,12 @@ BOOL CUserID::PreTranslateMessage(MSG* pMsg)
 			}
 			case VK_RETURN:
 			{
-				Lf_loginProcess();
+				if (Lf_loginProcess() == FALSE)
+				{
+					GetDlgItem(IDC_EDT_UI_USER_ID)->EnableWindow(TRUE);
+					GetDlgItem(IDC_BTN_UI_CONFIRM)->EnableWindow(TRUE);
+					GetDlgItem(IDC_BTN_UI_CANCEL)->EnableWindow(TRUE);
+				}
 				return 1;
 			}
 		}
@@ -160,7 +165,12 @@ void CUserID::OnTimer(UINT_PTR nIDEvent)
 void CUserID::OnBnClickedBtnUiConfirm()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	Lf_loginProcess();
+	if (Lf_loginProcess() == FALSE)
+	{
+		GetDlgItem(IDC_EDT_UI_USER_ID)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BTN_UI_CONFIRM)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BTN_UI_CANCEL)->EnableWindow(TRUE);
+	}
 }
 
 
@@ -234,16 +244,11 @@ void CUserID::Lf_InitDlgDesign()
 	m_btnUserCancel.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
 }
 
-void CUserID::Lf_loginProcess()
+BOOL CUserID::Lf_loginProcess()
 {
 	CString strUserid, szpassword;
 
 	GetDlgItem(IDC_EDT_UI_USER_ID)->GetWindowText(strUserid);
-// 	if (strUserid.GetLength() <= 4)
-// 	{
-// 		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("USER ID WRONG"), ERROR_CODE_19);
-// 		return;
-// 	}
 
 	// Button을 비활성화 시킨다.
 	GetDlgItem(IDC_EDT_UI_USER_ID)->EnableWindow(FALSE);
@@ -269,7 +274,6 @@ void CUserID::Lf_loginProcess()
 	}
 	else
 	{
-#if (CODE_MES_EAS_USE==1)
 		//MES Connect
 		if (m_pApp->m_bIsGmesConnect == FALSE) {
 
@@ -279,9 +283,9 @@ void CUserID::Lf_loginProcess()
 
 				CString sLog;
 				sLog.Format(_T("[GMES] Connection Fail"));
-				m_pObmApp->Gf_fucWriteMLog(sLog);
+				m_pApp->Gf_writeMLog(sLog);
 
-				return;
+				return FALSE;
 			}
 		}
 		//EAS Connect
@@ -295,9 +299,9 @@ void CUserID::Lf_loginProcess()
 
 					CString sLog;
 					sLog.Format(_T("[EAS] Connection Fail"));
-					m_pObmApp->Gf_fucWriteMLog(sLog);
+					m_pApp->Gf_writeMLog(sLog);
 
-					return;
+					return FALSE;
 				}
 			}
 		}
@@ -308,50 +312,44 @@ void CUserID::Lf_loginProcess()
 			m_pApp->m_bUserIdPM = FALSE;
 
 			{
-				if (m_pObmApp->m_bIsSendEAYT == FALSE)
+				if (m_pApp->m_bIsSendEAYT == FALSE)
 				{
-					if (m_pObmApp->Gf_gmesSendHost(HOST_EAYT) == FALSE)
+					if (m_pApp->Gf_gmesSendHost(HOST_EAYT) == FALSE)
 					{
-						return;
+						return FALSE;
 					}
-					m_pObmApp->m_bIsSendEAYT = TRUE;
+					m_pApp->m_bIsSendEAYT = TRUE;
 				}
 
-				m_pObmApp->pCimNet->SetUserId(strUserid);
-				if (m_pObmApp->Gf_gmesSendHost(HOST_UCHK) == FALSE)
+				m_pApp->m_pCimNet->SetUserId(strUserid);
+				if (m_pApp->Gf_gmesSendHost(HOST_UCHK) == FALSE)
 				{
-					return;
+					return FALSE;
 				}
 
-				if (m_pObmApp->Gf_gmesSendHost(HOST_EDTI) == FALSE)
+				if (m_pApp->Gf_gmesSendHost(HOST_EDTI) == FALSE)
 				{
-					return;
+					return FALSE;
 				}
 
-				// User  Loging 후 Monitoring에 User ID를 전달한다.
-				m_pObmApp->m_pMntComm->mnt_setAddItem(_T("WORKER"), m_pObmApp->m_sLoginUserID);
-				m_pObmApp->m_pMntComm->mnt_setSendMessage();
-
-				m_pObmApp->m_nUserLevel = MENU_LEVEL_OP;	// OP
 				CString sLog;
 				sLog.Format(_T("<PGM> User ID : %s"), strUserid);
-				m_pObmApp->Gf_fucWriteMLog(sLog);
-				Write_SysIniFile(_T("SOFTWARE_UPDATE"), _T("USER_ID"), strUserid);
+				m_pApp->Gf_writeMLog(sLog);
 				CDialog::OnOK();
 			}
 		}
 		else
 		{
-			CString strErrMsg = m_pApp->Lf_getErrorCodeData(_T("EQP_GOOIL"), EQP_ERROR_CODE59);
-			m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("USER ID WRONG"), ERROR_CODE_19);
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("USER ID WRONG"), ERROR_CODE_19);
 		}
-#endif
 	}
 
 	Write_SysIniFile(_T("SYSTEM"), _T("LOGIN_USERID"), strUserid);
 
 	CDialog::OnOK();
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	return TRUE;
 }
 
 

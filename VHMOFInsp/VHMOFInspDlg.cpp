@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_TIMER()
 	ON_MESSAGE(WM_UPDATE_SYSTEM_INFO, OnUpdateSystemInfo)
+	ON_MESSAGE(WM_UDP_DIO_RECEIVE, OnUdpReceiveDio)
 	ON_BN_CLICKED(IDC_BTN_MA_USERID, &CVHMOFInspDlg::OnBnClickedBtnMaUserid)
 	ON_BN_CLICKED(IDC_BTN_MA_MODEL_CHANGE, &CVHMOFInspDlg::OnBnClickedBtnMaModelChange)
 	ON_BN_CLICKED(IDC_BTN_MA_MODEL_INFO, &CVHMOFInspDlg::OnBnClickedBtnMaModelInfo)
@@ -101,7 +102,23 @@ END_MESSAGE_MAP()
 
 
 // CVHMOFInspDlg 메시지 처리기
+LRESULT CVHMOFInspDlg::OnUdpReceiveDio(WPARAM wParam, LPARAM lParam)
+{
+	CString sLog;
+	CString strIP, strPacket;
 
+	strIP.Format(_T("%s"), char_To_wchar((char*)lParam));
+	strPacket.Format(_T("%s"), char_To_wchar((char*)wParam));
+
+	sLog.Format(_T("<UDP Recv> [%s] %s"), strIP, strPacket);
+
+	if (strIP == UDP_DIO_BOARD1_IP)		m_pApp->udp_processDioPacket(CH1, strPacket);
+	if (strIP == UDP_DIO_BOARD2_IP)		m_pApp->udp_processDioPacket(CH2, strPacket);
+
+	return 0;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CVHMOFInspDlg::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
@@ -248,6 +265,8 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				CModelChange mcDlg;
 				mcDlg.DoModal();
+
+				Lf_updateSystemInfo();
 				return TRUE;
 			}
 			case 'd':
@@ -255,6 +274,8 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				CModelInfo modelDlg;
 				modelDlg.DoModal();
+
+				Lf_updateSystemInfo();
 				return TRUE;
 			}
 			case 'i':
@@ -262,6 +283,8 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				CInitialize initDlg;
 				initDlg.DoModal();
+
+				Lf_updateSystemInfo();
 				return TRUE;
 			}
 			case 'l':
@@ -282,6 +305,8 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				CSystem systemDlg;
 				systemDlg.DoModal();
+
+				Lf_updateSystemInfo();
 				return TRUE;
 			}
 			case 'u':
@@ -289,6 +314,8 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			{
 				CUserID userDlg;
 				userDlg.DoModal();
+
+				Lf_updateSystemInfo();
 				return TRUE;
 			}
 			default:

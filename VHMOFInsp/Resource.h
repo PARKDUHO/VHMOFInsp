@@ -35,6 +35,8 @@
 #define IDD_MAINTENANCE                 169
 #define IDD_AUTO_FIRMWARE               171
 #define IDD_MESSAGE_QUESTION            174
+#define IDD_MAINTENANCE_PG              176
+#define IDD_MAINTENANCE_DIO             178
 #define IDC_BTN_MA_USERID               1000
 #define IDC_BTN_MA_MODEL_CHANGE         1001
 #define IDC_STT_USER_ID_TITLE           1001
@@ -188,7 +190,7 @@
 #define IDC_STT_INI_CONN_TITLE          1087
 #define IDC_STT_INI_CONN_PG1            1088
 #define IDC_STT_INI_CONN_QSPI           1089
-#define IDC_STT_INI_CONN_DIO            1090
+#define IDC_STT_INI_CONN_DIO1           1090
 #define IDC_STT_INI_CONN_MELSEC         1091
 #define IDC_BTN_INI_RETRY               1092
 #define IDC_BTN_INI_RETRY2              1093
@@ -197,6 +199,7 @@
 #define IDC_STT_INI_CONN_PG2            1094
 #define IDC_STT_TR_PID_TITLE            1094
 #define IDC_STT_TR_PID_VALUE            1095
+#define IDC_STT_INI_CONN_DIO2           1095
 #define IDC_STT_TR_QTY_TOTAL_TITLE      1096
 #define IDC_STT_TR_QTY_OK_TITLE         1097
 #define IDC_STT_TR_QTY_NG_TITLE         1098
@@ -296,10 +299,19 @@
 #define IDC_STT_MQ_MESSAGE              1150
 #define IDC_BTN_MQ_CONFIRM              1151
 #define IDC_BTN_MQ_CANCEL               1152
+#define IDC_TAB_MT_MAINTENANCE          1152
+#define IDC_LST_MO_DIO1_IN              1153
+#define IDC_LST_MO_DIO1_OUT             1154
+#define IDC_LST_MO_DIO2_IN              1155
 #define IDC_STT_SY_STATION_TIT          1156
+#define IDC_LST_MO_DIO2_OUT             1156
+#define IDC_BTN_MO_WRITE_DIO1           1157
 #define IDC_STT_SY_MES_TIT              1158
+#define IDC_BTN_MO_WRITE_DIO2           1158
 #define IDC_IPD_SY_MES_LOCAL_IP         1159
+#define IDC_LST_MO_DIO1_TITLE           1159
 #define IDC_STT_SY_PATH_TIT             1160
+#define IDC_LST_MO_DIO2_TITLE           1160
 #define IDC_EDT_SY_MODEL_FILE_PATH      1161
 #define IDC_EDT_SY_PATTERN_FILE_PATH    1162
 #define IDC_EDT_SY_EDID_FILE_PATH       1163
@@ -314,9 +326,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        176
+#define _APS_NEXT_RESOURCE_VALUE        180
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1152
+#define _APS_NEXT_CONTROL_VALUE         1161
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

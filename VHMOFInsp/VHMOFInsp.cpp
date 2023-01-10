@@ -36,6 +36,7 @@ CVHMOFInspApp::CVHMOFInspApp()
 	lpInspWorkInfo		= new INSPWORKINFO;
 	m_pPatternView		= new CPatternView();
 	m_pSocketTCPMain	= new CSocketTcpApp;		// TCP Socket Class 생성(Main Board 1)(22.12.08)
+	m_pUDPSocket		= new CSocketUDP;
 	commApi				= new CCommApi;
 	m_pCimNet			= new CCimNetCommApi;
 
@@ -59,7 +60,7 @@ BOOL CVHMOFInspApp::InitInstance()
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 	{
 		CloseHandle(m_hAppMutex);
-		AfxMessageBox(_T("Program is running!!!"));
+		AfxMessageBox(_T("VH MOFI Program is running!!!"));
 		return FALSE;
 	}
 
@@ -101,10 +102,12 @@ BOOL CVHMOFInspApp::InitInstance()
 	// 적절한 내용으로 수정해야 합니다.
 	SetRegistryKey(_T("로컬 애플리케이션 마법사에서 생성된 애플리케이션"));
 
-	Gf_LoadSystemData();
-	Gf_LoadModelFile();
+	Gf_LoadSystemData();	// EQP ID가 필요하여 Load System은 시작 Log 출력전에 호출한다.
 	Gf_writeMLog(_T("*****************************:*****************************"));
 
+	Lf_initGlobalVariable();
+	Gf_LoadModelFile();
+	Lf_initCreateUdpSocket();
 
 	// GMES DLL Initialize
 	if (Gf_gmesInitServer(SERVER_MES) == FALSE)
@@ -175,6 +178,17 @@ LPINSPWORKINFO CVHMOFInspApp::GetInspWorkInfo()
 	VERIFY(NULL != lpInspWorkInfo);
 
 	return lpInspWorkInfo;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Global Variable Init
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CVHMOFInspApp::Lf_initGlobalVariable()
+{
+	ZeroMemory(m_nDioOutBit, sizeof(m_nDioOutBit));
+
+	m_bIsSendEAYT = FALSE;
 }
 
 
@@ -578,22 +592,17 @@ BOOL CVHMOFInspApp::Gf_gmesDisConnect(int nServerType)
 	return m_pCimNet->CloseTibRv(nServerType);
 }
 
-void CVHMOFInspApp::Gf_setGMesGoodInfo()
+void CVHMOFInspApp::Gf_gmesSetGoodInfo()
 {
 	m_pCimNet->SetPF(_T("P"));
 }
 
-void CVHMOFInspApp::Gf_setGMesBGradeInfo()
-{
-	m_pCimNet->SetPF(_T("P"));
-}
-
-void CVHMOFInspApp::Gf_setGMesBadInfo()
+void CVHMOFInspApp::Gf_gmesSetBadInfo()
 {
 	m_pCimNet->SetPF(_T("F"));
 }
 
-void CVHMOFInspApp::Lf_setGmesValuePCHK()
+void CVHMOFInspApp::Lf_gmesSetValuePCHK()
 {
 	m_pCimNet->SetMachineName(lpSystemInfo->m_sEqpName);
 
@@ -601,7 +610,7 @@ void CVHMOFInspApp::Lf_setGmesValuePCHK()
 	m_pCimNet->SetSerialNumber(char_To_wchar(lpInspWorkInfo->m_szSerialNum));
 }
 
-void CVHMOFInspApp::Lf_setEasValueAPDR()
+void CVHMOFInspApp::Lf_gmesSetValueAPDR()
 {
 	CString sAPDInfo;
 
@@ -612,7 +621,7 @@ void CVHMOFInspApp::Lf_setEasValueAPDR()
 
 	m_pCimNet->SetAPDInfo(sAPDInfo);
 }
-void CVHMOFInspApp::Lf_setGmesValueEICR()
+void CVHMOFInspApp::Lf_gmesSetValueEICR()
 {
 	m_pCimNet->SetPanelID(char_To_wchar(lpInspWorkInfo->m_szPanelID));
 	m_pCimNet->SetSerialNumber(char_To_wchar(lpInspWorkInfo->m_szSerialNum));
@@ -639,10 +648,10 @@ void CVHMOFInspApp::Lf_setGmesValueEICR()
 	m_pCimNet->SetPvcomAdjustDropValue(_T(""));
 
 	// Pattern 정보 설정
-	m_pCimNet->SetPatternInfo(Lf_getGmesPatternData());
+	m_pCimNet->SetPatternInfo(Lf_gmesGetPatternData());
 }
 
-CString CVHMOFInspApp::Lf_getGmesPatternData()
+CString CVHMOFInspApp::Lf_gmesGetPatternData()
 {
 	CString sdata1 = _T(""), sdata2 = _T(""), rtnData = _T("");
 	int cnt = 0, Num = 0;
@@ -664,7 +673,7 @@ CString CVHMOFInspApp::Lf_getGmesPatternData()
 	return rtnData;
 }
 
-CString CVHMOFInspApp::Gf_getGmesRTNCD()
+CString CVHMOFInspApp::Gf_gmesGetRTNCD()
 {
 	CString strBuff;
 
@@ -672,7 +681,7 @@ CString CVHMOFInspApp::Gf_getGmesRTNCD()
 	return strBuff;
 }
 
-void CVHMOFInspApp::Gf_showLocalErrorMsg()
+void CVHMOFInspApp::Gf_gmesShowLocalErrorMsg()
 {
 	CString strMsg;
 
@@ -680,7 +689,7 @@ void CVHMOFInspApp::Gf_showLocalErrorMsg()
 	Gf_ShowMessageBox(MSG_ERROR, _T("MES ERROR"), ERROR_CODE_36, strMsg);
 }
 
-BOOL CVHMOFInspApp::Gf_sendGmesHost(int nHostCmd)
+BOOL CVHMOFInspApp::Gf_gmesSendHost(int nHostCmd)
 {
 	int nRtnCD;
 	CString sLog;
@@ -711,7 +720,7 @@ Send_RETRY:
 	}
 	else if (nHostCmd == HOST_PCHK)
 	{
-		Lf_setGmesValuePCHK();
+		Lf_gmesSetValuePCHK();
 		nRtnCD = m_pCimNet->PCHK();
 
 		if (nRtnCD == RTN_OK)
@@ -728,12 +737,12 @@ Send_RETRY:
 	}
 	else if (nHostCmd == HOST_EICR)
 	{
-		Lf_setGmesValueEICR();
+		Lf_gmesSetValueEICR();
 		nRtnCD = m_pCimNet->EICR();
 	}
 	else if (nHostCmd == HOST_APDR)
 	{
-		Lf_setEasValueAPDR();
+		Lf_gmesSetValueAPDR();
 		nRtnCD = m_pCimNet->APDR();
 	}
 	sLog.Format(_T("<HOST_R> %s"), m_pCimNet->GetHostRecvMessage());
@@ -774,7 +783,7 @@ Send_RETRY:
 	}
 	else
 	{
-		Gf_showLocalErrorMsg();
+		Gf_gmesShowLocalErrorMsg();
 	}
 	return FALSE;
 }
@@ -805,6 +814,7 @@ void CVHMOFInspApp::Gf_setPatEndCheckTime(int i)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TCP/IP 통신 Protocol (Main Board)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CVHMOFInspApp::main_tcpProcessPacket(int ch, char* recvPacket)
 {
@@ -949,3 +959,187 @@ void CVHMOFInspApp::main_parse_GoToBootSection(int ch, char* recvPacket)
 		m_nDownloadReadyAckCount++;
 	}
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// UDP 통신 Protocol (DIO Board)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CVHMOFInspApp::Lf_initCreateUdpSocket()
+{
+	if (m_pUDPSocket->CreatSocket(UDP_SOCKET_PORT, SOCK_DGRAM) == FALSE)
+	{
+		AfxMessageBox(_T("UDP Socket Create Fail"), MB_ICONERROR);
+		return;
+	}
+
+	Lf_initLocalHostIPAddress();
+}
+
+BOOL CVHMOFInspApp::Lf_initLocalHostIPAddress()
+{
+	// Receive Message 처리를 제외할 자신의 IP와 GateIP를 가져온다.
+	//	m_pUDPSocket->m_bEthernetInit = FALSE;
+
+	m_pUDPSocket->getLocalIPAddress();
+	m_pUDPSocket->getLocalGateWay();
+
+	return TRUE;
+}
+
+BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(CString ip, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK, int waitTime)
+{
+	int datalen = 0;
+	int packetlen = 0;
+	BYTE nChkSum = 0;
+	char szbuff[5] = { 0, };
+	char sendPacket[1024] = { 0, };
+
+	datalen = nSize;
+
+	// data 앞까지 Packet 생성
+	sprintf_s(sendPacket, "%cA1%02X%02X%02X%04X", PACKET_STX, target, nID, nCommand, datalen);
+
+	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
+	packetlen = (int)strlen(sendPacket);
+
+	memcpy(&sendPacket[packetlen], pdata, datalen);
+
+	// data 를 포함한 packet의 길이를 구한다.
+	packetlen += datalen;
+
+	// 생성된 Packet을 이용하여 CheckSum을 구한다.
+	for (int j = 1; j < packetlen; j++)		// Check Sum
+	{
+		nChkSum += sendPacket[j];
+	}
+	sprintf_s(szbuff, "%02X%c", nChkSum, 0x03);
+
+	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
+	memcpy(&sendPacket[packetlen], szbuff, 3);
+	packetlen += 3;
+
+	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
+	sendPacket[packetlen] = 0x00;
+
+	// Send Log를 기록
+#if	(DEBUG_TCP_COMM_LOG==1)
+	CString sLog;
+	sLog.Format(_T("<UDP Send> [%s] %s"), ip, char_To_wchar(sendPacket));
+	m_pApp->Gf_writeMLog(sLog);
+#endif
+
+	// 생성된 Packet을 전송.
+	UINT ret = TRUE;
+	m_nAckCmdDio = 0;
+
+	m_pUDPSocket->SendTo(sendPacket, packetlen, UDP_SOCKET_PORT, ip);//m_pUDPSocket->SendToUDP(ip, packetlen, sendPacket);
+
+	// ACK Receive	
+	if (recvACK == ACK)
+	{
+		if (udp_procWaitRecvACK_DIO(nCommand, waitTime) == TRUE)
+			ret = TRUE;
+		else
+			ret = FALSE;
+	}
+
+	return ret;
+}
+
+BOOL CVHMOFInspApp::udp_procWaitRecvACK_DIO(int cmd, DWORD waitTime)
+{
+	DWORD stTick = ::GetTickCount();
+
+	while (1)
+	{
+		if (cmd == m_nAckCmdDio)
+		{
+			return TRUE;
+		}
+
+		DWORD edTick = GetTickCount();
+
+		if ((edTick - stTick) > waitTime)
+		{
+			return FALSE;
+		}
+
+		ProcessMessage();
+	}
+	return FALSE;
+}
+
+void CVHMOFInspApp::udp_processDioPacket(int ch, CString strPacket)
+{
+	int recvCMD = 0;
+
+	// Receive Packet에서 Command 정보를 추출한다.
+	recvCMD = _tcstol(strPacket.Mid(PACKET_PT_CMD, 2), NULL, 16);
+
+	// Message 처리
+	switch (recvCMD)
+	{
+
+	case CMD_DIO_INPUT:
+	{
+		m_nAckCmdDio = CMD_DIO_INPUT;
+		udp_procParseDIO(ch, strPacket);
+		break;
+	}
+
+	case CMD_DIO_TIME_OUT:
+	{
+		m_nAckCmdDio = recvCMD;
+		return;
+	}
+	}
+
+	// ACK Receive Check는 모든 Packet처리가 완료된 이후 Set한다.
+	m_nAckCmdDio = recvCMD;
+}
+
+
+BOOL CVHMOFInspApp::udp_procParseDIO(int ch, CString packet)
+{
+	int retcode;
+	BYTE status1 = 0, status2 = 0, status3 = 0, status4 = 0, status5 = 0, tmp = 0;
+	retcode = _ttoi(packet.Mid(PACKET_PT_RET, 1));
+
+	if (retcode == 0)
+	{
+		int ptr = 0, len = 0;
+		ptr = PACKET_PT_DATA;
+		len = 2;
+
+		status5 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status5 = ~status5;
+		ptr += len;	len = 2;
+
+		tmp = status4 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status4 = (~status4) & 0xC3;
+		status4 |= tmp & 0x3C;
+		ptr += len;	len = 2;
+
+		status3 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status3 = ~status3;
+		ptr += len;	len = 2;
+
+		tmp = status2 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status2 = (~status2) & 0xF0;
+		status2 |= tmp & 0x0F;
+		ptr += len;	len = 2;
+
+		status1 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status1 = ~status1;
+		ptr += len;	len = 2;
+
+		m_pApp->m_nDioInBit[ch][4] = status5;
+		m_pApp->m_nDioInBit[ch][3] = status4;
+		m_pApp->m_nDioInBit[ch][2] = status3;
+		m_pApp->m_nDioInBit[ch][1] = status2;
+		m_pApp->m_nDioInBit[ch][0] = status1;
+	}
+
+	return TRUE;
+}
+
