@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAutoFirmware.h" />
+    <ClInclude Include="CDefectResult.h" />
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="CInitialize.h" />
     <ClInclude Include="CMaintenance.h" />
@@ -196,7 +197,9 @@
     <ClInclude Include="CModelInfoData.h" />
     <ClInclude Include="CModelInfoFusing.h" />
     <ClInclude Include="CommApi.h" />
+    <ClInclude Include="CPanelID.h" />
     <ClInclude Include="CPassword.h" />
+    <ClInclude Include="CSafetyLock.h" />
     <ClInclude Include="CSystem.h" />
     <ClInclude Include="CTestPattern.h" />
     <ClInclude Include="CTestReady.h" />
@@ -220,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAutoFirmware.cpp" />
+    <ClCompile Include="CDefectResult.cpp" />
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="CInitialize.cpp" />
     <ClCompile Include="CMaintenance.cpp" />
@@ -232,7 +236,9 @@
     <ClCompile Include="CModelInfoData.cpp" />
     <ClCompile Include="CModelInfoFusing.cpp" />
     <ClCompile Include="CommApi.cpp" />
+    <ClCompile Include="CPanelID.cpp" />
     <ClCompile Include="CPassword.cpp" />
+    <ClCompile Include="CSafetyLock.cpp" />
     <ClCompile Include="CSystem.cpp" />
     <ClCompile Include="CTestPattern.cpp" />
     <ClCompile Include="CTestReady.cpp" />

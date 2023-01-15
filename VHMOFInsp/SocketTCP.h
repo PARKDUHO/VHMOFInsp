@@ -6,16 +6,17 @@
 #define ETH_ACK_NOT_WAIT			0		// ACK를 기다리지 않음. : 0Sec
 #define ETH_ACK_NOR_WAIT_TIME		2000	// Normal Control Receive Wait time : 2Sec
 #define ETH_CONNECT_WAIT_TIME		2000	// Connect Wait time : 2Sec
-#define MAX_SOCKET					16
 
-#define SOC_SERVER_SPI_1			0
-#define SOC_SERVER_SPI_2			1
-#define SOC_SERVER_DIO_1			2       //DIO Board 1 (22.08.08)
-#define SOC_SERVER_DIO_2			3       //DIO Board 2 (22.12.08)
-#define SOC_MAIN_BD_1				4
-#define SOC_MAIN_BD_2				5
-#define SOC_FPGA_BD_1				6
-#define SOC_FPGA_BD_2				7
+enum
+{
+	SOC_SERVER_SPI_1 = 0,
+	SOC_SERVER_SPI_2,
+	SOC_MAIN_BD_1,
+	SOC_MAIN_BD_2,
+	SOC_FPGA_BD_1,
+	SOC_FPGA_BD_2,
+	MAX_SOCKET
+};
 
 #define SOC_SERVER_MAX				255
 

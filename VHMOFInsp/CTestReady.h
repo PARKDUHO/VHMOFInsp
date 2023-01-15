@@ -29,6 +29,7 @@ public:
 
 
 protected:
+	LPMODELINFO		lpModelInfo;
 	LPINSPWORKINFO	lpInspWorkInfo;
 	LPSYSTEMINFO	lpSystemInfo;
 
@@ -37,9 +38,22 @@ protected:
 	void Lf_InitColorBrush();
 	void Lf_InitDlgDesign();
 
-	BOOL Lf_FinalTestStart();
+	void Lf_readyInitialize();
+	void Lf_updateQuantityCount();
+
+	BOOL Lf_FinalTestStart(int ch);
+	BOOL Lf_InspRoomLEDOnOff(BOOL bOnOff);
+	BOOL Lf_checkPanelID(int ch);
 	BOOL Lf_getControlBdReady(int ch);
+	BOOL Lf_setSystemAutoFusing(int ch);
+	BOOL Lf_AutoModelChange();
 	BOOL Lf_getFirmwareVersion(int ch);
+	BOOL Lf_checkCableOpen(int ch);
+	BOOL Lf_setGpioControl(int ch);
+	BOOL Lf_setGioSetting(int ch);
+
+	BOOL Lf_openGMESJudge();
+	BOOL Lf_sendPanelResult();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

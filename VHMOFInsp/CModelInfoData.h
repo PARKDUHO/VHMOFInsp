@@ -96,6 +96,13 @@ public:
 	CComboBox m_cmbSpiClock;
 	CComboBox m_cmbGpioPullUp;
 	CComboBox m_cmbGpioLevel;
+	CComboBox m_cmbGpio1Output;
+	CComboBox m_cmbGpio2Output;
+	CComboBox m_cmbGpio3Output;
+	CComboBox m_cmbGio1Setting;
+	CComboBox m_cmbGio2Setting;
+	CComboBox m_cmbGio3Setting;
+	CComboBox m_cmbGio4Setting;
 	CEdit m_edtMdPtnVcc;
 	CEdit m_edtMdPtnVel;
 	CEdit m_edtMdPtnIcc;
@@ -117,4 +124,5 @@ public:
 	CEdit m_edtMdPwmFrequency;
 	CEdit m_edtMdPwmDuty;
 	CComboBox m_cmbMdPwmLevel;
+	CComboBox m_cmbMdCableOpenCheck;
 };

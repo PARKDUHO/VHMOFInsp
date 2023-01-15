@@ -215,19 +215,39 @@ void CGradientStatic::OnPaint()
 	::SetBkMode(dc, TRANSPARENT);
 	GetClientRect(&rect);
 
-	if (m_iAlign == TEXT_ALIGN_CENTER) // center
+	if (m_bTextMultiLine == TRUE)
 	{
-		::DrawText(dc, m_sTEXT, -1, &rect, DT_SINGLELINE  | DT_VCENTER | DT_CENTER | DT_WORDBREAK);
+		if (m_iAlign == TEXT_ALIGN_CENTER) // center
+		{
+			::DrawText(dc, m_sTEXT, -1, &rect, /*DT_SINGLELINE | DT_VCENTER | */DT_CENTER | DT_WORDBREAK);
+		}
+		else if (m_iAlign == TEXT_ALIGN_LEFT) // left
+		{
+			rect.left += m_iLeftSpacing;
+			::DrawText(dc, m_sTEXT, -1, &rect, /*DT_SINGLELINE | DT_VCENTER | */ DT_LEFT | DT_WORDBREAK);
+		}
+		else //right
+		{
+			rect.right -= m_iLeftSpacing;
+			::DrawText(dc, m_sTEXT, -1, &rect, /*DT_SINGLELINE | DT_VCENTER | */ DT_RIGHT | DT_WORDBREAK);
+		}
 	}
-	else if(m_iAlign == TEXT_ALIGN_LEFT) // left
+	else
 	{
-		rect.left+=m_iLeftSpacing;
-		::DrawText(dc, m_sTEXT, -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_LEFT | DT_WORDBREAK);
-	}
-	else //right
-	{
-		rect.right-=m_iLeftSpacing;
-		::DrawText(dc, m_sTEXT, -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_RIGHT | DT_WORDBREAK);
+		if (m_iAlign == TEXT_ALIGN_CENTER) // center
+		{
+			::DrawText(dc, m_sTEXT, -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_CENTER | DT_WORDBREAK);
+		}
+		else if (m_iAlign == TEXT_ALIGN_LEFT) // left
+		{
+			rect.left += m_iLeftSpacing;
+			::DrawText(dc, m_sTEXT, -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_LEFT | DT_WORDBREAK);
+		}
+		else //right
+		{
+			rect.right -= m_iLeftSpacing;
+			::DrawText(dc, m_sTEXT, -1, &rect, DT_SINGLELINE | DT_VCENTER | DT_RIGHT | DT_WORDBREAK);
+		}
 	}
 
 	if(pFont)

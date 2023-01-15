@@ -101,29 +101,57 @@ void CCommApi::makeFusingData(char* pszData)
 	nData = (int)((lpModelInfo->m_fPowerVdd * 100) + (lpModelInfo->m_fPowerVddOffset * 100));
 	stBuff.Format(_T("%04d"), nData);											stFusingStr += stBuff;	// VDD
 
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq1);						stFusingStr += stBuff;	// Power Sequence On 1
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq2);						stFusingStr += stBuff;	// Power Sequence On 2
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq3);						stFusingStr += stBuff;	// Power Sequence On 3
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq4);						stFusingStr += stBuff;	// Power Sequence On 4
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq5);						stFusingStr += stBuff;	// Power Sequence On 5
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOnSeq6);						stFusingStr += stBuff;	// Power Sequence On 6
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq1);					stFusingStr += stBuff;	// Power Sequence Off 1
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq2);					stFusingStr += stBuff;	// Power Sequence Off 2
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq3);					stFusingStr += stBuff;	// Power Sequence Off 3
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq4);					stFusingStr += stBuff;	// Power Sequence Off 4
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq5);					stFusingStr += stBuff;	// Power Sequence Off 5
-	stBuff.Format(_T("%01d"), lpModelInfo->m_nPowerOffSeq6);					stFusingStr += stBuff;	// Power Sequence Off 6
-	
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay1);					stFusingStr += stBuff;	// Power Sequence On Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay2);					stFusingStr += stBuff;	// Power Sequence On Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay3);					stFusingStr += stBuff;	// Power Sequence On Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay4);					stFusingStr += stBuff;	// Power Sequence On Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay5);					stFusingStr += stBuff;	// Power Sequence On Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay1);					stFusingStr += stBuff;	// Power Sequence Off Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay2);					stFusingStr += stBuff;	// Power Sequence Off Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay3);					stFusingStr += stBuff;	// Power Sequence Off Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay4);					stFusingStr += stBuff;	// Power Sequence Off Time
-	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay5);					stFusingStr += stBuff;	// Power Sequence Off Time
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq1);						stFusingStr += stBuff;	// Power Sequence On 1
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq2);						stFusingStr += stBuff;	// Power Sequence On 2
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq3);						stFusingStr += stBuff;	// Power Sequence On 3
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq4);						stFusingStr += stBuff;	// Power Sequence On 4
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq5);						stFusingStr += stBuff;	// Power Sequence On 5
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq6);						stFusingStr += stBuff;	// Power Sequence On 6
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq7);						stFusingStr += stBuff;	// Power Sequence On 7
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq8);						stFusingStr += stBuff;	// Power Sequence On 8
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq9);						stFusingStr += stBuff;	// Power Sequence On 9
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq10);					stFusingStr += stBuff;	// Power Sequence On 10
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq11);					stFusingStr += stBuff;	// Power Sequence On 11
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq12);					stFusingStr += stBuff;	// Power Sequence On 12
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOnSeq13);					stFusingStr += stBuff;	// Power Sequence On 13
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq1);					stFusingStr += stBuff;	// Power Sequence Off 1
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq2);					stFusingStr += stBuff;	// Power Sequence Off 2
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq3);					stFusingStr += stBuff;	// Power Sequence Off 3
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq4);					stFusingStr += stBuff;	// Power Sequence Off 4
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq5);					stFusingStr += stBuff;	// Power Sequence Off 5
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq6);					stFusingStr += stBuff;	// Power Sequence Off 6
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq7);					stFusingStr += stBuff;	// Power Sequence Off 7
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq8);					stFusingStr += stBuff;	// Power Sequence Off 8
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq9);					stFusingStr += stBuff;	// Power Sequence Off 9
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq10);					stFusingStr += stBuff;	// Power Sequence Off 10
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq11);					stFusingStr += stBuff;	// Power Sequence Off 11
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq12);					stFusingStr += stBuff;	// Power Sequence Off 12
+	stBuff.Format(_T("%02d"), lpModelInfo->m_nPowerOffSeq13);					stFusingStr += stBuff;	// Power Sequence Off 13
+
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay1);					stFusingStr += stBuff;	// Power Sequence On Time 1
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay2);					stFusingStr += stBuff;	// Power Sequence On Time 2
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay3);					stFusingStr += stBuff;	// Power Sequence On Time 3
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay4);					stFusingStr += stBuff;	// Power Sequence On Time 4
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay5);					stFusingStr += stBuff;	// Power Sequence On Time 5
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay6);					stFusingStr += stBuff;	// Power Sequence On Time 6
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay7);					stFusingStr += stBuff;	// Power Sequence On Time 7
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay8);					stFusingStr += stBuff;	// Power Sequence On Time 8
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay9);					stFusingStr += stBuff;	// Power Sequence On Time 9
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay10);					stFusingStr += stBuff;	// Power Sequence On Time 10
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay11);					stFusingStr += stBuff;	// Power Sequence On Time 11
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOnDelay12);					stFusingStr += stBuff;	// Power Sequence On Time 12
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay1);					stFusingStr += stBuff;	// Power Sequence Off Time 1
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay2);					stFusingStr += stBuff;	// Power Sequence Off Time 2
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay3);					stFusingStr += stBuff;	// Power Sequence Off Time 3
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay4);					stFusingStr += stBuff;	// Power Sequence Off Time 4
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay5);					stFusingStr += stBuff;	// Power Sequence Off Time 5
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay6);					stFusingStr += stBuff;	// Power Sequence Off Time 6
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay7);					stFusingStr += stBuff;	// Power Sequence Off Time 7
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay8);					stFusingStr += stBuff;	// Power Sequence Off Time 8
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay9);					stFusingStr += stBuff;	// Power Sequence Off Time 9
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay10);					stFusingStr += stBuff;	// Power Sequence Off Time 10
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay11);					stFusingStr += stBuff;	// Power Sequence Off Time 11
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nPowerOffDelay12);					stFusingStr += stBuff;	// Power Sequence Off Time 12
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Power Limit Setting
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVccLow * 100));		stFusingStr += stBuff;	// VCC Limit Low
@@ -132,12 +160,12 @@ void CCommApi::makeFusingData(char* pszData)
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVelHigh * 100));		stFusingStr += stBuff;	// VIN Limit High
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVddLow * 100));		stFusingStr += stBuff;	// VDD Limit Low
 	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitVddHigh * 100));		stFusingStr += stBuff;	// VDD Limit High
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIccLow * 100));		stFusingStr += stBuff;	// ICC Limit Low
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIccHigh * 100));		stFusingStr += stBuff;	// ICC Limit High
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIelLow * 100));		stFusingStr += stBuff;	// IIN Limit Low
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIelHigh * 100));		stFusingStr += stBuff;	// IIN Limit High
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIddLow * 100));		stFusingStr += stBuff;	// IDD Limit Low
-	stBuff.Format(_T("%04d"), (int)(lpModelInfo->m_fLimitIddHigh * 100));		stFusingStr += stBuff;	// IDD Limit High
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nLimitIccLow);						stFusingStr += stBuff;	// ICC Limit Low
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nLimitIccHigh);					stFusingStr += stBuff;	// ICC Limit High
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nLimitIelLow);						stFusingStr += stBuff;	// IIN Limit Low
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nLimitIelHigh);					stFusingStr += stBuff;	// IIN Limit High
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nLimitIddLow);						stFusingStr += stBuff;	// IDD Limit Low
+	stBuff.Format(_T("%04d"), lpModelInfo->m_nLimitIddHigh);					stFusingStr += stBuff;	// IDD Limit High
 
 	stBuff.Format(_T("%05d"), lpModelInfo->m_nPwmFrequency);					stFusingStr += stBuff;	// PWM Frequency
 	stBuff.Format(_T("%03d"), lpModelInfo->m_nPwmDuty);							stFusingStr += stBuff;	// PWM Duty
@@ -167,6 +195,9 @@ void CCommApi::makeFusingData(char* pszData)
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nSpiLevel);						stFusingStr += stBuff;	// SPI Level
 	stBuff.Format(_T("%01d"), lpModelInfo->m_nGpioLevel);						stFusingStr += stBuff;	// GPIO Level
 	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Function
+	stBuff.Format(_T("%01d"), lpModelInfo->m_nMainBoardLED);					stFusingStr += stBuff;	// Main Board(PG) Status LED On/Off
 
 	wchar_To_char(stFusingStr.GetBuffer(0), pszData);
 #endif // 0
@@ -333,11 +364,52 @@ BOOL CCommApi::main_setI2cWrite(int ch, int level, int pullup, int devAddr, int 
 	sprintf_s(szPacket, "%01d", 0x01);
 	length = (int)strlen(szPacket);
 
-	ret = main_setSendQuery(CMD_PG_BMP_WRITE_COMPLETE, length, szPacket, ch);
+	ret = main_setSendQuery(CMD_IF_I2C_WRITE, length, szPacket, ch);
 
 	return ret;
 }
 
+BOOL CCommApi::main_setCableOpenCheck(int ch)
+{
+	int ret;
+	char szPacket[4096];
+	int length;
+
+	sprintf_s(szPacket, "1");
+	length = (int)strlen(szPacket);
+
+	ret = main_setSendQuery(CMD_CTRL_CABLE_OPEN_CHECK, length, szPacket, ch);
+
+	return ret;
+}
+
+BOOL CCommApi::main_setGpioControl(int ch, int gpio1, int gpio2, int gpio3)
+{
+	int ret;
+	char szPacket[4096];
+	int length;
+
+	sprintf_s(szPacket, "%01d%01d%01d", gpio1, gpio2, gpio3);
+	length = (int)strlen(szPacket);
+
+	ret = main_setSendQuery(CMD_CTRL_GPIO_CONTROL, length, szPacket, ch);
+
+	return ret;
+}
+
+BOOL CCommApi::main_setGioSetting(int ch, int gio1, int gio2, int gio3, int gio4)
+{
+	int ret;
+	char szPacket[4096];
+	int length;
+
+	sprintf_s(szPacket, "%01d%01d%01d%01d", gio1, gio2, gio3, gio4);
+	length = (int)strlen(szPacket);
+
+	ret = main_setSendQuery(CMD_CTRL_GIO_CONTROL, length, szPacket, ch);
+
+	return ret;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int CCommApi::main_makeI2cClock(int index)
@@ -369,14 +441,121 @@ int CCommApi::main_makeI2cClock(int index)
 	return i2c_freq;
 }
 
-#if (CODE_QSPI_USE==1)
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // QSPI
+BOOL CCommApi::qspi_setSendQuery(int ch, int nCommand, int nLength, char* pData, int recvACK, int waitTime)
+{
+	char szlog[1024] = { 0, };
+	char szpacket[4096] = { 0, };
+	int  packetlen;
+	char lpbuff[20] = { 0, };
+	BYTE nChkSum = 0;
+
+	// data 앞까지 Packet 생성
+	sprintf_s(szpacket, "%cA1A400%02X%04X", 0x02, nCommand, nLength);
+
+	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
+	packetlen = (int)strlen(szpacket);
+	memcpy(&szpacket[packetlen], pData, nLength);
+
+	// data 를 포함한 packet의 길이를 구한다.
+	packetlen += nLength;
+
+	// 생성된 Packet을 이용하여 CheckSum을 구한다.
+	for (int j = 1; j < packetlen; j++)		// Check Sum
+	{
+		nChkSum += szpacket[j];
+	}
+	sprintf_s(lpbuff, "%02X%c", nChkSum, 0x03);
+
+	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
+	memcpy(&szpacket[packetlen], lpbuff, 3);
+	packetlen += 3;
+
+	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
+	szpacket[packetlen] = 0x00;
+
+
+	// Receive Buff를 Clear
+	ZeroMemory(m_szQspiRecvData[ch], sizeof(m_szQspiRecvData[ch]));
+
+	// 생성된 Packet을 전송.
+	if (ch == CH1)	m_pApp->m_pSocketTCPMain->tcp_SPI_SendQuery(ch, szpacket, packetlen);
+	if (ch == CH2)	m_pApp->m_pSocketTCPMain->tcp_SPI_SendQuery(ch, szpacket, packetlen);
+
+	// ACK Receive
+	UINT ret = TRUE;
+
+	if (recvACK == ACK)
+	{
+		if (qspi_procWaitRecvACK(ch, nCommand, waitTime) == TRUE)
+			ret = TRUE;
+		else
+			ret = FALSE;
+	}
+
+	return ret;
+}
+
+
+BOOL CCommApi::qspi_procWaitRecvACK(int ch, int cmd, DWORD waitTime)
+{
+	DWORD stTick = ::GetTickCount();
+	int recvCmd = 0;
+
+	while (1)
+	{
+		DWORD edTick = GetTickCount();
+		if ((edTick - stTick) > waitTime)
+		{
+			return FALSE;
+		}
+		if (ch == CH1)
+		{
+			if (m_pApp->m_pSocketTCPMain->tcp_SPI_GetReceivePacketSize(CH1) > 0)
+			{
+				if (m_pApp->m_pSocketTCPMain->tcp_SPI_GetReceivePacketData(CH1, m_szQspiRecvData[CH1]) == TRUE)
+				{
+					sscanf_s(&m_szQspiRecvData[CH1][PACKET_PT_CMD], "%02X", &recvCmd);
+					if (recvCmd == cmd)
+					{
+						if (m_szQspiRecvData[CH1][PACKET_PT_RET] != '0')
+							return FALSE;
+						return TRUE;
+					}
+				}
+			}
+		}
+		if (ch == CH2)
+		{
+			if (m_pApp->m_pSocketTCPMain->tcp_SPI_GetReceivePacketSize(CH2) > 0)
+			{
+				if (m_pApp->m_pSocketTCPMain->tcp_SPI_GetReceivePacketData(CH2, m_szQspiRecvData[CH2]) == TRUE)
+				{
+					sscanf_s(&m_szQspiRecvData[CH2][PACKET_PT_CMD], "%02X", &recvCmd);
+					if (recvCmd == cmd)
+					{
+						if (m_szQspiRecvData[CH2][PACKET_PT_RET] != '0')
+						{
+							return FALSE;
+						}
+						return TRUE;
+					}
+				}
+			}
+		}
+
+		//ProcessMessage();
+	}
+	return FALSE;
+}
+
+#if (CODE_QSPI_USE==1)
 BOOL CCommApi::Lf_setQSPI_SPI_Init(int ch)
 {
 	char szPacket[1024 * 32];
 	int length;
-	sprintf_s(szPacket, "%02d%01d%01d%02d", lpModelInfo->m_nQspiClockSpeed, lpModelInfo->m_nQspiLevel, lpModelInfo->m_nQspiPullUp, lpModelInfo->m_nQspiReadClock);
+	sprintf_s(szPacket, "%02d%01d%01d%02d", lpModelInfo->m_nSpiClock, lpModelInfo->m_nSpiLevel, lpModelInfo->m_nSpiPullUp, 8/*lpModelInfo->m_nQspiReadClock*/);
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_SPI_INITIALIZE, length, szPacket, ACK, 2000);
 }
@@ -435,7 +614,7 @@ BOOL CCommApi::Lf_getQSPI_FlashRead(int ch, int startReg, int rdLength, BYTE* rd
 	
 	if (m_pApp->TCP_sendPacket(ch, CMD_QSPI_SPI_FLASH_READ, length, szPacket, ACK, 2000) == TRUE)
 	{
-		memcpy(rdpData, &gsztcpRcvPacket[ch][PACKET_PT_DATA], rdLength);
+		memcpy(rdpData, &m_szQspiRecvData[ch][PACKET_PT_DATA], rdLength);
 		return TRUE;
 	}
 	return FALSE;
@@ -447,7 +626,7 @@ int CCommApi::Lf_getQSPI_FlashStatusRead(int ch)
 	int status = 0;
 	if (m_pApp->TCP_sendPacket(ch,CMD_QSPI_SPI_FLASH_STATUS_READ, 0, "", ACK, 2000) == TRUE)
 	{
-		sscanf_s(&gsztcpRcvPacket[ch][PACKET_PT_DATA], "%02X", &status);
+		sscanf_s(&m_szQspiRecvData[ch][PACKET_PT_DATA], "%02X", &status);
 		return status;
 	}
 	return -1;
@@ -459,7 +638,7 @@ int CCommApi::Lf_getQSPI_FlashStatusRead_Temp(int ch)
 	int status = 0;
 	if (m_pApp->TCP_sendPacket(ch, 0x076C, 0, "", ACK, 2000) == TRUE)
 	{
-		sscanf_s(&gsztcpRcvPacket[ch][PACKET_PT_DATA], "%02X", &status);
+		sscanf_s(&m_szQspiRecvData[ch][PACKET_PT_DATA], "%02X", &status);
 		return status;
 	}
 	return -1;
@@ -510,7 +689,7 @@ BOOL CCommApi::Lf_getQSPI_I2cRead(int ch, int slave, int startReg, int addrType,
 	length = (int)strlen(szPacket);
 	if (m_pApp->TCP_sendPacket(ch,CMD_QSPI_I2C_READ, length, szPacket, ACK, 2000) == TRUE)
 	{
-		memcpy(rdpData, &gsztcpRcvPacket[ch][PACKET_PT_DATA], length);
+		memcpy(rdpData, &m_szQspiRecvData[ch][PACKET_PT_DATA], length);
 		//m_pApp->commApi->Lf_setQSPI_I2C_Enable(ch, _OFF_);
 		return TRUE;
 	}
@@ -568,35 +747,37 @@ BOOL CCommApi::Lf_getQSPI_GpioReadBit(int ch, char* szData)
 {
 	if (m_pApp->TCP_sendPacket(ch,CMD_QSPI_GPIO_READ_BIT, 0, "", ACK, 2000) == TRUE)
 	{
-		memcpy(szData, &m_pApp->commApi->gsztcpRcvPacket[ch][PACKET_PT_DATA], 4);
-		return TRUE;
-	}
-	return FALSE;
-}
-BOOL CCommApi::Lf_sendQSPI_AreYouReady(int ch)
-{
-	if (m_pApp->TCP_sendPacket(ch,CMD_QSPI_ARE_YOU_READY, 0, "", ACK, 2000) == TRUE)
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
-BOOL CCommApi::Lf_getQSPI_FW_Ver(int ch)
-{
-	int length=0;
-	char szData[128];
-	memset(szData, 0x00, 128);
-	m_pApp->m_sQspiFWVersion[ch].Empty();
-	if (m_pApp->TCP_sendPacket(ch,CMD_QSPI_GET_FW_VERSION, 0, "", ACK, 2000) == TRUE)
-	{
-		sscanf_s(&gsztcpRcvPacket[ch][PACKET_PT_LEN], "%04x", &length);
-		memcpy(&szData, &gsztcpRcvPacket[ch][PACKET_PT_DATA], length);
-		m_pApp->m_sQspiFWVersion[ch] = char_To_wchar(szData);
+		memcpy(szData, &m_pApp->commApi->m_szQspiRecvData[ch][PACKET_PT_DATA], 4);
 		return TRUE;
 	}
 	return FALSE;
 }
 #endif
+
+BOOL CCommApi::qspi_AreYouReady(int ch)
+{
+	if (qspi_setSendQuery(ch,CMD_QSPI_ARE_YOU_READY, 0, "", ACK, 2000) == TRUE)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL CCommApi::qspi_getFWVersion(int ch)
+{
+	int length=0;
+	char szData[128];
+	memset(szData, 0x00, 128);
+	m_pApp->m_sQspiFWVersion[ch].Empty();
+	if (qspi_setSendQuery(ch, CMD_QSPI_GET_FW_VERSION, 0, "", ACK, 2000) == TRUE)
+	{
+		sscanf_s(&m_szQspiRecvData[ch][PACKET_PT_LEN], "%04x", &length);
+		memcpy(&szData, &m_szQspiRecvData[ch][PACKET_PT_DATA], length-1);
+		m_pApp->m_sQspiFWVersion[ch] = char_To_wchar(szData);
+		return TRUE;
+	}
+	return FALSE;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CCommApi::main_setGoToBootSection(int ch)
@@ -665,10 +846,6 @@ BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 	BOOL ret = FALSE;
 	int length = 0;
 	char szPacket[128] = { 0, };
-	CString ipAddr;
-
-	if (ch == CH1)			ipAddr.Format(_T("%s"), UDP_DIO_BOARD1_IP);
-	else if (ch == CH2)		ipAddr.Format(_T("%s"), UDP_DIO_BOARD2_IP);
 
 	m_pApp->m_nDioOutBit[ch][0] = (BYTE)(OutData >> 0);
 	m_pApp->m_nDioOutBit[ch][1] = (BYTE)(OutData >> 8);
@@ -678,7 +855,7 @@ BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 	length = (int)strlen(szPacket);
 
 	Critical_Dio[ch].Lock();//(22.11.18)
-	ret = m_pApp->udp_sendPacketUDP_DIO(ipAddr, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
+	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
 	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
@@ -690,10 +867,6 @@ BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
 	BOOL ret = FALSE;
 	int length = 0;
 	char szPacket[128] = { 0, };
-	CString ipAddr;
-
-	if (ch == CH1)			ipAddr.Format(_T("%s"), UDP_DIO_BOARD1_IP);
-	else if (ch == CH2)		ipAddr.Format(_T("%s"), UDP_DIO_BOARD2_IP);
 
 	if (onoff == _ON_)
 	{
@@ -713,24 +886,20 @@ BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
 	length = (int)strlen(szPacket);
 
 	Critical_Dio[ch].Lock();//(22.11.18)
-	ret = m_pApp->udp_sendPacketUDP_DIO(ipAddr, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
+	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
 	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
 }
 
-BOOL CCommApi::dio_readDioInput(int ch)
+BOOL CCommApi::dio_readDioInput(int ch, BOOL bACK)
 {
 	BOOL ret = FALSE;
 	int length = 0;
 	char szPacket[128] = { 0, };
-	CString ipAddr;
-
-	if (ch == CH1)			ipAddr.Format(_T("%s"), UDP_DIO_BOARD1_IP);
-	else if (ch == CH2)		ipAddr.Format(_T("%s"), UDP_DIO_BOARD2_IP);
 
 	Critical_Dio[ch].Lock();//(22.11.18)
-	ret = m_pApp->udp_sendPacketUDP_DIO(ipAddr, TARGET_DIO, 0, CMD_DIO_INPUT, 0, NULL, ACK);
+	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_INPUT, 0, NULL, bACK);
 	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;

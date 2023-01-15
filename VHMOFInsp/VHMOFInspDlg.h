@@ -57,6 +57,9 @@ protected:
 	void Lf_updateSystemInfo();
 	void Lf_openToDayMLog();
 
+	void Lf_checkExtAlarmDio1();
+	void Lf_checkExtAlarmDio2();
+
 private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];

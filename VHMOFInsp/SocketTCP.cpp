@@ -234,45 +234,6 @@ UINT ThreadSocketSPI_2(LPVOID pParam)
 
 
 /////////////////////////////////////////////////////////////////////////////
-//GI DIO B/D(22.08.24)
-UINT ThreadSocketDIO1(LPVOID pParam)
-{
-	CSocketTCP* pSocketTcp = (CSocketTCP*)pParam;
-	int nLength = 0;
-	while (1)
-	{
-		pSocketTcp->rcvDataLen[SOC_SERVER_DIO_1] = recv(pSocketTcp->hSocket[SOC_SERVER_DIO_1], pSocketTcp->szDioRcvData, sizeof(pSocketTcp->szDioRcvData), 0);
-
-		nLength = pSocketTcp->rcvDataLen[SOC_SERVER_DIO_1];
-
-		if ((nLength == 0) || (nLength == 0xFFFF))
-		{
-			continue;
-		}
-		pSocketTcp->szDioRcvData[nLength] = NULL;	// << NULL
-	}
-}
-
-UINT ThreadSocketDIO2(LPVOID pParam)
-{
-	CSocketTCP* pSocketTcp = (CSocketTCP*)pParam;
-	int nLength = 0;
-	while (1)
-	{
-		pSocketTcp->rcvDataLen[SOC_SERVER_DIO_2] = recv(pSocketTcp->hSocket[SOC_SERVER_DIO_2], pSocketTcp->szDioRcvData, sizeof(pSocketTcp->szDioRcvData), 0);
-
-		nLength = pSocketTcp->rcvDataLen[SOC_SERVER_DIO_2];
-
-		if ((nLength == 0) || (nLength == 0xFFFF))
-		{
-			continue;
-		}
-		pSocketTcp->szDioRcvData[nLength] = NULL;	// << NULL
-	}
-}
-
-
-/////////////////////////////////////////////////////////////////////////////
 CSocketTCP::CSocketTCP(void)
 {
 	m_pThread1 = NULL;
@@ -430,29 +391,6 @@ BOOL CSocketTCP::eth_Connection(char* ipAddr, int nPort, int socketID)
 			m_pThread2 = NULL;
 		}
 		m_pThread2 = AfxBeginThread(ThreadSocketSPI_2, this);
-	}
-	if (socketID == SOC_SERVER_DIO_1)//(22.08.24)
-	{
-		if (m_pThreadDIO1 != NULL)
-		{
-			nExitCode = NULL;
-			GetExitCodeThread(m_pThreadDIO1->m_hThread, &nExitCode);
-			TerminateThread(m_pThreadDIO1->m_hThread, nExitCode);
-			m_pThreadDIO1 = NULL;
-		}
-		m_pThreadDIO1 = AfxBeginThread(ThreadSocketDIO1, this);
-	}
-
-	if (socketID == SOC_SERVER_DIO_2)//(22.12.08)
-	{
-		if (m_pThreadDIO2 != NULL)
-		{
-			nExitCode = NULL;
-			GetExitCodeThread(m_pThreadDIO2->m_hThread, &nExitCode);
-			TerminateThread(m_pThreadDIO2->m_hThread, nExitCode);
-			m_pThreadDIO2 = NULL;
-		}
-		m_pThreadDIO2 = AfxBeginThread(ThreadSocketDIO2, this);
 	}
 
 	if (socketID == SOC_MAIN_BD_1)//(22.12.08)
@@ -617,7 +555,7 @@ int CSocketTCP::eth_getMainRcvPacketSize(int socketID)
 
 void CSocketTCP::Gf_DEBUGfucWriteMLog(char* mLogData)
 {
-	if (DEBUG_TCP_PACKET_LOG == 0)	return;
+	if (DEBUG_TCP_COMM_LOG == 0)	return;
 	CString sLog;
 	sLog.Format(_T("%S"), mLogData);
 	Gf_DEBUGfucWriteMLog(sLog);
@@ -625,7 +563,7 @@ void CSocketTCP::Gf_DEBUGfucWriteMLog(char* mLogData)
 
 void CSocketTCP::Gf_DEBUGfucWriteMLog(CString pStrWideChar)
 {
-	if (DEBUG_TCP_PACKET_LOG == 0)	return;
+	if (DEBUG_TCP_COMM_LOG == 0)	return;
 #if 1
 	CFile file;
 	USHORT nShort = 0xfeff;

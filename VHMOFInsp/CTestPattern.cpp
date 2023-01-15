@@ -522,7 +522,7 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 				if ((errName == 1) || (errName == 2))
 					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVccLow, lpModelInfo->m_fLimitVccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 				else if ((errName == 3) || (errName == 4))
-					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIccLow, lpModelInfo->m_fLimitIccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
+					strValue.Format(_T("Setting[%dmA ~ %dmA]  Measure[%dmA]"), lpModelInfo->m_nLimitIccLow, lpModelInfo->m_nLimitIccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh]);
 
 				if ((errCh == 1) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_2, strValue);
 				if ((errCh == 1) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_3, strValue);
@@ -534,7 +534,7 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 				if ((errName == 1) || (errName == 2))
 					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVelLow, lpModelInfo->m_fLimitVelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 				else if ((errName == 3) || (errName == 4))
-					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIelLow, lpModelInfo->m_fLimitIelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
+					strValue.Format(_T("Setting[%dmA ~ %dmA]  Measure[%dmA]"), lpModelInfo->m_nLimitIelLow, lpModelInfo->m_nLimitIelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh]);
 
 				if ((errCh == 2) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_6, strValue);
 				if ((errCh == 2) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_7, strValue);
@@ -546,7 +546,7 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 				if ((errName == 1) || (errName == 2))
 					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVddLow, lpModelInfo->m_fLimitVddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
 				else if ((errName == 3) || (errName == 4))
-					strValue.Format(_T("Setting[%.2fA ~ %.2fA]  Measure[%.2fA]"), lpModelInfo->m_fLimitIddLow, lpModelInfo->m_fLimitIddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
+					strValue.Format(_T("Setting[%dmA ~ %dmA]  Measure[%dmA]"), lpModelInfo->m_nLimitIddLow, lpModelInfo->m_nLimitIddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh]);
 
 				if ((errCh == 3) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_10, strValue);
 				if ((errCh == 3) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_11, strValue);
@@ -613,7 +613,17 @@ void CTestPattern::Lf_excutePatternList(MSG* pMsg)
 	RemoveMessageFromQueue();
 	m_pApp->Gf_setPatStartCheckTime(m_nPatternIndex);
 	m_pApp->Gf_setStartPtnLockTime(m_nPatternIndex);
+
+	// Pattern Data 출력.
 	Lf_sendPtnData();
+
+	////////////////////////////////////////////////////////////////
+	// Pattern별 기능검사
+	////////////////////////////////////////////////////////////////
+	if (Lf_PatternCurrentCheck() == FALSE)
+	{
+		CDialog::OnCancel();
+	}
 }
 
 void CTestPattern::Lf_PtnTestEventView(CString Event)
@@ -849,8 +859,8 @@ BOOL CTestPattern::Lf_PatternCurrentCheck()
 		if (nIcc < lpInspWorkInfo->m_nMeasureICC[m_nTargetCh])
 		{
 			m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_OFF);
-			strmsg.Format(_T("ICC Setting[%dmA]  ICC Measure[%dmA]"), nIcc, lpInspWorkInfo->m_nMeasureICC[m_nTargetCh]);
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ICC CHECK ERROR"), ERROR_CODE_16, strmsg);
+			strmsg.Format(_T("- ICC Setting[%dmA]  ICC Measure[%dmA]"), nIcc, lpInspWorkInfo->m_nMeasureICC[m_nTargetCh]);
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ICC CHECK ERROR (PATTERN)"), ERROR_CODE_16, strmsg);
 			return FALSE;
 		}
 	}
@@ -859,7 +869,7 @@ BOOL CTestPattern::Lf_PatternCurrentCheck()
 		if (nIel < lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh])
 		{
 			m_pApp->commApi->main_setPowerSequenceOnOff(m_nTargetCh, POWER_OFF);
-			strmsg.Format(_T("IIN Setting[%dmA]  IIN Measure[%dmA]"), nIel, lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh]);
+			strmsg.Format(_T("- IIN Setting[%dmA]  IIN Measure[%dmA]"), nIel, lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh]);
 			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("IIN CHECK ERROR"), ERROR_CODE_17, strmsg);
 			return FALSE;
 		}

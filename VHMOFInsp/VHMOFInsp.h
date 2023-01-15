@@ -25,6 +25,7 @@ class CVHMOFInspApp : public CWinApp
 {
 public:
 	CVHMOFInspApp();
+	virtual ~CVHMOFInspApp();
 
 // 재정의입니다.
 public:
@@ -38,14 +39,24 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 public:
+	void Gf_SoftwareStartLog();
+	void Gf_SoftwareEndLog();
+
 	void Gf_writeMLog(char* szLogData);
 	void Gf_writeMLog(CString sLogData);
+	void Gf_writeSummaryLog(int ch);
 	BOOL Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage=_T(""));
+	void Gf_QtyCountUp(int ok_ng);
+	void Gf_QtyCountReset();
 
 	void Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor1, long bkColor2, long fontColor, CFont* pFont, BOOL bSplit);
+	void Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor, long fontColor, CFont* pFont, BOOL bSplit);
 
 	BOOL Gf_LoadSystemData();
 	BOOL Gf_LoadModelFile();
+
+	BOOL Gf_FindModelFile(CString modelName);
+	void Gf_LoadModelData(CString modelName);
 
 	// Global GMES Function
 	BOOL Gf_gmesInitServer(BOOL nServerType);
@@ -67,6 +78,8 @@ public:
 	BOOL main_tcpProcessPacket(int ch, char* recvPacket);
 	void main_parse_AreYouReady(int ch, char* recvPacket);
 	void main_parse_PowerMeasureAll(int ch, char* recvPacket);
+	void main_parse_CableOpenCheck(int ch, char* recvPacket);
+	void main_parse_GioControl(int ch, char* recvPacket);
 	void main_parse_FirmwareVersion(int ch, char* recvPacket);
 	void main_parse_GoToBootSection(int ch, char* recvPacket);
 
@@ -74,10 +87,13 @@ public:
 	// UDP 통신 Protocol (DIO Board)
 	void Lf_initCreateUdpSocket();
 	BOOL Lf_initLocalHostIPAddress();
-	BOOL udp_sendPacketUDP_DIO(CString ip, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 1000);
-	BOOL udp_procWaitRecvACK_DIO(int cmd, DWORD waitTime);
+	BOOL udp_sendPacketUDP_DIO(int ch, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 1000);
+	BOOL udp_procWaitRecvACK_DIO(int ch, int cmd, DWORD waitTime);
 	void udp_processDioPacket(int ch, CString strPacket);
 	BOOL udp_procParseDIO(int ch, CString packet);
+
+	// DIO InterLock
+	BOOL Lf_checkDoorOpenInterLock();
 
 
 
@@ -86,8 +102,7 @@ public:
 	LPINSPWORKINFO			GetInspWorkInfo();
 	CPatternView*			m_pPatternView;
 
-	CSocketTcpApp*			m_pSocketTCPAppCh1;
-	CSocketTcpApp*			m_pSocketDIO;
+	CSocketTcpApp*			m_pSocketTCPSpi;
 	CSocketTcpApp*			m_pSocketTCPMain;
 	CSocketUDP*				m_pUDPSocket;
 	CCommApi* commApi;
@@ -95,11 +110,10 @@ public:
 
 	HANDLE					m_hAppMutex;
 
-	// Initialize Status
-	BOOL m_bPgConnectStatus[2];
-	BOOL m_bSpiConnectStatus[2];
-	BOOL m_bDio7230Init;
+	// Software Version
+	CString m_sSoftwareVersion;
 
+	// Initialize Status
 	CStatic* m_pStaticMainLog;
 	CString m_sLoginUserID;
 	CString m_sLoginUserName;
@@ -107,7 +121,7 @@ public:
 	BOOL m_bUserIdPM;
 
 	// DIO Board Data
-	int m_nAckCmdDio;
+	int m_nAckCmdDio[2];
 	BYTE m_nDioOutBit[2][3];	// 2CH, 24Bit(3Byte) 선언이다.
 	BYTE m_nDioInBit[2][5];		// 2CH, 40Bit(5Byte) 선언이다.
 
@@ -117,6 +131,8 @@ public:
 	BOOL m_bIsEasConnect;
 	BOOL m_bIsSendEAYT;
 
+	// Connect Status
+	BOOL bConnectInfo[CONN_MAX];
 
 	// Firmware Version
 	CString m_sQspiFWVersion[MAX_CH];
@@ -127,6 +143,11 @@ public:
 	int	m_nDownloadReadyAckCount;
 	int	m_nDownloadCountUp;
 
+	// START/END Time
+	CTime tt_startTime;
+	CTime tt_endTime;
+
+
 	int m_nSLockTime, m_nELockTime, m_nPtnLockTime[PTN_LIST_MAX], m_nPatLock[PTN_LIST_MAX];
 	int m_nStartCheckTime[PTN_LIST_MAX], m_nEndCheckTime[PTN_LIST_MAX], m_nPatTime[PTN_LIST_MAX];
 
@@ -135,11 +156,10 @@ protected:
 	LPMODELINFO				lpModelInfo;
 	LPSYSTEMINFO			lpSystemInfo;
 	LPINSPWORKINFO			lpInspWorkInfo;
+	SUMMARYINFO				m_summaryInfo;
 
 	void Lf_initGlobalVariable();
-	BOOL Lf_FindModelFile();
 	void Lf_parsingModFileData(CString szData, TCHAR(*szParseData)[255]);
-	void Lf_LoadModelData(CString modelName);
 
 	// Local MES Function
 	void Lf_gmesSetValueEICR();

@@ -35,14 +35,6 @@ public:
 	int tcp_SPI_GetReceivePacketSize(int socketID);
 
 	//////////////////////////////////////////////////////////////////////
-	//DIO Ãß°¡ (22.08.08)
-	BOOL tcp_DIO_Connection(CString ip, int port, int ch);
-	BOOL tcp_DIO_DisConnection(int ch);
-	BOOL tcp_DIO_SendQuery(char* data, int nDataLen, int ch);
-	BOOL tcp_DIO_GetReceivePacketData(char* szRcvPacket, int ch);
-	int tcp_DIO_GetReceivePacketSize(int ch);
-
-	int tcp_SPI_GetKeyIn();
 
 
 };

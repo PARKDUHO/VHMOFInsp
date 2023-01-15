@@ -29,6 +29,7 @@ CMaintenancePG::~CMaintenancePG()
 void CMaintenancePG::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_CMB_MP_PATTERN_LIST, m_cmbMpPatternList);
 }
 
 
@@ -46,6 +47,9 @@ END_MESSAGE_MAP()
 BOOL CMaintenancePG::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+	lpSystemInfo = m_pApp->GetSystemInfo();
+	lpModelInfo = m_pApp->GetModelInfo();
+	lpInspWorkInfo = m_pApp->GetInspWorkInfo();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	// Dialog의 기본 FONT 설정.
@@ -54,6 +58,8 @@ BOOL CMaintenancePG::OnInitDialog()
 	Lf_InitLocalValue();
 	Lf_InitFontset();
 	Lf_InitColorBrush();
+
+	Lf_loadPatternListToCombo();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -180,6 +186,8 @@ void CMaintenancePG::Lf_InitFontset()
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
 	m_Font[5].CreateFont(17, 6, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_GRP_MP_POWER)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_GRP_MP_I2C)->SetFont(&m_Font[5]);
 
 }
 
@@ -203,4 +211,51 @@ void CMaintenancePG::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush(COLOR_GRAY224);
 	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush(COLOR_GRAY240);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
+}
+
+void CMaintenancePG::Lf_loadPatternListToCombo()
+{
+	CString strfilename;
+	WIN32_FIND_DATA wfd;
+	HANDLE hSearch;
+
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_ALPLD)
+	{
+		m_cmbMpPatternList.AddString(_T("Black"));
+		m_cmbMpPatternList.AddString(_T("Blue"));
+		m_cmbMpPatternList.AddString(_T("Chess"));
+		m_cmbMpPatternList.AddString(_T("Cyan"));
+		m_cmbMpPatternList.AddString(_T("Gray_Hor"));
+		m_cmbMpPatternList.AddString(_T("Gray_Ver"));
+		m_cmbMpPatternList.AddString(_T("Green"));
+		m_cmbMpPatternList.AddString(_T("Magenta"));
+		m_cmbMpPatternList.AddString(_T("Rainbow_Hor"));
+		m_cmbMpPatternList.AddString(_T("Rainbow_Ver"));
+		m_cmbMpPatternList.AddString(_T("Red"));
+		m_cmbMpPatternList.AddString(_T("White"));
+		m_cmbMpPatternList.AddString(_T("Yellow"));
+	}
+	else
+	{
+		hSearch = FindFirstFile(_T(".\\Pattern\\Logical\\*.pdb"), &wfd);
+		if (hSearch != INVALID_HANDLE_VALUE)
+		{
+			if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+			{
+				strfilename.Format(_T("%s"), wfd.cFileName);
+				m_cmbMpPatternList.AddString(strfilename.Mid(0, strfilename.GetLength() - 4));
+			}
+			while (FindNextFile(hSearch, &wfd))
+			{
+				if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
+				{
+					strfilename.Format(_T("%s"), wfd.cFileName);
+					m_cmbMpPatternList.AddString(strfilename.Mid(0, strfilename.GetLength() - 4));
+				}
+			}
+			FindClose(hSearch);
+		}
+	}
+
+	m_cmbMpPatternList.SetCurSel(0);
 }

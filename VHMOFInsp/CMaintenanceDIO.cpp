@@ -174,12 +174,14 @@ void CMaintenanceDIO::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(1);
 
-		if (m_pApp->commApi->dio_readDioInput(CH1) == TRUE)
+		//if (m_pApp->commApi->dio_readDioInput(CH1) == TRUE)
 		{
+			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
 			Lf_updateStautsDio1In();
 		}
-		if (m_pApp->commApi->dio_readDioInput(CH2) == TRUE)
+		//if (m_pApp->commApi->dio_readDioInput(CH2) == TRUE)
 		{
+			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
 			Lf_updateStautsDio2In();
 		}
 
@@ -345,7 +347,7 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 	if (m_lstMoDio1Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D1_IONIZER_BLOW;
 	if (m_lstMoDio1Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D1_IONIZER_ON_OFF;
 	if (m_lstMoDio1Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D1_LED_ON_OFF;
-	if (m_lstMoDio1Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D1_ROBOT_IN_SENSOR_LAMP;
+	if (m_lstMoDio1Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D1_SPARE0;
 	if (m_lstMoDio1Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D1_SPARE1;
 	if (m_lstMoDio1Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D1_SPARE2;
 	if (m_lstMoDio1Out.GetCheck(22) == TRUE)	nDOut |= DOUT_D1_SPARE3;
@@ -375,18 +377,18 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio2()
 	if (m_lstMoDio2Out.GetCheck(9) == TRUE)		nDOut |= DOUT_D2_CH2_TRAY_UNCLAMP_4;
 	if (m_lstMoDio2Out.GetCheck(10) == TRUE)	nDOut |= DOUT_D2_CH2_TRAY_UNCLAMP_5;
 	if (m_lstMoDio2Out.GetCheck(11) == TRUE)	nDOut |= DOUT_D2_CH2_TRAY_UNCLAMP_6;
-	if (m_lstMoDio2Out.GetCheck(12) == TRUE)	nDOut |= DOUT_D2_SPARE1;
-	if (m_lstMoDio2Out.GetCheck(13) == TRUE)	nDOut |= DOUT_D2_SPARE2;
-	if (m_lstMoDio2Out.GetCheck(14) == TRUE)	nDOut |= DOUT_D2_SPARE3;
-	if (m_lstMoDio2Out.GetCheck(15) == TRUE)	nDOut |= DOUT_D2_SPARE4;
-	if (m_lstMoDio2Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D2_SPARE5;
-	if (m_lstMoDio2Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D2_SPARE6;
-	if (m_lstMoDio2Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D2_SPARE7;
-	if (m_lstMoDio2Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D2_SPARE8;
-	if (m_lstMoDio2Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D2_SPARE9;
-	if (m_lstMoDio2Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D2_SPARE10;
-	if (m_lstMoDio2Out.GetCheck(22) == TRUE)	nDOut |= DOUT_D2_SPARE11;
-	if (m_lstMoDio2Out.GetCheck(23) == TRUE)	nDOut |= DOUT_D2_SPARE12;
+	if (m_lstMoDio2Out.GetCheck(12) == TRUE)	nDOut |= DOUT_D2_CH1_ADSORPTION_EJECTOR;
+	if (m_lstMoDio2Out.GetCheck(13) == TRUE)	nDOut |= DOUT_D2_CH1_PIN_CYLINDER_UP;
+	if (m_lstMoDio2Out.GetCheck(14) == TRUE)	nDOut |= DOUT_D2_CH2_ADSORPTION_EJECTOR;
+	if (m_lstMoDio2Out.GetCheck(15) == TRUE)	nDOut |= DOUT_D2_CH2_PIN_CYLINDER_UP;
+	if (m_lstMoDio2Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D2_SPARE1;
+	if (m_lstMoDio2Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D2_SPARE2;
+	if (m_lstMoDio2Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D2_SPARE3;
+	if (m_lstMoDio2Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D2_SPARE4;
+	if (m_lstMoDio2Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D2_SPARE5;
+	if (m_lstMoDio2Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D2_SPARE6;
+	if (m_lstMoDio2Out.GetCheck(22) == TRUE)	nDOut |= DOUT_D2_SPARE7;
+	if (m_lstMoDio2Out.GetCheck(23) == TRUE)	nDOut |= DOUT_D2_SPARE8;
 
 	if (m_pApp->commApi->dio_writeDioOutput(CH2, nDOut) == FALSE)
 	{
@@ -460,8 +462,8 @@ CString strNameDIN1[40] =
 	_T("IONIZER_AIR_DIGITAL_PRESSURE_GAGE"),
 	_T("CYLINDER_DIGITAL_PRESSURE_GAGE"),
 	_T("JIG_DIGITAL_PRESSURE_GAGE"),
-	_T("IONIZER_CLEANSING_ALARM"),
-	_T("IONIZER_HIGH_VOLTAGE_ALARM"),
+	_T("IONIZER_ALARM"),
+	_T("IONIZER (SPARE)"),
 	_T("ROBOT_IN_SENSOR_1"),
 	_T("ROBOT_IN_SENSOR_2"),
 	_T("FRONT_SHUTTER_LEFT_BACKWARD"),
@@ -506,7 +508,7 @@ CString strNameDOUT1[24] =
 	_T("IONIZER_BLOW"),
 	_T("IONIZER_ON_OFF"),
 	_T("LED_ON_OFF"),
-	_T("ROBOT_IN_SENSOR_LAMP"),
+	_T(""),
 	_T(""),
 	_T(""),
 	_T(""),
@@ -515,8 +517,8 @@ CString strNameDOUT1[24] =
 
 CString strNameDIN2[40] =
 {
-	_T("JIG_SENSOR"),
-	_T("JIG_DOOR_SENSOR"),
+	_T("JIG_HOME_SENSOR"),
+	_T("JIG_DOOR_CLOSE_PHOTO_SENSOR"),
 	_T("TILTING_60_SENSOR"),
 	_T("TILTING_70_SENSOR"),
 	_T("CH1_JIG_TRAY_IN_SENSOR"),
@@ -533,28 +535,28 @@ CString strNameDIN2[40] =
 	_T("CH2_TRAY_UNCLAMP4"),
 	_T("CH2_TRAY_UNCLAMP5"),
 	_T("CH2_TRAY_UNCLAMP6"),
+	_T("CH1_ADSORPTION_EJECTOR_DIGITAL_PRESSURE_GAUGE"),
+	_T("CH2_ADSORPTION_EJECTOR_DIGITAL_PRESSURE_GAUGE"),
 	_T(""),
 	_T(""),
 	_T(""),
 	_T(""),
-	_T(""),
-	_T(""),
-	_T("CH1_PENDANT_AUTO_MANUAL"),
-	_T("CH1_PENDANT_BACK"),
-	_T("CH1_PENDANT_NEXT"),
-	_T("CH1_PENDANT_REPEAT"),
-	_T("CH1_PENDANT_RESET"),
-	_T("CH1_PENDANT_UP"),
-	_T("CH1_PENDANT_DOWN"),
-	_T("CH1_PENDANT_SEND"),
-	_T("CH2_PENDANT_AUTO_MANUAL"),
-	_T("CH2_PENDANT_BACK"),
-	_T("CH2_PENDANT_NEXT"),
-	_T("CH2_PENDANT_REPEAT"),
-	_T("CH2_PENDANT_RESET"),
-	_T("CH2_PENDANT_UP"),
-	_T("CH2_PENDANT_DOWN"),
-	_T("CH2_PENDANT_SEND")
+	_T("CH1_KEYPAD_AUTO_MANUAL"),
+	_T("CH1_KEYPAD_BACK"),
+	_T("CH1_KEYPAD_NEXT"),
+	_T("CH1_KEYPAD_REPEAT"),
+	_T("CH1_KEYPAD_RESET"),
+	_T("CH1_KEYPAD_UP"),
+	_T("CH1_KEYPAD_DOWN"),
+	_T("CH1_KEYPAD_SEND"),
+	_T("CH2_KEYPAD_AUTO_MANUAL"),
+	_T("CH2_KEYPAD_BACK"),
+	_T("CH2_KEYPAD_NEXT"),
+	_T("CH2_KEYPAD_REPEAT"),
+	_T("CH2_KEYPAD_RESET"),
+	_T("CH2_KEYPAD_UP"),
+	_T("CH2_KEYPAD_DOWN"),
+	_T("CH2_KEYPAD_SEND")
 };
 
 CString strNameDOUT2[24] =
@@ -571,10 +573,10 @@ CString strNameDOUT2[24] =
 	_T("CH2_TRAY_UNCLAMP_4"),
 	_T("CH2_TRAY_UNCLAMP_5"),
 	_T("CH2_TRAY_UNCLAMP_6"),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T(""),
+	_T("CH1_ADSORPTION_EJECTOR"),
+	_T("CH1_PIN_CYLINDER_UP"),
+	_T("CH2_ADSORPTION_EJECTOR"),
+	_T("CH2_PIN_CYLINDER_UP"),
 	_T(""),
 	_T(""),
 	_T(""),
@@ -714,7 +716,7 @@ void CMaintenanceDIO::Lf_setListCheck()
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_BLOW >> 16))			m_lstMoDio1Out.SetCheck(16, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_ON_OFF >> 16))			m_lstMoDio1Out.SetCheck(17, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_LED_ON_OFF >> 16))				m_lstMoDio1Out.SetCheck(18, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_SENSOR_LAMP >> 16))	m_lstMoDio1Out.SetCheck(19, TRUE);
+	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE0 >> 16))					m_lstMoDio1Out.SetCheck(19, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE1 >> 16))					m_lstMoDio1Out.SetCheck(20, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE2 >> 16))					m_lstMoDio1Out.SetCheck(21, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE3 >> 16))					m_lstMoDio1Out.SetCheck(22, TRUE);
@@ -732,18 +734,18 @@ void CMaintenanceDIO::Lf_setListCheck()
 	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_4 >> 8))		m_lstMoDio2Out.SetCheck(9, TRUE);
 	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_5 >> 8))		m_lstMoDio2Out.SetCheck(10, TRUE);
 	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_6 >> 8))		m_lstMoDio2Out.SetCheck(11, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_SPARE1 >> 8))					m_lstMoDio2Out.SetCheck(12, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_SPARE2 >> 8))					m_lstMoDio2Out.SetCheck(13, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_SPARE3 >> 8))					m_lstMoDio2Out.SetCheck(14, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_SPARE4 >> 8))					m_lstMoDio2Out.SetCheck(15, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE5 >> 16))					m_lstMoDio2Out.SetCheck(16, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE6 >> 16))					m_lstMoDio2Out.SetCheck(17, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE7 >> 16))					m_lstMoDio2Out.SetCheck(18, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE8 >> 16))					m_lstMoDio2Out.SetCheck(19, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE9 >> 16))					m_lstMoDio2Out.SetCheck(20, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE10 >> 16))					m_lstMoDio2Out.SetCheck(21, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE11 >> 16))					m_lstMoDio2Out.SetCheck(22, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE12 >> 16))					m_lstMoDio2Out.SetCheck(23, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_ADSORPTION_EJECTOR >> 8))	m_lstMoDio2Out.SetCheck(12, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_PIN_CYLINDER_UP >> 8))		m_lstMoDio2Out.SetCheck(13, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_ADSORPTION_EJECTOR >> 8))	m_lstMoDio2Out.SetCheck(14, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_PIN_CYLINDER_UP >> 8))		m_lstMoDio2Out.SetCheck(15, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE1 >> 16))					m_lstMoDio2Out.SetCheck(16, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE2 >> 16))					m_lstMoDio2Out.SetCheck(17, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE3 >> 16))					m_lstMoDio2Out.SetCheck(18, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE4 >> 16))					m_lstMoDio2Out.SetCheck(19, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE5 >> 16))					m_lstMoDio2Out.SetCheck(20, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE6 >> 16))					m_lstMoDio2Out.SetCheck(21, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE7 >> 16))					m_lstMoDio2Out.SetCheck(22, TRUE);
+	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE8 >> 16))					m_lstMoDio2Out.SetCheck(23, TRUE);
 }
 
 
@@ -767,8 +769,8 @@ void CMaintenanceDIO::Lf_updateStautsDio1In()
 	m_lstMoDio1In.SetCheck(14, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE));
 	m_lstMoDio1In.SetCheck(15, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_JIG_DIGITAL_PRESSURE_GAGE));
 
-	m_lstMoDio1In.SetCheck(16, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_CLEANSING_ALARM));
-	m_lstMoDio1In.SetCheck(17, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_HIGH_VOLTAGE_ALARM));
+	m_lstMoDio1In.SetCheck(16, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_ALARM));
+	m_lstMoDio1In.SetCheck(17, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_SPARE));
 	m_lstMoDio1In.SetCheck(18, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1));
 	m_lstMoDio1In.SetCheck(19, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2));
 	m_lstMoDio1In.SetCheck(20, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD));
@@ -798,8 +800,8 @@ void CMaintenanceDIO::Lf_updateStautsDio1In()
 
 void CMaintenanceDIO::Lf_updateStautsDio2In()
 {
-	m_lstMoDio2In.SetCheck(0, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_SENSOR));
-	m_lstMoDio2In.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_SENSOR));
+	m_lstMoDio2In.SetCheck(0, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR));
+	m_lstMoDio2In.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_PHOTO_SENSOR));
 	m_lstMoDio2In.SetCheck(2, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR));
 	m_lstMoDio2In.SetCheck(3, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR));
 	m_lstMoDio2In.SetCheck(4, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR));
@@ -825,21 +827,21 @@ void CMaintenanceDIO::Lf_updateStautsDio2In()
 	m_lstMoDio2In.SetCheck(22, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE5));
 	m_lstMoDio2In.SetCheck(23, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE6));
 
-	m_lstMoDio2In.SetCheck(24, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_AUTO_MANUAL));
-	m_lstMoDio2In.SetCheck(25, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_BACK));
-	m_lstMoDio2In.SetCheck(26, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_NEXT));
-	m_lstMoDio2In.SetCheck(27, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_REPEAT));
-	m_lstMoDio2In.SetCheck(28, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_RESET));
-	m_lstMoDio2In.SetCheck(29, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_UP));
-	m_lstMoDio2In.SetCheck(30, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_DOWN));
-	m_lstMoDio2In.SetCheck(31, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_PENDANT_SEND));
+	m_lstMoDio2In.SetCheck(24, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_AUTO_MANUAL));
+	m_lstMoDio2In.SetCheck(25, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_BACK));
+	m_lstMoDio2In.SetCheck(26, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_NEXT));
+	m_lstMoDio2In.SetCheck(27, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_REPEAT));
+	m_lstMoDio2In.SetCheck(28, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_RESET));
+	m_lstMoDio2In.SetCheck(29, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_UP));
+	m_lstMoDio2In.SetCheck(30, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_DOWN));
+	m_lstMoDio2In.SetCheck(31, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_SEND));
 
-	m_lstMoDio2In.SetCheck(32, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_AUTO_MANUAL));
-	m_lstMoDio2In.SetCheck(33, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_BACK));
-	m_lstMoDio2In.SetCheck(34, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_NEXT));
-	m_lstMoDio2In.SetCheck(35, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_REPEAT));
-	m_lstMoDio2In.SetCheck(36, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_RESET));
-	m_lstMoDio2In.SetCheck(37, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_UP));
-	m_lstMoDio2In.SetCheck(38, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_DOWN));
-	m_lstMoDio2In.SetCheck(39, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_PENDANT_SEND));
+	m_lstMoDio2In.SetCheck(32, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_AUTO_MANUAL));
+	m_lstMoDio2In.SetCheck(33, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_BACK));
+	m_lstMoDio2In.SetCheck(34, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_NEXT));
+	m_lstMoDio2In.SetCheck(35, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_REPEAT));
+	m_lstMoDio2In.SetCheck(36, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_RESET));
+	m_lstMoDio2In.SetCheck(37, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_UP));
+	m_lstMoDio2In.SetCheck(38, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_DOWN));
+	m_lstMoDio2In.SetCheck(39, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_SEND));
 }

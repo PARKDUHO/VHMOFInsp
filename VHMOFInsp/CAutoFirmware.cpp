@@ -28,6 +28,7 @@ void CAutoFirmware::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_AF_DOWNLOAD_START, m_btnAfDownloadStart);
 	DDX_Control(pDX, IDC_BTN_AF_CLOSE, m_btnAfClose);
 	DDX_Control(pDX, IDC_CMB_AF_CH_SELECT, m_cmbAfChSelect);
+	DDX_Control(pDX, IDC_CMB_AF_TARGET, m_cmbAfTarget);
 }
 
 
@@ -131,6 +132,8 @@ HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_AF_FILE_PATH)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_AF_READ_VERSION)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_AF_PROGRESS)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_AF_CH_SELECT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_AF_TARGET)
 				)
 			{
 				pDC->SetBkColor(COLOR_BLUISH);
@@ -178,19 +181,42 @@ void CAutoFirmware::OnBnClickedBtnAfFileOpen()
 void CAutoFirmware::OnBnClickedBtnAfReadVersion()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int target = m_cmbAfTarget.GetCurSel();
 	int ch = m_cmbAfChSelect.GetCurSel();
 
-	m_pApp->m_sPgFWVersion[ch].Empty();
-	GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T(""));
-	delayMs(100);
+	if (target == FW_TARGET_MAIN_MCU)
+	{
+		m_pApp->m_sPgFWVersion[ch].Empty();
+		GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T(""));
+		delayMs(100);
 
-	if (m_pApp->commApi->main_getCtrlFWVersion(ch) == TRUE)
-	{
-		GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(m_pApp->m_sPgFWVersion[ch]);
+		if (m_pApp->commApi->main_getCtrlFWVersion(ch) == TRUE)
+		{
+			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(m_pApp->m_sPgFWVersion[ch]);
+		}
+		else
+		{
+			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T("Fail"));
+		}
 	}
-	else
+	if (target == FW_TARGET_MAIN_FPGA)
 	{
-		GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T("Fail"));
+
+	}
+	if (target == FW_TARGET_QSPI_BOARD)
+	{
+		m_pApp->m_sQspiFWVersion[ch].Empty();
+		GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T(""));
+		delayMs(100);
+
+		if (m_pApp->commApi->qspi_getFWVersion(ch) == TRUE)
+		{
+			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(m_pApp->m_sQspiFWVersion[ch]);
+		}
+		else
+		{
+			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T("Fail"));
+		}
 	}
 }
 
@@ -198,6 +224,7 @@ void CAutoFirmware::OnBnClickedBtnAfReadVersion()
 void CAutoFirmware::OnBnClickedBtnAfDownloadStart()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int target = m_cmbAfTarget.GetCurSel();
 	int ch = m_cmbAfChSelect.GetCurSel();
 
 	GetDlgItem(IDC_BTN_AF_FILE_OPEN)->EnableWindow(FALSE);
@@ -224,6 +251,7 @@ void CAutoFirmware::OnBnClickedBtnAfClose()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CAutoFirmware::Lf_InitLocalValue()
 {
+	m_cmbAfTarget.SetCurSel(0);
 	m_cmbAfChSelect.SetCurSel(0);
 
 	m_pApp->m_nDownloadReadyAckCount = 0;					//Firmware Download ACK Receive Count 초기화.	
@@ -253,6 +281,10 @@ void CAutoFirmware::Lf_InitFontset()
 	GetDlgItem(IDC_STT_AF_PROGRESS)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_AF_PERCENT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_AF_STATUS)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_AF_CH_SELECT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_CMB_AF_CH_SELECT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_AF_TARGET)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_CMB_AF_TARGET)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
@@ -440,11 +472,11 @@ BOOL CAutoFirmware::Lf_TcpReConnection(int ch)
 	{
 		if (ch == CH1)
 		{
-			bRet = m_pApp->m_pSocketTCPMain->tcp_Main_Connection(TCP_MAIN_1_BOARD_IP, TCP_MAIN_PORT, CH1);
+			bRet = m_pApp->m_pSocketTCPMain->tcp_Main_Connection(TCP_MAIN1_MCU_IP, TCP_MAIN_PORT, CH1);
 		}
 		else if (ch == CH2)
 		{
-			bRet = m_pApp->m_pSocketTCPMain->tcp_Main_Connection(TCP_MAIN_2_BOARD_IP, TCP_MAIN_PORT, CH2);
+			bRet = m_pApp->m_pSocketTCPMain->tcp_Main_Connection(TCP_MAIN2_MCU_IP, TCP_MAIN_PORT, CH2);
 		}
 
 		if (bRet == TRUE)

@@ -35,6 +35,10 @@ public:
 	BOOL main_setBmpComplete(int ch);
 	BOOL main_setI2cWrite(int ch, int level, int pullup, int devAddr, int regAddr, char* pData);
 
+	BOOL main_setCableOpenCheck(int ch);
+	BOOL main_setGpioControl(int ch, int gpio1, int gpio2, int gpio3);
+	BOOL main_setGioSetting(int ch, int gio1, int gio2, int gio3, int gio4);
+
 	BOOL main_setGoToBootSection(int ch);
 	BOOL main_setDownloadFirmware(int ch, char* szData, int dataSize);
 	BOOL main_setDownloadComplete(int ch);
@@ -45,7 +49,8 @@ public:
 	BOOL main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime);
 	char gszMainRcvPacket[MAX_CH][256];
 
-
+	BOOL qspi_setSendQuery(int ch, int nCommand, int nLength, char* pData, int recvACK, int waitTime);
+	BOOL qspi_procWaitRecvACK(int ch, int cmd, DWORD waitTime);
 	BOOL Lf_setQSPI_SPI_Init(int ch);
 	BOOL Lf_setQSPI_RelayOnOff(int ch, int onoff);
 	BOOL Lf_setQSPI_FlashEraseSector(int ch, int start, int end);
@@ -63,19 +68,19 @@ public:
 	BOOL Lf_setQSPI_GpioWriteBit(int ch);
 	BOOL Lf_setQspiGPIO_GTRL(int ch, int IO, int onoff);
 	BOOL Lf_getQSPI_GpioReadBit(int ch, char* szData);
-	BOOL Lf_sendQSPI_AreYouReady(int ch);
-	BOOL Lf_getQSPI_FW_Ver(int ch);
+	BOOL qspi_AreYouReady(int ch);
+	BOOL qspi_getFWVersion(int ch);
 
 
 	//GI DIO Board º¯°æ
 	BOOL dio_writeDioOutput(int ch, int OutData);
-	BOOL dio_readDioInput(int ch);
+	BOOL dio_readDioInput(int ch, int bACK=ACK);
 	BOOL dio_writeDioPortOnOff(int ch, int OutBit, int onoff);
 
 	
 
 	char gszRs232RcvPacket[2][1024 * 64];
-	char gsztcpRcvPacket[2][1024 * 64];
+	char m_szQspiRecvData[2][1024 * 64];
 
 	int	 m_nI2cReadRtnCodeCh1;
 	int	 m_nI2cReadRtnCodeCh2;

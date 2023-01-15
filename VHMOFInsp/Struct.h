@@ -20,12 +20,12 @@ typedef struct _ST_MODELINFO_{
 	float	m_fLimitVelHigh;
 	float	m_fLimitVddLow;
 	float	m_fLimitVddHigh;
-	float	m_fLimitIccLow;
-	float	m_fLimitIccHigh;
-	float	m_fLimitIelLow;
-	float	m_fLimitIelHigh;
-	float	m_fLimitIddLow;
-	float	m_fLimitIddHigh;
+	int		m_nLimitIccLow;
+	int		m_nLimitIccHigh;
+	int		m_nLimitIelLow;
+	int		m_nLimitIelHigh;
+	int		m_nLimitIddLow;
+	int		m_nLimitIddHigh;
 
 	int		m_nPowerOnSeq1;
 	int		m_nPowerOnSeq2;
@@ -33,24 +33,52 @@ typedef struct _ST_MODELINFO_{
 	int		m_nPowerOnSeq4;
 	int		m_nPowerOnSeq5;
 	int		m_nPowerOnSeq6;
+	int		m_nPowerOnSeq7;
+	int		m_nPowerOnSeq8;
+	int		m_nPowerOnSeq9;
+	int		m_nPowerOnSeq10;
+	int		m_nPowerOnSeq11;
+	int		m_nPowerOnSeq12;
+	int		m_nPowerOnSeq13;
 	int		m_nPowerOnDelay1;
 	int		m_nPowerOnDelay2;
 	int		m_nPowerOnDelay3;
 	int		m_nPowerOnDelay4;
 	int		m_nPowerOnDelay5;
 	int		m_nPowerOnDelay6;
+	int		m_nPowerOnDelay7;
+	int		m_nPowerOnDelay8;
+	int		m_nPowerOnDelay9;
+	int		m_nPowerOnDelay10;
+	int		m_nPowerOnDelay11;
+	int		m_nPowerOnDelay12;
+	int		m_nPowerOnDelay13;
 	int		m_nPowerOffSeq1;
 	int		m_nPowerOffSeq2;
 	int		m_nPowerOffSeq3;
 	int		m_nPowerOffSeq4;
 	int		m_nPowerOffSeq5;
 	int		m_nPowerOffSeq6;
+	int		m_nPowerOffSeq7;
+	int		m_nPowerOffSeq8;
+	int		m_nPowerOffSeq9;
+	int		m_nPowerOffSeq10;
+	int		m_nPowerOffSeq11;
+	int		m_nPowerOffSeq12;
+	int		m_nPowerOffSeq13;
 	int		m_nPowerOffDelay1;
 	int		m_nPowerOffDelay2;
 	int		m_nPowerOffDelay3;
 	int		m_nPowerOffDelay4;
 	int		m_nPowerOffDelay5;
 	int		m_nPowerOffDelay6;
+	int		m_nPowerOffDelay7;
+	int		m_nPowerOffDelay8;
+	int		m_nPowerOffDelay9;
+	int		m_nPowerOffDelay10;
+	int		m_nPowerOffDelay11;
+	int		m_nPowerOffDelay12;
+	int		m_nPowerOffDelay13;
 
 	int		m_nSignalType;
 	int		m_nPixelType;
@@ -73,6 +101,7 @@ typedef struct _ST_MODELINFO_{
 	int		m_nTimingVerFrontPorch;
 	int		m_nTimingVerBackPorch;
 
+	int		m_nMainBoardLED;
 
 	int		m_nI2cPullUp;
 	int		m_nI2cLevel;
@@ -84,10 +113,19 @@ typedef struct _ST_MODELINFO_{
 
 	int		m_nGpioPullUp;
 	int		m_nGpioLevel;
+	int		m_nGpio1Output;
+	int		m_nGpio2Output;
+	int		m_nGpio3Output;
+	int		m_nGio1Setting;
+	int		m_nGio2Setting;
+	int		m_nGio3Setting;
+	int		m_nGio4Setting;
 
 	int		m_nPwmFrequency;
 	int		m_nPwmDuty;
 	int		m_nPwmLevel;
+
+	int		m_nCableOpenCheck;
 
 	int		m_nPatternListCount;
 	CString	m_sLbPtnListNAME[PTN_LIST_MAX];
@@ -175,7 +213,11 @@ typedef struct _ST_INSPWORKINFO_{
 	int   m_nCurPatternIdx;				// 현재 검사중인 Pattern의 Index 정보
 	char  m_szBadPattern[50];			// 불량패턴명
 	char  m_szReasonCode[100];			// 불량코드
+	int   m_nPanelJudgeResult;			// 불량 판정 결과
 	char  m_szHostTopModelName[50];		// MES에서 내려받은 Top Model Name 정보
+
+	char  m_szExtInputPID1[20];			// CH1 외부에서 입력된 임시 Panel ID. (BCR 또는 PID 입력 UI)
+	char  m_szExtInputPID2[20];			// CH1 외부에서 입력된 임시 Panel ID. (BCR 또는 PID 입력 UI)
 
 	char  m_szPLTModelName[50];
 	char  m_szPLTPalletID[50];
@@ -201,6 +243,7 @@ typedef struct _ST_INSPWORKINFO_{
 	int   nMeasErrName;				// 0:VDD, 1:ELVDD, 2:I_VDD, 3:I_ELVDD
 	int   nMeasErrResult;			// 0:Normal, 1:Low, 2:High
 	int   nMeasErrValue;			// Error Value : 1/1000V, 1/1000A 단위
+	int   nGioReadInfo[4];			// GIO PIN Read Value
 
 	char  def_INSPTIME_START[30];	// 검사 시작 시간(YYYYMMDDHHMMSS)
 	char  def_INSPTIME_END[30];		// 검사 종료 시간(YYYYMMDDHHMMSS)
@@ -259,3 +302,27 @@ typedef struct _ST_INSPWORKINFO_{
 
 }INSPWORKINFO, *LPINSPWORKINFO;
 
+
+enum
+{
+	SUM_DATE = 0,
+	SUM_CH,
+	SUM_PM_MES,
+	SUM_SW_VER,
+	SUM_FW_VER,
+	SUM_MODEL,
+	SUM_EQP_ID,
+	SUM_PID,
+	SUM_PASS_FAIL,
+	SUM_RWK_CD,
+	SUM_TACT_TIME,
+	SUM_START_TIME,
+	SUM_END_TIME,
+	SUM_INFO_MAX
+};
+
+typedef struct _ST_SUMMARY_
+{
+	CString	m_sumData[SUM_INFO_MAX];
+
+} SUMMARYINFO, * LPSUMMARYINFO;

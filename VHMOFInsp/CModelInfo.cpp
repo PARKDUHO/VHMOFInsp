@@ -398,7 +398,10 @@ void CModelInfo::Lf_systemFusing()
 
 	for (int ch = CH1; ch < MAX_CH; ch++)
 	{
-		if (m_pApp->m_bPgConnectStatus[ch] == FALSE)
+		int idx;
+		if (ch == CH1)	idx = CONN_PG1;
+		if (ch == CH2)	idx = CONN_PG2;
+		if (m_pApp->bConnectInfo[idx] == FALSE)
 		{
 			if (ch == CH1)	GetDlgItem(IDC_STT_MI_FUSING_PG1)->SetWindowText(_T("SKIP"));
 			if (ch == CH2)	GetDlgItem(IDC_STT_MI_FUSING_PG2)->SetWindowText(_T("SKIP"));

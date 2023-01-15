@@ -25,6 +25,7 @@ public:
 	void SetColor(long cl) {clLeft=cl;};
 	void SetGradientColor(long cl) {clRight=cl;};
 	void SetTextColor(long cl) {clText=cl;};
+	void SetTextMultiLine(BOOL ml=FALSE) { m_bTextMultiLine = ml; };
 	void SetReverseGradient();
 	void SetLeftSpacing(int iNoOfPixels) { m_iLeftSpacing = iNoOfPixels; };
 	void SetTextAlign(int iAlign ) { m_iAlign = iAlign; }; //0 - left, 1 - center, 2 -right
@@ -50,6 +51,7 @@ protected:
 	BOOL m_bCanDoGradientFill;
 	BOOL m_bVertical;
 	BOOL m_bSplitMode;
+	BOOL m_bTextMultiLine;
 	LPFNDLLFUNC1 dllfunc_GradientFill;
 	
 	//{{AFX_MSG(CGradientStatic)

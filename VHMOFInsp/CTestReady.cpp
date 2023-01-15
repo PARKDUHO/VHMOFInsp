@@ -6,7 +6,9 @@
 #include "CTestReady.h"
 #include "afxdialogex.h"
 #include "CTestPattern.h"
-
+#include "CPanelID.h"
+#include "CMessageQuestion.h"
+#include "CDefectResult.h"
 
 // CTestReady 대화 상자
 
@@ -45,6 +47,7 @@ END_MESSAGE_MAP()
 BOOL CTestReady::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	lpModelInfo = m_pApp->GetModelInfo();
 	lpInspWorkInfo = m_pApp->GetInspWorkInfo();
 	lpSystemInfo = m_pApp->GetSystemInfo();
 
@@ -55,6 +58,8 @@ BOOL CTestReady::OnInitDialog()
 	Lf_InitFontset();
 	Lf_InitColorBrush();
 	Lf_InitDlgDesign();
+
+	Lf_readyInitialize();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -213,13 +218,50 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 void CTestReady::OnStnClickedSttTrQtyReset()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		CString sLog;
+		sLog.Format(_T("<QTY> Quentity Count Reset."));
+		m_pApp->Gf_writeMLog(sLog);
+
+		m_pApp->Gf_QtyCountReset();
+		Lf_updateQuantityCount();
+	}
 }
 
 
 void CTestReady::OnBnClickedBtnTrTestStart()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	Lf_FinalTestStart();
+	for (int ch = CH1; ch < MAX_CH; ch++)
+	{
+		if (DEBUG_PG1_TEST_ONLY == TRUE)
+		{
+			Lf_FinalTestStart(ch);
+			break;
+		}
+		else
+		{
+			if (ch == CH1)
+			{
+				if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR)
+				{
+					Lf_FinalTestStart(ch);
+				}
+			}
+			if (ch == CH2)
+			{
+				if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR)
+				{
+					Lf_FinalTestStart(ch);
+				}
+			}
+		}
+	}
 }
 
 
@@ -227,7 +269,7 @@ void CTestReady::OnBnClickedBtnTrTestStart()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTestReady::Lf_InitLocalValue()
 {
-	ZeroMemory(lpInspWorkInfo, sizeof(LPINSPWORKINFO));
+
 }
 
 void CTestReady::Lf_InitFontset()
@@ -290,32 +332,151 @@ void CTestReady::Lf_InitDlgDesign()
 // 	m_btnUserCancel.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
 }
 
-BOOL CTestReady::Lf_FinalTestStart()
+void CTestReady::Lf_readyInitialize()
 {
-	int ch = CH2;
+	Lf_updateQuantityCount();
+
+	ZeroMemory(lpInspWorkInfo, sizeof(INSPWORKINFO));
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T(""));
+}
+
+void CTestReady::Lf_updateQuantityCount()
+{
+	CString sdata = _T("");
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOK + lpSystemInfo->m_nQuantityNG);
+	GetDlgItem(IDC_STT_TR_QTY_TOTAL_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOK);
+	GetDlgItem(IDC_STT_TR_QTY_OK_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityNG);
+	GetDlgItem(IDC_STT_TR_QTY_NG_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("<QTY> Quantity Count.   TOTAL(%d), OK(%d), NG(%d)"), lpSystemInfo->m_nQuantityOK + lpSystemInfo->m_nQuantityNG, lpSystemInfo->m_nQuantityOK, lpSystemInfo->m_nQuantityNG);
+	m_pApp->Gf_writeMLog(sdata);
+}
+
+BOOL CTestReady::Lf_FinalTestStart(int ch)
+{
+	CTestPattern pattern_dlg;
+	pattern_dlg.m_nTargetCh = ch;
+
+	if (m_pApp->Lf_checkDoorOpenInterLock() == FALSE)
+	{
+		goto ERR_EXCEPT;
+	}
 
 	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("PM MODE"), ERROR_CODE_0);
 	}
 
+	m_pApp->tt_startTime = CTime::GetCurrentTime();
+	Lf_InspRoomLEDOnOff(ROOM_LED_OFF);
+
+	if (Lf_checkPanelID(ch) == FALSE)
+	{
+		goto ERR_EXCEPT;
+	}
+
 	if (Lf_getControlBdReady(ch) == FALSE)
 	{
-		return FALSE;
+		goto ERR_EXCEPT;
+	}
+
+	if (Lf_setSystemAutoFusing(ch) == FALSE)
+	{
+		goto ERR_EXCEPT;
+	}
+
+	if (m_pApp->Gf_gmesSendHost(HOST_PCHK) == FALSE)
+	{
+		return false;
+	}
+
+	if (Lf_AutoModelChange() == FALSE)
+	{
+		return false;
+	}
+
+	if (Lf_checkCableOpen(ch) == FALSE)
+	{
+		goto ERR_EXCEPT;
+	}
+
+	if (Lf_setGpioControl(ch) == FALSE)
+	{
+		goto ERR_EXCEPT;
+	}
+
+	if (Lf_setGioSetting(ch) == FALSE)
+	{
+		goto ERR_EXCEPT;
 	}
 
 	if (Lf_getFirmwareVersion(ch) == FALSE)
 	{
-		return FALSE;
+		goto ERR_EXCEPT;
 	}
 
-	CTestPattern pattern_dlg;
-	pattern_dlg.m_nTargetCh = ch;
-	if (pattern_dlg.DoModal() == IDOK)
+	pattern_dlg.DoModal();
+	m_pApp->tt_endTime = CTime::GetCurrentTime();
+
+	if (Lf_sendPanelResult() == TRUE)
 	{
-
+		m_pApp->Gf_writeSummaryLog(ch);
 	}
 
+	/*********************************************************************************************************************/
+	Lf_readyInitialize();
+	Lf_InspRoomLEDOnOff(ROOM_LED_ON);
+
+	return TRUE;
+
+ERR_EXCEPT:
+	// Error Exception. Initialize.
+	m_pApp->tt_endTime = CTime::GetCurrentTime();
+
+	Lf_readyInitialize();
+	Lf_InspRoomLEDOnOff(ROOM_LED_ON);
+
+	return FALSE;
+}
+
+BOOL CTestReady::Lf_InspRoomLEDOnOff(BOOL bOnOff)
+{
+	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_ON_OFF, bOnOff);
+}
+
+BOOL CTestReady::Lf_checkPanelID(int ch)
+{
+	char szTmpPID[1024] = { 0, };
+
+
+	if (ch == CH1)		sprintf_s(szTmpPID, "%s", lpInspWorkInfo->m_szExtInputPID1);
+	if (ch == CH2)		sprintf_s(szTmpPID, "%s", lpInspWorkInfo->m_szExtInputPID2);
+
+	if (strlen(szTmpPID) == 0)
+	{
+		CPanelID pid_dlg;
+		if (pid_dlg.DoModal() == IDCANCEL)
+		{
+			return FALSE;
+		}
+		sprintf_s(szTmpPID, "%s", wchar_To_char(pid_dlg.strInputPID.GetBuffer(0)));
+	}
+	else
+	{
+		if (((strlen(szTmpPID) < 7) || (strlen(szTmpPID) > 20)))
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("WRONG PANEL ID"), ERROR_CODE_54);
+			GetDlgItem(IDC_EDT_PID_INPUT)->SetWindowText(_T(""));
+			return FALSE;
+		}
+	}
+
+	sprintf_s(lpInspWorkInfo->m_szPanelID, "%s", szTmpPID);
 
 	return TRUE;
 }
@@ -341,13 +502,64 @@ BOOL CTestReady::Lf_getControlBdReady(int ch)
 		{
 			GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("No Response PG!"));
 
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("Communication Error"), ERROR_CODE_18);
+			CString sTitle;
+			sTitle.Format(_T("[CH%d] PG Communication Error"), ch);
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, sTitle, ERROR_CODE_18);
 			return FALSE;
 
 		}
 		nCnt++;
 	}
 	m_pApp->Gf_writeMLog(_T("<PG> CTRL B/D Ready Check OK."));
+
+	return TRUE;
+}
+
+BOOL CTestReady::Lf_setSystemAutoFusing(int ch)
+{
+	m_pApp->Gf_writeMLog(_T("<TEST> System Auto Fusing"));
+	if (m_pApp->commApi->main_setSystemFusing(ch) == TRUE)
+	{
+		m_pApp->Gf_writeMLog(_T("<TEST> System Auto Fusing => OK"));
+		return TRUE;
+	}
+	else
+	{
+		m_pApp->Gf_writeMLog(_T("<TEST> System Auto Fusing => NG"));
+
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("AUTO FUSING ERROR"), ERROR_CODE_58);
+		return FALSE;
+	}
+}
+
+BOOL CTestReady::Lf_AutoModelChange()
+{
+	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE))
+		return TRUE;
+
+	CString strTopModelName;
+	strTopModelName.Format(_T("%s"), char_To_wchar(lpInspWorkInfo->m_szHostTopModelName));
+	// 현재 모델과 MES TOP_MODEL이 서로 다르면 자동 M/C를 진행한다.
+	if (lpSystemInfo->m_sLastModelName != strTopModelName)
+	{
+		if (m_pApp->Gf_FindModelFile(strTopModelName) == TRUE)
+		{
+			CString sLog;
+			sLog.Format(_T("<AUTO M/C> Auto Model Change OK.  [%s] => [%s]"), lpSystemInfo->m_sLastModelName, strTopModelName);
+			m_pApp->Gf_writeMLog(sLog);
+
+			lpSystemInfo->m_sLastModelName = strTopModelName;
+			Write_SysIniFile(_T("SYSTEM"), _T("LAST_MODELNAME"), lpSystemInfo->m_sLastModelName);
+
+			m_pApp->Gf_LoadModelData(strTopModelName);
+			AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+		}
+		else
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("AUTO M/C ERROR"), ERROR_CODE_59, strTopModelName);
+			return FALSE;
+		}
+	}
 
 	return TRUE;
 }
@@ -362,5 +574,153 @@ BOOL CTestReady::Lf_getFirmwareVersion(int ch)
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	return TRUE;
+}
+
+BOOL CTestReady::Lf_checkCableOpen(int ch)
+{
+	CString sLog;
+
+	if (lpModelInfo->m_nCableOpenCheck == TRUE)
+	{
+		sLog.Format(_T("<TEST> Cable Open Check => Start"));
+		m_pApp->Gf_writeMLog(sLog);
+
+		if (m_pApp->commApi->main_setCableOpenCheck(ch) == TRUE)
+		{
+			lpInspWorkInfo->nCheckCableOpenComplete = TRUE;
+			if (lpInspWorkInfo->nCheckCableOpenValue == 0)
+			{
+				sLog.Format(_T("<TEST> Cable Open Check => Complete"));
+				m_pApp->Gf_writeMLog(sLog);
+
+				lpInspWorkInfo->nCheckCableOpenResult = TRUE;
+				return TRUE;
+			}
+
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("USER CABLE OPEN CHECK ERROR"), ERROR_CODE_51);
+		}
+		else
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("USER CABLE OPEN CHECK ERROR"), ERROR_CODE_50);
+		}
+
+
+		lpInspWorkInfo->nCheckCableOpenResult = FALSE;
+		return FALSE;
+	}
+	else
+	{
+		sLog.Format(_T("<TEST> Cable Open Check => Skip"));
+		m_pApp->Gf_writeMLog(sLog);
+	}
+
+	return TRUE;
+}
+
+BOOL CTestReady::Lf_setGpioControl(int ch)
+{
+	BOOL bRet;
+	CString sLog;
+
+	sLog.Format(_T("<TEST> GPIO PIN Control.  (GPIO1:%d, GPIO2:%d, GPIO3:%d"), lpModelInfo->m_nGpio1Output, lpModelInfo->m_nGpio2Output, lpModelInfo->m_nGpio3Output);
+	m_pApp->Gf_writeMLog(sLog);
+
+	bRet = m_pApp->commApi->main_setGpioControl(ch, lpModelInfo->m_nGpio1Output, lpModelInfo->m_nGpio2Output, lpModelInfo->m_nGpio3Output);
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("GPIO CONTROL FAIL"), ERROR_CODE_52);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_setGioSetting(int ch)
+{
+	BOOL bRet;
+	CString sLog;
+
+	sLog.Format(_T("<TEST> GIO PIN Setting.  (GIO1:%d, GIO2:%d, GIO3:%d, GIO4:%d"), lpModelInfo->m_nGio1Setting, lpModelInfo->m_nGio2Setting, lpModelInfo->m_nGio3Setting, lpModelInfo->m_nGio4Setting);
+	m_pApp->Gf_writeMLog(sLog);
+
+	bRet = m_pApp->commApi->main_setGioSetting(ch, lpModelInfo->m_nGio1Setting, lpModelInfo->m_nGio2Setting, lpModelInfo->m_nGio3Setting, lpModelInfo->m_nGio4Setting);
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("GIO SETTING FAIL"), ERROR_CODE_53);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_openGMESJudge()
+{
+	CString sdata = _T(""), outLog = _T("");
+	CString strRwkCD;
+
+	m_pApp->Gf_writeMLog(_T("<MES> Panel Judge Data"));
+
+	int defecetResult = 0;
+
+#if (MES_COMBI_CODE_USE==1)
+	m_pApp->Gf_writeMLog(_T("<MES> CombiCode Dialog Open"));
+	defecetResult = ShowDefectResult(GetSafeOwner());
+	strRwkCD = GetRWK_CD();
+#else
+	m_pApp->Gf_writeMLog(_T("<MES> DefectCode Dialog Open"));
+	CDefectResult dlg;
+	defecetResult = (int)dlg.DoModal();
+	strRwkCD = dlg.GetWRK_CD();
+#endif
+
+	m_pApp->m_pCimNet->SetRwkCode(strRwkCD);
+	sprintf_s(lpInspWorkInfo->m_szReasonCode, "%s", wchar_To_char(strRwkCD.GetBuffer(0)));
+
+	if ((defecetResult == IDOK) && (strRwkCD.IsEmpty() == TRUE))
+	{
+		lpInspWorkInfo->m_nPanelJudgeResult = GMES_PNF_PASS;
+	}
+	else if ((defecetResult == IDOK) && (strRwkCD.IsEmpty() == FALSE))
+	{
+		outLog.Format(_T("<MES> Select Reason Code - %s"), strRwkCD);
+		m_pApp->Gf_writeMLog(outLog);
+
+		lpInspWorkInfo->m_nPanelJudgeResult = GMES_PNF_FAIL;
+	}
+	else
+	{
+		m_pApp->Gf_writeMLog(_T("<MES> JUDGE CANCEL"));
+		return FALSE;
+	}
+
+//	GetForegroundWindow()->PostMessage(WM_KEYDOWN, VK_F12, 0);
+	return TRUE;
+}
+
+BOOL CTestReady::Lf_sendPanelResult()
+{
+	m_pApp->Gf_writeMLog(_T("<TEST> Panel Result Start"));
+
+	if (Lf_openGMESJudge() == TRUE)
+	{
+		if (lpInspWorkInfo->m_nPanelJudgeResult == GMES_PNF_PASS)
+		{
+			if (m_pApp->Gf_gmesSendHost(HOST_EICR) == TRUE)
+			{
+				m_pApp->Gf_QtyCountUp(QTY_OK);
+			}
+		}
+		if (lpInspWorkInfo->m_nPanelJudgeResult == GMES_PNF_FAIL)
+		{
+			if (m_pApp->Gf_gmesSendHost(HOST_EICR) == TRUE)
+			{
+				m_pApp->Gf_QtyCountUp(QTY_NG);
+			}
+		}
+
+		return TRUE;
+	}
+
+	return FALSE;
 }
 

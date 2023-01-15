@@ -36,12 +36,18 @@ CVHMOFInspApp::CVHMOFInspApp()
 	lpInspWorkInfo		= new INSPWORKINFO;
 	m_pPatternView		= new CPatternView();
 	m_pSocketTCPMain	= new CSocketTcpApp;		// TCP Socket Class 생성(Main Board 1)(22.12.08)
+	m_pSocketTCPSpi		= new CSocketTcpApp;
 	m_pUDPSocket		= new CSocketUDP;
 	commApi				= new CCommApi;
 	m_pCimNet			= new CCimNetCommApi;
 
 
 	m_pStaticMainLog = NULL;
+}
+
+CVHMOFInspApp::~CVHMOFInspApp()
+{
+
 }
 
 
@@ -102,9 +108,11 @@ BOOL CVHMOFInspApp::InitInstance()
 	// 적절한 내용으로 수정해야 합니다.
 	SetRegistryKey(_T("로컬 애플리케이션 마법사에서 생성된 애플리케이션"));
 
-	Gf_LoadSystemData();	// EQP ID가 필요하여 Load System은 시작 Log 출력전에 호출한다.
-	Gf_writeMLog(_T("*****************************:*****************************"));
+	//////////////////////////////////////////////////////////////////
+	Gf_SoftwareStartLog();					// 프로그램 시작 LOG 기록
+	//////////////////////////////////////////////////////////////////
 
+	Gf_LoadSystemData();
 	Lf_initGlobalVariable();
 	Gf_LoadModelFile();
 	Lf_initCreateUdpSocket();
@@ -187,6 +195,7 @@ LPINSPWORKINFO CVHMOFInspApp::GetInspWorkInfo()
 void CVHMOFInspApp::Lf_initGlobalVariable()
 {
 	ZeroMemory(m_nDioOutBit, sizeof(m_nDioOutBit));
+	ZeroMemory(bConnectInfo, sizeof(bConnectInfo));
 
 	m_bIsSendEAYT = FALSE;
 }
@@ -194,6 +203,48 @@ void CVHMOFInspApp::Lf_initGlobalVariable()
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void CVHMOFInspApp::Gf_SoftwareStartLog()
+{
+	Read_SysIniFile(_T("SYSTEM"), _T("EQP_NAME"), &lpSystemInfo->m_sEqpName);
+
+	// Main Form Title Set
+	CString strPGMTitle;
+	char D_String[15] = { 0, };
+	char Date_String[15] = { 0, };
+	char* Date[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+
+	sprintf_s(D_String, "%s", __DATE__);
+	for (int i = 12; i; i--)
+	{
+		for (int j = 3; j; j--)
+		{
+			if (D_String[j - 1] != *(Date[i - 1] + (j - 1)))
+				break;
+			if (j == 1)
+			{
+				if (D_String[4] == 0x20)	D_String[4] = 0x30;
+				sprintf_s(Date_String, "%c%c%c%c/%02d/%c%c", D_String[7], D_String[8], D_String[9], D_String[10], i, D_String[4], D_String[5]);
+				i = 1; j = 1;
+				break;
+			}
+		}
+	}
+
+	m_sSoftwareVersion.Format(_T("%s"), char_To_wchar(Date_String));
+	strPGMTitle.Format(_T("VH Medium OLED ( %s )"), m_sSoftwareVersion);
+
+	CString sLog;
+	sLog.Format(_T("***************************** %s *****************************"), strPGMTitle);
+	Gf_writeMLog(sLog);
+}
+
+void CVHMOFInspApp::Gf_SoftwareEndLog()
+{
+	CString sLog;
+	sLog.Format(_T("*****************************************************************************************"));
+	Gf_writeMLog(sLog);
+}
+
 void CVHMOFInspApp::Gf_writeMLog(char* szLogData)
 {
 	CString sLog;
@@ -217,7 +268,7 @@ void CVHMOFInspApp::Gf_writeMLog(CString sLogData)
 	strLog.Format(_T("[%02d:%02d:%02d %03d] %06d%03d\t: %s\r\n"), time.GetHour(), time.GetMinute(), time.GetSecond(), sysTime.wMilliseconds, (time.GetHour() * 3600) + (time.GetMinute() * 60) + time.GetSecond(), sysTime.wMilliseconds, sLogData);
 
 
-	strFileName.Format(_T("%s_%04d%02d%02d"), _T("TEST"), time.GetYear(), time.GetMonth(), time.GetDay());
+	strFileName.Format(_T("%s_%04d%02d%02d"), lpSystemInfo->m_sEqpName, time.GetYear(), time.GetMonth(), time.GetDay());
 	path.Format(_T(".\\Logs\\MLog\\%s.txt"), strFileName);
 
 	if ((_access(".\\Logs", 0)) == -1)
@@ -244,6 +295,117 @@ void CVHMOFInspApp::Gf_writeMLog(CString sLogData)
 	}
 }
 
+void CVHMOFInspApp::Gf_writeSummaryLog(int ch)
+{
+	FILE* fp;
+
+	BOOL bNewCsv = FALSE;
+	char filepath[128] = { 0 };
+	char buff[2048] = { 0 };
+	CString sResult = _T("NG");
+	CString sdata;
+
+	SYSTEMTIME sysTime;
+	::GetSystemTime(&sysTime);
+	CTime time = CTime::GetCurrentTime();
+
+	if ((_access(".\\Logs\\SummaryLog", 0)) == -1)
+		_mkdir(".\\Logs\\SummaryLog");
+
+	sprintf_s(filepath, ".\\Logs\\SummaryLog\\Summary_%04d%02d%02d.csv", time.GetYear(), time.GetMonth(), time.GetDay());
+	fopen_s(&fp, filepath, "r+");
+	if (fp == NULL)
+	{
+		delayMs(1);
+		fopen_s(&fp, filepath, "a+");
+		if (fp == NULL) // 2007-08-01 : fseek.c(101) error
+		{
+			if ((_access(filepath, 2)) != -1) // 2007-09-02 : fseek.c(101) error
+			{
+				delayMs(1);
+				fopen_s(&fp, filepath, "a+");
+				if (fp == NULL) // 2007-09-02 : fseek.c(101) error
+				{
+					return;
+				}
+			}
+		}
+		bNewCsv = TRUE;
+	}
+
+	TCHAR szSwVer[1024] = { 0, };
+	GetModuleFileName(NULL, szSwVer, 1024);
+	sdata.Format(_T("%s"), szSwVer);
+	sdata = sdata.Mid(sdata.ReverseFind(_T('\\')) + 1);
+	sdata.Delete(sdata.GetLength() - 4, 4);
+	m_summaryInfo.m_sumData[SUM_SW_VER] = sdata;
+
+	m_summaryInfo.m_sumData[SUM_DATE].Format(_T("%04d-%02d-%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
+	m_summaryInfo.m_sumData[SUM_CH].Format(_T("CH-%d"), (ch+1));
+
+	m_summaryInfo.m_sumData[SUM_PM_MES].Format(_T("%s"), m_pApp->m_sLoginUserID);
+	m_summaryInfo.m_sumData[SUM_FW_VER].Format(_T("%s"), m_pApp->m_sPgFWVersion[ch].Left(19));
+	m_summaryInfo.m_sumData[SUM_MODEL].Format(_T("%s"), lpSystemInfo->m_sLastModelName);
+	m_summaryInfo.m_sumData[SUM_EQP_ID].Format(_T("%s"), lpSystemInfo->m_sEqpName);
+	m_summaryInfo.m_sumData[SUM_PID].Format(_T("%s"), char_To_wchar(lpInspWorkInfo->m_szPanelID));
+	if (strlen(lpInspWorkInfo->m_szReasonCode) == 0)
+	{
+		m_summaryInfo.m_sumData[SUM_PASS_FAIL] = _T("PASS");
+		m_summaryInfo.m_sumData[SUM_RWK_CD] = _T("");
+	}
+	else
+	{
+		m_summaryInfo.m_sumData[SUM_PASS_FAIL] = _T("FAIL");
+		m_summaryInfo.m_sumData[SUM_RWK_CD].Format(_T("%s"), char_To_wchar(lpInspWorkInfo->m_szReasonCode));
+	}
+
+	m_summaryInfo.m_sumData[SUM_TACT_TIME].Format(_T("%d"), m_pApp->tt_endTime - m_pApp->tt_startTime);
+	m_summaryInfo.m_sumData[SUM_START_TIME].Format(_T("%04d-%02d-%02d_%02d:%02d:%02d")
+		, m_pApp->tt_startTime.GetYear()
+		, m_pApp->tt_startTime.GetMonth()
+		, m_pApp->tt_startTime.GetDay()
+		, m_pApp->tt_startTime.GetHour()
+		, m_pApp->tt_startTime.GetMinute()
+		, m_pApp->tt_startTime.GetSecond()
+	);
+	m_summaryInfo.m_sumData[SUM_END_TIME].Format(_T("%04d-%02d-%02d_%02d:%02d:%02d")
+		, m_pApp->tt_endTime.GetYear()
+		, m_pApp->tt_endTime.GetMonth()
+		, m_pApp->tt_endTime.GetDay()
+		, m_pApp->tt_endTime.GetHour()
+		, m_pApp->tt_endTime.GetMinute()
+		, m_pApp->tt_endTime.GetSecond()
+	);
+
+	if (bNewCsv == TRUE)
+	{
+		sprintf_s(buff, "Date,CH,PM/MES,S/W_Ver,F/W_Ver,SCRIPT_NAME(Model),EQP_ID,PANEL_ID,FINAL_PASS_FAIL,RWK_CD,TACT_TIME(s),START_TIME,END_TIME\n");
+		fprintf(fp, "%s", buff);
+	}
+
+	sdata.Format(_T("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n")
+		, m_summaryInfo.m_sumData[SUM_DATE]
+		, m_summaryInfo.m_sumData[SUM_CH]
+		, m_summaryInfo.m_sumData[SUM_PM_MES]
+		, m_summaryInfo.m_sumData[SUM_SW_VER]
+		, m_summaryInfo.m_sumData[SUM_FW_VER]
+		, m_summaryInfo.m_sumData[SUM_MODEL]
+		, m_summaryInfo.m_sumData[SUM_EQP_ID]
+		, m_summaryInfo.m_sumData[SUM_PID]
+		, m_summaryInfo.m_sumData[SUM_PASS_FAIL]
+		, m_summaryInfo.m_sumData[SUM_RWK_CD]
+		, m_summaryInfo.m_sumData[SUM_TACT_TIME]
+		, m_summaryInfo.m_sumData[SUM_START_TIME]
+		, m_summaryInfo.m_sumData[SUM_END_TIME]
+	);
+	sprintf_s(buff, "%s", wchar_To_char(sdata.GetBuffer(0)));
+
+	fseek(fp, 0L, SEEK_END);
+	fprintf(fp, "%s", buff);
+
+	fclose(fp);
+}
+
 BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage)
 {
 	CString strKey, strMessage;
@@ -265,6 +427,33 @@ BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorC
 	return FALSE;
 }
 
+void CVHMOFInspApp::Gf_QtyCountUp(int ok_ng)
+{
+	if (ok_ng == QTY_OK)
+	{
+		lpSystemInfo->m_nQuantityOK++;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT"), lpSystemInfo->m_nQuantityOK);
+	}
+	if (ok_ng == QTY_NG)
+	{
+		lpSystemInfo->m_nQuantityNG++;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT"), lpSystemInfo->m_nQuantityNG);
+	}
+}
+
+void CVHMOFInspApp::Gf_QtyCountReset()
+{
+	lpSystemInfo->m_nQuantityOK = 0;
+	Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT"), _T("0"));
+
+	lpSystemInfo->m_nQuantityNG = 0;
+	Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT"), _T("0"));
+
+//	CTime time = CTime::GetCurrentTime();
+//	CString sdata;
+//	sdata.Format(_T("%04d-%02d-%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
+//	Write_SysIniFile(_T("SYSTEM"), _T("QTY_COUNT_RESET_DATE"), sdata);
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Gradation Station Function
@@ -278,127 +467,54 @@ void CVHMOFInspApp::Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor1, 
 	pGStt->SetVerticalGradient();
 	if (bSplit == TRUE)	pGStt->SetSplitMode(TRUE);
 	pGStt->SetTextColor(fontColor);
+	pGStt->SetTextMultiLine(FALSE);
+}
+
+void CVHMOFInspApp::Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor, long fontColor, CFont* pFont, BOOL bSplit)
+{
+	pGStt->SetFont(pFont);
+	pGStt->SetTextAlign(TEXT_ALIGN_CENTER);
+	pGStt->SetColor(bkColor);
+	pGStt->SetGradientColor(bkColor);
+	pGStt->SetVerticalGradient();
+	if (bSplit == TRUE)	pGStt->SetSplitMode(TRUE);
+	pGStt->SetTextColor(fontColor);
+	pGStt->SetTextMultiLine(TRUE);
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Model File Load
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CVHMOFInspApp::Lf_FindModelFile()
+BOOL CVHMOFInspApp::Gf_FindModelFile(CString modelName)
 {
-	CString lastModel;
-	BOOL ret = FALSE;
+	CString strDataFolder;
 
 	WIN32_FIND_DATA wfd;
 	HANDLE hSearch;
 	int nLoof = 1;
 
-	hSearch = FindFirstFile(_T(".\\Model\\*.MOD"), &wfd);
+	if (modelName == _T(""))
+		return FALSE;
 
-	lastModel.Format(_T("%s.MOD"), lpSystemInfo->m_sLastModelName);
+	strDataFolder.Format(_T(".\\%s\\%s.mod"), _T("Model"), modelName);
+	hSearch = FindFirstFile(strDataFolder, &wfd);
+
 	if (hSearch != INVALID_HANDLE_VALUE)
 	{
-
-		if (wfd.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
-		{
-			while (nLoof)
-			{
-				// 대/소문자 구분하지 않고 Compare한다. (CompareNoCase)
-				if (lastModel.CompareNoCase(wfd.cFileName)) // When model file is't existed in folder, this sentence is executed. : Difference
-				{
-					nLoof = FindNextFile(hSearch, &wfd);
-					if (nLoof == 0)
-					{
-						// Model Load Fail
-						ret = FALSE;
-						break;
-					}
-				}
-
-				if (!lastModel.CompareNoCase(wfd.cFileName)) // When model file is existed in folder, this sentence is executed. : equal
-				{
-					//ModelName.mol setting
-					ret = TRUE;
-					break;
-				}
-			}
-		}
 		FindClose(hSearch);
+		return TRUE;
 	}
-	else // case : When Model folder is empty,
+	else
 	{
-		ret = FALSE;
 		FindClose(hSearch);
+		return FALSE;
 	}
-
-	return ret;
 }
 
-BOOL CVHMOFInspApp::Gf_LoadSystemData()
+void CVHMOFInspApp::Gf_LoadModelData(CString modelName)
 {
 	CString sValue = _T("");
-
-	Read_SysIniFile(_T("SYSTEM"),			_T("LAST_MODELNAME"),			&lpSystemInfo->m_sLastModelName);
-	Read_SysIniFile(_T("SYSTEM"),			_T("EQP_NAME"),					&lpSystemInfo->m_sEqpName);
-	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
-	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
-	Read_SysIniFile(_T("MES"),				_T("MES_DAEMON_PORT"),			&lpSystemInfo->m_sMesDaemonPort);
-	Read_SysIniFile(_T("MES"),				_T("MES_LOCAL_SUBJECT"),		&lpSystemInfo->m_sMesLocalSubject);
-	Read_SysIniFile(_T("MES"),				_T("MES_REMOTE_SUBJECT"),		&lpSystemInfo->m_sMesRemoteSubject);
-	Read_SysIniFile(_T("MES"),				_T("MES_LOCAL_IP"),				&lpSystemInfo->m_sMesLocalIP);
-	Read_SysIniFile(_T("EAS"),				_T("EAS_USE"),					&lpSystemInfo->m_nEasUse);
-	Read_SysIniFile(_T("EAS"),				_T("EAS_SERVICE"),				&lpSystemInfo->m_sEasServicePort);
-	Read_SysIniFile(_T("EAS"),				_T("EAS_NETWORK"),				&lpSystemInfo->m_sEasNetWork);
-	Read_SysIniFile(_T("EAS"),				_T("EAS_DAEMON_PORT"),			&lpSystemInfo->m_sEasDaemonPort);
-	Read_SysIniFile(_T("EAS"),				_T("EAS_LOCAL_SUBJECT"),		&lpSystemInfo->m_sEasLocalSubject);
-	Read_SysIniFile(_T("EAS"),				_T("EAS_REMOTE_SUBJECT"),		&lpSystemInfo->m_sEasRemoteSubject);
-	Read_SysIniFile(_T("DFS"),				_T("DFS_USE"),					&lpSystemInfo->m_nDfsUse);
-	Read_SysIniFile(_T("DFS"),				_T("DFS_IP_ADDRESS"),			&lpSystemInfo->m_sDfsIPAddress);
-	Read_SysIniFile(_T("DFS"),				_T("DFS_USER_ID"),				&lpSystemInfo->m_sDfsUserId);
-	Read_SysIniFile(_T("DFS"),				_T("DFS_PASSWORD"),				&lpSystemInfo->m_sDfsPassword);
-	Read_SysIniFile(_T("SYSTEM"),			_T("MODEL_FILE_PATH"),			&lpSystemInfo->m_sDataFileModel);
-	Read_SysIniFile(_T("SYSTEM"),			_T("PATTERN_FILE_PATH"),		&lpSystemInfo->m_sDataFilePattern);
-	Read_SysIniFile(_T("SYSTEM"),			_T("EDID_PATH"),				&lpSystemInfo->m_sDataFileEdid);
-
-	Read_SysIniFile(_T("QUANTITY"),			_T("QTY_GOOD"),					&lpSystemInfo->m_nQuantityOK);
-	Read_SysIniFile(_T("QUANTITY"),			_T("QTY_NG"),					&lpSystemInfo->m_nQuantityNG);
-
-
-
-
-	return TRUE;
-}
-
-void CVHMOFInspApp::Lf_parsingModFileData(CString szData, TCHAR(*szParseData)[255])
-{
-	TCHAR szTemp[100];
-
-	int nCnt = 0;
-	int nItemCnt = 0;
-	int nLoop = 0;
-
-	memset(szTemp, 0, sizeof(szTemp));
-	int nCmdLength = szData.GetLength();//_tcslen(szData);
-
-	for (nLoop = 0; nLoop <= nCmdLength; nLoop++)
-	{
-		szTemp[nCnt] = szData[nLoop];
-		if ((szData[nLoop] == ',') || (nLoop == nCmdLength))
-		{
-			szTemp[nCnt] = NULL;
-			_stprintf_s(szParseData[nItemCnt++], 100, _T("%s"), szTemp);
-			for (int i = 0; i <= nCnt; i++)
-				szTemp[i] = NULL;
-			nCnt = 0;
-		}
-		nCnt++;
-		if (szData[nLoop] == ',') nCnt = 0;
-	}
-}
-
-void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
-{
-	CString sValue=_T("");
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VCC"), &lpModelInfo->m_fPowerVcc);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL"), &lpModelInfo->m_fPowerVel);
@@ -412,36 +528,64 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VEL_LIMIT_High"), &lpModelInfo->m_fLimitVelHigh);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_LIMIT_LOW"), &lpModelInfo->m_fLimitVddLow);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("VDD_LIMIT_High"), &lpModelInfo->m_fLimitVddHigh);
-	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_LOW"), &lpModelInfo->m_fLimitIccLow);
-	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_High"), &lpModelInfo->m_fLimitIccHigh);
-	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_LOW"), &lpModelInfo->m_fLimitIelLow);
-	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_High"), &lpModelInfo->m_fLimitIelHigh);
-	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_LOW"), &lpModelInfo->m_fLimitIddLow);
-	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_High"), &lpModelInfo->m_fLimitIddHigh);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_LOW"), &lpModelInfo->m_nLimitIccLow);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ICC_LIMIT_High"), &lpModelInfo->m_nLimitIccHigh);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_LOW"), &lpModelInfo->m_nLimitIelLow);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IEL_LIMIT_High"), &lpModelInfo->m_nLimitIelHigh);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_LOW"), &lpModelInfo->m_nLimitIddLow);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("IDD_LIMIT_High"), &lpModelInfo->m_nLimitIddHigh);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX1"), &lpModelInfo->m_nPowerOnSeq1);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX2"), &lpModelInfo->m_nPowerOnSeq2);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX3"), &lpModelInfo->m_nPowerOnSeq3);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX4"), &lpModelInfo->m_nPowerOnSeq4);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX5"), &lpModelInfo->m_nPowerOnSeq5);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX6"), &lpModelInfo->m_nPowerOnSeq6);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX7"), &lpModelInfo->m_nPowerOnSeq7);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX8"), &lpModelInfo->m_nPowerOnSeq8);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX9"), &lpModelInfo->m_nPowerOnSeq9);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX10"), &lpModelInfo->m_nPowerOnSeq10);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX11"), &lpModelInfo->m_nPowerOnSeq11);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX12"), &lpModelInfo->m_nPowerOnSeq12);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX13"), &lpModelInfo->m_nPowerOnSeq13);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX1"), &lpModelInfo->m_nPowerOffSeq1);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX2"), &lpModelInfo->m_nPowerOffSeq2);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX3"), &lpModelInfo->m_nPowerOffSeq3);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX4"), &lpModelInfo->m_nPowerOffSeq4);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX5"), &lpModelInfo->m_nPowerOffSeq5);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX6"), &lpModelInfo->m_nPowerOffSeq6);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX7"), &lpModelInfo->m_nPowerOffSeq7);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX8"), &lpModelInfo->m_nPowerOffSeq8);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX9"), &lpModelInfo->m_nPowerOffSeq9);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX10"), &lpModelInfo->m_nPowerOffSeq10);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX11"), &lpModelInfo->m_nPowerOffSeq11);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX12"), &lpModelInfo->m_nPowerOffSeq12);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX13"), &lpModelInfo->m_nPowerOffSeq13);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY1"), &lpModelInfo->m_nPowerOnDelay1);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY2"), &lpModelInfo->m_nPowerOnDelay2);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY3"), &lpModelInfo->m_nPowerOnDelay3);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY4"), &lpModelInfo->m_nPowerOnDelay4);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY5"), &lpModelInfo->m_nPowerOnDelay5);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY6"), &lpModelInfo->m_nPowerOnDelay6);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY7"), &lpModelInfo->m_nPowerOnDelay7);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY8"), &lpModelInfo->m_nPowerOnDelay8);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY9"), &lpModelInfo->m_nPowerOnDelay9);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY10"), &lpModelInfo->m_nPowerOnDelay10);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY11"), &lpModelInfo->m_nPowerOnDelay11);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY12"), &lpModelInfo->m_nPowerOnDelay12);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY13"), &lpModelInfo->m_nPowerOnDelay13);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY1"), &lpModelInfo->m_nPowerOffDelay1);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY2"), &lpModelInfo->m_nPowerOffDelay2);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY3"), &lpModelInfo->m_nPowerOffDelay3);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY4"), &lpModelInfo->m_nPowerOffDelay4);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY5"), &lpModelInfo->m_nPowerOffDelay5);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY6"), &lpModelInfo->m_nPowerOffDelay6);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY7"), &lpModelInfo->m_nPowerOffDelay7);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY8"), &lpModelInfo->m_nPowerOffDelay8);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY9"), &lpModelInfo->m_nPowerOffDelay9);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY10"), &lpModelInfo->m_nPowerOffDelay10);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY11"), &lpModelInfo->m_nPowerOffDelay11);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY12"), &lpModelInfo->m_nPowerOffDelay12);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY13"), &lpModelInfo->m_nPowerOffDelay13);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PXEL_TYPE"), &lpModelInfo->m_nPixelType);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("SIGNAL_BIT"), &lpModelInfo->m_nSignalBit);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("ROTATE"), &lpModelInfo->m_nSignalRotate);
@@ -462,6 +606,7 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("TIMING_BACK_P_V"), &lpModelInfo->m_nTimingVerBackPorch);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("TIMING_Front_P_V"), &lpModelInfo->m_nTimingVerFrontPorch);
 
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("MAIN_BOARD_LED"), &lpModelInfo->m_nMainBoardLED);
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("I2C_PULL_UP"), &lpModelInfo->m_nI2cPullUp);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("I2C_FREQUENCY"), &lpModelInfo->m_nI2cClock);
@@ -473,10 +618,19 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO_PULL_UP"), &lpModelInfo->m_nGpioPullUp);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO_LEVEL"), &lpModelInfo->m_nGpioLevel);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO1_OUTPUT"), &lpModelInfo->m_nGpio1Output);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO2_OUTPUT"), &lpModelInfo->m_nGpio2Output);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO3_OUTPUT"), &lpModelInfo->m_nGpio3Output);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO1_SETTING"), &lpModelInfo->m_nGio1Setting);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO2_SETTING"), &lpModelInfo->m_nGio2Setting);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO3_SETTING"), &lpModelInfo->m_nGio3Setting);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO4_SETTING"), &lpModelInfo->m_nGio4Setting);
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_FREQUENCY"), &lpModelInfo->m_nPwmFrequency);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_DUTY"), &lpModelInfo->m_nPwmDuty);
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_LEVEL"), &lpModelInfo->m_nPwmLevel);
+
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("CABLE_OPEN_CHECK"), &lpModelInfo->m_nCableOpenCheck);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Pattern File 
@@ -527,14 +681,73 @@ void CVHMOFInspApp::Lf_LoadModelData(CString modelName)
 	}
 }
 
+BOOL CVHMOFInspApp::Gf_LoadSystemData()
+{
+	CString sValue = _T("");
+
+	Read_SysIniFile(_T("SYSTEM"),			_T("LAST_MODELNAME"),			&lpSystemInfo->m_sLastModelName);
+	Read_SysIniFile(_T("SYSTEM"),			_T("EQP_NAME"),					&lpSystemInfo->m_sEqpName);
+	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
+	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
+	Read_SysIniFile(_T("MES"),				_T("MES_DAEMON_PORT"),			&lpSystemInfo->m_sMesDaemonPort);
+	Read_SysIniFile(_T("MES"),				_T("MES_LOCAL_SUBJECT"),		&lpSystemInfo->m_sMesLocalSubject);
+	Read_SysIniFile(_T("MES"),				_T("MES_REMOTE_SUBJECT"),		&lpSystemInfo->m_sMesRemoteSubject);
+	Read_SysIniFile(_T("MES"),				_T("MES_LOCAL_IP"),				&lpSystemInfo->m_sMesLocalIP);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_USE"),					&lpSystemInfo->m_nEasUse);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_SERVICE"),				&lpSystemInfo->m_sEasServicePort);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_NETWORK"),				&lpSystemInfo->m_sEasNetWork);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_DAEMON_PORT"),			&lpSystemInfo->m_sEasDaemonPort);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_LOCAL_SUBJECT"),		&lpSystemInfo->m_sEasLocalSubject);
+	Read_SysIniFile(_T("EAS"),				_T("EAS_REMOTE_SUBJECT"),		&lpSystemInfo->m_sEasRemoteSubject);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_USE"),					&lpSystemInfo->m_nDfsUse);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_IP_ADDRESS"),			&lpSystemInfo->m_sDfsIPAddress);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_USER_ID"),				&lpSystemInfo->m_sDfsUserId);
+	Read_SysIniFile(_T("DFS"),				_T("DFS_PASSWORD"),				&lpSystemInfo->m_sDfsPassword);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MODEL_FILE_PATH"),			&lpSystemInfo->m_sDataFileModel);
+	Read_SysIniFile(_T("SYSTEM"),			_T("PATTERN_FILE_PATH"),		&lpSystemInfo->m_sDataFilePattern);
+	Read_SysIniFile(_T("SYSTEM"),			_T("EDID_PATH"),				&lpSystemInfo->m_sDataFileEdid);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_OK_COUNT"),				&lpSystemInfo->m_nQuantityOK);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_NG_COUNT"),				&lpSystemInfo->m_nQuantityNG);
+
+
+	return TRUE;
+}
+
+void CVHMOFInspApp::Lf_parsingModFileData(CString szData, TCHAR(*szParseData)[255])
+{
+	TCHAR szTemp[100];
+
+	int nCnt = 0;
+	int nItemCnt = 0;
+	int nLoop = 0;
+
+	memset(szTemp, 0, sizeof(szTemp));
+	int nCmdLength = szData.GetLength();//_tcslen(szData);
+
+	for (nLoop = 0; nLoop <= nCmdLength; nLoop++)
+	{
+		szTemp[nCnt] = szData[nLoop];
+		if ((szData[nLoop] == ',') || (nLoop == nCmdLength))
+		{
+			szTemp[nCnt] = NULL;
+			_stprintf_s(szParseData[nItemCnt++], 100, _T("%s"), szTemp);
+			for (int i = 0; i <= nCnt; i++)
+				szTemp[i] = NULL;
+			nCnt = 0;
+		}
+		nCnt++;
+		if (szData[nLoop] == ',') nCnt = 0;
+	}
+}
+
 BOOL CVHMOFInspApp::Gf_LoadModelFile()
 {
 	BOOL ret = TRUE;
 
 	// Model File을 Loading 한다.
-	if (Lf_FindModelFile() == TRUE)
+	if (Gf_FindModelFile(lpSystemInfo->m_sLastModelName) == TRUE)
 	{
-		Lf_LoadModelData(lpSystemInfo->m_sLastModelName);
+		Gf_LoadModelData(lpSystemInfo->m_sLastModelName);
 	}
 	else
 	{
@@ -869,6 +1082,16 @@ BOOL CVHMOFInspApp::main_tcpProcessPacket(int ch, char* recvPacket)
 			main_parse_PowerMeasureAll(ch, recvPacket);
 			break;
 		}
+		case CMD_CTRL_CABLE_OPEN_CHECK:
+		{
+			main_parse_CableOpenCheck(ch, recvPacket);
+			break;
+		}
+		case CMD_CTRL_GIO_CONTROL:
+		{
+			main_parse_GioControl(ch, recvPacket);
+			break;
+		}
 		case CMD_CTRL_ARE_YOU_READY:
 		{
 			main_parse_AreYouReady(ch, recvPacket);
@@ -906,7 +1129,7 @@ BOOL CVHMOFInspApp::main_tcpProcessPacket(int ch, char* recvPacket)
 
 void CVHMOFInspApp::main_parse_AreYouReady(int ch, char* recvPacket)
 {
-	if (recvPacket[PACKET_PT_DATA] == '0')
+	if (recvPacket[PACKET_PT_RET] == '0')
 	{
 		lpInspWorkInfo->m_bAreYouReady = TRUE;
 	}
@@ -932,6 +1155,35 @@ void CVHMOFInspApp::main_parse_PowerMeasureAll(int ch, char* recvPacket)
 	}
 }
 
+void CVHMOFInspApp::main_parse_CableOpenCheck(int ch, char* recvPacket)
+{
+
+	if (recvPacket[PACKET_PT_RET] == '0')
+	{
+		CString strPacket;
+		int nPos = PACKET_PT_DATA;
+
+		strPacket.Format(_T("%S"), recvPacket);
+		lpInspWorkInfo->nCheckCableOpenValue = _ttoi(strPacket.Mid(PACKET_PT_DATA, 1));
+	}
+}
+
+void CVHMOFInspApp::main_parse_GioControl(int ch, char* recvPacket)
+{
+
+	if (recvPacket[PACKET_PT_RET] == '0')
+	{
+		CString strPacket;
+		int nPos = PACKET_PT_DATA;
+
+		strPacket.Format(_T("%S"), recvPacket);
+		lpInspWorkInfo->nGioReadInfo[0] = _ttoi(strPacket.Mid(PACKET_PT_DATA, 1));
+		lpInspWorkInfo->nGioReadInfo[1] = _ttoi(strPacket.Mid(PACKET_PT_DATA+1, 1));
+		lpInspWorkInfo->nGioReadInfo[2] = _ttoi(strPacket.Mid(PACKET_PT_DATA+2, 1));
+		lpInspWorkInfo->nGioReadInfo[3] = _ttoi(strPacket.Mid(PACKET_PT_DATA+3, 1));
+	}
+}
+
 void CVHMOFInspApp::main_parse_FirmwareVersion(int ch, char* recvPacket)
 {
 	CString strPacket;
@@ -944,7 +1196,7 @@ void CVHMOFInspApp::main_parse_FirmwareVersion(int ch, char* recvPacket)
 
 	CString strLog = _T("");
 
-	strLog.Format(_T("<PG> MCU Version [%s]"), m_pApp->m_sPgFWVersion[ch]);
+	strLog.Format(_T("<PG> CH-%d MCU Version [%s]"), ch+1, m_pApp->m_sPgFWVersion[ch]);
 	m_pApp->Gf_writeMLog(strLog);
 
 }
@@ -986,7 +1238,7 @@ BOOL CVHMOFInspApp::Lf_initLocalHostIPAddress()
 	return TRUE;
 }
 
-BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(CString ip, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK, int waitTime)
+BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(int ch, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK, int waitTime)
 {
 	int datalen = 0;
 	int packetlen = 0;
@@ -1030,14 +1282,17 @@ BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(CString ip, int target, int nID, int n
 
 	// 생성된 Packet을 전송.
 	UINT ret = TRUE;
-	m_nAckCmdDio = 0;
+	m_nAckCmdDio[ch] = 0;
 
+	CString ip;
+	if (ch == CH1)		ip.Format(_T("%s"), UDP_DIO_BOARD1_IP);
+	if (ch == CH2)		ip.Format(_T("%s"), UDP_DIO_BOARD2_IP);
 	m_pUDPSocket->SendTo(sendPacket, packetlen, UDP_SOCKET_PORT, ip);//m_pUDPSocket->SendToUDP(ip, packetlen, sendPacket);
 
 	// ACK Receive	
 	if (recvACK == ACK)
 	{
-		if (udp_procWaitRecvACK_DIO(nCommand, waitTime) == TRUE)
+		if (udp_procWaitRecvACK_DIO(ch, nCommand, waitTime) == TRUE)
 			ret = TRUE;
 		else
 			ret = FALSE;
@@ -1046,13 +1301,13 @@ BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(CString ip, int target, int nID, int n
 	return ret;
 }
 
-BOOL CVHMOFInspApp::udp_procWaitRecvACK_DIO(int cmd, DWORD waitTime)
+BOOL CVHMOFInspApp::udp_procWaitRecvACK_DIO(int ch, int cmd, DWORD waitTime)
 {
 	DWORD stTick = ::GetTickCount();
 
 	while (1)
 	{
-		if (cmd == m_nAckCmdDio)
+		if (cmd == m_nAckCmdDio[ch])
 		{
 			return TRUE;
 		}
@@ -1079,23 +1334,20 @@ void CVHMOFInspApp::udp_processDioPacket(int ch, CString strPacket)
 	// Message 처리
 	switch (recvCMD)
 	{
+		case CMD_DIO_INPUT:
+		{
+			udp_procParseDIO(ch, strPacket);
+			break;
+		}
 
-	case CMD_DIO_INPUT:
-	{
-		m_nAckCmdDio = CMD_DIO_INPUT;
-		udp_procParseDIO(ch, strPacket);
-		break;
-	}
-
-	case CMD_DIO_TIME_OUT:
-	{
-		m_nAckCmdDio = recvCMD;
-		return;
-	}
+		case CMD_DIO_TIME_OUT:
+		{
+			break;
+		}
 	}
 
 	// ACK Receive Check는 모든 Packet처리가 완료된 이후 Set한다.
-	m_nAckCmdDio = recvCMD;
+	m_nAckCmdDio[ch] = recvCMD;
 }
 
 
@@ -1115,31 +1367,51 @@ BOOL CVHMOFInspApp::udp_procParseDIO(int ch, CString packet)
 		status5 = ~status5;
 		ptr += len;	len = 2;
 
-		tmp = status4 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
-		status4 = (~status4) & 0xC3;
-		status4 |= tmp & 0x3C;
+		status4 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status4 = ~status4;
 		ptr += len;	len = 2;
 
 		status3 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
 		status3 = ~status3;
 		ptr += len;	len = 2;
 
-		tmp = status2 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
-		status2 = (~status2) & 0xF0;
-		status2 |= tmp & 0x0F;
+		status2 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
+		status2 = ~status2;
 		ptr += len;	len = 2;
 
 		status1 = (BYTE)_tcstol(packet.Mid(ptr, len), NULL, 16);
 		status1 = ~status1;
 		ptr += len;	len = 2;
 
-		m_pApp->m_nDioInBit[ch][4] = status5;
-		m_pApp->m_nDioInBit[ch][3] = status4;
-		m_pApp->m_nDioInBit[ch][2] = status3;
-		m_pApp->m_nDioInBit[ch][1] = status2;
-		m_pApp->m_nDioInBit[ch][0] = status1;
+		m_nDioInBit[ch][4] = status5;
+		m_nDioInBit[ch][3] = status4;
+		m_nDioInBit[ch][2] = status3;
+		m_nDioInBit[ch][1] = status2;
+		m_nDioInBit[ch][0] = status1;
 	}
 
 	return TRUE;
 }
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DIO Interlock
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CVHMOFInspApp::Lf_checkDoorOpenInterLock()
+{
+
+	return TRUE;
+	if (m_nDioInBit[CH1][0] | DIN_D1_LEFT_SAFETY_DOOR)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_56);
+		return FALSE;
+	}
+	if (m_nDioInBit[CH1][0] | DIN_D1_RIGHT_SAFETY_DOOR)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_57);
+		return FALSE;
+	}
+
+	return TRUE;
+}

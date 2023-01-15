@@ -53,24 +53,52 @@ void CModelInfoFusing::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_4, m_cmbMfPowerOnSeq4);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_5, m_cmbMfPowerOnSeq5);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_6, m_cmbMfPowerOnSeq6);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_7, m_cmbMfPowerOnSeq7);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_8, m_cmbMfPowerOnSeq8);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_9, m_cmbMfPowerOnSeq9);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_10, m_cmbMfPowerOnSeq10);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_11, m_cmbMfPowerOnSeq11);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_12, m_cmbMfPowerOnSeq12);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_SEQ_13, m_cmbMfPowerOnSeq13);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_1, m_edtMfPowerOnDelay1);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_2, m_edtMfPowerOnDelay2);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_3, m_edtMfPowerOnDelay3);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_4, m_edtMfPowerOnDelay4);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_5, m_edtMfPowerOnDelay5);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_6, m_edtMfPowerOnDelay6);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_7, m_edtMfPowerOnDelay7);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_8, m_edtMfPowerOnDelay8);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_9, m_edtMfPowerOnDelay9);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_10, m_edtMfPowerOnDelay10);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_11, m_edtMfPowerOnDelay11);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_12, m_edtMfPowerOnDelay12);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_ON_DELAY_13, m_edtMfPowerOnDelay13);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_1, m_cmbMfPowerOffSeq1);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_2, m_cmbMfPowerOffSeq2);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_3, m_cmbMfPowerOffSeq3);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_4, m_cmbMfPowerOffSeq4);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_5, m_cmbMfPowerOffSeq5);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_6, m_cmbMfPowerOffSeq6);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_7, m_cmbMfPowerOffSeq7);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_8, m_cmbMfPowerOffSeq8);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_9, m_cmbMfPowerOffSeq9);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_10, m_cmbMfPowerOffSeq10);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_11, m_cmbMfPowerOffSeq11);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_12, m_cmbMfPowerOffSeq12);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_SEQ_13, m_cmbMfPowerOffSeq13);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_1, m_edtMfPowerOffDelay1);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_2, m_edtMfPowerOffDelay2);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_3, m_edtMfPowerOffDelay3);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_4, m_edtMfPowerOffDelay4);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_5, m_edtMfPowerOffDelay5);
 	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_6, m_edtMfPowerOffDelay6);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_7, m_edtMfPowerOffDelay7);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_8, m_edtMfPowerOffDelay8);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_9, m_edtMfPowerOffDelay9);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_10, m_edtMfPowerOffDelay10);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_11, m_edtMfPowerOffDelay11);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_12, m_edtMfPowerOffDelay12);
+	DDX_Control(pDX, IDC_CMB_MF_PWR_OFF_DELAY_13, m_edtMfPowerOffDelay13);
 	DDX_Control(pDX, IDC_CMB_MF_SIGNAL_TYPE, m_cmbMfSignalType);
 	DDX_Control(pDX, IDC_CMB_MF_SIGNAL_PIXEL, m_cmbMfPixel);
 	DDX_Control(pDX, IDC_CMB_MF_SIGNAL_BIT, m_cmbMfSignalBit);
@@ -91,6 +119,7 @@ void CModelInfoFusing::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_MF_TIMING_VER_BP, m_edtMfTimingVerBackPorch);
 	DDX_Control(pDX, IDC_EDT_MF_TIMING_VER_FP, m_edtMfTimingVerFrontPorch);
 	DDX_Control(pDX, IDC_CMB_MF_INIT_SCRIPT, m_cmbMfInitScript);
+	DDX_Control(pDX, IDC_CMB_MF_MAIN_BOARD_LED, m_cmbMfMainBoardLED);
 }
 
 
@@ -350,7 +379,12 @@ void CModelInfoFusing::OnEnChangeEdtMfTimingVerFp()
 //////////////////////////////////////////////////////////////////////////////////////
 void CModelInfoFusing::Lf_InitLocalValue()
 {
-
+	m_edtMfLimitIccLow.SetLimitText(4);
+	m_edtMfLimitIccHigh.SetLimitText(4);
+	m_edtMfLimitIelLow.SetLimitText(4);
+	m_edtMfLimitIelHigh.SetLimitText(4);
+	m_edtMfLimitIddLow.SetLimitText(4);
+	m_edtMfLimitIddHigh.SetLimitText(4);
 }
 
 void CModelInfoFusing::Lf_InitFontset()
@@ -425,17 +459,17 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfLimitVddLow.SetWindowText(sdata);
 	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitVddHigh);
 	m_edtMfLimitVddHigh.SetWindowText(sdata);
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIccLow);
+	sdata.Format(_T("%d"), lpModelInfo->m_nLimitIccLow);
 	m_edtMfLimitIccLow.SetWindowText(sdata);
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIccHigh);
+	sdata.Format(_T("%d"), lpModelInfo->m_nLimitIccHigh);
 	m_edtMfLimitIccHigh.SetWindowText(sdata);
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIelLow);
+	sdata.Format(_T("%d"), lpModelInfo->m_nLimitIelLow);
 	m_edtMfLimitIelLow.SetWindowText(sdata);
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIelHigh);
+	sdata.Format(_T("%d"), lpModelInfo->m_nLimitIelHigh);
 	m_edtMfLimitIelHigh.SetWindowText(sdata);
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIddLow);
+	sdata.Format(_T("%d"), lpModelInfo->m_nLimitIddLow);
 	m_edtMfLimitIddLow.SetWindowText(sdata);
-	sdata.Format(_T("%.1f"), lpModelInfo->m_fLimitIddHigh);
+	sdata.Format(_T("%d"), lpModelInfo->m_nLimitIddHigh);
 	m_edtMfLimitIddHigh.SetWindowText(sdata);
 
 	m_cmbMfPowerOnSeq1.SetCurSel(lpModelInfo->m_nPowerOnSeq1);
@@ -444,6 +478,13 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_cmbMfPowerOnSeq4.SetCurSel(lpModelInfo->m_nPowerOnSeq4);
 	m_cmbMfPowerOnSeq5.SetCurSel(lpModelInfo->m_nPowerOnSeq5);
 	m_cmbMfPowerOnSeq6.SetCurSel(lpModelInfo->m_nPowerOnSeq6);
+	m_cmbMfPowerOnSeq7.SetCurSel(lpModelInfo->m_nPowerOnSeq7);
+	m_cmbMfPowerOnSeq8.SetCurSel(lpModelInfo->m_nPowerOnSeq8);
+	m_cmbMfPowerOnSeq9.SetCurSel(lpModelInfo->m_nPowerOnSeq9);
+	m_cmbMfPowerOnSeq10.SetCurSel(lpModelInfo->m_nPowerOnSeq10);
+	m_cmbMfPowerOnSeq11.SetCurSel(lpModelInfo->m_nPowerOnSeq11);
+	m_cmbMfPowerOnSeq12.SetCurSel(lpModelInfo->m_nPowerOnSeq12);
+	m_cmbMfPowerOnSeq13.SetCurSel(lpModelInfo->m_nPowerOnSeq13);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay1);
 	m_edtMfPowerOnDelay1.SetWindowText(sdata);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay2);
@@ -456,6 +497,20 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfPowerOnDelay5.SetWindowText(sdata);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay6);
 	m_edtMfPowerOnDelay6.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay7);
+	m_edtMfPowerOnDelay7.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay8);
+	m_edtMfPowerOnDelay8.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay9);
+	m_edtMfPowerOnDelay9.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay10);
+	m_edtMfPowerOnDelay10.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay11);
+	m_edtMfPowerOnDelay11.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay12);
+	m_edtMfPowerOnDelay12.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOnDelay13);
+	m_edtMfPowerOnDelay13.SetWindowText(sdata);
 
 	m_cmbMfPowerOffSeq1.SetCurSel(lpModelInfo->m_nPowerOffSeq1);
 	m_cmbMfPowerOffSeq2.SetCurSel(lpModelInfo->m_nPowerOffSeq2);
@@ -463,6 +518,13 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_cmbMfPowerOffSeq4.SetCurSel(lpModelInfo->m_nPowerOffSeq4);
 	m_cmbMfPowerOffSeq5.SetCurSel(lpModelInfo->m_nPowerOffSeq5);
 	m_cmbMfPowerOffSeq6.SetCurSel(lpModelInfo->m_nPowerOffSeq6);
+	m_cmbMfPowerOffSeq7.SetCurSel(lpModelInfo->m_nPowerOffSeq7);
+	m_cmbMfPowerOffSeq8.SetCurSel(lpModelInfo->m_nPowerOffSeq8);
+	m_cmbMfPowerOffSeq9.SetCurSel(lpModelInfo->m_nPowerOffSeq9);
+	m_cmbMfPowerOffSeq10.SetCurSel(lpModelInfo->m_nPowerOffSeq10);
+	m_cmbMfPowerOffSeq11.SetCurSel(lpModelInfo->m_nPowerOffSeq11);
+	m_cmbMfPowerOffSeq12.SetCurSel(lpModelInfo->m_nPowerOffSeq12);
+	m_cmbMfPowerOffSeq13.SetCurSel(lpModelInfo->m_nPowerOffSeq13);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay1);
 	m_edtMfPowerOffDelay1.SetWindowText(sdata);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay2);
@@ -475,6 +537,20 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfPowerOffDelay5.SetWindowText(sdata);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay6);
 	m_edtMfPowerOffDelay6.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay7);
+	m_edtMfPowerOffDelay7.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay8);
+	m_edtMfPowerOffDelay8.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay9);
+	m_edtMfPowerOffDelay9.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay10);
+	m_edtMfPowerOffDelay10.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay11);
+	m_edtMfPowerOffDelay11.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay12);
+	m_edtMfPowerOffDelay12.SetWindowText(sdata);
+	sdata.Format(_T("%d"), lpModelInfo->m_nPowerOffDelay13);
+	m_edtMfPowerOffDelay13.SetWindowText(sdata);
 
 	m_cmbMfSignalType.SetCurSel(lpModelInfo->m_nSignalType);
 	m_cmbMfPixel.SetCurSel(lpModelInfo->m_nPixelType);
@@ -505,6 +581,7 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	sdata.Format(_T("%d"), lpModelInfo->m_nTimingVerFrontPorch);
 	m_edtMfTimingVerFrontPorch.SetWindowText(sdata);
 
+	m_cmbMfMainBoardLED.SetCurSel(lpModelInfo->m_nMainBoardLED);
 }
 
 void CModelInfoFusing::Lf_calcHorResolution()
@@ -643,6 +720,13 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX4"), m_cmbMfPowerOnSeq4.GetCurSel());
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX5"), m_cmbMfPowerOnSeq5.GetCurSel());
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX6"), m_cmbMfPowerOnSeq6.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX7"), m_cmbMfPowerOnSeq7.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX8"), m_cmbMfPowerOnSeq8.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX9"), m_cmbMfPowerOnSeq9.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX10"), m_cmbMfPowerOnSeq10.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX11"), m_cmbMfPowerOnSeq11.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX12"), m_cmbMfPowerOnSeq12.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_INDEX13"), m_cmbMfPowerOnSeq13.GetCurSel());
 
 	m_edtMfPowerOnDelay1.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY1"), sValue);
@@ -662,6 +746,27 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	m_edtMfPowerOnDelay6.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY6"), sValue);
 
+	m_edtMfPowerOnDelay7.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY7"), sValue);
+
+	m_edtMfPowerOnDelay8.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY8"), sValue);
+
+	m_edtMfPowerOnDelay9.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY9"), sValue);
+
+	m_edtMfPowerOnDelay10.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY10"), sValue);
+
+	m_edtMfPowerOnDelay11.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY11"), sValue);
+
+	m_edtMfPowerOnDelay12.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY12"), sValue);
+
+	m_edtMfPowerOnDelay13.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_ON_DELAY13"), sValue);
+
 
 	//=====================================================================================================================
 	//POWER Sequence OFF
@@ -672,6 +777,13 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX4"), m_cmbMfPowerOffSeq4.GetCurSel());
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX5"), m_cmbMfPowerOffSeq5.GetCurSel());
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX6"), m_cmbMfPowerOffSeq6.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX7"), m_cmbMfPowerOffSeq7.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX8"), m_cmbMfPowerOffSeq8.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX9"), m_cmbMfPowerOffSeq9.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX10"), m_cmbMfPowerOffSeq10.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX11"), m_cmbMfPowerOffSeq11.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX12"), m_cmbMfPowerOffSeq12.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_INDEX13"), m_cmbMfPowerOffSeq13.GetCurSel());
 
 	m_edtMfPowerOffDelay1.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY1"), sValue);
@@ -690,6 +802,27 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 
 	m_edtMfPowerOffDelay6.GetWindowText(sValue);				sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY6"), sValue);
+
+	m_edtMfPowerOffDelay7.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY7"), sValue);
+
+	m_edtMfPowerOffDelay8.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY8"), sValue);
+
+	m_edtMfPowerOffDelay9.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY9"), sValue);
+
+	m_edtMfPowerOffDelay10.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY10"), sValue);
+
+	m_edtMfPowerOffDelay11.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY11"), sValue);
+
+	m_edtMfPowerOffDelay12.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY12"), sValue);
+
+	m_edtMfPowerOffDelay13.GetWindowText(sValue);				sValue.Trim();
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("POWER_SEQ_OFF_DELAY13"), sValue);
 
 
 	//=====================================================================================================================
@@ -743,6 +876,11 @@ void CModelInfoFusing::Gf_DataSaveModelFusing(CString modelName)
 	m_edtMfTimingVerFrontPorch.GetWindowText(sValue);					sValue.Trim();
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("TIMING_Front_P_V"), sValue);
 
+
+	//=====================================================================================================================
+	//FUNCTION
+	//=====================================================================================================================
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("MAIN_BOARD_LED"), m_cmbMfMainBoardLED.GetCurSel());
 }
 
 

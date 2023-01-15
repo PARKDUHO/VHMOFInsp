@@ -17,11 +17,31 @@
 #include "CMaintenance.h"
 #include "CAutoFirmware.h"
 #include "CPassword.h"
+#include "CSafetyLock.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
+UINT ThreadStatusRead_DIO(LPVOID pParam)
+{
+	CVHMOFInspDlg* pMOFIDlg = (CVHMOFInspDlg*)pParam;
+
+	while (1)
+	{
+		if (m_pApp->bConnectInfo[CONN_DIO1] == TRUE)
+		{
+			m_pApp->commApi->dio_readDioInput(CH1, NACK);
+		}
+
+		if (m_pApp->bConnectInfo[CONN_DIO2] == TRUE)
+		{
+			m_pApp->commApi->dio_readDioInput(CH2, NACK);
+		}
+
+		Sleep(500);
+	}
+}
 
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 
@@ -158,8 +178,6 @@ BOOL CVHMOFInspDlg::OnInitDialog()
 	Lf_InitFontSet();
 	Lf_InitColorBrush();
 
-
-
 	ShowWindow(SW_MAXIMIZE);
 
 	CRect rect;
@@ -168,6 +186,8 @@ BOOL CVHMOFInspDlg::OnInitDialog()
 	m_sttMainMlogView.MoveWindow(rect);
 
 	SetTimer(1, 500, NULL);
+
+	AfxBeginThread(ThreadStatusRead_DIO, this);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -272,10 +292,14 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			case 'd':
 			case 'D':
 			{
-				CModelInfo modelDlg;
-				modelDlg.DoModal();
+				CPassword passwor_dlg;
+				if (passwor_dlg.DoModal() == IDOK)
+				{
+					CModelInfo modelDlg;
+					modelDlg.DoModal();
 
-				Lf_updateSystemInfo();
+					Lf_updateSystemInfo();
+				}
 				return TRUE;
 			}
 			case 'i':
@@ -296,17 +320,24 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			case 'm':
 			case 'M':
 			{
-				//CMaint maintDlg;
-				//maintDlg.DoModal();
+				if (m_pApp->Lf_checkDoorOpenInterLock() == TRUE)
+				{
+					CMaintenance maintDlg;
+					maintDlg.DoModal();
+				}
 				return TRUE;
 			}
 			case 's':
 			case 'S':
 			{
-				CSystem systemDlg;
-				systemDlg.DoModal();
+				CPassword passwor_dlg;
+				if (passwor_dlg.DoModal() == IDOK)
+				{
+					CSystem systemDlg;
+					systemDlg.DoModal();
 
-				Lf_updateSystemInfo();
+					Lf_updateSystemInfo();
+				}
 				return TRUE;
 			}
 			case 'u':
@@ -348,6 +379,7 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_STATION_INFO_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MODEL_INFO_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_FW_VERSION_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_INFO_TIT)
 				)
 			{
 				pDC->SetBkColor(COLOR_DEEP_BLUE);
@@ -403,6 +435,141 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_CYAN);
 				return m_Brush[COLOR_IDX_BLACK];
 			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_MES)
+			{
+				if (m_pApp->bConnectInfo[CONN_MES] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_EAS)
+			{
+				if (m_pApp->bConnectInfo[CONN_EAS] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_ECS)
+			{
+				if (m_pApp->bConnectInfo[CONN_ECS] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_PG1)
+			{
+				if (m_pApp->bConnectInfo[CONN_PG1] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_PG2)
+			{
+				if (m_pApp->bConnectInfo[CONN_PG2] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_SPI1)
+			{
+				if (m_pApp->bConnectInfo[CONN_SPI1] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_SPI2)
+			{
+				if (m_pApp->bConnectInfo[CONN_SPI2] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_DIO1)
+			{
+				if (m_pApp->bConnectInfo[CONN_DIO1] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_DIO2)
+			{
+				if (m_pApp->bConnectInfo[CONN_DIO2] == TRUE)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+			}
 			break;
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -421,14 +588,35 @@ void CVHMOFInspDlg::OnTimer(UINT_PTR nIDEvent)
 		{
 			CInitialize initdlg;
 			initdlg.DoModal();
+
+			SetTimer(2, 1000, NULL);
 		}
 		else
 		{
 			CDialog::OnOK();
 		}
 	}
+	if (nIDEvent == 2)
+	{
+		KillTimer(2);
+
+		//if (m_pApp->commApi->dio_readDioInput(CH1, NACK) == TRUE)
+		{
+			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
+			Lf_checkExtAlarmDio1();
+		}
+		//if (m_pApp->commApi->dio_readDioInput(CH2, NACK) == TRUE)
+		{
+			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
+			Lf_checkExtAlarmDio2();
+		}
+
+		SetTimer(2, 500, NULL);
+	}
 	CDialogEx::OnTimer(nIDEvent);
 }
+
+
 LRESULT CVHMOFInspDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 {
 	Lf_updateSystemInfo();
@@ -439,6 +627,10 @@ LRESULT CVHMOFInspDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 void CVHMOFInspDlg::OnBnClickedBtnMaUserid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	CSafetyLock dlg;
+//	dlg.DoModal();
+//	return;
+
 	CUserID userid_dlg;
 	userid_dlg.DoModal();
 
@@ -486,6 +678,11 @@ void CVHMOFInspDlg::OnBnClickedBtnMaTest()
 void CVHMOFInspDlg::OnBnClickedBtnMaMaint()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_pApp->Lf_checkDoorOpenInterLock() == FALSE)
+	{
+		return;
+	}
+
 	CMaintenance maint_dlg;
 	maint_dlg.DoModal();
 
@@ -531,6 +728,7 @@ void CVHMOFInspDlg::OnBnClickedBtnMaFirmware()
 void CVHMOFInspDlg::OnBnClickedBtnMaExit()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->Gf_SoftwareEndLog();
 	::SendMessage(this->m_hWnd, WM_CLOSE, NULL, NULL);
 }
 
@@ -613,6 +811,7 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_STATION_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MODEL_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_FW_VERSION_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_CONNECT_INFO_TIT)->SetFont(&m_Font[3]);
 
 	//mFontH1[3].CreateFont(21, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _DIALOG_FONT_);
 	m_Font[4].CreateFont(21, 7, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -643,6 +842,18 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetFont(&m_Font[4]);
 
+
+	m_Font[5].CreateFont(18, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_STT_CONNECT_MES)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_EAS)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_ECS)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_PG1)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_PG2)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_SPI1)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_SPI2)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_DIO1)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_CONNECT_DIO2)->SetFont(&m_Font[5]);
+
 }
 
 void CVHMOFInspDlg::Lf_InitColorBrush()
@@ -652,6 +863,10 @@ void CVHMOFInspDlg::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush(COLOR_RED);
+	m_Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
+	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
+	m_Brush[COLOR_IDX_BLUE].CreateSolidBrush(COLOR_BLUE);
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush(COLOR_GRAY64);
 	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush(COLOR_GRAY94);
 	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush(COLOR_LIGHT_GREEN);
@@ -707,6 +922,17 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 	// Firmware Version
 	int npos = 0;
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(m_pApp->m_sPgFWVersion[CH1].Left(19));
+
+
+	GetDlgItem(IDC_STT_CONNECT_MES)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_EAS)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_ECS)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_PG1)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_PG2)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_SPI1)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_SPI2)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_DIO1)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_CONNECT_DIO2)->Invalidate(FALSE);
 }
 
 void CVHMOFInspDlg::Lf_openToDayMLog()
@@ -717,6 +943,7 @@ void CVHMOFInspDlg::Lf_openToDayMLog()
 	filePath.Format(_T(".\\Logs\\MLog\\%s_%04d%02d%02d.txt"), lpSystemInfo->m_sEqpName, time.GetYear(), time.GetMonth(), time.GetDay());
 
 	SHELLEXECUTEINFO sel;
+	memset(&sel, 0, sizeof(sel));
 	sel.cbSize = sizeof(sel);
 	sel.fMask = SEE_MASK_NOCLOSEPROCESS | SEE_MASK_FLAG_DDEWAIT;
 	sel.lpFile = filePath;
@@ -724,4 +951,78 @@ void CVHMOFInspDlg::Lf_openToDayMLog()
 	sel.lpVerb = _T("open");
 	sel.nShow = SW_NORMAL;
 	ShellExecuteEx(&sel);
+}
+
+void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
+{
+	CString alarmMsg = _T("");
+	CString strKey, strErr;
+
+	if (DEBUG_DIO_ALARM == 1)
+		return;
+
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_EMO_SWITCH)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_38);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LIGHT_CURTAIN)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_39);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_40);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_41);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_FAN_IN_ALARM)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_42);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_FAN_OUT_ALARM)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_43);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_TEMPATURE_HIGH_ALARM)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_44);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_IONIZER_ALARM)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_45);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_IONIZER_SPARE)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_46);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		alarmMsg.Append(strErr + _T("\r\n"));
+	}
+
+	if (alarmMsg.GetLength() != 0)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("DIO INPUT ALARM"), -1, alarmMsg);
+	}
+}
+
+void CVHMOFInspDlg::Lf_checkExtAlarmDio2()
+{
+
 }

@@ -38,6 +38,13 @@ void CModelInfoData::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_MD_SPI_CLOCK, m_cmbSpiClock);
 	DDX_Control(pDX, IDC_CMB_MD_GPIO_PULL_UP, m_cmbGpioPullUp);
 	DDX_Control(pDX, IDC_CMB_MD_GPIO_LEVEL, m_cmbGpioLevel);
+	DDX_Control(pDX, IDC_CMB_MD_GPIO1_OUTPUT, m_cmbGpio1Output);
+	DDX_Control(pDX, IDC_CMB_MD_GPIO2_OUTPUT, m_cmbGpio2Output);
+	DDX_Control(pDX, IDC_CMB_MD_GPIO3_OUTPUT, m_cmbGpio3Output);
+	DDX_Control(pDX, IDC_CMB_MD_GIO1_SETTING, m_cmbGio1Setting);
+	DDX_Control(pDX, IDC_CMB_MD_GIO2_SETTING, m_cmbGio2Setting);
+	DDX_Control(pDX, IDC_CMB_MD_GIO3_SETTING, m_cmbGio3Setting);
+	DDX_Control(pDX, IDC_CMB_MD_GIO4_SETTING, m_cmbGio4Setting);
 	DDX_Control(pDX, IDC_EDT_MD_PTN_VCC, m_edtMdPtnVcc);
 	DDX_Control(pDX, IDC_EDT_MD_PTN_VEL, m_edtMdPtnVel);
 	DDX_Control(pDX, IDC_EDT_MD_PTN_ICC, m_edtMdPtnIcc);
@@ -51,6 +58,7 @@ void CModelInfoData::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW2, m_edtMdPwmFrequency);
 	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW3, m_edtMdPwmDuty);
 	DDX_Control(pDX, IDC_CMB_MD_SPI_LEVEL2, m_cmbMdPwmLevel);
+	DDX_Control(pDX, IDC_CMB_MD_CABLE_OPEN, m_cmbMdCableOpenCheck);
 }
 
 
@@ -415,6 +423,13 @@ void CModelInfoData::Gf_DataSaveModelData(CString modelName)
 
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO_PULL_UP"), m_cmbGpioPullUp.GetCurSel());
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO_LEVEL"), m_cmbGpioLevel.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO1_OUTPUT"), m_cmbGpio1Output.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO2_OUTPUT"), m_cmbGpio2Output.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GPIO3_OUTPUT"), m_cmbGpio3Output.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO1_SETTING"), m_cmbGio1Setting.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO2_SETTING"), m_cmbGio2Setting.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO3_SETTING"), m_cmbGio3Setting.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("GIO4_SETTING"), m_cmbGio4Setting.GetCurSel());
 
 
 	//=====================================================================================================================
@@ -425,6 +440,12 @@ void CModelInfoData::Gf_DataSaveModelData(CString modelName)
 	m_edtMdPwmDuty.GetWindowText(sValue);
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_DUTY"), sValue);
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_LEVEL"), m_cmbMdPwmLevel.GetCurSel());
+
+
+	//=====================================================================================================================
+	//FUNCTION
+	//=====================================================================================================================
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("CABLE_OPEN_CHECK"), m_cmbMdCableOpenCheck.GetCurSel());
 
 
 	//=====================================================================================================================
@@ -526,11 +547,20 @@ void CModelInfoData::Lf_InitDialogControl()
 	m_cmbSpiClock.SetCurSel(lpModelInfo->m_nSpiClock);
 	m_cmbGpioPullUp.SetCurSel(lpModelInfo->m_nGpioPullUp);
 	m_cmbGpioLevel.SetCurSel(lpModelInfo->m_nGpioLevel);
+	m_cmbGpio1Output.SetCurSel(lpModelInfo->m_nGpio1Output);
+	m_cmbGpio2Output.SetCurSel(lpModelInfo->m_nGpio2Output);
+	m_cmbGpio3Output.SetCurSel(lpModelInfo->m_nGpio3Output);
+	m_cmbGio1Setting.SetCurSel(lpModelInfo->m_nGio1Setting);
+	m_cmbGio2Setting.SetCurSel(lpModelInfo->m_nGio2Setting);
+	m_cmbGio3Setting.SetCurSel(lpModelInfo->m_nGio3Setting);
+	m_cmbGio4Setting.SetCurSel(lpModelInfo->m_nGio4Setting);
+
 	sdata.Format(_T("%d"), lpModelInfo->m_nPwmFrequency);
 	m_edtMdPwmFrequency.SetWindowText(sdata);
 	sdata.Format(_T("%d"), lpModelInfo->m_nPwmDuty);
 	m_edtMdPwmDuty.SetWindowText(sdata);
 	m_cmbMdPwmLevel.SetCurSel(lpModelInfo->m_nPwmLevel);
+	m_cmbMdCableOpenCheck.SetCurSel(lpModelInfo->m_nCableOpenCheck);
 }
 
 void CModelInfoData::Lf_InitPatternListColum()

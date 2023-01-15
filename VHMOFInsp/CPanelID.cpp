@@ -1,51 +1,51 @@
-﻿// CPassword.cpp: 구현 파일
+﻿// CPanelID.cpp: 구현 파일
 //
 
 #include "pch.h"
 #include "VHMOFInsp.h"
-#include "CPassword.h"
+#include "CPanelID.h"
 #include "afxdialogex.h"
 
 
-// CPassword 대화 상자
+// CPanelID 대화 상자
 
-IMPLEMENT_DYNAMIC(CPassword, CDialog)
+IMPLEMENT_DYNAMIC(CPanelID, CDialog)
 
-CPassword::CPassword(CWnd* pParent /*=nullptr*/)
-	: CDialog(IDD_PASSWORD, pParent)
+CPanelID::CPanelID(CWnd* pParent /*=nullptr*/)
+	: CDialog(IDD_PANELID, pParent)
 {
-	password_mode = 0;
+
 }
 
-CPassword::~CPassword()
+CPanelID::~CPanelID()
 {
 }
 
-void CPassword::DoDataExchange(CDataExchange* pDX)
+void CPanelID::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_BTN_PW_CONFIRM, m_btnPwConfirm);
-	DDX_Control(pDX, IDC_BTN_PW_CLOSE, m_btnPwClose);
-	DDX_Control(pDX, IDC_PIC_PW_IMAGE, m_picPwImage);
+	DDX_Control(pDX, IDC_BTN_PID_CONFIRM, m_btnPidConfirm);
+	DDX_Control(pDX, IDC_BTN_PID_CANCEL, m_btnPidCancel);
 }
 
 
-BEGIN_MESSAGE_MAP(CPassword, CDialog)
+BEGIN_MESSAGE_MAP(CPanelID, CDialog)
 	ON_WM_DESTROY()
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_BTN_PW_CONFIRM, &CPassword::OnBnClickedBtnPwConfirm)
-	ON_BN_CLICKED(IDC_BTN_PW_CLOSE, &CPassword::OnBnClickedBtnPwClose)
+	ON_BN_CLICKED(IDC_BTN_PID_CONFIRM, &CPanelID::OnBnClickedBtnPidConfirm)
+	ON_BN_CLICKED(IDC_BTN_PID_CANCEL, &CPanelID::OnBnClickedBtnPidCancel)
 END_MESSAGE_MAP()
 
 
-// CPassword 메시지 처리기
+// CPanelID 메시지 처리기
 
 
-BOOL CPassword::OnInitDialog()
+BOOL CPanelID::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+	lpInspWorkInfo = m_pApp->GetInspWorkInfo();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	Lf_InitLocalValue();
@@ -58,7 +58,7 @@ BOOL CPassword::OnInitDialog()
 }
 
 
-void CPassword::OnDestroy()
+void CPanelID::OnDestroy()
 {
 	CDialog::OnDestroy();
 
@@ -75,7 +75,7 @@ void CPassword::OnDestroy()
 }
 
 
-BOOL CPassword::PreTranslateMessage(MSG* pMsg)
+BOOL CPanelID::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
 	if (pMsg->message == WM_SYSKEYDOWN && pMsg->wParam == VK_F4)
@@ -90,17 +90,18 @@ BOOL CPassword::PreTranslateMessage(MSG* pMsg)
 		{
 			case VK_RETURN:
 			{
-				Lf_confirmPassword();
+				Lf_confirmPanelID();
 				return 1;
 			}
 			case VK_SPACE:		return 1;
 		}
 	}
+
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
 
-HBRUSH CPassword::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CPanelID::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -118,7 +119,7 @@ HBRUSH CPassword::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		case CTLCOLOR_BTN:
 			break;
 		case CTLCOLOR_STATIC:		// Static, CheckBox control
-			if (pWnd->GetDlgCtrlID() == IDC_STT_PW_TITLE)
+			if (pWnd->GetDlgCtrlID() == IDC_STT_PID_TITLE)
 			{
 				pDC->SetBkColor(COLOR_DEEP_BLUE);
 				pDC->SetTextColor(COLOR_WHITE);
@@ -126,24 +127,21 @@ HBRUSH CPassword::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			break;
 	}
+
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
 
 
-void CPassword::OnPaint()
+void CPanelID::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialog::OnPaint()을(를) 호출하지 마십시오.
-
-	CRect rect;
-	GetClientRect(&rect);
-	dc.FillSolidRect(rect, COLOR_WHITE);
 }
 
 
-void CPassword::OnTimer(UINT_PTR nIDEvent)
+void CPanelID::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
@@ -151,39 +149,40 @@ void CPassword::OnTimer(UINT_PTR nIDEvent)
 }
 
 
-void CPassword::OnBnClickedBtnPwConfirm()
+void CPanelID::OnBnClickedBtnPidConfirm()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	Lf_confirmPassword();
+	Lf_confirmPanelID();
 }
 
 
-void CPassword::OnBnClickedBtnPwClose()
+void CPanelID::OnBnClickedBtnPidCancel()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialog::OnCancel();
 }
 
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CPassword::Lf_InitLocalValue()
+void CPanelID::Lf_InitLocalValue()
 {
 
 }
 
-void CPassword::Lf_InitFontset()
+void CPanelID::Lf_InitFontset()
 {
 	m_Font[0].CreateFont(150, 70, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
 	m_Font[1].CreateFont(52, 23, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_STT_PW_TITLE)->SetFont(&m_Font[1]);
-	GetDlgItem(IDC_EDT_PW_PASSWORD)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_STT_PID_TITLE)->SetFont(&m_Font[1]);
+	GetDlgItem(IDC_EDT_PID_INPUT)->SetFont(&m_Font[1]);
 
 	m_Font[2].CreateFont(36, 16, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
 	m_Font[3].CreateFont(23, 10, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_BTN_PW_CONFIRM)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_BTN_PW_CLOSE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_BTN_PID_CONFIRM)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_BTN_PID_CANCEL)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(18, 7, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
@@ -191,7 +190,7 @@ void CPassword::Lf_InitFontset()
 
 }
 
-void CPassword::Lf_InitColorBrush()
+void CPanelID::Lf_InitColorBrush()
 {
 	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
@@ -206,54 +205,57 @@ void CPassword::Lf_InitColorBrush()
 }
 
 
-void CPassword::Lf_InitDlgDesign()
+void CPanelID::Lf_InitDlgDesign()
 {
-	// Image Load
-	CBitmap m_Bit;
-	m_Bit.LoadBitmap(IDB_BMP_PASSWORD);
-	m_picPwImage.SetBitmap(m_Bit);
-	m_Bit.Detach();
-
 	// Button ICON
-	m_btnPwConfirm.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
-	m_btnPwClose.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
+	m_btnPidConfirm.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
+	m_btnPidCancel.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
 }
 
 
-void CPassword::Lf_confirmPassword()
+void CPanelID::Lf_confirmPanelID()
 {
-	BOOL bRet = FALSE;
-	CString input_password, set_password;
-	GetDlgItem(IDC_EDT_PW_PASSWORD)->GetWindowText(input_password);
+	BOOL isDataOK = TRUE;
+	char cbuff[128] = { 0, };
+	int i = 0, len = 0;
 
-	if (password_mode == 0)
+	GetDlgItem(IDC_EDT_PID_INPUT)->GetWindowText(strInputPID);
+	if (((strInputPID.GetLength() < 7) || (strInputPID.GetLength() > 20)) && (strInputPID != _T("ESC")))
 	{
-		Read_SysIniFile(_T("SYSTEM"), _T("PW"), &set_password);
-		set_password.MakeUpper();
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("WRONG PANEL ID"), ERROR_CODE_54);
+		GetDlgItem(IDC_EDT_PID_INPUT)->SetWindowText(_T(""));
+		return;
+	}
+	strInputPID.Replace(_T("\r"), _T(""));
+	strInputPID.Replace(_T("\n"), _T(""));
 
-		if (input_password == set_password)
+	CString sLog;
+	sLog.Format(_T("<PID INPUT> %s"), strInputPID);
+	m_pApp->Gf_writeMLog(sLog);
+	wchar_To_char(strInputPID.GetBuffer(0), cbuff);
+	len = (int)strlen(cbuff);
+	for (i = 0; i < len; i++)
+	{
+		if ((('0' <= cbuff[i]) && (cbuff[i] <= '9'))
+			|| (('a' <= cbuff[i]) && (cbuff[i] <= 'z'))
+			|| (('A' <= cbuff[i]) && (cbuff[i] <= 'Z')))
 		{
-			bRet = TRUE;
+		}
+		else
+		{
+			isDataOK = FALSE;
+			break;
 		}
 	}
-	else if (password_mode == 1)
-	{
-		bRet = TRUE;
-	}
 
-	if(bRet == TRUE)
+	if (isDataOK == FALSE)
 	{
-		CDialog::OnOK();
-	}
-	else
-	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("WRONG PASSWORD"), ERROR_CODE_1);
-
-		GetDlgItem(IDC_EDT_PW_PASSWORD)->SetWindowText(_T(""));
-		GetDlgItem(IDC_EDT_PW_PASSWORD)->SetFocus();
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("WRONG PANEL ID"), ERROR_CODE_55);
+		GetDlgItem(IDC_EDT_PID_INPUT)->SetWindowText(_T(""));
 		return;
 	}
 
+	CDialog::OnOK();
 }
 
 

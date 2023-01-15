@@ -1,20 +1,20 @@
 ﻿#pragma once
 
 
-// CMaintenancePG 대화 상자
+// CSafetyLock 대화 상자
 
-class CMaintenancePG : public CDialog
+class CSafetyLock : public CDialog
 {
-	DECLARE_DYNAMIC(CMaintenancePG)
+	DECLARE_DYNAMIC(CSafetyLock)
 
 public:
-	CMaintenancePG(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CMaintenancePG();
+	CSafetyLock(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CSafetyLock();
 
 // 대화 상자 데이터입니다.
-//#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MAINTENANCE_PG };
-//#endif
+#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_SAFETY_LOCK };
+#endif
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
@@ -29,20 +29,15 @@ public:
 
 
 protected:
-	LPSYSTEMINFO	lpSystemInfo;
-	LPMODELINFO		lpModelInfo;
-	LPINSPWORKINFO	lpInspWorkInfo;
 	void Lf_InitLocalValue();
 	void Lf_InitFontset();
 	void Lf_InitColorBrush();
-
-	void Lf_loadPatternListToCombo();
+	void Lf_InitDlgDesign();
 
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
 	CBrush m_Brush[COLOR_IDX_MAX];
-	CFont* m_pDefaultFont;
 
 ///////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -56,5 +51,6 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	CComboBox m_cmbMpPatternList;
+	afx_msg void OnBnClickedBtnSlOk();
+	CButton m_btnSlConfirm;
 };

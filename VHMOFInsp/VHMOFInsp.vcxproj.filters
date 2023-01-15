@@ -120,6 +120,15 @@
     <ClInclude Include="CMaintenanceDIO.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CPanelID.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CDefectResult.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="CSafetyLock.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VHMOFInsp.cpp">
@@ -207,6 +216,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CMaintenanceDIO.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CPanelID.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CDefectResult.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CSafetyLock.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

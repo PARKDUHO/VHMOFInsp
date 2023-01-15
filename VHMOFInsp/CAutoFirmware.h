@@ -1,8 +1,13 @@
 ﻿#pragma once
 
-#define MAX_FILE_SIZE		1024*1024		// 최대 1M Buff 할당.
-#define MAX_DATASIZE		400000			// FW File에서 읽을 수있는 최대 크기
-#define FW_PACKET_SIZE		1024
+#define MAX_FILE_SIZE			1024*1024		// 최대 1M Buff 할당.
+#define MAX_DATASIZE			400000			// FW File에서 읽을 수있는 최대 크기
+#define FW_PACKET_SIZE			1024
+
+#define FW_TARGET_MAIN_MCU		0
+#define FW_TARGET_MAIN_FPGA		1
+#define FW_TARGET_QSPI_BOARD	2
+
 
 // CAutoFirmware 대화 상자
 
@@ -81,4 +86,5 @@ public:
 	CButton m_btnAfClose;
 	afx_msg void OnBnClickedBtnAfClose();
 	CComboBox m_cmbAfChSelect;
+	CComboBox m_cmbAfTarget;
 };

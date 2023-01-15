@@ -239,6 +239,48 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_GRAY159];
 			}
 		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_INI_CONN_SPI1)
+		{
+			if (nSysInitResult[INIT_SPI1] == INIT_NG)
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_RED128];
+			}
+			else if (nSysInitResult[INIT_SPI1] == INIT_OK)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY159);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY159];
+			}
+		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_INI_CONN_SPI2)
+		{
+			if (nSysInitResult[INIT_SPI2] == INIT_NG)
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_RED128];
+			}
+			else if (nSysInitResult[INIT_SPI2] == INIT_OK)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY159);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY159];
+			}
+		}
 		if (pWnd->GetDlgCtrlID() == IDC_STT_INI_CONN_DIO1)
 		{
 			if (nSysInitResult[INIT_DIO1] == INIT_NG)
@@ -371,6 +413,10 @@ void CInitialize::OnBnClickedBtnIniCancel()
 void CInitialize::Lf_InitLocalValue()
 {
 	memset(nSysInitResult, INIT_NONE, sizeof(nSysInitResult));
+
+	// Main의 Thread를 동작시키지 않기 위해 DIO CONN Flag는 여기서 먼저 Clear 시킨다.
+	m_pApp->bConnectInfo[CONN_DIO1] = FALSE;
+	m_pApp->bConnectInfo[CONN_DIO2] = FALSE;
 }
 
 void CInitialize::Lf_InitFontset()
@@ -392,7 +438,8 @@ void CInitialize::Lf_InitFontset()
 	GetDlgItem(IDC_STT_INI_FILE_PATTERN)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_PG1)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_PG2)->SetFont(&m_Font[2]);
-	GetDlgItem(IDC_STT_INI_CONN_QSPI)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_STT_INI_CONN_SPI1)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_STT_INI_CONN_SPI2)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_DIO1)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_DIO2)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_STT_INI_CONN_MELSEC)->SetFont(&m_Font[2]);
@@ -477,19 +524,19 @@ void CInitialize::Lf_initConnPG()
 	// CH1
 	m_pApp->m_pSocketTCPMain->tcp_Main_DisConnection(CH1);
 	delayMs(200);
-	ip.Format(TCP_MAIN_1_BOARD_IP);
+	ip.Format(TCP_MAIN1_MCU_IP);
 	strmsg.Format(_T("IP:%s Port:%d"), ip, TCP_MAIN_PORT);
 	if (m_pApp->m_pSocketTCPMain->tcp_Main_Connection(ip, TCP_MAIN_PORT, CH1) == TRUE)
 	{
 		nSysInitResult[INIT_PG1] = INIT_OK;
-		m_pApp->m_bPgConnectStatus[CH1] = TRUE;
+		m_pApp->bConnectInfo[CONN_PG1] = TRUE;
 
 		m_pApp->commApi->main_getCtrlFWVersion(CH1);
 	}
 	else
 	{
 		nSysInitResult[INIT_PG1] = INIT_NG;
-		m_pApp->m_bPgConnectStatus[CH1] = FALSE;
+		m_pApp->bConnectInfo[CONN_PG1] = FALSE;
 		//return FALSE;
 	}
 	GetDlgItem(IDC_STT_INI_CONN_PG1)->Invalidate(FALSE);
@@ -498,28 +545,67 @@ void CInitialize::Lf_initConnPG()
 	// CH2
 	m_pApp->m_pSocketTCPMain->tcp_Main_DisConnection(CH2);
 	delayMs(200);
-	ip.Format(TCP_MAIN_2_BOARD_IP);
+	ip.Format(TCP_MAIN2_MCU_IP);
 	strmsg.Format(_T("IP:%s Port:%d"), ip, TCP_MAIN_PORT);
 	if (m_pApp->m_pSocketTCPMain->tcp_Main_Connection(ip, TCP_MAIN_PORT, CH2) == TRUE)
 	{
 		nSysInitResult[INIT_PG2] = INIT_OK;
-		m_pApp->m_bPgConnectStatus[CH2] = TRUE;
+		m_pApp->bConnectInfo[CONN_PG2] = TRUE;
 
 		m_pApp->commApi->main_getCtrlFWVersion(CH2);
 	}
 	else
 	{
 		nSysInitResult[INIT_PG2] = INIT_NG;
-		m_pApp->m_bPgConnectStatus[CH2] = FALSE;
-		//return FALSE;
+		m_pApp->bConnectInfo[CONN_PG2] = FALSE;
 	}
 	GetDlgItem(IDC_STT_INI_CONN_PG2)->Invalidate(FALSE);
 }
 
 void CInitialize::Lf_initConnQspi()
 {
+	CString strmsg, ip;
 
-	nSysInitResult[INIT_QSPI] = INIT_OK;
+	if (DEBUG_TCP_RECEIVE_OK == 1)
+		return;
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// CH1
+	m_pApp->m_pSocketTCPMain->tcp_SPI_DisConnection(CH1);
+	delayMs(200);
+	ip.Format(TCP_SPI_BOARD1_IP);
+	strmsg.Format(_T("IP:%s Port:%d"), ip, TCP_SPI_PORT);
+	if (m_pApp->m_pSocketTCPMain->tcp_SPI_Connection(ip, TCP_SPI_PORT, CH1) == TRUE)
+	{
+		nSysInitResult[INIT_SPI1] = INIT_OK;
+		m_pApp->bConnectInfo[CONN_SPI1] = TRUE;
+	}
+	else
+	{
+		nSysInitResult[INIT_SPI1] = INIT_NG;
+		m_pApp->bConnectInfo[CONN_SPI1] = FALSE;
+		//return FALSE;
+	}
+	GetDlgItem(IDC_STT_INI_CONN_SPI1)->Invalidate(FALSE);
+
+	///////////////////////////////////////////////////////////////////////////////////
+	// CH2
+	m_pApp->m_pSocketTCPMain->tcp_SPI_DisConnection(CH2);
+	delayMs(200);
+	ip.Format(TCP_SPI_BOARD2_IP);
+	strmsg.Format(_T("IP:%s Port:%d"), ip, TCP_SPI_PORT);
+	if (m_pApp->m_pSocketTCPMain->tcp_SPI_Connection(ip, TCP_SPI_PORT, CH2) == TRUE)
+	{
+		nSysInitResult[INIT_SPI2] = INIT_OK;
+		m_pApp->bConnectInfo[CONN_SPI2] = TRUE;
+	}
+	else
+	{
+		nSysInitResult[INIT_SPI2] = INIT_NG;
+		m_pApp->bConnectInfo[CONN_SPI2] = FALSE;
+	}
+	GetDlgItem(IDC_STT_INI_CONN_SPI2)->Invalidate(FALSE);
+
 }
 
 
@@ -528,20 +614,24 @@ void CInitialize::Lf_initConnDIO()
 	if (m_pApp->commApi->dio_readDioInput(CH1) == TRUE)
 	{
 		nSysInitResult[INIT_DIO1] = INIT_OK;
+		m_pApp->bConnectInfo[CONN_DIO1] = TRUE;
 	}
 	else
 	{
 		nSysInitResult[INIT_DIO1] = INIT_NG;
+		m_pApp->bConnectInfo[CONN_DIO1] = FALSE;
 	}
 	GetDlgItem(IDC_STT_INI_CONN_DIO1)->Invalidate(FALSE);
 
 	if (m_pApp->commApi->dio_readDioInput(CH2) == TRUE)
 	{
 		nSysInitResult[INIT_DIO2] = INIT_OK;
+		m_pApp->bConnectInfo[CONN_DIO2] = TRUE;
 	}
 	else
 	{
 		nSysInitResult[INIT_DIO2] = INIT_NG;
+		m_pApp->bConnectInfo[CONN_DIO2] = FALSE;
 	}
 	GetDlgItem(IDC_STT_INI_CONN_DIO2)->Invalidate(FALSE);
 }

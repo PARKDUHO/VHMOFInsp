@@ -287,6 +287,7 @@ BOOL CUserID::Lf_loginProcess()
 
 				return FALSE;
 			}
+			m_pApp->bConnectInfo[CONN_MES] = TRUE;
 		}
 		//EAS Connect
 		if (lpSystemInfo->m_nEasUse == TRUE)
@@ -303,6 +304,7 @@ BOOL CUserID::Lf_loginProcess()
 
 					return FALSE;
 				}
+				m_pApp->bConnectInfo[CONN_EAS] = TRUE;
 			}
 		}
 
