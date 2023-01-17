@@ -134,9 +134,8 @@ HBRUSH CMaintenanceDIO::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			break;
 		case CTLCOLOR_STATIC:
 		{
-			if ((pWnd->GetDlgCtrlID() == IDC_STT_MD_INTERFACE_TITLE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_PWM_SET_TITLE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_PATTERN_TITLE)
+			if ((pWnd->GetDlgCtrlID() == IDC_LST_MO_DIO1_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_LST_MO_DIO2_TITLE)
 				)
 			{
 				pDC->SetBkColor(COLOR_BLACK);
@@ -412,6 +411,8 @@ void CMaintenanceDIO::Lf_InitFontset()
 	m_Font[2].CreateFont(23, 10, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_LST_MO_DIO1_TITLE)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_LST_MO_DIO2_TITLE)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_BTN_MO_WRITE_DIO1)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_BTN_MO_WRITE_DIO2)->SetFont(&m_Font[2]);
 
 	m_Font[3].CreateFont(21, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 

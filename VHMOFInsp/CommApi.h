@@ -33,7 +33,8 @@ public:
 	
 	BOOL main_setBmpAddress(int ch, CString strPtnString);
 	BOOL main_setBmpComplete(int ch);
-	BOOL main_setI2cWrite(int ch, int level, int pullup, int devAddr, int regAddr, char* pData);
+	BOOL main_setI2cWrite(int ch, int line, int devAddr, int regAddr, int regAddrType, int length, char* pData);
+	BOOL main_setI2cRead(int ch, int line, int devAddr, int regAddr, int regAddrType, int rdLength, char* pData);
 
 	BOOL main_setCableOpenCheck(int ch);
 	BOOL main_setGpioControl(int ch, int gpio1, int gpio2, int gpio3);

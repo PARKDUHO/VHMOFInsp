@@ -355,16 +355,59 @@ BOOL CCommApi::main_setBmpComplete(int ch)
 	return ret;
 }
 
-BOOL CCommApi::main_setI2cWrite(int ch, int level, int pullup, int devAddr, int regAddr, char *pData)
+BOOL CCommApi::main_setI2cWrite(int ch, int line, int devAddr, int regAddr, int regAddrType, int wrLength, char *pData)
 {
 	int ret;
 	char szPacket[4096];
-	int length;
+	int packet_length;
+	int i2c_freq = 200;
 
-	sprintf_s(szPacket, "%01d", 0x01);
-	length = (int)strlen(szPacket);
+	if (lpModelInfo->m_nI2cClock == 0)	i2c_freq = 20;
+	if (lpModelInfo->m_nI2cClock == 1)	i2c_freq = 50;
+	if (lpModelInfo->m_nI2cClock == 2)	i2c_freq = 100;
+	if (lpModelInfo->m_nI2cClock == 3)	i2c_freq = 154;
+	if (lpModelInfo->m_nI2cClock == 4)	i2c_freq = 208;
+	if (lpModelInfo->m_nI2cClock == 5)	i2c_freq = 250;
+	if (lpModelInfo->m_nI2cClock == 6)	i2c_freq = 319;
+	if (lpModelInfo->m_nI2cClock == 7)	i2c_freq = 376;
+	if (lpModelInfo->m_nI2cClock == 8)	i2c_freq = 422;
 
-	ret = main_setSendQuery(CMD_IF_I2C_WRITE, length, szPacket, ch);
+	sprintf_s(szPacket, "%01d%03d%02X%04X%01d%04X", line, i2c_freq, devAddr, regAddr, regAddrType, wrLength);
+	packet_length = (int)strlen(szPacket);
+
+	memcpy(&szPacket[packet_length], pData, wrLength);
+	packet_length += wrLength;
+
+	ret = main_setSendQuery(CMD_IF_I2C_WRITE, packet_length, szPacket, ch);
+
+	return ret;
+}
+
+BOOL CCommApi::main_setI2cRead(int ch, int line, int devAddr, int regAddr, int regAddrType, int rdLength, char* pData)
+{
+	int ret;
+	char szPacket[4096];
+	int packet_length;
+	int i2c_freq = 200;
+
+	if (lpModelInfo->m_nI2cClock == 0)	i2c_freq = 20;
+	if (lpModelInfo->m_nI2cClock == 1)	i2c_freq = 50;
+	if (lpModelInfo->m_nI2cClock == 2)	i2c_freq = 100;
+	if (lpModelInfo->m_nI2cClock == 3)	i2c_freq = 154;
+	if (lpModelInfo->m_nI2cClock == 4)	i2c_freq = 208;
+	if (lpModelInfo->m_nI2cClock == 5)	i2c_freq = 250;
+	if (lpModelInfo->m_nI2cClock == 6)	i2c_freq = 319;
+	if (lpModelInfo->m_nI2cClock == 7)	i2c_freq = 376;
+	if (lpModelInfo->m_nI2cClock == 8)	i2c_freq = 422;
+
+	sprintf_s(szPacket, "%01d%03d%02X%04X%01d%04X", line, i2c_freq, devAddr, regAddr, regAddrType, rdLength);
+	packet_length = (int)strlen(szPacket);
+
+	ret = main_setSendQuery(CMD_IF_I2C_READ, packet_length, szPacket, ch);
+	if (ret == TRUE)
+	{
+		memcpy(pData, gszMainRcvPacket, rdLength);
+	}
 
 	return ret;
 }

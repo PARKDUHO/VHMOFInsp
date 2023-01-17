@@ -40,6 +40,7 @@ CVHMOFInspApp::CVHMOFInspApp()
 	m_pUDPSocket		= new CSocketUDP;
 	commApi				= new CCommApi;
 	m_pCimNet			= new CCimNetCommApi;
+	pMelsecnetG			= new CMelsecnetG;
 
 
 	m_pStaticMainLog = NULL;
@@ -1415,3 +1416,105 @@ BOOL CVHMOFInspApp::Lf_checkDoorOpenInterLock()
 
 	return TRUE;
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MELSEC 통신 Function
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int CVHMOFInspApp::Lf_getMelsecErrorCode(int mnetg_err)
+{
+	if (mnetg_err == 0x0001)				return 2001;
+	else if (mnetg_err == 0x0002)			return 2002;
+	else if (mnetg_err == 0x0042)			return 2003;
+	else if (mnetg_err == 0x0044)			return 2004;
+	else if (mnetg_err == 0x0045)			return 2005;
+	else if (mnetg_err == 0x0046)			return 2006;
+	else if (mnetg_err == 0x0047)			return 2007;
+	else if (mnetg_err == 0x004D)			return 2008;
+
+
+#if 0
+#define MNETG_ERROR_0055H			_T("SEND/RECV channel number error.")
+#define MNETG_ERROR_0064H			_T("Board H/W resource busy.")
+#define MNETG_ERROR_0065H			_T("Routing parameter error.")
+#define MNETG_ERROR_0066H			_T("Board Driver I/F error. An attempt to send request data to the board driver is failed.")
+#define MNETG_ERROR_0067H			_T("Board Driver I/F error. An attempt to receive response data from the board driver is failed.")
+#define MNETG_ERROR_0085H			_T("Parameter error. A parameter set on the board is incorrect.")
+#define MNETG_ERROR_0085H			_T("Parameter error. A parameter set on the board is incorrect.")
+#define MNETG_ERROR_1000H			_T("MELSEC data link library internal error.")
+#define MNETG_ERROR_4000H			_T("Error detected by the access target CPU.")
+#define MNETG_ERROR_4030H			_T("Device error. The specified device type is invalid.")
+#define MNETG_ERROR_4031H			_T("Device error. The specified device number is out of the range.")
+#define MNETG_ERROR_4080H			_T("Request data error.")
+#define MNETG_ERROR_4A00H			_T("Link-related error.")
+#define MNETG_ERROR_4A01H			_T("Link-related error.")
+#define MNETG_ERROR_4B02H			_T("The request is not for a CPU module.")
+#define MNETG_ERROR_FFFFH			_T("Path error. The specified path is invalid.")
+#define MNETG_ERROR_FFFEH			_T("Start device number error.")
+#define MNETG_ERROR_FFFDH			_T("Device type error. The specified device type is invalid.")
+#define MNETG_ERROR_FFFBH			_T("Size error. The set of start device numberand size is over the device range.")
+#define MNETG_ERROR_FFFAH			_T("Number of blocks error.")
+#define MNETG_ERROR_FFF8H			_T("Channel number error. The channel number specified with mdOpen function is invalid.")
+#define MNETG_ERROR_FFF4H			_T("Block number error. The block number of the specified file register is invalid.")
+#define MNETG_ERROR_FFF3H			_T("Write protect error.")
+#define MNETG_ERROR_FFF0H			_T("Network number and station number error.")
+#define MNETG_ERROR_FFEFH			_T("All station specification and group number specification error.")
+#define MNETG_ERROR_FFEEH			_T("Remote command code error.")
+#define MNETG_ERROR_FFEDH			_T("SEND/RECV channel number error.")
+#define MNETG_ERROR_FFE1H			_T("DLL load error. An attempt to load DLL required to execute the function failed.")
+#define MNETG_ERROR_FFE0H			_T("Resource time-out error.")
+#define MNETG_ERROR_FFDFH			_T("Incorrect access target error.")
+#define MNETG_ERROR_FFDEH			_T("Registry access error.")
+#define MNETG_ERROR_FFDBH			_T("Communication initialization setting error.")
+#define MNETG_ERROR_FFD6H			_T("Close error. The communication cannot be closed.")
+#define MNETG_ERROR_FFD5H			_T("ROM operation error.")
+#define MNETG_ERROR_FFC3H			_T("Number of events error.")
+#define MNETG_ERROR_FFC2H			_T("Event number error.")
+#define MNETG_ERROR_FFC1H			_T("Event number duplicate registration error.")
+#define MNETG_ERROR_FFC0H			_T("Timeout time error. The timeout time specified with mdWaitBdEvent function is out of the range.")
+#define MNETG_ERROR_FFBFH			_T("Event wait time-out error. An event did not occur within the timeout time.")
+#define MNETG_ERROR_FFBEH			_T("Event initialization error.")
+#define MNETG_ERROR_FFBDH			_T("No event setting error.")
+#define MNETG_ERROR_FFBBH			_T("Unsupported function execution error.")
+#define MNETG_ERROR_FFBAH			_T("Event duplication occurrence error.")
+#define MNETG_ERROR_FFB9H			_T("Remote device station access error.")
+#define MNETG_ERROR_FEFFH			_T("Errors detected in the MELSECNET/H and MELSECNET/10 network system.")
+#define MNETG_ERROR_F782H			_T("Transient data target station number error.")
+#define MNETG_ERROR_EFFFH			_T("Errors detected in the CC-Link IE Controller network system.")
+#define MNETG_ERROR_E218H			_T("Transient data target station number error.")
+#define MNETG_ERROR_E208H			_T("Transient data target station number error.")
+#define MNETG_ERROR_DFFFH			_T("Errors detected in the CC-Link IE Field network system.")
+#define MNETG_ERROR_D25DH			_T("Transient data improper.")
+#define MNETG_ERROR_D23BH			_T("Network number error.")
+#define MNETG_ERROR_D21EH			_T("Station number error.")
+#define MNETG_ERROR_D0A0H			_T("Transient data send response wait time-out error.")
+#define MNETG_ERROR_CFFFH			_T("Errors detected in the Ethernet network system.")
+#define MNETG_ERROR_BFFFH			_T("Errors detected in the CC-Link system.")
+#define MNETG_ERROR_B780H			_T("Module mode setting error.")
+#define MNETG_ERROR_B774H			_T("Transient unsupported error.")
+#define MNETG_ERROR_9E20H			_T("Processing code error.")
+#define MNETG_ERROR_9922H			_T("Reset error.")
+#define MNETG_ERROR_9920H			_T("Routing request error on routing function unsupported station.")
+#define MNETG_ERROR_9302H			_T("Event wait time-out error.")
+#define MNETG_ERROR_9216H			_T("Unsupported block data assurance per station.")
+#define MNETG_ERROR_9215H			_T("Link refresh error. Link refresh processing did not operate normally.")
+#define MNETG_ERROR_9214H			_T("Incorrect mode setting error. An incorrect mode was specified when setting the mode.")
+#define MNETG_ERROR_9213H			_T("System sleep error. Entering sleep mode, hibernation mode, or fast startup was detected.")
+#define MNETG_ERROR_9212H			_T("Mode error. A request which cannot be used in the currently set mode was executed.")
+#define MNETG_ERROR_9211H			_T("Hardware self-diagnosis error. An error was detected by the hardware self-diagnosis.")
+#define MNETG_ERROR_9210H			_T("Hardware self-diagnosis error. An error was detected by the hardware self-diagnosis.")
+#define MNETG_ERROR_920AH			_T("Data link disconnected device access error.")
+#define MNETG_ERROR_9209H			_T("Abnormal data reception error. An incorrect response data was received.")
+#define MNETG_ERROR_9202H			_T("Driver WDT error. Driver WDT error is occurring.")
+#define MNETG_ERROR_9032H			_T("Channel busy (dedicated instruction) error.")
+#define MNETG_ERROR_9026H			_T("Hardware self-diagnosis error. An error was detected by the hardware self-diagnosis.")
+#define MNETG_ERROR_9024H			_T("Hardware self-diagnosis error. An error was detected by the hardware self-diagnosis.")
+#endif
+
+	return 200;		// undefined error code
+}
+
+
+
+
+

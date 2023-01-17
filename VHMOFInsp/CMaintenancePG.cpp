@@ -29,7 +29,10 @@ CMaintenancePG::~CMaintenancePG()
 void CMaintenancePG::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_CMB_MP_PATTERN_CH, m_cmbMpPatternCh);
 	DDX_Control(pDX, IDC_CMB_MP_PATTERN_LIST, m_cmbMpPatternList);
+	DDX_Control(pDX, IDC_CMB_MP_I2C_CH, m_cmbMpI2CCh);
+	DDX_Control(pDX, IDC_CMB_MP_SPI_CH, m_cmbMpSPICh);
 }
 
 
@@ -38,6 +41,13 @@ BEGIN_MESSAGE_MAP(CMaintenancePG, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_BTN_MP_POWER_ON, &CMaintenancePG::OnBnClickedBtnMpPowerOn)
+	ON_BN_CLICKED(IDC_BTN_MP_POWER_OFF, &CMaintenancePG::OnBnClickedBtnMpPowerOff)
+	ON_BN_CLICKED(IDC_BTN_MP_I2C_WRITE, &CMaintenancePG::OnBnClickedBtnMpI2cWrite)
+	ON_BN_CLICKED(IDC_BTN_MP_I2C_READ, &CMaintenancePG::OnBnClickedBtnMpI2cRead)
+	ON_BN_CLICKED(IDC_BTN_MP_SPI_WRITE, &CMaintenancePG::OnBnClickedBtnMpSpiWrite)
+	ON_BN_CLICKED(IDC_BTN_MP_SPI_READ, &CMaintenancePG::OnBnClickedBtnMpSpiRead)
+	ON_CBN_SELCHANGE(IDC_CMB_MP_PATTERN_LIST, &CMaintenancePG::OnCbnSelchangeCmbMpPatternList)
 END_MESSAGE_MAP()
 
 
@@ -161,16 +171,140 @@ void CMaintenancePG::OnPaint()
 void CMaintenancePG::OnTimer(UINT_PTR nIDEvent)
 {
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	if (nIDEvent == 1)
+	{
 
+	}
 	CDialog::OnTimer(nIDEvent);
 }
 
+
+void CMaintenancePG::OnBnClickedBtnMpPowerOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int ch = m_cmbMpPatternCh.GetCurSel();
+	m_pApp->commApi->main_setPowerSequenceOnOff(ch, POWER_ON);
+
+	SetTimer(1, 1000, NULL);
+}
+
+
+void CMaintenancePG::OnBnClickedBtnMpPowerOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	int ch = m_cmbMpPatternCh.GetCurSel();
+	m_pApp->commApi->main_setPowerSequenceOnOff(ch, POWER_OFF);
+
+	KillTimer(1);
+}
+
+
+void CMaintenancePG::OnBnClickedBtnMpI2cWrite()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString sdata;
+	int ch = m_cmbMpI2CCh.GetCurSel();
+	int level = lpModelInfo->m_nI2cLevel;
+	int pullup = lpModelInfo->m_nI2cPullUp;
+	int device, regAddr;
+	char szData[10] = { 0, };
+
+	GetDlgItem(IDC_EDT_MP_I2C_DEVICE)->SetWindowText(sdata);
+	device = (char)_tcstol(sdata, NULL, 16);
+
+	GetDlgItem(IDC_EDT_MP_I2C_ADDRESS)->SetWindowText(sdata);
+	regAddr = (char)_tcstol(sdata, NULL, 16);
+
+	GetDlgItem(IDC_EDT_MP_I2C_DATA)->SetWindowText(sdata);
+	szData[0] = (char)_tcstol(sdata, NULL, 16);
+	if (m_pApp->commApi->main_setI2cWrite(ch, I2C_LINE_ODC, device, regAddr, I2C_ADDR_BYTE, 1, szData) == TRUE)
+	{
+		GetDlgItem(IDC_STT_MP_I2C_RESULT)->SetWindowText(_T("OK"));
+	}
+	else
+	{
+		GetDlgItem(IDC_STT_MP_I2C_RESULT)->SetWindowText(_T("FAIL"));
+	}
+}
+
+
+void CMaintenancePG::OnBnClickedBtnMpI2cRead()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString sdata;
+	int ch = m_cmbMpI2CCh.GetCurSel();
+	int level = lpModelInfo->m_nI2cLevel;
+	int pullup = lpModelInfo->m_nI2cPullUp;
+	int device, regAddr;
+	char szData[10] = { 0, };
+
+	GetDlgItem(IDC_EDT_MP_I2C_DEVICE)->SetWindowText(sdata);
+	device = (char)_tcstol(sdata, NULL, 16);
+
+	GetDlgItem(IDC_EDT_MP_I2C_ADDRESS)->SetWindowText(sdata);
+	regAddr = (char)_tcstol(sdata, NULL, 16);
+
+	if (m_pApp->commApi->main_setI2cRead(ch, I2C_LINE_ODC, device, regAddr, I2C_ADDR_BYTE, 1, szData) == TRUE)
+	{
+		sdata.Format(_T("%02X"), szData[0]);
+		GetDlgItem(IDC_EDT_MP_I2C_DATA)->SetWindowText(sdata);
+		GetDlgItem(IDC_STT_MP_I2C_RESULT)->SetWindowText(_T("OK"));
+	}
+	else
+	{
+		GetDlgItem(IDC_STT_MP_I2C_RESULT)->SetWindowText(_T("FAIL"));
+	}
+}
+
+
+void CMaintenancePG::OnBnClickedBtnMpSpiWrite()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CMaintenancePG::OnBnClickedBtnMpSpiRead()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+void CMaintenancePG::OnCbnSelchangeCmbMpPatternList()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString ptnName;
+	int ch = m_cmbMpPatternCh.GetCurSel();
+
+	m_cmbMpPatternList.GetWindowText(ptnName);
+	if (lpModelInfo->m_nSignalType == SIGNAL_TYPE_ALPLD)
+	{
+		CString scriptName;
+		scriptName.Format(_T("log_%s_CH%d.py"), ptnName, (ch + 1));
+		m_pApp->commApi->alpdp_executePythonScript(ch, scriptName);
+	}
+	else
+	{
+		m_pApp->commApi->main_setPGInfoPatternName(ch, ptnName);
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMaintenancePG::Lf_InitLocalValue()
 {
+	GetDlgItem(IDC_EDT_MP_I2C_DEVICE)->SetWindowText(_T("A0"));
+	GetDlgItem(IDC_EDT_MP_I2C_ADDRESS)->SetWindowText(_T("0000"));
+	GetDlgItem(IDC_EDT_MP_I2C_DATA)->SetWindowText(_T("FF"));
 
+	GetDlgItem(IDC_EDT_MP_SPI_ADDRESS)->SetWindowText(_T("A0"));
+	GetDlgItem(IDC_EDT_MP_SPI_DATA1)->SetWindowText(_T("00"));
+	GetDlgItem(IDC_EDT_MP_SPI_DATA2)->SetWindowText(_T("01"));
+	GetDlgItem(IDC_EDT_MP_SPI_DATA3)->SetWindowText(_T("0A"));
+	GetDlgItem(IDC_EDT_MP_SPI_DATA4)->SetWindowText(_T("0F"));
+	GetDlgItem(IDC_EDT_MP_SPI_DATA5)->SetWindowText(_T("1F"));
+
+	m_cmbMpPatternCh.SetCurSel(0);
+	m_cmbMpI2CCh.SetCurSel(0);
+	m_cmbMpSPICh.SetCurSel(0);
 }
 
 void CMaintenancePG::Lf_InitFontset()
@@ -259,3 +393,5 @@ void CMaintenancePG::Lf_loadPatternListToCombo()
 
 	m_cmbMpPatternList.SetCurSel(0);
 }
+
+

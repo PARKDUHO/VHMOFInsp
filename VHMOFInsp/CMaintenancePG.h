@@ -56,5 +56,15 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	CComboBox m_cmbMpPatternCh;
 	CComboBox m_cmbMpPatternList;
+	CComboBox m_cmbMpI2CCh;
+	CComboBox m_cmbMpSPICh;
+	afx_msg void OnBnClickedBtnMpPowerOn();
+	afx_msg void OnBnClickedBtnMpPowerOff();
+	afx_msg void OnBnClickedBtnMpI2cWrite();
+	afx_msg void OnBnClickedBtnMpI2cRead();
+	afx_msg void OnBnClickedBtnMpSpiWrite();
+	afx_msg void OnBnClickedBtnMpSpiRead();
+	afx_msg void OnCbnSelchangeCmbMpPatternList();
 };

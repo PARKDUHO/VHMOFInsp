@@ -15,6 +15,7 @@
 #include "SocketTCPApp.h"
 #include "SocketUDP.h"
 #include "CIMNetCommApp.h"
+#include "MelsecnetG.h"
 
 
 // CVHMOFInspApp:
@@ -95,6 +96,8 @@ public:
 	// DIO InterLock
 	BOOL Lf_checkDoorOpenInterLock();
 
+	// MELSEC Function
+	int Lf_getMelsecErrorCode(int mnetg_err);
 
 
 	LPMODELINFO				GetModelInfo();
@@ -107,6 +110,7 @@ public:
 	CSocketUDP*				m_pUDPSocket;
 	CCommApi* commApi;
 	CCimNetCommApi*			m_pCimNet;
+	CMelsecnetG*			pMelsecnetG;
 
 	HANDLE					m_hAppMutex;
 

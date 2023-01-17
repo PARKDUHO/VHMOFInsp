@@ -323,6 +323,27 @@ HBRUSH CInitialize::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_GRAY159];
 			}
 		}
+		if (pWnd->GetDlgCtrlID() == IDC_STT_INI_CONN_MELSEC)
+		{
+			if (nSysInitResult[INIT_MELSEC] == INIT_NG)
+			{
+				pDC->SetBkColor(COLOR_RED128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_RED128];
+			}
+			else if (nSysInitResult[INIT_MELSEC] == INIT_OK)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
+			}
+			else
+			{
+				pDC->SetBkColor(COLOR_GRAY159);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GRAY159];
+			}
+		}
 
 
 		break;
@@ -639,6 +660,22 @@ void CInitialize::Lf_initConnDIO()
 
 void CInitialize::Lf_initConnMelsec()
 {
+	int mnetG_Err;
 
-	nSysInitResult[INIT_MELSEC] = INIT_OK;
+	mnetG_Err = m_pApp->pMelsecnetG->mnetg_mdOpen(151, -1);
+	if (mnetG_Err == MNETG_OK)
+	{
+		nSysInitResult[INIT_MELSEC] = INIT_OK;
+		m_pApp->bConnectInfo[CONN_MELSEC] = TRUE;
+	}
+	else
+	{
+		nSysInitResult[INIT_MELSEC] = INIT_NG;
+		m_pApp->bConnectInfo[CONN_MELSEC] = FALSE;
+
+//		int errCode;
+//		errCode = m_pApp->Lf_getMelsecErrorCode(mnetG_Err);
+//		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("MELSEC ERROR"), errCode);
+	}
+	GetDlgItem(IDC_STT_INI_CONN_MELSEC)->Invalidate(FALSE);
 }

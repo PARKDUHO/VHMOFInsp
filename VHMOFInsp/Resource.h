@@ -390,6 +390,7 @@
 #define IDC_BTN_MP_I2C_READ             1173
 #define IDC_STT_MP_I2C_RESULT           1174
 #define IDC_GRP_MP_SPI                  1175
+#define IDC_CMB_MP_PATTERN_CH           1176
 #define IDC_EDT_MP_SPI_ADDRESS          1177
 #define IDC_EDT_MP_SPI_DATA1            1178
 #define IDC_BTN_MP_SPI_WRITE            1179
@@ -399,6 +400,15 @@
 #define IDC_EDT_MP_SPI_DATA3            1183
 #define IDC_EDT_MP_SPI_DATA4            1184
 #define IDC_EDT_MP_SPI_DATA5            1185
+#define IDC_CMB_MP_I2C_CH               1186
+#define IDC_CMB_MP_SPI_CH               1187
+#define IDC_EDT_MP_MEAS_VCC             1188
+#define IDC_EDT_MP_MEAS_VIN             1189
+#define IDC_EDT_MP_MEAS_VSYS            1190
+#define IDC_EDT_MP_MEAS_ICC             1191
+#define IDC_EDT_MP_MEAS_IIN             1192
+#define IDC_EDT_MP_MEAS_VSYS2           1193
+#define IDC_EDT_MP_MEAS_ISYS            1193
 #define IDC_STT_MC_MODEL_INCH_TITLE     1230
 #define IDC_BTN_MC_ALL_MODEL            1231
 #define IDC_STT_MC_DRIVE_PATH           1232
@@ -521,9 +531,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        186
+#define _APS_NEXT_RESOURCE_VALUE        187
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1175
+#define _APS_NEXT_CONTROL_VALUE         1189
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
