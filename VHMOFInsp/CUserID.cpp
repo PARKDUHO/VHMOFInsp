@@ -348,9 +348,9 @@ BOOL CUserID::Lf_loginProcess()
 
 	Write_SysIniFile(_T("SYSTEM"), _T("LOGIN_USERID"), strUserid);
 
-	CDialog::OnOK();
 	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
+	CDialog::OnOK();
 	return TRUE;
 }
 

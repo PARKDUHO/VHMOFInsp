@@ -59,6 +59,11 @@ protected:
 
 	void Lf_checkExtAlarmDio1();
 	void Lf_checkExtAlarmDio2();
+	void Lf_updateSensorInfo();
+
+	void Lf_updateMaQuantityCount();
+
+	BOOL m_bRobotInLedStatus;
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -85,6 +90,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CStatic m_sttMainMlogView;
 	afx_msg LRESULT OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnUpdateQuantity(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedBtnMaUserid();
 	afx_msg void OnBnClickedBtnMaModelChange();
 	afx_msg void OnBnClickedBtnMaModelInfo();
@@ -94,4 +100,12 @@ public:
 	afx_msg void OnBnClickedBtnMaInitial();
 	afx_msg void OnBnClickedBtnMaFirmware();
 	afx_msg void OnBnClickedBtnMaExit();
+	afx_msg void OnBnClickedBtnDioCtrlLedOff();
+	afx_msg void OnBnClickedBtnDioCtrlLedOn();
+	afx_msg void OnStnClickedSttMaQtyReset();
+	afx_msg void OnStnClickedSttMaQtyResetCh1();
+	afx_msg void OnStnClickedSttMaQtyResetCh2();
+	afx_msg void OnBnClickedBtnDioCtrlMuteOff();
+	afx_msg void OnBnClickedBtnDioCtrlMuteOn();
+	afx_msg void OnBnClickedBtnDioCtrlDoorOpen();
 };

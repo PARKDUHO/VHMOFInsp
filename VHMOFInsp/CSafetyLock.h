@@ -34,6 +34,9 @@ protected:
 	void Lf_InitColorBrush();
 	void Lf_InitDlgDesign();
 
+	void Lf_confirmPassword();
+	void Lf_openDlgSensorView();
+
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -53,4 +56,7 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnBnClickedBtnSlOk();
 	CButton m_btnSlConfirm;
+	CListBox m_lstSlAlarmList;
+	afx_msg void OnBnClickedBtnSlSensorView();
+	CButton m_btnSlSensorView;
 };

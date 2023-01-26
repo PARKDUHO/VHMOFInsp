@@ -4,6 +4,8 @@
 #include "pch.h"
 #include "VHMOFInsp.h"
 #include "CModelInfo.h"
+#include "CMessageQuestion.h"
+#include "CPassword.h"
 #include "afxdialogex.h"
 
 
@@ -39,6 +41,7 @@ BEGIN_MESSAGE_MAP(CModelInfo, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_MI_SAVE_EXIT, &CModelInfo::OnBnClickedBtnMiSaveExit)
 	ON_BN_CLICKED(IDC_BTN_MI_CANCEL, &CModelInfo::OnBnClickedBtnMiCancel)
 	ON_BN_CLICKED(IDC_BTN_MI_FUSING, &CModelInfo::OnBnClickedBtnMiFusing)
+	ON_BN_CLICKED(IDC_BTN_MI_MODIFY, &CModelInfo::OnBnClickedBtnMiModify)
 END_MESSAGE_MAP()
 
 
@@ -201,6 +204,23 @@ void CModelInfo::OnBnClickedBtnMiFusing()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_pApp->Gf_writeMLog(_T("<WND> BUTTON Click => Fusing"));
 
+	CString strSource, strSaveModel;
+
+	strSource.Format(_T(".\\Model\\%s.MOD"), lpSystemInfo->m_sLastModelName);
+	m_edtMiSaveModelName.GetWindowText(strSaveModel);
+
+	if (strSource != strSaveModel)
+	{
+		CMessageQuestion que_dlg;
+		que_dlg.m_strQMessage.Format(_T("Do you want save new model?"));
+		que_dlg.m_strLButton = _T("YES");
+		que_dlg.m_strRButton = _T("NO");
+		if (que_dlg.DoModal() == IDCANCEL)
+		{
+			return;
+		}
+	}
+
 	Lf_systemFusing();
 }
 
@@ -209,6 +229,23 @@ void CModelInfo::OnBnClickedBtnMiSaveExit()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_pApp->Gf_writeMLog(_T("<WND> BUTTON Click => Model Data 'Save&&Exit'"));
+
+	CString strSource, strSaveModel;
+
+	strSource.Format(_T(".\\Model\\%s.MOD"), lpSystemInfo->m_sLastModelName);
+	m_edtMiSaveModelName.GetWindowText(strSaveModel);
+
+	if (strSource != strSaveModel)
+	{
+		CMessageQuestion que_dlg;
+		que_dlg.m_strQMessage.Format(_T("Do you want save new model?"));
+		que_dlg.m_strLButton = _T("YES");
+		que_dlg.m_strRButton = _T("NO");
+		if (que_dlg.DoModal() == IDCANCEL)
+		{
+			return;
+		}
+	}
 
 	Lf_saveModel();
 	//CDialog::OnOK();
@@ -224,6 +261,21 @@ void CModelInfo::OnBnClickedBtnMiCancel()
 		CDialog::OnOK();
 	else
 		CDialog::OnCancel();
+}
+
+void CModelInfo::OnBnClickedBtnMiModify()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CPassword pw_dlg;
+	pw_dlg.password_mode = 1;
+	if (pw_dlg.DoModal() == IDOK)
+	{
+		GetDlgItem(IDC_BTN_MI_FUSING)->EnableWindow(TRUE);
+		GetDlgItem(IDC_BTN_MI_SAVE_EXIT)->EnableWindow(TRUE);
+
+		m_pModelInfoFusing->Gf_controlEnableDisable(TRUE);
+		m_pModelInfoData->Gf_controlEnableDisable(TRUE);
+	}
 }
 
 
@@ -432,3 +484,6 @@ void CModelInfo::Lf_systemFusing()
 	GetDlgItem(IDC_BTN_MI_SAVE_EXIT)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BTN_MI_CANCEL)->EnableWindow(TRUE);
 }
+
+
+

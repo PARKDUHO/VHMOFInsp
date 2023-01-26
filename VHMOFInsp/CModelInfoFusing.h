@@ -28,6 +28,7 @@ protected:
 ///////////////////////////////////////////////////////////////////////////
 public:
 	void Gf_DataSaveModelFusing(CString modelName);
+	void Gf_controlEnableDisable(BOOL bEnable);
 
 protected:
 	LPMODELINFO		lpModelInfo;

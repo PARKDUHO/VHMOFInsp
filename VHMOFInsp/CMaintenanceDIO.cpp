@@ -347,14 +347,63 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 	if (m_lstMoDio1Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D1_IONIZER_ON_OFF;
 	if (m_lstMoDio1Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D1_LED_ON_OFF;
 	if (m_lstMoDio1Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D1_SPARE0;
-	if (m_lstMoDio1Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D1_SPARE1;
+	if (m_lstMoDio1Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D1_ROBOT_IN_LED;
 	if (m_lstMoDio1Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D1_SPARE2;
 	if (m_lstMoDio1Out.GetCheck(22) == TRUE)	nDOut |= DOUT_D1_SPARE3;
 	if (m_lstMoDio1Out.GetCheck(23) == TRUE)	nDOut |= DOUT_D1_SPARE4;
 
-	if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
+	if ((nDOut & DOUT_D1_MUTTING_1) && (nDOut & DOUT_D1_MUTTING_2))
 	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CH1 DIO WRITE FAIL"), ERROR_CODE_37);
+		// 현재 MUTTING 상태이면 다시 MUTTING 동작시키지 않는다
+		if (((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_1) == 0)
+			&& ((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_2) == 0)
+			)
+		{
+			// Light Curtain Sequence 제어를 위하여 MUTE는 Delay를 주고 제어한다.
+			nDOut &= ~DOUT_D1_MUTTING_2;
+			if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CH1 DIO WRITE FAIL"), ERROR_CODE_37);
+			}
+			delayMs(500);
+
+			nDOut |= DOUT_D1_MUTTING_2;
+			if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CH1 DIO WRITE FAIL"), ERROR_CODE_37);
+			}
+		}
+		else
+		{
+			if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CH1 DIO WRITE FAIL"), ERROR_CODE_37);
+			}
+		}
+	}
+	else if (nDOut & DOUT_D1_REAR_SHUTTER_DOWN)
+	{
+		if ((m_pApp->m_nDioOutBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
+			|| (m_pApp->m_nDioOutBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
+			)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_60);
+			return;
+		}
+		else
+		{
+			if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CH1 DIO WRITE FAIL"), ERROR_CODE_37);
+			}
+		}
+	}
+	else
+	{
+		if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CH1 DIO WRITE FAIL"), ERROR_CODE_37);
+		}
 	}
 }
 
@@ -718,7 +767,7 @@ void CMaintenanceDIO::Lf_setListCheck()
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_ON_OFF >> 16))			m_lstMoDio1Out.SetCheck(17, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_LED_ON_OFF >> 16))				m_lstMoDio1Out.SetCheck(18, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE0 >> 16))					m_lstMoDio1Out.SetCheck(19, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE1 >> 16))					m_lstMoDio1Out.SetCheck(20, TRUE);
+	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16))			m_lstMoDio1Out.SetCheck(20, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE2 >> 16))					m_lstMoDio1Out.SetCheck(21, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE3 >> 16))					m_lstMoDio1Out.SetCheck(22, TRUE);
 	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE4 >> 16))					m_lstMoDio1Out.SetCheck(23, TRUE);

@@ -226,7 +226,7 @@ void CPassword::Lf_confirmPassword()
 	CString input_password, set_password;
 	GetDlgItem(IDC_EDT_PW_PASSWORD)->GetWindowText(input_password);
 
-	if (password_mode == 0)
+	if (password_mode == 0)				// Normal
 	{
 		Read_SysIniFile(_T("SYSTEM"), _T("PW"), &set_password);
 		set_password.MakeUpper();
@@ -236,9 +236,25 @@ void CPassword::Lf_confirmPassword()
 			bRet = TRUE;
 		}
 	}
-	else if (password_mode == 1)
+	else if (password_mode == 1)		// Model Info
 	{
-		bRet = TRUE;
+		Read_SysIniFile(_T("SYSTEM"), _T("PW_MODEL"), &set_password);
+		set_password.MakeUpper();
+
+		if (input_password == set_password)
+		{
+			bRet = TRUE;
+		}
+	}
+	else if (password_mode == 2)		// Safety Lock
+	{
+		Read_SysIniFile(_T("SYSTEM"), _T("PW_SAFETY"), &set_password);
+		set_password.MakeUpper();
+
+		if (input_password == set_password)
+		{
+			bRet = TRUE;
+		}
 	}
 
 	if(bRet == TRUE)

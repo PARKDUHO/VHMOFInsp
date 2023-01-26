@@ -55,9 +55,9 @@ void CModelInfoData::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CMB_MD_PTN_ONOFF, m_cmbMdPtnOnOff);
 	DDX_Control(pDX, IDC_LST_MD_PTN_LIST, m_lstMdPtnList);
 	DDX_Control(pDX, IDC_PIC_MD_PTN_PREVIEW, m_picMdPatternPreview);
-	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW2, m_edtMdPwmFrequency);
-	DDX_Control(pDX, IDC_EDT_MF_LIMIT_IDD_LOW3, m_edtMdPwmDuty);
-	DDX_Control(pDX, IDC_CMB_MD_SPI_LEVEL2, m_cmbMdPwmLevel);
+	DDX_Control(pDX, IDC_EDT_MF_PWM_FREQUENCY, m_edtMdPwmFrequency);
+	DDX_Control(pDX, IDC_EDT_MF_PWM_DUTY, m_edtMdPwmDuty);
+	DDX_Control(pDX, IDC_CMB_MD_PWM_LEVEL, m_cmbMdPwmLevel);
 	DDX_Control(pDX, IDC_CMB_MD_CABLE_OPEN, m_cmbMdCableOpenCheck);
 }
 
@@ -168,6 +168,8 @@ HBRUSH CModelInfoData::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_MD_INTERFACE_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_PWM_SET_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_PATTERN_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_GPIO_SET_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MD_FUNCTION_TITLE)
 				)
 			{
 				pDC->SetBkColor(COLOR_BLACK);
@@ -360,6 +362,9 @@ void CModelInfoData::Lf_InitLocalValue()
 	sdata.Format(_T("%d"), (int)(vsync+0.01));
 	m_edtMdPtnVSync.SetWindowText(sdata);
 	m_cmbMdPtnOnOff.SetCurSel(0);
+
+	// 모든 Control 비활성화
+	Gf_controlEnableDisable(FALSE);
 }
 
 void CModelInfoData::Lf_InitFontset()
@@ -401,6 +406,45 @@ void CModelInfoData::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush(COLOR_GRAY224);
 	m_Brush[COLOR_IDX_GRAY240].CreateSolidBrush(COLOR_GRAY240);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
+}
+
+void CModelInfoData::Gf_controlEnableDisable(BOOL bEnable)
+{
+	GetDlgItem(IDC_CMB_MD_I2C_PULL_UP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_I2C_LEVEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_I2C_CLOCK)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_SPI_PULL_UP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_SPI_LEVEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_SPI_CLOCK)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GPIO_LEVEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GPIO1_OUTPUT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GPIO2_OUTPUT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GPIO3_OUTPUT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GPIO_PULL_UP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GIO1_SETTING)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GIO2_SETTING)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GIO3_SETTING)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_GIO4_SETTING)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_PWM_FREQUENCY)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_PWM_DUTY)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_PWM_LEVEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_CABLE_OPEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_PTN_NAME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_VCC)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_VEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_ICC)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_IEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_LOCK_TIME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_MAX_TIME)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MD_PTN_VSYNC)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_PTN_ONOFF)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MD_PTN_ADD)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MD_PTN_MODIFY)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MD_PTN_DEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MD_PTN_UP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MD_PTN_DOWN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MD_PTN_APPLY_ALL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_LST_MD_PTN_LIST)->EnableWindow(bEnable);
 }
 
 void CModelInfoData::Gf_DataSaveModelData(CString modelName)

@@ -195,10 +195,18 @@ LPINSPWORKINFO CVHMOFInspApp::GetInspWorkInfo()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVHMOFInspApp::Lf_initGlobalVariable()
 {
-	ZeroMemory(m_nDioOutBit, sizeof(m_nDioOutBit));
+	Read_SysIniFile(_T("DIO"), _T("CH1_OUT_DATA1"), &m_pApp->m_nDioOutBit[CH1][0]);
+	Read_SysIniFile(_T("DIO"), _T("CH1_OUT_DATA2"), &m_pApp->m_nDioOutBit[CH1][1]);
+	Read_SysIniFile(_T("DIO"), _T("CH1_OUT_DATA3"), &m_pApp->m_nDioOutBit[CH1][2]);
+
+	Read_SysIniFile(_T("DIO"), _T("CH2_OUT_DATA1"), &m_pApp->m_nDioOutBit[CH2][0]);
+	Read_SysIniFile(_T("DIO"), _T("CH2_OUT_DATA2"), &m_pApp->m_nDioOutBit[CH2][1]);
+	Read_SysIniFile(_T("DIO"), _T("CH2_OUT_DATA3"), &m_pApp->m_nDioOutBit[CH2][2]);
+
 	ZeroMemory(bConnectInfo, sizeof(bConnectInfo));
 
 	m_bIsSendEAYT = FALSE;
+	m_bSafetyDlgOpen = FALSE;
 }
 
 
@@ -407,6 +415,129 @@ void CVHMOFInspApp::Gf_writeSummaryLog(int ch)
 	fclose(fp);
 }
 
+
+void CVHMOFInspApp::Gf_writeAlarmLog(int errorCode, CString strError)
+{
+	FILE* fp;
+	FILE* fp_hidden;
+
+	char szbuf[100] = { 0, };
+	char szbuf_hidden[100] = { 0, };
+	char szYear[5] = { 0, };
+	char szMonth[5] = { 0, };
+	char szDay[5] = { 0, };
+	char filename[256] = { 0 };
+	char filepath[1024] = { 0 };
+	char filename_hidden[256] = { 0 };
+	char filepath_hidden[1024] = { 0 };
+	char dataline[4096] = { 0 };
+
+	CString strDate;
+	CString strTime;
+
+	SYSTEMTIME sysTime;
+	::GetSystemTime(&sysTime);
+	CTime time = CTime::GetCurrentTime();
+
+	strDate.Format(_T("%04d%02d%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
+	strTime.Format(_T("%02d:%02d:%02d"), time.GetHour(), time.GetMinute(), time.GetSecond());
+
+
+	// 1. 경로를 찾고 없으면 생성한다.
+	sprintf_s(szYear, "%04d", time.GetYear());
+	sprintf_s(szMonth, "%02d", time.GetMonth());
+	sprintf_s(szDay, "%02d", time.GetDay());
+
+	if ((_access(".\\Logs\\AlarmLog", 0)) == -1)
+		_mkdir(".\\Logs\\AlarmLog");
+
+	sprintf_s(szbuf, ".\\Logs\\AlarmLog\\%s", szYear);
+	if ((_access(szbuf, 0)) == -1)
+		_mkdir(szbuf);
+
+	sprintf_s(szbuf, ".\\Logs\\AlarmLog\\%s\\%s", szYear, szMonth);
+	if ((_access(szbuf, 0)) == -1)
+		_mkdir(szbuf);
+
+
+	// 2. file을 open한다.
+	sprintf_s(filename, "%04d%02d%02d_AlarmLog.txt", time.GetYear(), time.GetMonth(), time.GetDay());
+	sprintf_s(filepath, "%s\\%s", szbuf, filename);
+
+	fopen_s(&fp, filepath, "r+");
+	if (fp == NULL)
+	{
+		delayMs(10);
+		fopen_s(&fp, filepath, "a+");
+		if (fp == NULL) // 2007-08-01 : fseek.c(101) error
+		{
+			return;
+		}
+	}
+
+	//**************************************************************************************************************//
+	// Alarm Log 숨김파일 생성 알고리즘 추가.
+	//**************************************************************************************************************//
+	if ((_access(".\\Logs\\AlarmLog_Hidden", 0)) == -1)
+	{
+		_mkdir(".\\Logs\\AlarmLog_Hidden");
+
+		CString strFile = _T(".\\Logs\\AlarmLog_Hidden");
+		DWORD attr = GetFileAttributes(strFile);
+		SetFileAttributes(strFile, attr | FILE_ATTRIBUTE_HIDDEN);
+	}
+
+	sprintf_s(szbuf_hidden, ".\\Logs\\AlarmLog_Hidden\\%s", szYear);
+	if ((_access(szbuf_hidden, 0)) == -1)
+		_mkdir(szbuf_hidden);
+
+	sprintf_s(szbuf_hidden, ".\\Logs\\AlarmLog_Hidden\\%s\\%s", szYear, szMonth);
+	if ((_access(szbuf_hidden, 0)) == -1)
+		_mkdir(szbuf_hidden);
+
+	sprintf_s(filename_hidden, "%04d%02d%02d_AlarmLog.txt", time.GetYear(), time.GetMonth(), time.GetDay());
+	sprintf_s(filepath_hidden, "%s\\%s", szbuf_hidden, filename_hidden);
+
+	fopen_s(&fp_hidden, filepath_hidden, "r+");
+	if (fp_hidden == NULL)
+	{
+		delayMs(10);
+		fopen_s(&fp_hidden, filepath_hidden, "a+");
+		if (fp_hidden == NULL) // 2007-08-01 : fseek.c(101) error
+		{
+			return;
+		}
+	}
+	//**************************************************************************************************************//
+	//**************************************************************************************************************//
+
+
+	// 3. Log를 Write한다.
+	char szdate[100] = { 0, };
+	char szerror[1024] = { 0, };
+	char szDiNumber[100] = { 0, };
+
+	sprintf_s(szdate, "%04d-%02d-%02d %02d:%02d:%02d", time.GetYear(), time.GetMonth(), time.GetDay(), time.GetHour(), time.GetMinute(), time.GetSecond());
+
+	if (strError.Left(3) == _T("(DI"))
+	{
+		sprintf_s(szDiNumber, "%s", wchar_To_char(strError.Left(7).GetBuffer(0)));
+	}
+
+	wchar_To_char(strError.GetBuffer(0), szerror);
+	sprintf_s(dataline, "%s,ERROR CODE_%d,%s,%s\n", szdate, errorCode, szDiNumber, szerror);
+
+	fseek(fp, 0L, SEEK_END);
+	fseek(fp_hidden, 0L, SEEK_END);
+
+	fwrite(dataline, sizeof(char), strlen(dataline), fp);
+	fwrite(dataline, sizeof(char), strlen(dataline), fp_hidden);
+
+	// 4. File을 닫는다.
+	fclose(fp);
+	fclose(fp_hidden);
+}
+
 BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage)
 {
 	CString strKey, strMessage;
@@ -428,32 +559,72 @@ BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorC
 	return FALSE;
 }
 
-void CVHMOFInspApp::Gf_QtyCountUp(int ok_ng)
+void CVHMOFInspApp::Gf_QtyCountUp(int ch, int ok_ng)
 {
-	if (ok_ng == QTY_OK)
+	if (ch == CH1)
 	{
-		lpSystemInfo->m_nQuantityOK++;
-		Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT"), lpSystemInfo->m_nQuantityOK);
+		if (ok_ng == QTY_OK)
+		{
+			lpSystemInfo->m_nQuantityOKCh1++;
+			Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT_CH1"), lpSystemInfo->m_nQuantityOKCh1);
+		}
+		if (ok_ng == QTY_NG)
+		{
+			lpSystemInfo->m_nQuantityNGCh1++;
+			Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT_CH1"), lpSystemInfo->m_nQuantityNGCh1);
+		}
 	}
-	if (ok_ng == QTY_NG)
+	if (ch == CH2)
 	{
-		lpSystemInfo->m_nQuantityNG++;
-		Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT"), lpSystemInfo->m_nQuantityNG);
+		if (ok_ng == QTY_OK)
+		{
+			lpSystemInfo->m_nQuantityOKCh2++;
+			Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT_CH2"), lpSystemInfo->m_nQuantityOKCh2);
+		}
+		if (ok_ng == QTY_NG)
+		{
+			lpSystemInfo->m_nQuantityNGCh2++;
+			Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT_CH2"), lpSystemInfo->m_nQuantityNGCh2);
+		}
 	}
+
+	lpSystemInfo->m_nQuantityOKTotal = lpSystemInfo->m_nQuantityOKCh1 + lpSystemInfo->m_nQuantityOKCh2;
+	Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT_TOTAL"), lpSystemInfo->m_nQuantityOKTotal);
+
+	lpSystemInfo->m_nQuantityNGTotal = lpSystemInfo->m_nQuantityNGCh1 + lpSystemInfo->m_nQuantityNGCh2;
+	Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT_TOTAL"), lpSystemInfo->m_nQuantityNGTotal);
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_QUANTITY_INFO, NULL, NULL);
 }
 
-void CVHMOFInspApp::Gf_QtyCountReset()
+void CVHMOFInspApp::Gf_QtyCountReset(int ch)
 {
-	lpSystemInfo->m_nQuantityOK = 0;
-	Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT"), _T("0"));
+	if ((ch == CH1) || (ch == MAX_CH))
+	{
+		lpSystemInfo->m_nQuantityOKCh1 = 0;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT_CH1"), _T("0"));
 
-	lpSystemInfo->m_nQuantityNG = 0;
-	Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT"), _T("0"));
+		lpSystemInfo->m_nQuantityNGCh1 = 0;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT_CH1"), _T("0"));
+	}
 
-//	CTime time = CTime::GetCurrentTime();
-//	CString sdata;
-//	sdata.Format(_T("%04d-%02d-%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
-//	Write_SysIniFile(_T("SYSTEM"), _T("QTY_COUNT_RESET_DATE"), sdata);
+	if ((ch == CH2) || (ch == MAX_CH))
+	{
+		lpSystemInfo->m_nQuantityOKCh2 = 0;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT_CH2"), _T("0"));
+
+		lpSystemInfo->m_nQuantityNGCh2 = 0;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT_CH2"), _T("0"));
+	}
+
+	if (ch == MAX_CH)
+	{
+		lpSystemInfo->m_nQuantityOKTotal = 0;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_OK_COUNT_TOTAL"), _T("0"));
+
+		lpSystemInfo->m_nQuantityNGTotal = 0;
+		Write_SysIniFile(_T("SYSTEM"), _T("QTY_NG_COUNT_TOTAL"), _T("0"));
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -707,8 +878,12 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 	Read_SysIniFile(_T("SYSTEM"),			_T("MODEL_FILE_PATH"),			&lpSystemInfo->m_sDataFileModel);
 	Read_SysIniFile(_T("SYSTEM"),			_T("PATTERN_FILE_PATH"),		&lpSystemInfo->m_sDataFilePattern);
 	Read_SysIniFile(_T("SYSTEM"),			_T("EDID_PATH"),				&lpSystemInfo->m_sDataFileEdid);
-	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_OK_COUNT"),				&lpSystemInfo->m_nQuantityOK);
-	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_NG_COUNT"),				&lpSystemInfo->m_nQuantityNG);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_OK_COUNT_CH1"),			&lpSystemInfo->m_nQuantityOKCh1);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_NG_COUNT_CH1"),			&lpSystemInfo->m_nQuantityNGCh1);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_OK_COUNT_CH2"),			&lpSystemInfo->m_nQuantityOKCh2);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_NG_COUNT_CH2"),			&lpSystemInfo->m_nQuantityNGCh2);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_OK_COUNT_TOTAL"),		&lpSystemInfo->m_nQuantityOKTotal);
+	Read_SysIniFile(_T("SYSTEM"),			_T("QTY_NG_COUNT_TOTAL"),		&lpSystemInfo->m_nQuantityNGTotal);
 
 
 	return TRUE;
@@ -1401,14 +1576,15 @@ BOOL CVHMOFInspApp::udp_procParseDIO(int ch, CString packet)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CVHMOFInspApp::Lf_checkDoorOpenInterLock()
 {
+	if (DEBUG_DIO_ALARM_DISABLE == 1)
+		return TRUE;
 
-	return TRUE;
-	if (m_nDioInBit[CH1][0] | DIN_D1_LEFT_SAFETY_DOOR)
+	if (m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_56);
 		return FALSE;
 	}
-	if (m_nDioInBit[CH1][0] | DIN_D1_RIGHT_SAFETY_DOOR)
+	if (m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_57);
 		return FALSE;

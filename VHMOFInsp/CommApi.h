@@ -77,6 +77,11 @@ public:
 	BOOL dio_writeDioOutput(int ch, int OutData);
 	BOOL dio_readDioInput(int ch, int bACK=ACK);
 	BOOL dio_writeDioPortOnOff(int ch, int OutBit, int onoff);
+	BOOL dio_LEDOnOff(BOOL bOnOff);
+	BOOL dio_LightCurtainMuteOnOff(BOOL bOnOff);
+	BOOL dio_LeftSafetyDoorOpen();
+	BOOL dio_RightSafetyDoorOpen();
+	BOOL dio_RobotInLEDOnOff(BOOL bOnOff);
 
 	
 

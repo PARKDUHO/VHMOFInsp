@@ -40,6 +40,7 @@
 #define IDD_PANELID                     180
 #define IDD_DEFECT_RESULT               182
 #define IDD_SAFETY_LOCK                 184
+#define IDD_SENSOR_VIEW                 187
 #define IDC_BTN_MA_USERID               1000
 #define IDC_BTN_MA_MODEL_CHANGE         1001
 #define IDC_STT_USER_ID_TITLE           1001
@@ -185,14 +186,14 @@
 #define IDC_STT_MD_PWM_SET_TITLE        1083
 #define IDC_CMB_MF_INIT_SCRIPT          1083
 #define IDC_STT_INI_FILE_MODEL          1084
-#define IDC_EDT_MF_LIMIT_IDD_LOW2       1084
+#define IDC_EDT_MF_PWM_FREQUENCY        1084
 #define IDC_STT_MF_FUNCTION_TITLE       1084
 #define IDC_CMB_MC_MODEL_INCH           1085
 #define IDC_STT_INI_FILE_PATTERN        1085
-#define IDC_EDT_MF_LIMIT_IDD_LOW3       1085
+#define IDC_EDT_MF_PWM_DUTY             1085
 #define IDC_CMB_MF_MAIN_BOARD_LED       1085
 #define IDC_STT_INI_FILE_TITLE          1086
-#define IDC_CMB_MD_SPI_LEVEL2           1086
+#define IDC_CMB_MD_PWM_LEVEL            1086
 #define IDC_CMB_MF_PWR_ON_SEQ_7         1086
 #define IDC_STT_INI_CONN_TITLE          1087
 #define IDC_STT_MD_GPIO_SET_TITLE       1087
@@ -247,14 +248,20 @@
 #define IDC_CMB_MF_PWR_OFF_SEQ_9        1102
 #define IDC_STT_TR_STATUS_MSG           1103
 #define IDC_CMB_MF_PWR_OFF_DELAY_9      1103
+#define IDC_STT_MA_QTY_CH1_OK           1103
 #define IDC_BTN_TR_TEST_START           1104
 #define IDC_CMB_MF_PWR_OFF_SEQ_10       1104
+#define IDC_STT_MA_QTY_CH1_NG           1104
 #define IDC_STT_TP_PATTERN_LIST_TITLE   1105
 #define IDC_CMB_MF_PWR_OFF_DELAY_10     1105
+#define IDC_STT_MA_QTY_CH1_TOTAL_VAL    1105
 #define IDC_LST_TP_PATTERN_LIST         1106
 #define IDC_CMB_MF_PWR_OFF_SEQ_11       1106
+#define IDC_STT_MA_QTY_CH1_OK_VAL       1106
 #define IDC_STT_TP_MEAS_VCC_TITLE       1107
 #define IDC_CMB_MF_PWR_OFF_DELAY_11     1107
+#define IDC_STT_TR_QTY_NG_VALUE2        1107
+#define IDC_STT_MA_QTY_CH1_NG_VAL       1107
 #define IDC_STT_EQP_NAME_VALUE          1108
 #define IDC_STT_TP_MEAS_VCC_VALUE       1108
 #define IDC_CMB_MF_PWR_OFF_SEQ_12       1108
@@ -282,6 +289,7 @@
 #define IDC_STT_TP_GRAY_LEVEL_G_TITLE   1117
 #define IDC_STT_VEL_VALUE               1117
 #define IDC_STT_TP_GRAY_LEVEL_G_VALUE   1118
+#define IDC_STT_MA_QTY_CH2_OK           1118
 #define IDC_STT_STATION_INFO_TIT        1119
 #define IDC_STT_TP_GRAY_LEVEL_B_TITLE   1119
 #define IDC_STT_MODEL_INFO_TIT          1120
@@ -304,6 +312,8 @@
 #define IDC_STT_VOLT_TIT                1128
 #define IDC_BTN_SY_CANCEL               1128
 #define IDC_STT_PW_TITLE                1129
+#define IDC_STT_STATION_INFO_TIT2       1129
+#define IDC_STT_QUANTITY_INFO_TIT       1129
 #define IDC_STT_VCC_TIT                 1130
 #define IDC_EDT_PW_PASSWORD             1130
 #define IDC_STT_VDD_TIT                 1131
@@ -313,14 +323,19 @@
 #define IDC_BTN_PW_CLOSE                1132
 #define IDC_STT_VGL_TIT                 1133
 #define IDC_PIC_PW_IMAGE                1133
+#define IDC_STT_MA_QTY_CH2_NG           1133
 #define IDC_STT_VGH_VALUE               1134
 #define IDC_BTN_MT_CLOSE                1134
+#define IDC_STT_MA_QTY_CH2_TOTAL_VAL    1134
 #define IDC_STT_VGL_VALUE               1135
 #define IDC_STT_AF_TITLE                1135
+#define IDC_STT_MA_QTY_CH2_OK_VAL       1135
 #define IDC_STT_VBL_TIT                 1136
 #define IDC_STT_AF_FILE_PATH            1136
+#define IDC_STT_MA_QTY_CH2_NG_VAL       1136
 #define IDC_STT_VBL_VALUE               1137
 #define IDC_EDT_AF_FILE_PATH            1137
+#define IDC_STT_SENSOR_INFO_TIT         1137
 #define IDC_STT_FW_VERSION_TIT          1138
 #define IDC_BTN_AF_FILE_OPEN            1138
 #define IDC_STT_MAIN_APP_TIT            1139
@@ -359,10 +374,14 @@
 #define IDC_TAB_MT_MAINTENANCE          1152
 #define IDC_STT_CONNECT_DIO2            1152
 #define IDC_LST_MO_DIO1_IN              1153
+#define IDC_STT_DIO_CONTROL_TIT         1153
 #define IDC_LST_MO_DIO1_OUT             1154
+#define IDC_STT_MAIN_SPI_VER_TIT        1154
 #define IDC_LST_MO_DIO2_IN              1155
+#define IDC_STT_MAIN_SPI_VER_VALUE      1155
 #define IDC_STT_SY_STATION_TIT          1156
 #define IDC_LST_MO_DIO2_OUT             1156
+#define IDC_STT_TACTTIME_INFO_TIT       1156
 #define IDC_BTN_MO_WRITE_DIO1           1157
 #define IDC_STT_SY_MES_TIT              1158
 #define IDC_BTN_MO_WRITE_DIO2           1158
@@ -404,11 +423,46 @@
 #define IDC_CMB_MP_SPI_CH               1187
 #define IDC_EDT_MP_MEAS_VCC             1188
 #define IDC_EDT_MP_MEAS_VIN             1189
+#define IDC_BTN_MI_MODIFY               1189
 #define IDC_EDT_MP_MEAS_VSYS            1190
+#define IDC_BTN_DIO_CTRL_LED_OFF        1190
 #define IDC_EDT_MP_MEAS_ICC             1191
+#define IDC_BTN_DIO_CTRL_LED_ON         1191
 #define IDC_EDT_MP_MEAS_IIN             1192
-#define IDC_EDT_MP_MEAS_VSYS2           1193
+#define IDC_STT_MA_QTY_TOTAL_TITLE      1192
 #define IDC_EDT_MP_MEAS_ISYS            1193
+#define IDC_STT_MA_QTY_CH1_TOTAL        1193
+#define IDC_STT_MA_QTY_TOTAL_VALUE      1194
+#define IDC_STT_MA_QTY_OK_TITLE         1195
+#define IDC_STT_MA_QTY_OK_VALUE         1196
+#define IDC_STT_MA_QTY_NG_TITLE         1197
+#define IDC_STT_MA_QTY_NG_VALUE         1198
+#define IDC_STT_MA_QTY_RESET            1199
+#define IDC_STT_MA_QTY_CH2_TOTAL        1200
+#define IDC_STT_SL_ALARM_LIST           1200
+#define IDC_STT_MA_QTY_RESET_CH1        1201
+#define IDC_STT_MA_QTY_RESET_CH2        1202
+#define IDC_LST_SV_ERROR_LIST           1202
+#define IDC_BTN_SV_EXIT                 1203
+#define IDC_BTN_DIO_CTRL_MUTE_ON        1203
+#define IDC_STT_SV_LEFT_SAFETY_DOOR     1204
+#define IDC_BTN_DIO_CTRL_MUTE_OFF       1204
+#define IDC_STT_SV_RIGHT_SAFETY_DOOR    1205
+#define IDC_BTN_DIO_CTRL_DOOR_OPEN      1205
+#define IDC_STT_SV_IONIZER              1206
+#define IDC_STT_SV_EMO                  1207
+#define IDC_STT_SV_LIGHT_CURTAIN        1208
+#define IDC_STT_SV_FAN_IN               1209
+#define IDC_STT_SV_FAN_OUT              1210
+#define IDC_STT_SV_TEMPATURE            1211
+#define IDC_STT_SV_MAIN_AIR             1212
+#define IDC_STT_SV_JIG_AIR              1213
+#define IDC_STT_SV_CYLINDER_AIR         1214
+#define IDC_STT_SV_ION_AIR              1215
+#define IDC_BTN_SV_RESET                1216
+#define IDC_BTN_SV_LEFT_DOOR_OPEN       1217
+#define IDC_BTN_SV_LEFT_DOOR_OPEN2      1218
+#define IDC_BTN_SV_RIGHT_DOOR_OPEN      1218
 #define IDC_STT_MC_MODEL_INCH_TITLE     1230
 #define IDC_BTN_MC_ALL_MODEL            1231
 #define IDC_STT_MC_DRIVE_PATH           1232
@@ -526,14 +580,15 @@
 #define IDC_STT_SL_NAME                 1585
 #define IDC_STT_SL_BOTTOM2              1586
 #define IDC_BTN_SL_OK                   1587
+#define IDC_BTN_SL_SENSOR_VIEW          1588
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        187
+#define _APS_NEXT_RESOURCE_VALUE        189
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1189
+#define _APS_NEXT_CONTROL_VALUE         1222
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

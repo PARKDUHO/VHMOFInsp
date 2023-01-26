@@ -40,15 +40,16 @@ protected:
 // 사용자 정의 Function
 ///////////////////////////////////////////////////////////////////////////
 public:
-	void Lf_InitLocalValue();
-	void Lf_InitFontset();
-	void Lf_InitColorBrush();
-
 	void Gf_DataSaveModelData(CString modelName);
+	void Gf_controlEnableDisable(BOOL bEnable);
 
 protected:
 	LPMODELINFO		lpModelInfo;
 	LPSYSTEMINFO	lpSystemInfo;
+
+	void Lf_InitLocalValue();
+	void Lf_InitFontset();
+	void Lf_InitColorBrush();
 
 	void Lf_loadPatternListToCombo();
 

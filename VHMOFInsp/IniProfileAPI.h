@@ -174,12 +174,23 @@ static void Read_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, int *pRetValue)
 	wchar_t wszData[100] = {0,};
 	char szData[50] = {0,};
 
-
 	*pRetValue = 0;
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\Operation.ini"));        
 
 	wchar_To_char(wszData, szData);
 	*pRetValue = atoi(szData);
+}
+
+static void Read_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, BYTE* pRetValue)
+{
+	wchar_t wszData[100] = { 0, };
+	char szData[50] = { 0, };
+
+	*pRetValue = 0;
+	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\Operation.ini"));
+
+	wchar_To_char(wszData, szData);
+	*pRetValue = (BYTE)atoi(szData);
 }
 
 static void Read_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, CString *szRetString)

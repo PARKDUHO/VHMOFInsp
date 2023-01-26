@@ -81,4 +81,5 @@ public:
 	afx_msg void OnBnClickedBtnMiSaveExit();
 	afx_msg void OnBnClickedBtnMiCancel();
 	afx_msg void OnBnClickedBtnMiFusing();
+	afx_msg void OnBnClickedBtnMiModify();
 };

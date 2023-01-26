@@ -228,6 +228,7 @@ HBRUSH CModelInfoFusing::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MF_POWER_LIMIT_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MF_SIGNAL_INFO_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MF_TIMING_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MF_FUNCTION_TITLE)
 				)
 			{
 				pDC->SetBkColor(COLOR_BLACK);
@@ -385,6 +386,8 @@ void CModelInfoFusing::Lf_InitLocalValue()
 	m_edtMfLimitIelHigh.SetLimitText(4);
 	m_edtMfLimitIddLow.SetLimitText(4);
 	m_edtMfLimitIddHigh.SetLimitText(4);
+
+	Gf_controlEnableDisable(FALSE);
 }
 
 void CModelInfoFusing::Lf_InitFontset()
@@ -582,6 +585,98 @@ void CModelInfoFusing::Lf_InitDialogControl()
 	m_edtMfTimingVerFrontPorch.SetWindowText(sdata);
 
 	m_cmbMfMainBoardLED.SetCurSel(lpModelInfo->m_nMainBoardLED);
+}
+
+void CModelInfoFusing::Gf_controlEnableDisable(BOOL bEnable)
+{
+	GetDlgItem(IDC_EDT_MF_VCC)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_VCC_OFFSET)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_VEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_VEL_OFFSET)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_VDD)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_VDD_OFFSET)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_VCC_LOW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_VCC_HIGH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_VEL_LOW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_VEL_HIGH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_VDD_LOW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_VDD_HIGH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_ICC_LOW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_ICC_HIGH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_IEL_LOW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_IEL_HIGH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_IDD_LOW)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_LIMIT_IDD_HIGH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_SIGNAL_TYPE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_SIGNAL_PIXEL)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_SIGNAL_BIT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_SIGNAL_ROTATE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_SIGNAL_BIT_SELECT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_SIGNAL_FRS_MODE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_SIGNAL_CLOCK_DELAY)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_INIT_SCRIPT)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_FREQ)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_HOR_ACTIVE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_HOR_WIDTH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_HOR_BP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_HOR_FP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_VER_ACTIVE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_VER_WIDTH)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_VER_BP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_EDT_MF_TIMING_VER_FP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_3)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_4)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_5)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_6)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_7)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_8)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_9)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_10)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_11)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_12)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_SEQ_13)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_3)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_4)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_5)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_6)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_7)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_8)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_9)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_10)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_11)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_12)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_ON_DELAY_13)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_3)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_4)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_5)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_6)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_7)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_8)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_9)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_10)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_11)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_12)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_SEQ_13)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_3)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_4)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_5)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_6)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_7)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_8)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_9)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_10)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_11)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_12)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_PWR_OFF_DELAY_13)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MF_MAIN_BOARD_LED)->EnableWindow(bEnable);
 }
 
 void CModelInfoFusing::Lf_calcHorResolution()

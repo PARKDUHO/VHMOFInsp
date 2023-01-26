@@ -17,13 +17,13 @@
 #define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_TCP_RECEIVE_OK			0
+#define DEBUG_TCP_RECEIVE_OK			1
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_TCP_COMM_LOG				0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_DIO_SKIP					0
 #define DEBUG_PG1_TEST_ONLY				1
-#define DEBUG_DIO_ALARM					1
+#define DEBUG_DIO_ALARM_DISABLE			1
 
 /////////////////////////////////////////////////////////////////////////////
 #define TCP_MAIN1_MCU_IP				_T("192.168.1.14")	// 13
@@ -176,7 +176,7 @@
 #define	DOUT_D1_IONIZER_ON_OFF						0x020000
 #define	DOUT_D1_LED_ON_OFF							0x040000
 #define	DOUT_D1_SPARE0								0x080000
-#define	DOUT_D1_SPARE1								0x100000
+#define	DOUT_D1_ROBOT_IN_LED						0x100000
 #define	DOUT_D1_SPARE2								0x200000
 #define	DOUT_D1_SPARE3								0x400000
 #define	DOUT_D1_SPARE4								0x800000
@@ -589,6 +589,7 @@ typedef enum _COLOR_IDX_{
 
 
 #define	WM_UPDATE_SYSTEM_INFO					(WM_USER+102)
+#define WM_UPDATE_QUANTITY_INFO					(WM_USER+103)
 
 enum
 {

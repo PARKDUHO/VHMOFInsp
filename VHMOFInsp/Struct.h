@@ -160,8 +160,12 @@ typedef struct _ST_SYSTEMINFO_{
 	CString m_sEqpName;					// EQP NAME
 
 	CString	m_sLastModelName;			// 마지막 M/C 모델명
-	int		m_nQuantityOK;
-	int		m_nQuantityNG;
+	int		m_nQuantityOKTotal;
+	int		m_nQuantityNGTotal;
+	int		m_nQuantityOKCh1;
+	int		m_nQuantityNGCh1;
+	int		m_nQuantityOKCh2;
+	int		m_nQuantityNGCh2;
 
 	// MES 정보 설정 //
 	CString m_sMesServicePort;

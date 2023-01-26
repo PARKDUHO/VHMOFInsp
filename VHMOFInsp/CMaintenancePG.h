@@ -38,6 +38,8 @@ protected:
 
 	void Lf_loadPatternListToCombo();
 
+	BOOL Lf_updateMaintPowerMeasureInfo();
+
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

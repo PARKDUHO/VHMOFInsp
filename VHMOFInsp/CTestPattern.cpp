@@ -562,9 +562,11 @@ BOOL CTestPattern::Lf_updateMeasureInfo()
 		GetDlgItem(IDC_STT_TP_MEAS_VEL_VALUE)->SetWindowText(sdata);
 		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVDD[m_nTargetCh] / 1000.f));
 		GetDlgItem(IDC_STT_TP_MEAS_VDD_VALUE)->SetWindowText(sdata);
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureICC[m_nTargetCh] / 1000.f));
+		sdata.Format(_T("%d"), lpInspWorkInfo->m_nMeasureICC[m_nTargetCh]);
 		GetDlgItem(IDC_STT_TP_MEAS_ICC_VALUE)->SetWindowText(sdata);
-		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureIDD[m_nTargetCh] / 1000.f));
+		sdata.Format(_T("%d"), lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh]);
+		GetDlgItem(IDC_STT_TP_MEAS_IEL_VALUE)->SetWindowText(sdata);
+		sdata.Format(_T("%d"), lpInspWorkInfo->m_nMeasureIDD[m_nTargetCh]);
 		GetDlgItem(IDC_STT_TP_MEAS_IDD_VALUE)->SetWindowText(sdata);
 	}
 	return TRUE;

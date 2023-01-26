@@ -173,7 +173,10 @@ void CMaintenancePG::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 	if (nIDEvent == 1)
 	{
+		KillTimer(1);
 
+
+		SetTimer(1, 1000, NULL);
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -394,4 +397,84 @@ void CMaintenancePG::Lf_loadPatternListToCombo()
 	m_cmbMpPatternList.SetCurSel(0);
 }
 
+BOOL CMaintenancePG::Lf_updateMaintPowerMeasureInfo()
+{
+	int m_nTargetCh;
+	CString sdata = _T("");
+	CString strPacket;
+
+	if (DEBUG_TCP_RECEIVE_OK == 1)
+		return TRUE;
+
+	m_nTargetCh = m_cmbMpPatternCh.GetCurSel();
+	if (m_pApp->commApi->main_getMeasurePowerAll(m_nTargetCh) == TRUE)
+	{
+		if (lpInspWorkInfo->m_nMeasureErrName[m_nTargetCh] != 0)
+		{
+			CString strSection, strErrMsg, strValue;
+			if (lpInspWorkInfo->m_nMeasureErrName[m_nTargetCh] == 5)
+			{
+				strSection.Format(_T("POWER ALARM"));
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_14);
+			}
+			else
+			{
+				int errName, errCh;
+				errName = lpInspWorkInfo->m_nMeasureErrName[m_nTargetCh];
+				errCh = lpInspWorkInfo->m_nMeasureErrCh[m_nTargetCh];
+				strSection.Format(_T("POWER LIMIT ALARM"));
+
+				// VCC, I_VCC Limit Error
+				if ((errName == 1) || (errName == 2))
+					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVccLow, lpModelInfo->m_fLimitVccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
+				else if ((errName == 3) || (errName == 4))
+					strValue.Format(_T("Setting[%dmA ~ %dmA]  Measure[%dmA]"), lpModelInfo->m_nLimitIccLow, lpModelInfo->m_nLimitIccHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh]);
+
+				if ((errCh == 1) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_2, strValue);
+				if ((errCh == 1) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_3, strValue);
+				if ((errCh == 1) && (errName == 3))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_4, strValue);
+				if ((errCh == 1) && (errName == 4))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_5, strValue);
+
+
+				// VIN, I_VIN Limit Error
+				if ((errName == 1) || (errName == 2))
+					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVelLow, lpModelInfo->m_fLimitVelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
+				else if ((errName == 3) || (errName == 4))
+					strValue.Format(_T("Setting[%dmA ~ %dmA]  Measure[%dmA]"), lpModelInfo->m_nLimitIelLow, lpModelInfo->m_nLimitIelHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh]);
+
+				if ((errCh == 2) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_6, strValue);
+				if ((errCh == 2) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_7, strValue);
+				if ((errCh == 2) && (errName == 3))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_8, strValue);
+				if ((errCh == 2) && (errName == 4))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_9, strValue);
+
+
+				// VDD, I_VDD Limit Error
+				if ((errName == 1) || (errName == 2))
+					strValue.Format(_T("Setting[%.2fV ~ %.2fV]  Measure[%.2fV]"), lpModelInfo->m_fLimitVddLow, lpModelInfo->m_fLimitVddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh] / 1000.0);
+				else if ((errName == 3) || (errName == 4))
+					strValue.Format(_T("Setting[%dmA ~ %dmA]  Measure[%dmA]"), lpModelInfo->m_nLimitIddLow, lpModelInfo->m_nLimitIddHigh, lpInspWorkInfo->m_nMeasureErrValue[m_nTargetCh]);
+
+				if ((errCh == 3) && (errName == 1))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_10, strValue);
+				if ((errCh == 3) && (errName == 2))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_11, strValue);
+				if ((errCh == 3) && (errName == 3))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_12, strValue);
+				if ((errCh == 3) && (errName == 4))	m_pApp->Gf_ShowMessageBox(MSG_ERROR, strSection, ERROR_CODE_13, strValue);
+			}
+
+			return FALSE;
+		}
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVCC[m_nTargetCh] / 1000.f));
+		GetDlgItem(IDC_EDT_MP_MEAS_VCC)->SetWindowText(sdata);
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVEL[m_nTargetCh] / 1000.f));
+		GetDlgItem(IDC_EDT_MP_MEAS_VIN)->SetWindowText(sdata);
+		sdata.Format(_T("%.2f"), (float)(lpInspWorkInfo->m_nMeasureVDD[m_nTargetCh] / 1000.f));
+		GetDlgItem(IDC_EDT_MP_MEAS_VSYS)->SetWindowText(sdata);
+		sdata.Format(_T("%d"), lpInspWorkInfo->m_nMeasureICC[m_nTargetCh]);
+		GetDlgItem(IDC_EDT_MP_MEAS_ICC)->SetWindowText(sdata);
+		sdata.Format(_T("%d"), lpInspWorkInfo->m_nMeasureIEL[m_nTargetCh]);
+		GetDlgItem(IDC_EDT_MP_MEAS_IIN)->SetWindowText(sdata);
+		sdata.Format(_T("%d"), lpInspWorkInfo->m_nMeasureIDD[m_nTargetCh]);
+		GetDlgItem(IDC_EDT_MP_MEAS_ISYS)->SetWindowText(sdata);
+	}
+	return TRUE;
+}
 

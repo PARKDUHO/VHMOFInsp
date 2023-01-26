@@ -18,6 +18,7 @@
 #include "CAutoFirmware.h"
 #include "CPassword.h"
 #include "CSafetyLock.h"
+#include "CMessageQuestion.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -108,6 +109,7 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_TIMER()
 	ON_MESSAGE(WM_UPDATE_SYSTEM_INFO, OnUpdateSystemInfo)
+	ON_MESSAGE(WM_UPDATE_QUANTITY_INFO, OnUpdateQuantity)
 	ON_MESSAGE(WM_UDP_DIO_RECEIVE, OnUdpReceiveDio)
 	ON_BN_CLICKED(IDC_BTN_MA_USERID, &CVHMOFInspDlg::OnBnClickedBtnMaUserid)
 	ON_BN_CLICKED(IDC_BTN_MA_MODEL_CHANGE, &CVHMOFInspDlg::OnBnClickedBtnMaModelChange)
@@ -118,6 +120,14 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_MA_INITIAL, &CVHMOFInspDlg::OnBnClickedBtnMaInitial)
 	ON_BN_CLICKED(IDC_BTN_MA_FIRMWARE, &CVHMOFInspDlg::OnBnClickedBtnMaFirmware)
 	ON_BN_CLICKED(IDC_BTN_MA_EXIT, &CVHMOFInspDlg::OnBnClickedBtnMaExit)
+	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_LED_OFF, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOff)
+	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_LED_ON, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOn)
+	ON_STN_CLICKED(IDC_STT_MA_QTY_RESET, &CVHMOFInspDlg::OnStnClickedSttMaQtyReset)
+	ON_STN_CLICKED(IDC_STT_MA_QTY_RESET_CH1, &CVHMOFInspDlg::OnStnClickedSttMaQtyResetCh1)
+	ON_STN_CLICKED(IDC_STT_MA_QTY_RESET_CH2, &CVHMOFInspDlg::OnStnClickedSttMaQtyResetCh2)
+	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_MUTE_OFF, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOff)
+	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_MUTE_ON, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOn)
+	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_DOOR_OPEN, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlDoorOpen)
 END_MESSAGE_MAP()
 
 
@@ -177,6 +187,8 @@ BOOL CVHMOFInspDlg::OnInitDialog()
 	Lf_InitItemValue();
 	Lf_InitFontSet();
 	Lf_InitColorBrush();
+
+	Lf_updateMaQuantityCount();
 
 	ShowWindow(SW_MAXIMIZE);
 
@@ -380,6 +392,10 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MODEL_INFO_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_FW_VERSION_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_INFO_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_DIO_CONTROL_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_QUANTITY_INFO_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_SENSOR_INFO_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_TACTTIME_INFO_TIT)
 				)
 			{
 				pDC->SetBkColor(COLOR_DEEP_BLUE);
@@ -398,6 +414,7 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_VALUE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_SPI_VER_VALUE)
 				)
 			{
 				pDC->SetBkColor(COLOR_WHITE);
@@ -414,6 +431,16 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VOLT_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_SPI_VER_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_TOTAL_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_OK_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_NG_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_TOTAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_OK)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_NG)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_TOTAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_OK)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_NG)
 				)
 			{
 				pDC->SetBkColor(COLOR_LIGHT_YELLOW);
@@ -570,6 +597,42 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 					return m_Brush[COLOR_IDX_RED128];
 				}
 			}
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_RESET)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_RESET_CH1)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_RESET_CH2)
+				)
+			{
+				pDC->SetBkColor(COLOR_ORANGE);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_ORANGE];
+			}
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_TOTAL_VALUE)
+			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_TOTAL_VAL)
+			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_TOTAL_VAL)
+				)
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_OK_VALUE)
+			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_OK_VAL)
+			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_OK_VAL)
+				)
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_GREEN);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_NG_VALUE)
+			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_NG_VAL)
+			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_NG_VAL)
+				)
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_RED);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
 			break;
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -600,16 +663,10 @@ void CVHMOFInspDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(2);
 
-		//if (m_pApp->commApi->dio_readDioInput(CH1, NACK) == TRUE)
-		{
-			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
-			Lf_checkExtAlarmDio1();
-		}
-		//if (m_pApp->commApi->dio_readDioInput(CH2, NACK) == TRUE)
-		{
-			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
-			Lf_checkExtAlarmDio2();
-		}
+		Lf_checkExtAlarmDio1();
+		Lf_checkExtAlarmDio2();
+
+		Lf_updateSensorInfo();
 
 		SetTimer(2, 500, NULL);
 	}
@@ -624,13 +681,16 @@ LRESULT CVHMOFInspDlg::OnUpdateSystemInfo(WPARAM wParam, LPARAM lParam)
 	return (0);
 }
 
+LRESULT CVHMOFInspDlg::OnUpdateQuantity(WPARAM wParam, LPARAM lParam)
+{
+	Lf_updateMaQuantityCount();
+
+	return (0);
+}
+
 void CVHMOFInspDlg::OnBnClickedBtnMaUserid()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	CSafetyLock dlg;
-//	dlg.DoModal();
-//	return;
-
 	CUserID userid_dlg;
 	userid_dlg.DoModal();
 
@@ -642,10 +702,14 @@ void CVHMOFInspDlg::OnBnClickedBtnMaUserid()
 void CVHMOFInspDlg::OnBnClickedBtnMaModelChange()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CModelChange mc_dlg;
-	mc_dlg.DoModal();
+	CPassword passwor_dlg;
+	if (passwor_dlg.DoModal() == IDOK)
+	{
+		CModelChange mc_dlg;
+		mc_dlg.DoModal();
 
-	Lf_updateSystemInfo();
+		Lf_updateSystemInfo();
+	}
 	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
@@ -678,14 +742,17 @@ void CVHMOFInspDlg::OnBnClickedBtnMaTest()
 void CVHMOFInspDlg::OnBnClickedBtnMaMaint()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	if (m_pApp->Lf_checkDoorOpenInterLock() == FALSE)
+	CPassword passwor_dlg;
+	if (passwor_dlg.DoModal() == IDOK)
 	{
-		return;
+		if (m_pApp->Lf_checkDoorOpenInterLock() == FALSE)
+		{
+			return;
+		}
+
+		CMaintenance maint_dlg;
+		maint_dlg.DoModal();
 	}
-
-	CMaintenance maint_dlg;
-	maint_dlg.DoModal();
-
 	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
@@ -708,8 +775,15 @@ void CVHMOFInspDlg::OnBnClickedBtnMaSystem()
 void CVHMOFInspDlg::OnBnClickedBtnMaInitial()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CInitialize init_dlg;
-	init_dlg.DoModal();
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want system initialize?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		CInitialize init_dlg;
+		init_dlg.DoModal();
+	}
 
 	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
@@ -718,9 +792,12 @@ void CVHMOFInspDlg::OnBnClickedBtnMaInitial()
 void CVHMOFInspDlg::OnBnClickedBtnMaFirmware()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CAutoFirmware firmware_dlg;
-	firmware_dlg.DoModal();
-
+	CPassword passwor_dlg;
+	if (passwor_dlg.DoModal() == IDOK)
+	{
+		CAutoFirmware firmware_dlg;
+		firmware_dlg.DoModal();
+	}
 	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
@@ -728,10 +805,112 @@ void CVHMOFInspDlg::OnBnClickedBtnMaFirmware()
 void CVHMOFInspDlg::OnBnClickedBtnMaExit()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->Gf_SoftwareEndLog();
-	::SendMessage(this->m_hWnd, WM_CLOSE, NULL, NULL);
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want program EXIT?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		m_pApp->Gf_SoftwareEndLog();
+		::SendMessage(this->m_hWnd, WM_CLOSE, NULL, NULL);
+	}
+	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
+
+void CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LEDOnOff(OFF);
+}
+
+
+void CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LEDOnOff(ON);
+}
+
+
+void CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LightCurtainMuteOnOff(OFF);
+}
+
+
+void CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LightCurtainMuteOnOff(ON);
+}
+
+
+void CVHMOFInspDlg::OnBnClickedBtnDioCtrlDoorOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_pApp->m_bSafetyDlgOpen == FALSE)
+	{
+		CSafetyLock safety_dlg;
+		safety_dlg.DoModal();
+	}
+}
+
+
+void CVHMOFInspDlg::OnStnClickedSttMaQtyReset()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count (ALL)?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		CString sLog;
+		sLog.Format(_T("<QTY> Quentity Count Reset."));
+		m_pApp->Gf_writeMLog(sLog);
+
+		m_pApp->Gf_QtyCountReset(MAX_CH);
+		Lf_updateMaQuantityCount();
+	}
+}
+
+void CVHMOFInspDlg::OnStnClickedSttMaQtyResetCh1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count (CH-1)?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		CString sLog;
+		sLog.Format(_T("<QTY> Quentity Count Reset."));
+		m_pApp->Gf_writeMLog(sLog);
+
+		m_pApp->Gf_QtyCountReset(CH1);
+		Lf_updateMaQuantityCount();
+	}
+}
+
+
+void CVHMOFInspDlg::OnStnClickedSttMaQtyResetCh2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count (CH-2)?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		CString sLog;
+		sLog.Format(_T("<QTY> Quentity Count Reset."));
+		m_pApp->Gf_writeMLog(sLog);
+
+		m_pApp->Gf_QtyCountReset(CH2);
+		Lf_updateMaQuantityCount();
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -772,6 +951,9 @@ void CVHMOFInspDlg::Lf_InitProgramTitle()
 
 void CVHMOFInspDlg::Lf_InitItemValue()
 {
+	m_bRobotInLedStatus = FALSE;
+
+
 	m_btnMainUserID.LoadBitmaps(IDB_BMP_USER, IDB_BMP_USER, IDB_BMP_USER, IDB_BMP_USER);
 	m_btnMainUserID.SizeToContent();
 	m_btnMainModelChange.LoadBitmaps(IDB_BMP_MODEL_CHANGE, IDB_BMP_MODEL_CHANGE, IDB_BMP_MODEL_CHANGE, IDB_BMP_MODEL_CHANGE);
@@ -812,6 +994,10 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_MODEL_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_FW_VERSION_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_CONNECT_INFO_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_DIO_CONTROL_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_QUANTITY_INFO_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_SENSOR_INFO_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_TACTTIME_INFO_TIT)->SetFont(&m_Font[3]);
 
 	//mFontH1[3].CreateFont(21, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _DIALOG_FONT_);
 	m_Font[4].CreateFont(21, 7, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -841,7 +1027,24 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_MAIN_FPGA_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MAIN_SPI_VER_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MAIN_SPI_VER_VALUE)->SetFont(&m_Font[4]);
 
+	GetDlgItem(IDC_BTN_DIO_CTRL_LED_OFF)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_DIO_CTRL_LED_ON)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_DIO_CTRL_MUTE_OFF)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_DIO_CTRL_MUTE_ON)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_BTN_DIO_CTRL_DOOR_OPEN)->SetFont(&m_Font[4]);
+
+	GetDlgItem(IDC_STT_MA_QTY_TOTAL_TITLE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_TOTAL_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_OK_TITLE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_OK_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_NG_TITLE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_NG_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_RESET)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_RESET_CH1)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_MA_QTY_RESET_CH2)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(18, 6, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_STT_CONNECT_MES)->SetFont(&m_Font[5]);
@@ -854,12 +1057,26 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_CONNECT_DIO1)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_STT_CONNECT_DIO2)->SetFont(&m_Font[5]);
 
+	GetDlgItem(IDC_STT_MA_QTY_CH1_TOTAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_TOTAL_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_OK)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_OK_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_NG)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_NG_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_TOTAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_TOTAL_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_OK)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_OK_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_NG)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_NG_VAL)->SetFont(&m_Font[5]);
+
 }
 
 void CVHMOFInspDlg::Lf_InitColorBrush()
 {
 	/*************************************************************************************************/
 	// Brush Set
+	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush(COLOR_WHITE);
 	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush(COLOR_RED);
@@ -867,12 +1084,12 @@ void CVHMOFInspDlg::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
 	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
 	m_Brush[COLOR_IDX_BLUE].CreateSolidBrush(COLOR_BLUE);
+	m_Brush[COLOR_IDX_BLUE128].CreateSolidBrush(COLOR_BLUE128);
 	m_Brush[COLOR_IDX_GRAY64].CreateSolidBrush(COLOR_GRAY64);
 	m_Brush[COLOR_IDX_GRAY94].CreateSolidBrush(COLOR_GRAY94);
 	m_Brush[COLOR_IDX_LIGHT_GREEN].CreateSolidBrush(COLOR_LIGHT_GREEN);
 	m_Brush[COLOR_IDX_GRAY192].CreateSolidBrush(COLOR_GRAY192);
 	m_Brush[COLOR_IDX_GRAY224].CreateSolidBrush(COLOR_GRAY224);
-	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush(COLOR_WHITE);
 	m_Brush[COLOR_IDX_CYAN].CreateSolidBrush(COLOR_CYAN);
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
 	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
@@ -918,6 +1135,7 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(_T(""));
 	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_MAIN_SPI_VER_VALUE)->SetWindowText(_T(""));
 
 	// Firmware Version
 	int npos = 0;
@@ -955,70 +1173,134 @@ void CVHMOFInspDlg::Lf_openToDayMLog()
 
 void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 {
-	CString alarmMsg = _T("");
+	BOOL lightAlarm = FALSE;
+	BOOL heavyAlarm = FALSE;
 	CString strKey, strErr;
 
-	if (DEBUG_DIO_ALARM == 1)
+	if (DEBUG_DIO_ALARM_DISABLE == 1)
 		return;
 
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_EMO_SWITCH)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_38);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_38, strErr);
+		heavyAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LIGHT_CURTAIN)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_39);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_39, strErr);
+		heavyAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_40);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_40, strErr);
+		heavyAlarm = TRUE;
+
+		// Safefy Door가 Open되면 Lock을 건다.
+		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LEFT_SAFETY_DOOR_OPEN, OFF);
 	}
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_41);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_41, strErr);
+		heavyAlarm = TRUE;
+
+		// Safefy Door가 Open되면 Lock을 건다.
+		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_RIGHT_SAFETY_DOOR_OPEN, OFF);
 	}
-	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_FAN_IN_ALARM)
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_IN_ALARM) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_42);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_42, strErr);
+		lightAlarm = TRUE;
 	}
-	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_FAN_OUT_ALARM)
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_OUT_ALARM) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_43);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_43, strErr);
+		lightAlarm = TRUE;
 	}
-	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_TEMPATURE_HIGH_ALARM)
+	if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_TEMPATURE_HIGH_ALARM)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_44);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_44, strErr);
+		heavyAlarm = TRUE;
 	}
-	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_IONIZER_ALARM)
+	if (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_ALARM)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_45);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_45, strErr);
+		heavyAlarm = TRUE;
 	}
-	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_IONIZER_SPARE)
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_MAIN_AIR_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_46);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		alarmMsg.Append(strErr + _T("\r\n"));
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_46, strErr);
+		heavyAlarm = TRUE;
+	}
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_IONIZER_AIR_DIGITAL_PRESSURE_GAGE) == 0)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_47);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_47, strErr);
+		heavyAlarm = TRUE;
+	}
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE) == 0)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_48);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_48, strErr);
+		heavyAlarm = TRUE;
+	}
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_JIG_DIGITAL_PRESSURE_GAGE) == 0)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_49);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		m_pApp->Gf_writeAlarmLog(ERROR_CODE_49, strErr);
+		heavyAlarm = TRUE;
 	}
 
-	if (alarmMsg.GetLength() != 0)
+	// Heavy Alarm 발생 시 DIO 출력 중지시킨다.
+	if (heavyAlarm == TRUE)
 	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("DIO INPUT ALARM"), -1, alarmMsg);
+		int DOut;
+
+		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
+		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
+		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
+
+		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+		DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
+		DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
+		DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
+		DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
+		DOut &= ~DOUT_D1_JIG_TILTING01_UP;
+		DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
+		DOut &= ~DOUT_D1_JIG_TILTING02_UP;
+		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+
+		m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
+	}
+
+	if ((lightAlarm == TRUE) || (heavyAlarm == TRUE))
+	{
+		if (m_pApp->m_bSafetyDlgOpen == FALSE)
+		{
+			CSafetyLock dlg;
+			dlg.DoModal();
+		}
 	}
 }
 
@@ -1026,3 +1308,77 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio2()
 {
 
 }
+
+
+void CVHMOFInspDlg::Lf_updateSensorInfo()
+{
+	if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1) || (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2))
+	{
+		if (m_bRobotInLedStatus == FALSE)
+		{
+			m_pApp->commApi->dio_RobotInLEDOnOff(TRUE);
+			m_bRobotInLedStatus = TRUE;
+		}
+	}
+	else
+	{
+		if (m_bRobotInLedStatus == TRUE)
+		{
+			m_pApp->commApi->dio_RobotInLEDOnOff(FALSE);
+			m_bRobotInLedStatus = FALSE;
+		}
+	}
+
+}
+
+
+void CVHMOFInspDlg::Lf_updateMaQuantityCount()
+{
+	CString sdata = _T("");
+
+	sdata.Format(_T("%d"), (lpSystemInfo->m_nQuantityOKTotal + lpSystemInfo->m_nQuantityNGTotal));
+	GetDlgItem(IDC_STT_MA_QTY_TOTAL_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOKTotal);
+	GetDlgItem(IDC_STT_MA_QTY_OK_VALUE)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityNGTotal);
+	GetDlgItem(IDC_STT_MA_QTY_NG_VALUE)->SetWindowText(sdata);
+
+
+	sdata.Format(_T("%d"), (lpSystemInfo->m_nQuantityOKCh1 + lpSystemInfo->m_nQuantityNGCh1));
+	GetDlgItem(IDC_STT_MA_QTY_CH1_TOTAL_VAL)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOKCh1);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_OK_VAL)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityNGCh1);
+	GetDlgItem(IDC_STT_MA_QTY_CH1_NG_VAL)->SetWindowText(sdata);
+
+
+	sdata.Format(_T("%d"), (lpSystemInfo->m_nQuantityOKCh2 + lpSystemInfo->m_nQuantityNGCh2));
+	GetDlgItem(IDC_STT_MA_QTY_CH2_TOTAL_VAL)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOKCh2);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_OK_VAL)->SetWindowText(sdata);
+
+	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityNGCh2);
+	GetDlgItem(IDC_STT_MA_QTY_CH2_NG_VAL)->SetWindowText(sdata);
+
+	sdata.Format(_T("<QTY> Quantity Count.   TOTAL(%d), OK(%d), NG(%d)   TOTAL_CH1(%d), OK_CH1(%d), NG_CH1(%d)   TOTAL_CH2(%d), OK_CH2(%d), NG_CH2(%d)")
+		, lpSystemInfo->m_nQuantityOKTotal + lpSystemInfo->m_nQuantityNGTotal
+		, lpSystemInfo->m_nQuantityOKTotal
+		, lpSystemInfo->m_nQuantityNGTotal
+		, lpSystemInfo->m_nQuantityOKCh1 + lpSystemInfo->m_nQuantityNGCh1
+		, lpSystemInfo->m_nQuantityOKCh1
+		, lpSystemInfo->m_nQuantityNGCh1
+		, lpSystemInfo->m_nQuantityOKCh2 + lpSystemInfo->m_nQuantityNGCh2
+		, lpSystemInfo->m_nQuantityOKCh2
+		, lpSystemInfo->m_nQuantityNGCh2
+	);
+	m_pApp->Gf_writeMLog(sdata);
+}
+
+
+
+

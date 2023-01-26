@@ -201,6 +201,7 @@
     <ClInclude Include="CPanelID.h" />
     <ClInclude Include="CPassword.h" />
     <ClInclude Include="CSafetyLock.h" />
+    <ClInclude Include="CSensorView.h" />
     <ClInclude Include="CSystem.h" />
     <ClInclude Include="CTestPattern.h" />
     <ClInclude Include="CTestReady.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="CPanelID.cpp" />
     <ClCompile Include="CPassword.cpp" />
     <ClCompile Include="CSafetyLock.cpp" />
+    <ClCompile Include="CSensorView.cpp" />
     <ClCompile Include="CSystem.cpp" />
     <ClCompile Include="CTestPattern.cpp" />
     <ClCompile Include="CTestReady.cpp" />

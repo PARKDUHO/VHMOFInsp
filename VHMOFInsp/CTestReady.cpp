@@ -36,7 +36,6 @@ BEGIN_MESSAGE_MAP(CTestReady, CDialogEx)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
-	ON_STN_CLICKED(IDC_STT_TR_QTY_RESET, &CTestReady::OnStnClickedSttTrQtyReset)
 	ON_BN_CLICKED(IDC_BTN_TR_TEST_START, &CTestReady::OnBnClickedBtnTrTestStart)
 END_MESSAGE_MAP()
 
@@ -133,11 +132,7 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_DEEP_BLUE];
 			}
-			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_PID_TITLE
-				|| pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_TOTAL_TITLE
-				|| pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_OK_TITLE
-				|| pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_NG_TITLE
-				)
+			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_PID_TITLE)
 			{
 				pDC->SetBkColor(COLOR_LIGHT_YELLOW);
 				pDC->SetTextColor(COLOR_BLACK);
@@ -148,30 +143,6 @@ HBRUSH CTestReady::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetBkColor(COLOR_WHITE);
 				pDC->SetTextColor(COLOR_BLACK);
 				return m_Brush[COLOR_IDX_WHITE];
-			}
-			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_RESET)
-			{
-				pDC->SetBkColor(COLOR_ORANGE);
-				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_ORANGE];
-			}
-			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_TOTAL_VALUE)
-			{
-				pDC->SetBkColor(COLOR_BLACK);
-				pDC->SetTextColor(COLOR_WHITE);
-				return m_Brush[COLOR_IDX_BLACK];
-			}
-			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_OK_VALUE)
-			{
-				pDC->SetBkColor(COLOR_BLACK);
-				pDC->SetTextColor(COLOR_GREEN);
-				return m_Brush[COLOR_IDX_BLACK];
-			}
-			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_QTY_NG_VALUE)
-			{
-				pDC->SetBkColor(COLOR_BLACK);
-				pDC->SetTextColor(COLOR_RED);
-				return m_Brush[COLOR_IDX_BLACK];
 			}
 			if (pWnd->GetDlgCtrlID() == IDC_STT_TR_STATUS_MSG)
 			{
@@ -213,24 +184,6 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
 
 	CDialogEx::OnTimer(nIDEvent);
-}
-
-void CTestReady::OnStnClickedSttTrQtyReset()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CMessageQuestion que_dlg;
-	que_dlg.m_strQMessage.Format(_T("Do you want clear quantity count?"));
-	que_dlg.m_strLButton = _T("YES");
-	que_dlg.m_strRButton = _T("NO");
-	if (que_dlg.DoModal() == IDOK)
-	{
-		CString sLog;
-		sLog.Format(_T("<QTY> Quentity Count Reset."));
-		m_pApp->Gf_writeMLog(sLog);
-
-		m_pApp->Gf_QtyCountReset();
-		Lf_updateQuantityCount();
-	}
 }
 
 
@@ -283,17 +236,10 @@ void CTestReady::Lf_InitFontset()
 	GetDlgItem(IDC_BTN_TR_TEST_START)->SetFont(&m_Font[2]);
 
 	m_Font[3].CreateFont(30, 12, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
-	GetDlgItem(IDC_STT_TR_QTY_TOTAL_VALUE)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_STT_TR_QTY_OK_VALUE)->SetFont(&m_Font[3]);
-	GetDlgItem(IDC_STT_TR_QTY_NG_VALUE)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(24, 10, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_STT_TR_PID_TITLE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TR_PID_VALUE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_TR_QTY_RESET)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_TR_QTY_TOTAL_TITLE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_TR_QTY_OK_TITLE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_TR_QTY_NG_TITLE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetFont(&m_Font[4]);
 
 	m_Font[5].CreateFont(16, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -342,19 +288,7 @@ void CTestReady::Lf_readyInitialize()
 
 void CTestReady::Lf_updateQuantityCount()
 {
-	CString sdata = _T("");
 
-	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOK + lpSystemInfo->m_nQuantityNG);
-	GetDlgItem(IDC_STT_TR_QTY_TOTAL_VALUE)->SetWindowText(sdata);
-
-	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityOK);
-	GetDlgItem(IDC_STT_TR_QTY_OK_VALUE)->SetWindowText(sdata);
-
-	sdata.Format(_T("%d"), lpSystemInfo->m_nQuantityNG);
-	GetDlgItem(IDC_STT_TR_QTY_NG_VALUE)->SetWindowText(sdata);
-
-	sdata.Format(_T("<QTY> Quantity Count.   TOTAL(%d), OK(%d), NG(%d)"), lpSystemInfo->m_nQuantityOK + lpSystemInfo->m_nQuantityNG, lpSystemInfo->m_nQuantityOK, lpSystemInfo->m_nQuantityNG);
-	m_pApp->Gf_writeMLog(sdata);
 }
 
 BOOL CTestReady::Lf_FinalTestStart(int ch)
@@ -423,7 +357,7 @@ BOOL CTestReady::Lf_FinalTestStart(int ch)
 	pattern_dlg.DoModal();
 	m_pApp->tt_endTime = CTime::GetCurrentTime();
 
-	if (Lf_sendPanelResult() == TRUE)
+	if (Lf_sendPanelResult(ch) == TRUE)
 	{
 		m_pApp->Gf_writeSummaryLog(ch);
 	}
@@ -697,7 +631,7 @@ BOOL CTestReady::Lf_openGMESJudge()
 	return TRUE;
 }
 
-BOOL CTestReady::Lf_sendPanelResult()
+BOOL CTestReady::Lf_sendPanelResult(int ch)
 {
 	m_pApp->Gf_writeMLog(_T("<TEST> Panel Result Start"));
 
@@ -707,14 +641,14 @@ BOOL CTestReady::Lf_sendPanelResult()
 		{
 			if (m_pApp->Gf_gmesSendHost(HOST_EICR) == TRUE)
 			{
-				m_pApp->Gf_QtyCountUp(QTY_OK);
+				m_pApp->Gf_QtyCountUp(ch, QTY_OK);
 			}
 		}
 		if (lpInspWorkInfo->m_nPanelJudgeResult == GMES_PNF_FAIL)
 		{
 			if (m_pApp->Gf_gmesSendHost(HOST_EICR) == TRUE)
 			{
-				m_pApp->Gf_QtyCountUp(QTY_NG);
+				m_pApp->Gf_QtyCountUp(ch, QTY_NG);
 			}
 		}
 

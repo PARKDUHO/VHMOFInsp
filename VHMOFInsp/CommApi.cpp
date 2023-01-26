@@ -894,6 +894,13 @@ BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 	m_pApp->m_nDioOutBit[ch][1] = (BYTE)(OutData >> 8);
 	m_pApp->m_nDioOutBit[ch][2] = (BYTE)(OutData >> 16);
 
+	CString strKey;
+	for (int i = 0; i < 3; i++)
+	{
+		strKey.Format(_T("CH%d_OUT_DATA%d"), (ch + 1), (i + 1));
+		Write_SysIniFile(_T("DIO"), strKey, m_pApp->m_nDioOutBit[ch][i]);
+	}
+
 	sprintf_s(szPacket, "%02X00%02X00%02X00", m_pApp->m_nDioOutBit[ch][2], m_pApp->m_nDioOutBit[ch][1], m_pApp->m_nDioOutBit[ch][0]);
 	length = (int)strlen(szPacket);
 
@@ -903,7 +910,6 @@ BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 
 	return ret;
 }
-
 
 BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
 {
@@ -948,6 +954,57 @@ BOOL CCommApi::dio_readDioInput(int ch, BOOL bACK)
 	return ret;
 }
 
+BOOL CCommApi::dio_LEDOnOff(BOOL bOnOff)
+{
+	if (bOnOff == ON)
+	{
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_ON_OFF, OFF);	// LOW가 LED ON이다.
+	}
+	else
+	{
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_ON_OFF, ON);	// HIGH가 LED OFF이다.
+	}
+}
+
+BOOL CCommApi::dio_LightCurtainMuteOnOff(BOOL bOnOff)
+{
+	if (bOnOff == ON)
+	{
+		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, ON);
+		delayMs(200);
+		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, ON);
+	}
+	else
+	{
+		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, OFF);
+		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, OFF);
+	}
+
+	return TRUE;
+}
+
+BOOL CCommApi::dio_LeftSafetyDoorOpen()
+{
+	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LEFT_SAFETY_DOOR_OPEN, ON);
+}
+
+BOOL CCommApi::dio_RightSafetyDoorOpen()
+{
+	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_RIGHT_SAFETY_DOOR_OPEN, ON);
+}
+
+BOOL CCommApi::dio_RobotInLEDOnOff(BOOL bOnOff)
+{
+	if (bOnOff == ON)
+	{
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, ON);
+	}
+	else
+	{
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, OFF);
+	}
+
+}
 
 //////////////////////////////////////////////////////////////////////
 // New Gooil Main Board (22.12.08)

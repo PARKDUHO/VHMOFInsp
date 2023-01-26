@@ -46,9 +46,10 @@ public:
 	void Gf_writeMLog(char* szLogData);
 	void Gf_writeMLog(CString sLogData);
 	void Gf_writeSummaryLog(int ch);
+	void Gf_writeAlarmLog(int errorCode, CString strError);
 	BOOL Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage=_T(""));
-	void Gf_QtyCountUp(int ok_ng);
-	void Gf_QtyCountReset();
+	void Gf_QtyCountUp(int ch, int ok_ng);
+	void Gf_QtyCountReset(int ch);
 
 	void Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor1, long bkColor2, long fontColor, CFont* pFont, BOOL bSplit);
 	void Gf_setGradientStatic(CGradientStatic* pGStt, long bkColor, long fontColor, CFont* pFont, BOOL bSplit);
@@ -150,6 +151,9 @@ public:
 	// START/END Time
 	CTime tt_startTime;
 	CTime tt_endTime;
+
+	// General Information
+	BOOL m_bSafetyDlgOpen;
 
 
 	int m_nSLockTime, m_nELockTime, m_nPtnLockTime[PTN_LIST_MAX], m_nPatLock[PTN_LIST_MAX];
