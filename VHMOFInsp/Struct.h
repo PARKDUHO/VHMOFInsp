@@ -126,6 +126,7 @@ typedef struct _ST_MODELINFO_{
 	int		m_nPwmLevel;
 
 	int		m_nCableOpenCheck;
+	int		m_nJigTiltingCheck;
 
 	int		m_nPatternListCount;
 	CString	m_sLbPtnListNAME[PTN_LIST_MAX];
@@ -146,7 +147,6 @@ typedef struct _ST_MODELINFO_{
 // 	WORD	m_nEdidChecksum;
 // 	int		m_nEdidData;
 // 
-// 	int     m_nCableOpenCheck;
 // 	int		m_nWriteProtect;		// Bit Select
 // 
 // 	int		m_nI2cDelay;

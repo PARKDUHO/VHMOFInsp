@@ -101,107 +101,118 @@ void CGradientStatic::OnPaint()
 	CRect rect;
 	GetClientRect(&rect);
 
-	if(m_bCanDoGradientFill) //msimg32.dll library is loaded
+	if (this->IsWindowEnabled() == FALSE)
 	{
-		TRIVERTEX rcVertex[2];
-		CPen pen1,pen2,pen3,pen4;
-		CBrush brush1(RGB(158,158,158));
-		CBrush brush2(RGB(204,204,204));
-		CBrush brush3(RGB(0,0,0));
-		CBrush brush4(RGB(126,126,126));
+		DrawGradRect(&dc, rect, RGB(170, 170, 170), RGB(170, 170, 170), m_bVertical);
 
-		pen1.CreatePen(PS_SOLID, 1, RGB(148,148,148));//158
-		pen2.CreatePen(PS_SOLID, 1, RGB(180,180,180));//204
-		pen3.CreatePen(PS_SOLID, 1, RGB(0,0,0));
-		pen4.CreatePen(PS_SOLID, 1, RGB(126,126,126));
-
-		if(m_bSplitMode==TRUE)
-		{
-			dc.SelectObject(&brush1);
-			dc.SelectObject(&pen1);
-			dc.RoundRect(rect,CPoint(0,0));
-
-			rect.top += 1;
-			rect.bottom -= 1;
-			rect.left += 1;
-			rect.right -= 1;
-			dc.SelectObject(&brush2);
-			dc.SelectObject(&pen2);
-			dc.RoundRect(rect,CPoint(0,0));
-
-			rect.top += 1;
-			rect.bottom -= 1;
-			rect.left += 1;
-			rect.right -= 1;
-			dc.SelectObject(&brush3);
-			dc.SelectObject(&pen3);
-			dc.RoundRect(rect,CPoint(0,0));
-
-			rect.top += 1;
-			rect.bottom -= 1;
-			rect.left += 1;
-			rect.right -= 1;	
-			dc.SelectObject(&brush4);	
-			dc.SelectObject(&pen4);
-			dc.RoundRect(rect,CPoint(0,0));
-
-			rect.top += 1;
-			rect.bottom -= 1;
-			rect.left += 1;
-			rect.right -= 1;
-			rcVertex[0].x=rect.left;
-			rcVertex[0].y=rect.top;
-			rcVertex[0].Red=GetRValue(clLeft)<<8;	// color values from 0x0000 to 0xff00 !!!!
-			rcVertex[0].Green=GetGValue(clLeft)<<8;
-			rcVertex[0].Blue=GetBValue(clLeft)<<8;
-			rcVertex[0].Alpha=0x0000;
-			rcVertex[1].x=rect.right; 
-			rcVertex[1].y=rect.bottom;
-			rcVertex[1].Red=GetRValue(clRight)<<8;
-			rcVertex[1].Green=GetGValue(clRight)<<8;
-			rcVertex[1].Blue=GetBValue(clRight)<<8;
-			rcVertex[1].Alpha=0;
-
-			GRADIENT_RECT GraRect;
-			GraRect.UpperLeft=0;
-			GraRect.LowerRight=1;
-
-			// fill the area 
-			dllfunc_GradientFill( dc,rcVertex,2,&GraRect,1, m_bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
-		}
-		else
-		{
-			rcVertex[0].x=rect.left;
-			rcVertex[0].y=rect.top;
-			rcVertex[0].Red=GetRValue(clLeft)<<8;	// color values from 0x0000 to 0xff00 !!!!
-			rcVertex[0].Green=GetGValue(clLeft)<<8;
-			rcVertex[0].Blue=GetBValue(clLeft)<<8;
-			rcVertex[0].Alpha=0x0000;
-			rcVertex[1].x=rect.right; 
-			rcVertex[1].y=rect.bottom;
-			rcVertex[1].Red=GetRValue(clRight)<<8;
-			rcVertex[1].Green=GetGValue(clRight)<<8;
-			rcVertex[1].Blue=GetBValue(clRight)<<8;
-			rcVertex[1].Alpha=0;
-
-			GRADIENT_RECT GraRect;
-			GraRect.UpperLeft=0;
-			GraRect.LowerRight=1;
-
-			// fill the area 
-			dllfunc_GradientFill( dc,rcVertex,2,&GraRect,1, m_bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
-		}
-
+		//let's set color defined by user
+		::SetTextColor(dc, RGB(131, 131, 131));
 	}
 	else
 	{
-		//msimg32.dll is not available. Let's use our own code to display gradient background.
-		//This code is very simple and produces worse gradient that function from the library - but works!
-		DrawGradRect(&dc,rect,clLeft,clRight,m_bVertical);
-	}
 
-	//let's set color defined by user
-	::SetTextColor(dc,clText);
+		if (m_bCanDoGradientFill) //msimg32.dll library is loaded
+		{
+			TRIVERTEX rcVertex[2];
+			CPen pen1, pen2, pen3, pen4;
+			CBrush brush1(RGB(158, 158, 158));
+			CBrush brush2(RGB(204, 204, 204));
+			CBrush brush3(RGB(0, 0, 0));
+			CBrush brush4(RGB(126, 126, 126));
+
+			pen1.CreatePen(PS_SOLID, 1, RGB(148, 148, 148));//158
+			pen2.CreatePen(PS_SOLID, 1, RGB(180, 180, 180));//204
+			pen3.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+			pen4.CreatePen(PS_SOLID, 1, RGB(126, 126, 126));
+
+			if (m_bSplitMode == TRUE)
+			{
+				dc.SelectObject(&brush1);
+				dc.SelectObject(&pen1);
+				dc.RoundRect(rect, CPoint(0, 0));
+
+				rect.top += 1;
+				rect.bottom -= 1;
+				rect.left += 1;
+				rect.right -= 1;
+				dc.SelectObject(&brush2);
+				dc.SelectObject(&pen2);
+				dc.RoundRect(rect, CPoint(0, 0));
+
+				rect.top += 1;
+				rect.bottom -= 1;
+				rect.left += 1;
+				rect.right -= 1;
+				dc.SelectObject(&brush3);
+				dc.SelectObject(&pen3);
+				dc.RoundRect(rect, CPoint(0, 0));
+
+				rect.top += 1;
+				rect.bottom -= 1;
+				rect.left += 1;
+				rect.right -= 1;
+				dc.SelectObject(&brush4);
+				dc.SelectObject(&pen4);
+				dc.RoundRect(rect, CPoint(0, 0));
+
+				rect.top += 1;
+				rect.bottom -= 1;
+				rect.left += 1;
+				rect.right -= 1;
+				rcVertex[0].x = rect.left;
+				rcVertex[0].y = rect.top;
+				rcVertex[0].Red = GetRValue(clLeft) << 8;	// color values from 0x0000 to 0xff00 !!!!
+				rcVertex[0].Green = GetGValue(clLeft) << 8;
+				rcVertex[0].Blue = GetBValue(clLeft) << 8;
+				rcVertex[0].Alpha = 0x0000;
+				rcVertex[1].x = rect.right;
+				rcVertex[1].y = rect.bottom;
+				rcVertex[1].Red = GetRValue(clRight) << 8;
+				rcVertex[1].Green = GetGValue(clRight) << 8;
+				rcVertex[1].Blue = GetBValue(clRight) << 8;
+				rcVertex[1].Alpha = 0;
+
+				GRADIENT_RECT GraRect;
+				GraRect.UpperLeft = 0;
+				GraRect.LowerRight = 1;
+
+				// fill the area 
+				dllfunc_GradientFill(dc, rcVertex, 2, &GraRect, 1, m_bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
+			}
+			else
+			{
+				rcVertex[0].x = rect.left;
+				rcVertex[0].y = rect.top;
+				rcVertex[0].Red = GetRValue(clLeft) << 8;	// color values from 0x0000 to 0xff00 !!!!
+				rcVertex[0].Green = GetGValue(clLeft) << 8;
+				rcVertex[0].Blue = GetBValue(clLeft) << 8;
+				rcVertex[0].Alpha = 0x0000;
+				rcVertex[1].x = rect.right;
+				rcVertex[1].y = rect.bottom;
+				rcVertex[1].Red = GetRValue(clRight) << 8;
+				rcVertex[1].Green = GetGValue(clRight) << 8;
+				rcVertex[1].Blue = GetBValue(clRight) << 8;
+				rcVertex[1].Alpha = 0;
+
+				GRADIENT_RECT GraRect;
+				GraRect.UpperLeft = 0;
+				GraRect.LowerRight = 1;
+
+				// fill the area 
+				dllfunc_GradientFill(dc, rcVertex, 2, &GraRect, 1, m_bVertical ? GRADIENT_FILL_RECT_V : GRADIENT_FILL_RECT_H);
+			}
+
+		}
+		else
+		{
+			//msimg32.dll is not available. Let's use our own code to display gradient background.
+			//This code is very simple and produces worse gradient that function from the library - but works!
+			DrawGradRect(&dc, rect, clLeft, clRight, m_bVertical);
+		}
+
+		//let's set color defined by user
+		::SetTextColor(dc, clText);
+	}
 
 	HFONT hfontOld=NULL;
 	CFont* pFont = GetFont();

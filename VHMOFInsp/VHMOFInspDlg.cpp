@@ -100,6 +100,8 @@ void CVHMOFInspDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_MA_FIRMWARE, m_btnMainFirmware);
 	DDX_Control(pDX, IDC_BTN_MA_EXIT, m_btnMainExit);
 	DDX_Control(pDX, IDC_STT_MAIN_MLOG_VIEW, m_sttMainMlogView);
+	DDX_Control(pDX, IDC_LST_MA_DIN_LIST_A, m_lstMaDinListA);
+	DDX_Control(pDX, IDC_LST_MA_DIN_LIST_B, m_lstMaDinListB);
 }
 
 BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
@@ -128,6 +130,8 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_MUTE_OFF, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOff)
 	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_MUTE_ON, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOn)
 	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_DOOR_OPEN, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlDoorOpen)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LST_MA_DIN_LIST_A, &CVHMOFInspDlg::OnNMCustomdrawLstMaDinListA)
+	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LST_MA_DIN_LIST_B, &CVHMOFInspDlg::OnNMCustomdrawLstMaDinListB)
 END_MESSAGE_MAP()
 
 
@@ -187,6 +191,8 @@ BOOL CVHMOFInspDlg::OnInitDialog()
 	Lf_InitItemValue();
 	Lf_InitFontSet();
 	Lf_InitColorBrush();
+
+	Lf_InitListDin();
 
 	Lf_updateMaQuantityCount();
 
@@ -413,7 +419,7 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VEL_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VDD_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_VALUE)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_VALUE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_POWER_MCU_VALUE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_SPI_VER_VALUE)
 				)
 			{
@@ -430,7 +436,7 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SIGNALBIT_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_VOLT_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_APP_TIT)
-				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_FPGA_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_POWER_MCU_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MAIN_SPI_VER_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_TOTAL_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_OK_TITLE)
@@ -627,12 +633,41 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_NG_VALUE)
 			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH1_NG_VAL)
 			 || (pWnd->GetDlgCtrlID() == IDC_STT_MA_QTY_CH2_NG_VAL)
-				)
+			 )
 			{
 				pDC->SetBkColor(COLOR_BLACK);
 				pDC->SetTextColor(COLOR_RED);
 				return m_Brush[COLOR_IDX_BLACK];
 			}
+
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_MACHINE_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_FRONTDOORUP_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_FRONTDOORDOWN_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_REARDOORUP_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_REARDOORDOWN_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_JIGTILTINGUP_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_JIGTILTINGDOWN_TIT)
+				)
+			{
+				pDC->SetBkColor(COLOR_LIGHT_YELLOW);
+				pDC->SetTextColor(COLOR_BLACK);
+				return m_Brush[COLOR_IDX_LIGHT_YELLOW];
+			}
+
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_MACHINE_VAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_FRONTDOORUP_VAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_FRONTDOORDOWN_VAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_REARDOORUP_VAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_REARDOORDOWN_VAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_JIGTILTINGUP_VAL)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MA_TT_JIGTILTINGDOWN_VAL)
+				)
+			{
+				pDC->SetBkColor(COLOR_BLACK);
+				pDC->SetTextColor(COLOR_GREEN);
+				return m_Brush[COLOR_IDX_BLACK];
+			}
+
 			break;
 	}
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -663,10 +698,13 @@ void CVHMOFInspDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		KillTimer(2);
 
+		Lf_updateIOStautsDIN1();
+		Lf_updateIOStautsDIN2();
+
 		Lf_checkExtAlarmDio1();
 		Lf_checkExtAlarmDio2();
 
-		Lf_updateSensorInfo();
+		Lf_checkRobotInSensor();
 
 		SetTimer(2, 500, NULL);
 	}
@@ -912,6 +950,71 @@ void CVHMOFInspDlg::OnStnClickedSttMaQtyResetCh2()
 	}
 }
 
+void CVHMOFInspDlg::OnNMCustomdrawLstMaDinListA(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bChecked;
+	BOOL bErrorFlag = FALSE;
+	BOOL bWarnningFlag = FALSE;
+
+	NMLVCUSTOMDRAW* pLVCD = (NMLVCUSTOMDRAW*)pNMHDR;
+	bChecked = m_lstMaDinListA.GetCheck((int)pLVCD->nmcd.dwItemSpec);
+
+	*pResult = 0;
+
+	if (CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage)
+		*pResult = CDRF_NOTIFYITEMDRAW;
+
+	else if (CDDS_ITEMPREPAINT == pLVCD->nmcd.dwDrawStage)
+	{
+		if (bChecked)
+		{
+			pLVCD->clrText = RGB(255, 255, 255);	// 글자 색 변경 
+			pLVCD->clrTextBk = RGB(0, 127, 0);		// 배경 색 변경 
+		}
+		else
+		{
+			pLVCD->clrText = RGB(0, 0, 0);			// 글자 색 변경 
+			pLVCD->clrTextBk = RGB(224, 224, 224);	// 배경 색 변경 
+		}
+
+		*pResult = CDRF_DODEFAULT;
+	}
+}
+
+
+void CVHMOFInspDlg::OnNMCustomdrawLstMaDinListB(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bChecked;
+	BOOL bErrorFlag = FALSE;
+	BOOL bWarnningFlag = FALSE;
+
+	NMLVCUSTOMDRAW* pLVCD = (NMLVCUSTOMDRAW*)pNMHDR;
+	bChecked = m_lstMaDinListB.GetCheck((int)pLVCD->nmcd.dwItemSpec);
+
+	*pResult = 0;
+
+	if (CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage)
+		*pResult = CDRF_NOTIFYITEMDRAW;
+
+	else if (CDDS_ITEMPREPAINT == pLVCD->nmcd.dwDrawStage)
+	{
+		if (bChecked)
+		{
+			pLVCD->clrText = RGB(255, 255, 255);	// 글자 색 변경 
+			pLVCD->clrTextBk = RGB(0, 127, 0);		// 배경 색 변경 
+		}
+		else
+		{
+			pLVCD->clrText = RGB(0, 0, 0);			// 글자 색 변경 
+			pLVCD->clrTextBk = RGB(224, 224, 224);	// 배경 색 변경 
+		}
+
+		*pResult = CDRF_DODEFAULT;
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CVHMOFInspDlg::Lf_InitProgramTitle()
@@ -998,6 +1101,9 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_QUANTITY_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SENSOR_INFO_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_TACTTIME_INFO_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MA_QTY_TOTAL_VALUE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MA_QTY_OK_VALUE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MA_QTY_NG_VALUE)->SetFont(&m_Font[3]);
 
 	//mFontH1[3].CreateFont(21, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, _DIALOG_FONT_);
 	m_Font[4].CreateFont(21, 7, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -1024,9 +1130,9 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_MAIN_APP_TIT)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_MAIN_FPGA_TIT)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_POWER_MCU_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetFont(&m_Font[4]);
+	GetDlgItem(IDC_STT_POWER_MCU_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_SPI_VER_TIT)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MAIN_SPI_VER_VALUE)->SetFont(&m_Font[4]);
 
@@ -1037,11 +1143,8 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_BTN_DIO_CTRL_DOOR_OPEN)->SetFont(&m_Font[4]);
 
 	GetDlgItem(IDC_STT_MA_QTY_TOTAL_TITLE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_MA_QTY_TOTAL_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MA_QTY_OK_TITLE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_MA_QTY_OK_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MA_QTY_NG_TITLE)->SetFont(&m_Font[4]);
-	GetDlgItem(IDC_STT_MA_QTY_NG_VALUE)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MA_QTY_RESET)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MA_QTY_RESET_CH1)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_STT_MA_QTY_RESET_CH2)->SetFont(&m_Font[4]);
@@ -1070,6 +1173,25 @@ void CVHMOFInspDlg::Lf_InitFontSet()
 	GetDlgItem(IDC_STT_MA_QTY_CH2_NG)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_STT_MA_QTY_CH2_NG_VAL)->SetFont(&m_Font[5]);
 
+	GetDlgItem(IDC_STT_MA_TT_MACHINE_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_MACHINE_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_FRONTDOORUP_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_FRONTDOORUP_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_FRONTDOORDOWN_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_FRONTDOORDOWN_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_REARDOORUP_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_REARDOORUP_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_REARDOORDOWN_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_REARDOORDOWN_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGUP_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGUP_VAL)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGDOWN_TIT)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGDOWN_VAL)->SetFont(&m_Font[5]);
+
+
+	m_Font[6].CreateFont(14, 5, 0, 0, FW_SEMIBOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_LST_MA_DIN_LIST_A)->SetFont(&m_Font[6]);
+	GetDlgItem(IDC_LST_MA_DIN_LIST_B)->SetFont(&m_Font[6]);
 }
 
 void CVHMOFInspDlg::Lf_InitColorBrush()
@@ -1094,6 +1216,63 @@ void CVHMOFInspDlg::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
 	m_Brush[COLOR_IDX_LIGHT_YELLOW].CreateSolidBrush(COLOR_LIGHT_YELLOW);
 	m_Brush[COLOR_IDX_LIGHT_BLUE].CreateSolidBrush(COLOR_LIGHT_BLUE);
+}
+
+void CVHMOFInspDlg::Lf_InitListDin()
+{
+	DWORD dwStype;
+	CString sdata;
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	m_lstMaDinListA.InsertColumn(0, _T("C"), LVCFMT_LEFT, -1, -1);
+	m_lstMaDinListA.SetColumnWidth(0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Type
+	m_lstMaDinListA.SetColumnWidth(0, 20);
+
+	m_lstMaDinListA.InsertColumn(1, _T("NUM"), LVCFMT_LEFT, -1, -1);
+	m_lstMaDinListA.SetColumnWidth(1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Type
+	m_lstMaDinListA.SetColumnWidth(1, 55);
+
+	m_lstMaDinListA.InsertColumn(2, _T("Description (B)"), LVCFMT_LEFT, -1, -1);
+	m_lstMaDinListA.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Judge
+	m_lstMaDinListA.SetColumnWidth(2, 200);
+
+	dwStype = m_lstMaDinListA.GetExtendedStyle();
+	dwStype |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES;
+	m_lstMaDinListA.SetExtendedStyle(dwStype);
+
+	for (int i = 0; i < 40; i++)
+	{
+		m_lstMaDinListA.InsertItem(i, _T(""));
+		sdata.Format(_T("DI%02dA"), i + 1);
+		m_lstMaDinListA.SetItem(i, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+		m_lstMaDinListA.SetItem(i, 2, LVIF_TEXT, strNameDIN1[i], 0, LVIF_STATE, 0, 0);
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////
+	m_lstMaDinListB.InsertColumn(0, _T("C"), LVCFMT_LEFT, -1, -1);
+	m_lstMaDinListB.SetColumnWidth(0, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Type
+	m_lstMaDinListB.SetColumnWidth(0, 20);
+
+	m_lstMaDinListB.InsertColumn(1, _T("NUM"), LVCFMT_LEFT, -1, -1);
+	m_lstMaDinListB.SetColumnWidth(1, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Type
+	m_lstMaDinListB.SetColumnWidth(1, 55);
+
+	m_lstMaDinListB.InsertColumn(2, _T("Description (B)"), LVCFMT_LEFT, -1, -1);
+	m_lstMaDinListB.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Judge
+	m_lstMaDinListB.SetColumnWidth(2, 200);
+
+	dwStype = m_lstMaDinListB.GetExtendedStyle();
+	dwStype |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES;
+	m_lstMaDinListB.SetExtendedStyle(dwStype);
+
+	for (int i = 0; i < 40; i++)
+	{
+		m_lstMaDinListB.InsertItem(i, _T(""));
+		sdata.Format(_T("DI%02dB"), i + 1);
+		m_lstMaDinListB.SetItem(i, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
+		m_lstMaDinListB.SetItem(i, 2, LVIF_TEXT, strNameDIN2[i], 0, LVIF_STATE, 0, 0);
+	}
 }
 
 void CVHMOFInspDlg::Lf_updateSystemInfo()
@@ -1134,12 +1313,17 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 	GetDlgItem(IDC_STT_VDD_VALUE)->SetWindowText(sdata);
 
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(_T(""));
-	GetDlgItem(IDC_STT_MAIN_FPGA_VALUE)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_POWER_MCU_VALUE)->SetWindowText(_T(""));
 	GetDlgItem(IDC_STT_MAIN_SPI_VER_VALUE)->SetWindowText(_T(""));
 
 	// Firmware Version
 	int npos = 0;
 	GetDlgItem(IDC_STT_MAIN_APP_VALUE)->SetWindowText(m_pApp->m_sPgFWVersion[CH1].Left(19));
+	if (m_pApp->m_sPmmFWVersion[CH1].GetLength() > 25)
+	{
+		GetDlgItem(IDC_STT_POWER_MCU_VALUE)->SetWindowText(m_pApp->m_sPmmFWVersion[CH1].Mid(17, 5));
+	}
+	GetDlgItem(IDC_STT_MAIN_SPI_VER_VALUE)->SetWindowText(_T(""));
 
 
 	GetDlgItem(IDC_STT_CONNECT_MES)->Invalidate(FALSE);
@@ -1169,6 +1353,103 @@ void CVHMOFInspDlg::Lf_openToDayMLog()
 	sel.lpVerb = _T("open");
 	sel.nShow = SW_NORMAL;
 	ShellExecuteEx(&sel);
+}
+
+void CVHMOFInspDlg::Lf_updateIOStautsDIN1()
+{
+	m_lstMaDinListA.SetCheck(0, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_EMO_SWITCH));
+	m_lstMaDinListA.SetCheck(1, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_START_SWITCH));
+	m_lstMaDinListA.SetCheck(2, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_RESET_SWITCH));
+	m_lstMaDinListA.SetCheck(3, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_MUTTING_SWITCH));
+	m_lstMaDinListA.SetCheck(4, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LIGHT_CURTAIN));
+	m_lstMaDinListA.SetCheck(5, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR));
+	m_lstMaDinListA.SetCheck(6, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR));
+	m_lstMaDinListA.SetCheck(7, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_SHUTTER_HOLDING_FORWARD));
+
+	m_lstMaDinListA.SetCheck(8, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD));
+	m_lstMaDinListA.SetCheck(9, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_IN_ALARM));
+	m_lstMaDinListA.SetCheck(10, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_OUT_ALARM));
+	m_lstMaDinListA.SetCheck(11, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_TEMPATURE_HIGH_ALARM));
+	m_lstMaDinListA.SetCheck(12, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_MAIN_AIR_DIGITAL_PRESSURE_GAGE));
+	m_lstMaDinListA.SetCheck(13, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_IONIZER_AIR_DIGITAL_PRESSURE_GAGE));
+	m_lstMaDinListA.SetCheck(14, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE));
+	m_lstMaDinListA.SetCheck(15, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_JIG_DIGITAL_PRESSURE_GAGE));
+
+	m_lstMaDinListA.SetCheck(16, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_ALARM));
+	m_lstMaDinListA.SetCheck(17, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_SPARE));
+	m_lstMaDinListA.SetCheck(18, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1));
+	m_lstMaDinListA.SetCheck(19, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2));
+	m_lstMaDinListA.SetCheck(20, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD));
+	m_lstMaDinListA.SetCheck(21, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD));
+	m_lstMaDinListA.SetCheck(22, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD));
+	m_lstMaDinListA.SetCheck(23, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD));
+
+	m_lstMaDinListA.SetCheck(24, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD));
+	m_lstMaDinListA.SetCheck(25, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD));
+	m_lstMaDinListA.SetCheck(26, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD));
+	m_lstMaDinListA.SetCheck(27, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD));
+	m_lstMaDinListA.SetCheck(28, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR));
+	m_lstMaDinListA.SetCheck(29, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR));
+	m_lstMaDinListA.SetCheck(30, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR));
+	m_lstMaDinListA.SetCheck(31, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR));
+
+	m_lstMaDinListA.SetCheck(32, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR));
+	m_lstMaDinListA.SetCheck(33, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_UP_3_SENSOR));
+	m_lstMaDinListA.SetCheck(34, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM));
+	m_lstMaDinListA.SetCheck(35, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE2));
+	m_lstMaDinListA.SetCheck(36, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE3));
+	m_lstMaDinListA.SetCheck(37, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE4));
+	m_lstMaDinListA.SetCheck(38, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE5));
+	m_lstMaDinListA.SetCheck(39, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE6));
+}
+
+
+void CVHMOFInspDlg::Lf_updateIOStautsDIN2()
+{
+	m_lstMaDinListB.SetCheck(0, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR));
+	m_lstMaDinListB.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_PHOTO_SENSOR));
+	m_lstMaDinListB.SetCheck(2, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR));
+	m_lstMaDinListB.SetCheck(3, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR));
+	m_lstMaDinListB.SetCheck(4, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR));
+	m_lstMaDinListB.SetCheck(5, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR));
+	m_lstMaDinListB.SetCheck(6, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1));
+	m_lstMaDinListB.SetCheck(7, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2));
+
+	m_lstMaDinListB.SetCheck(8, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3));
+	m_lstMaDinListB.SetCheck(9, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4));
+	m_lstMaDinListB.SetCheck(10, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5));
+	m_lstMaDinListB.SetCheck(11, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6));
+	m_lstMaDinListB.SetCheck(12, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1));
+	m_lstMaDinListB.SetCheck(13, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2));
+	m_lstMaDinListB.SetCheck(14, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3));
+	m_lstMaDinListB.SetCheck(15, (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4));
+
+	m_lstMaDinListB.SetCheck(16, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5));
+	m_lstMaDinListB.SetCheck(17, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6));
+	m_lstMaDinListB.SetCheck(18, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE1));
+	m_lstMaDinListB.SetCheck(19, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE2));
+	m_lstMaDinListB.SetCheck(20, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE3));
+	m_lstMaDinListB.SetCheck(21, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE4));
+	m_lstMaDinListB.SetCheck(22, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE5));
+	m_lstMaDinListB.SetCheck(23, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE6));
+
+	m_lstMaDinListB.SetCheck(24, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_AUTO_MANUAL));
+	m_lstMaDinListB.SetCheck(25, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_BACK));
+	m_lstMaDinListB.SetCheck(26, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_NEXT));
+	m_lstMaDinListB.SetCheck(27, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_REPEAT));
+	m_lstMaDinListB.SetCheck(28, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_RESET));
+	m_lstMaDinListB.SetCheck(29, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_UP));
+	m_lstMaDinListB.SetCheck(30, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_DOWN));
+	m_lstMaDinListB.SetCheck(31, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_SEND));
+
+	m_lstMaDinListB.SetCheck(32, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_AUTO_MANUAL));
+	m_lstMaDinListB.SetCheck(33, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_BACK));
+	m_lstMaDinListB.SetCheck(34, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_NEXT));
+	m_lstMaDinListB.SetCheck(35, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_REPEAT));
+	m_lstMaDinListB.SetCheck(36, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_RESET));
+	m_lstMaDinListB.SetCheck(37, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_UP));
+	m_lstMaDinListB.SetCheck(38, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_DOWN));
+	m_lstMaDinListB.SetCheck(39, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_SEND));
 }
 
 void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
@@ -1271,28 +1552,30 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 		heavyAlarm = TRUE;
 	}
 
-	// Heavy Alarm 발생 시 DIO 출력 중지시킨다.
-	if (heavyAlarm == TRUE)
-	{
-		int DOut;
-
-		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
-		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
-		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
-
-		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
-		DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
-		DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
-		DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
-		DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
-		DOut &= ~DOUT_D1_JIG_TILTING01_UP;
-		DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
-		DOut &= ~DOUT_D1_JIG_TILTING02_UP;
-		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
-		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
-
-		m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
-	}
+	//	// 2023-01-27 PDH. 알람 RESET시 재가동이 필요하므로 DIO 출력을 중단시키지는 않아야 하기에 DIO 출력 중지는 주석 처리한다.
+	// 	//                 Cylinder 축정지 TYPE으로 변경시 DOOR OPEN하면 자동으로 정지된다.
+	//	// 2023-01-19 PDH .Heavy Alarm 발생 시 DIO 출력 중지시킨다.
+	// 	if (heavyAlarm == TRUE)
+	// 	{
+	// 		int DOut;
+	// 
+	// 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
+	// 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
+	// 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
+	// 
+	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
+	// 		DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
+	// 		DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
+	// 		DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
+	// 		DOut &= ~DOUT_D1_JIG_TILTING01_UP;
+	// 		DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
+	// 		DOut &= ~DOUT_D1_JIG_TILTING02_UP;
+	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+	// 
+	// 		m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
+	// 	}
 
 	if ((lightAlarm == TRUE) || (heavyAlarm == TRUE))
 	{
@@ -1310,7 +1593,7 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio2()
 }
 
 
-void CVHMOFInspDlg::Lf_updateSensorInfo()
+void CVHMOFInspDlg::Lf_checkRobotInSensor()
 {
 	if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1) || (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2))
 	{
@@ -1378,6 +1661,7 @@ void CVHMOFInspDlg::Lf_updateMaQuantityCount()
 	);
 	m_pApp->Gf_writeMLog(sdata);
 }
+
 
 
 

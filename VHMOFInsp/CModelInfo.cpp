@@ -31,6 +31,7 @@ void CModelInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_MI_SAVE_EXIT, m_btnMiSaveExit);
 	DDX_Control(pDX, IDC_BTN_MI_CANCEL, m_btnMiCancel);
 	DDX_Control(pDX, IDC_EDT_MI_SAVE_MODEL, m_edtMiSaveModelName);
+	DDX_Control(pDX, IDC_BTN_MI_MODIFY, m_btnMiModifyEnable);
 }
 
 
@@ -204,12 +205,10 @@ void CModelInfo::OnBnClickedBtnMiFusing()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_pApp->Gf_writeMLog(_T("<WND> BUTTON Click => Fusing"));
 
-	CString strSource, strSaveModel;
-
-	strSource.Format(_T(".\\Model\\%s.MOD"), lpSystemInfo->m_sLastModelName);
+	CString strSaveModel;
 	m_edtMiSaveModelName.GetWindowText(strSaveModel);
 
-	if (strSource != strSaveModel)
+	if (lpSystemInfo->m_sLastModelName != strSaveModel)
 	{
 		CMessageQuestion que_dlg;
 		que_dlg.m_strQMessage.Format(_T("Do you want save new model?"));
@@ -230,12 +229,10 @@ void CModelInfo::OnBnClickedBtnMiSaveExit()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_pApp->Gf_writeMLog(_T("<WND> BUTTON Click => Model Data 'Save&&Exit'"));
 
-	CString strSource, strSaveModel;
-
-	strSource.Format(_T(".\\Model\\%s.MOD"), lpSystemInfo->m_sLastModelName);
+	CString strSaveModel;
 	m_edtMiSaveModelName.GetWindowText(strSaveModel);
 
-	if (strSource != strSaveModel)
+	if (lpSystemInfo->m_sLastModelName != strSaveModel)
 	{
 		CMessageQuestion que_dlg;
 		que_dlg.m_strQMessage.Format(_T("Do you want save new model?"));
@@ -270,7 +267,6 @@ void CModelInfo::OnBnClickedBtnMiModify()
 	pw_dlg.password_mode = 1;
 	if (pw_dlg.DoModal() == IDOK)
 	{
-		GetDlgItem(IDC_BTN_MI_FUSING)->EnableWindow(TRUE);
 		GetDlgItem(IDC_BTN_MI_SAVE_EXIT)->EnableWindow(TRUE);
 
 		m_pModelInfoFusing->Gf_controlEnableDisable(TRUE);
@@ -301,6 +297,7 @@ void CModelInfo::Lf_InitFontset()
 
 	m_Font[2].CreateFont(23, 10, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_TAB_MI_MODEL_INFO)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_BTN_MI_MODIFY)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_BTN_MI_FUSING)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_BTN_MI_SAVE_EXIT)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_BTN_MI_CANCEL)->SetFont(&m_Font[2]);
@@ -345,6 +342,7 @@ void CModelInfo::Lf_InitColorBrush()
 void CModelInfo::Lf_InitDlgDesign()
 {
 	// Button ICON
+	m_btnMiModifyEnable.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
 	m_btnMiFusing.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
 	m_btnMiSaveExit.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
 	m_btnMiCancel.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));

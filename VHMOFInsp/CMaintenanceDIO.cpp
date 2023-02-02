@@ -33,6 +33,25 @@ void CMaintenanceDIO::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LST_MO_DIO1_OUT, m_lstMoDio1Out);
 	DDX_Control(pDX, IDC_LST_MO_DIO2_IN, m_lstMoDio2In);
 	DDX_Control(pDX, IDC_LST_MO_DIO2_OUT, m_lstMoDio2Out);
+	DDX_Control(pDX, IDC_BTN_MO_WRITE_DIO1, m_btnMoWriteDIO1);
+	DDX_Control(pDX, IDC_BTN_MO_WRITE_DIO2, m_btnMoWriteDIO2);
+	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_OPEN, m_sttMoFrontDoorOpen);
+	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_CLOSE, m_sttMoFrontDoorClose);
+	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_HOLDING_ON, m_sttMoFrontDoorHoldingOn);
+	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_HOLDING_OFF, m_sttMoFrontDoorHoldingOff);
+	DDX_Control(pDX, IDC_STT_MO_REAR_DOOR_OPEN, m_sttMoRearDoorOpen);
+	DDX_Control(pDX, IDC_STT_MO_REAR_DOOR_CLOSE, m_sttMoRearDoorClose);
+	DDX_Control(pDX, IDC_STT_MO_LIGHT_CURTAIN_MUTE_ON, m_sttMoLightCurationMuteOn);
+	DDX_Control(pDX, IDC_STT_MO_LIGHT_CURTAIN_MUTE_OFF, m_sttMoLightCurationMuteOff);
+	DDX_Control(pDX, IDC_STT_MO_JIG_TILTING_UP, m_sttMoJigTiltingUp);
+	DDX_Control(pDX, IDC_STT_MO_JIG_TILTING_DOWN, m_sttMoJigTiltingDown);
+	DDX_Control(pDX, IDC_STT_MO_LEFT_SAFETY_DOOR_OPEN, m_sttMoLeftSafetyDoorOpen);
+	DDX_Control(pDX, IDC_STT_MO_RIGHT_SAFETY_DOOR_OPEN, m_sttMoRightSafetyDoorOpen);
+	DDX_Control(pDX, IDC_STT_MO_CLAMP_LOCK_CH1, m_sttMoClampLockCh1);
+	DDX_Control(pDX, IDC_STT_MO_CLAMP_UNLOCK_CH1, m_sttMoClampUnLockCh1);
+	DDX_Control(pDX, IDC_STT_MO_CLAMP_LOCK_CH2, m_sttMoClampLockCh2);
+	DDX_Control(pDX, IDC_STT_MO_CLAMP_UNLOCK_CH2, m_sttMoClampUnLockCh2);
+	DDX_Control(pDX, IDC_CHK_MO_AUTO_CONFIRM, m_chkMoAutoConfirm);
 }
 
 
@@ -47,6 +66,22 @@ BEGIN_MESSAGE_MAP(CMaintenanceDIO, CDialog)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LST_MO_DIO2_OUT, &CMaintenanceDIO::OnNMCustomdrawLstMoDio2Out)
 	ON_BN_CLICKED(IDC_BTN_MO_WRITE_DIO1, &CMaintenanceDIO::OnBnClickedBtnMoWriteDio1)
 	ON_BN_CLICKED(IDC_BTN_MO_WRITE_DIO2, &CMaintenanceDIO::OnBnClickedBtnMoWriteDio2)
+	ON_STN_CLICKED(IDC_STT_MO_FRONT_DOOR_OPEN, &CMaintenanceDIO::OnStnClickedSttMoFrontDoorOpen)
+	ON_STN_CLICKED(IDC_STT_MO_FRONT_DOOR_CLOSE, &CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose)
+	ON_STN_CLICKED(IDC_STT_MO_REAR_DOOR_OPEN, &CMaintenanceDIO::OnStnClickedSttMoRearDoorOpen)
+	ON_STN_CLICKED(IDC_STT_MO_REAR_DOOR_CLOSE, &CMaintenanceDIO::OnStnClickedSttMoRearDoorClose)
+	ON_STN_CLICKED(IDC_STT_MO_LIGHT_CURTAIN_MUTE_ON, &CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOn)
+	ON_STN_CLICKED(IDC_STT_MO_LIGHT_CURTAIN_MUTE_OFF, &CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOff)
+	ON_STN_CLICKED(IDC_STT_MO_JIG_TILTING_UP, &CMaintenanceDIO::OnStnClickedSttMoJigTiltingUp)
+	ON_STN_CLICKED(IDC_STT_MO_JIG_TILTING_DOWN, &CMaintenanceDIO::OnStnClickedSttMoJigTiltingDown)
+	ON_STN_CLICKED(IDC_STT_MO_LEFT_SAFETY_DOOR_OPEN, &CMaintenanceDIO::OnStnClickedSttMoLeftSafetyDoorOpen)
+	ON_STN_CLICKED(IDC_STT_MO_RIGHT_SAFETY_DOOR_OPEN, &CMaintenanceDIO::OnStnClickedSttMoRightSafetyDoorOpen)
+	ON_STN_CLICKED(IDC_STT_MO_CLAMP_LOCK_CH1, &CMaintenanceDIO::OnStnClickedSttMoClampLockCh1)
+	ON_STN_CLICKED(IDC_STT_MO_CLAMP_UNLOCK_CH1, &CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh1)
+	ON_STN_CLICKED(IDC_STT_MO_CLAMP_LOCK_CH2, &CMaintenanceDIO::OnStnClickedSttMoClampLockCh2)
+	ON_STN_CLICKED(IDC_STT_MO_CLAMP_UNLOCK_CH2, &CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh2)
+	ON_STN_CLICKED(IDC_STT_MO_FRONT_DOOR_HOLDING_ON, &CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOn)
+	ON_STN_CLICKED(IDC_STT_MO_FRONT_DOOR_HOLDING_OFF, &CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOff)
 END_MESSAGE_MAP()
 
 
@@ -64,6 +99,7 @@ BOOL CMaintenanceDIO::OnInitDialog()
 	Lf_InitLocalValue();
 	Lf_InitFontset();
 	Lf_InitColorBrush();
+	Lf_InitDlgDesign();
 
 	Lf_initListDIN();
 	Lf_setListCheck();
@@ -136,11 +172,22 @@ HBRUSH CMaintenanceDIO::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		{
 			if ((pWnd->GetDlgCtrlID() == IDC_LST_MO_DIO1_TITLE)
 				|| (pWnd->GetDlgCtrlID() == IDC_LST_MO_DIO2_TITLE)
+				|| (pWnd->GetDlgCtrlID() == IDC_LST_MO_MANUAL_CONTROL_TITLE)
 				)
 			{
 				pDC->SetBkColor(COLOR_BLACK);
 				pDC->SetTextColor(COLOR_YELLOW);
 				return m_Brush[COLOR_IDX_BLACK];
+			}
+			if ((pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_OPEN)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_CLOSE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_HOLDING_ON)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_HOLDING_OFF)
+				)
+			{
+				pDC->SetBkColor(COLOR_GREEN128);
+				pDC->SetTextColor(COLOR_WHITE);
+				return m_Brush[COLOR_IDX_GREEN128];
 			}
 			if (pWnd->GetDlgCtrlID() == IDC_STATIC)
 			{
@@ -325,6 +372,9 @@ void CMaintenanceDIO::OnNMCustomdrawLstMoDio2Out(NMHDR* pNMHDR, LRESULT* pResult
 void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	if (Lf_checkSafetyAlarmOn() == TRUE)
+//		return;
+
 	int nDOut = 0;
 
 	if (m_lstMoDio1Out.GetCheck(0) == TRUE)		nDOut |= DOUT_D1_TOWER_LAMP_RED;
@@ -343,13 +393,13 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 	if (m_lstMoDio1Out.GetCheck(13) == TRUE)	nDOut |= DOUT_D1_JIG_TILTING01_UP;
 	if (m_lstMoDio1Out.GetCheck(14) == TRUE)	nDOut |= DOUT_D1_JIG_TILTING02_DOWN;
 	if (m_lstMoDio1Out.GetCheck(15) == TRUE)	nDOut |= DOUT_D1_JIG_TILTING02_UP;
-	if (m_lstMoDio1Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D1_IONIZER_BLOW;
+	if (m_lstMoDio1Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D1_IONIZER_BLOW_ON;
 	if (m_lstMoDio1Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D1_IONIZER_ON_OFF;
 	if (m_lstMoDio1Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D1_LED_ON_OFF;
-	if (m_lstMoDio1Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D1_SPARE0;
+	if (m_lstMoDio1Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D1_IONIZER_BLOW_OFF;
 	if (m_lstMoDio1Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D1_ROBOT_IN_LED;
-	if (m_lstMoDio1Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D1_SPARE2;
-	if (m_lstMoDio1Out.GetCheck(22) == TRUE)	nDOut |= DOUT_D1_SPARE3;
+	if (m_lstMoDio1Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D1_SHUTTER_HOLDING_BACKWARD;
+	if (m_lstMoDio1Out.GetCheck(22) == TRUE)	nDOut |= DOUT_D1_SHUTTER_HOLDING_FORWARD;
 	if (m_lstMoDio1Out.GetCheck(23) == TRUE)	nDOut |= DOUT_D1_SPARE4;
 
 	if ((nDOut & DOUT_D1_MUTTING_1) && (nDOut & DOUT_D1_MUTTING_2))
@@ -383,11 +433,11 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 	}
 	else if (nDOut & DOUT_D1_REAR_SHUTTER_DOWN)
 	{
-		if ((m_pApp->m_nDioOutBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
-			|| (m_pApp->m_nDioOutBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
+			|| (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
 			)
 		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_60);
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_56);
 			return;
 		}
 		else
@@ -411,6 +461,9 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 void CMaintenanceDIO::OnBnClickedBtnMoWriteDio2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	if (Lf_checkSafetyAlarmOn() == TRUE)
+//		return;
+
 	int nDOut = 0;
 
 	if (m_lstMoDio2Out.GetCheck(0) == TRUE)		nDOut |= DOUT_D2_CH1_TRAY_UNCLAMP_1;
@@ -444,6 +497,279 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio2()
 	}
 }
 
+void CMaintenanceDIO::OnStnClickedSttMoFrontDoorOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bRet = FALSE;
+
+	bRet = m_pApp->commApi->dio_FrontDoorHoldingOff();
+	Lf_setListCheck();
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+		return;
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	m_pApp->commApi->dio_FrontDoorOpen();
+	Lf_setListCheck();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD)
+			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == TRUE)
+	{
+		m_pApp->commApi->dio_FrontDoorHoldingOn();
+		Lf_setListCheck();
+	}
+	else
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR OPEN TIME OUT"), ERROR_CODE_83);
+	}
+
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
+
+	bRet = m_pApp->commApi->dio_FrontDoorHoldingOff();
+	Lf_setListCheck();
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+		return;
+	}
+
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD)
+		{
+			bRet = TRUE;
+			return;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
+			break;
+	}
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+		return;
+	}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////
+	m_pApp->commApi->dio_FrontDoorClose();
+	Lf_setListCheck();
+
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD)
+			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR CLOSE TIME OUT"), ERROR_CODE_84);
+	}
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_FrontDoorHoldingOn();
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_FrontDoorHoldingOff();
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoRearDoorOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_RearDoorOpen();
+	Lf_setListCheck();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR OPEN TIME OUT"), ERROR_CODE_77);
+	}
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoRearDoorClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_RearDoorClose();
+	Lf_setListCheck();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR CLOSE TIME OUT"), ERROR_CODE_78);
+	}
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LightCurtainMuteOnOff(ON);
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LightCurtainMuteOnOff(OFF);
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoJigTiltingUp()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_JigTiltingUp();
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoJigTiltingDown()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_JigTiltingDown();
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoLeftSafetyDoorOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LeftSafetyDoorOpen();
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoRightSafetyDoorOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_RightSafetyDoorOpen();
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoClampLockCh1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_JigClampLock(CH1);
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_JigClampUnLock(CH1);
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoClampLockCh2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_JigClampLock(CH2);
+	Lf_setListCheck();
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_JigClampUnLock(CH2);
+	Lf_setListCheck();
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CMaintenanceDIO::Lf_InitLocalValue()
@@ -460,6 +786,7 @@ void CMaintenanceDIO::Lf_InitFontset()
 	m_Font[2].CreateFont(23, 10, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_LST_MO_DIO1_TITLE)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_LST_MO_DIO2_TITLE)->SetFont(&m_Font[2]);
+	GetDlgItem(IDC_LST_MO_MANUAL_CONTROL_TITLE)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_BTN_MO_WRITE_DIO1)->SetFont(&m_Font[2]);
 	GetDlgItem(IDC_BTN_MO_WRITE_DIO2)->SetFont(&m_Font[2]);
 
@@ -476,8 +803,11 @@ void CMaintenanceDIO::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_BLACK].CreateSolidBrush(COLOR_BLACK);
 	m_Brush[COLOR_IDX_WHITE].CreateSolidBrush(COLOR_WHITE);
 	m_Brush[COLOR_IDX_RED].CreateSolidBrush(COLOR_RED);
+	m_Brush[COLOR_IDX_RED128].CreateSolidBrush(COLOR_RED128);
 	m_Brush[COLOR_IDX_GREEN].CreateSolidBrush(COLOR_GREEN);
+	m_Brush[COLOR_IDX_GREEN128].CreateSolidBrush(COLOR_GREEN128);
 	m_Brush[COLOR_IDX_BLUE].CreateSolidBrush(COLOR_BLUE);
+	m_Brush[COLOR_IDX_BLUE128].CreateSolidBrush(COLOR_BLUE128);
 	m_Brush[COLOR_IDX_ORANGE].CreateSolidBrush(COLOR_ORANGE);
 	m_Brush[COLOR_IDX_YELLOW].CreateSolidBrush(COLOR_YELLOW);
 	m_Brush[COLOR_IDX_MAGENTA].CreateSolidBrush(COLOR_MAGENTA);
@@ -493,146 +823,14 @@ void CMaintenanceDIO::Lf_InitColorBrush()
 	m_Brush[COLOR_IDX_DEEP_BLUE].CreateSolidBrush(COLOR_DEEP_BLUE);
 }
 
-
-CString strNameDIN1[40] =
+void CMaintenanceDIO::Lf_InitDlgDesign()
 {
-	_T("EMO_SWITCH"),
-	_T("START_SWITCH"),
-	_T("RESET_SWITCH"),
-	_T("MUTTING_SWITCH"),
-	_T("LIGHT_CURTAIN"),
-	_T("LEFT_SAFETY_DOOR"),
-	_T("RIGHT_SAFETY_DOOR"),
-	_T("LEFT_SHUTTER_HOLDING_SENSOR"),
-	_T("RIGHT_SHUTTER_HOLDING_SENSOR"),
-	_T("FAN_IN_ALARM"),
-	_T("FAN_OUT_ALARM"),
-	_T("TEMPATURE_HIGH_ALARM"),
-	_T("MAIN_AIR_DIGITAL_PRESSURE_GAGE"),
-	_T("IONIZER_AIR_DIGITAL_PRESSURE_GAGE"),
-	_T("CYLINDER_DIGITAL_PRESSURE_GAGE"),
-	_T("JIG_DIGITAL_PRESSURE_GAGE"),
-	_T("IONIZER_ALARM"),
-	_T("IONIZER (SPARE)"),
-	_T("ROBOT_IN_SENSOR_1"),
-	_T("ROBOT_IN_SENSOR_2"),
-	_T("FRONT_SHUTTER_LEFT_BACKWARD"),
-	_T("FRONT_SHUTTER_LEFT_FORWARD"),
-	_T("FRONT_SHUTTER_RIGHT_BACKWARD"),
-	_T("FRONT_SHUTTER_RIGHT_FORWARD"),
-	_T("REAR_SHUTTER_LEFT_BACKWARD"),
-	_T("REAR_SHUTTER_LEFT_FORWARD"),
-	_T("REAR_SHUTTER_RIGHT_BACKWARD"),
-	_T("REAR_SHUTTER_RIGHT_FORWARD"),
-	_T("JIG_DOWN_1_SENSOR"),
-	_T("JIG_UP_1_SENSOR"),
-	_T("JIG_DOWN_2_SENSOR"),
-	_T("JIG_UP_2_SENSOR"),
-	_T("JIG_DOWN_3_SENSOR"),
-	_T("JIG_UP_3_SENSOR"),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T(""),
-};
+	// Gradation Static
 
-CString strNameDOUT1[24] =
-{
-	_T("TOWER_LAMP_RED"),
-	_T("TOWER_LAMP_YELLOW"),
-	_T("TOWER_LAMP_GREEN"),
-	_T("TOWER_LAMP_BUZZER"),
-	_T("MUTTING_1"),
-	_T("MUTTING_2"),
-	_T("LEFT_SAFETY_DOOR_OPEN"),
-	_T("RIGHT_SAFETY_DOOR_OPEN"),
-	_T("FRONT_SHUTTER_DOWN"),
-	_T("FRONT_SHUTTER_UP"),
-	_T("REAR_SHUTTER_DOWN"),
-	_T("REAR_SHUTTER_UP"),
-	_T("JIG_TILTING01_DOWN"),
-	_T("JIG_TILTING01_UP"),
-	_T("JIG_TILTING02_DOWN"),
-	_T("JIG_TILTING02_UP"),
-	_T("IONIZER_BLOW"),
-	_T("IONIZER_ON_OFF"),
-	_T("LED_ON_OFF"),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T("")
-};
-
-CString strNameDIN2[40] =
-{
-	_T("JIG_HOME_SENSOR"),
-	_T("JIG_DOOR_CLOSE_PHOTO_SENSOR"),
-	_T("TILTING_60_SENSOR"),
-	_T("TILTING_70_SENSOR"),
-	_T("CH1_JIG_TRAY_IN_SENSOR"),
-	_T("CH2_JIG_TRAY_IN_SENSOR"),
-	_T("CH1_TRAY_UNCLAMP1"),
-	_T("CH1_TRAY_UNCLAMP2"),
-	_T("CH1_TRAY_UNCLAMP3"),
-	_T("CH1_TRAY_UNCLAMP4"),
-	_T("CH1_TRAY_UNCLAMP5"),
-	_T("CH1_TRAY_UNCLAMP6"),
-	_T("CH2_TRAY_UNCLAMP1"),
-	_T("CH2_TRAY_UNCLAMP2"),
-	_T("CH2_TRAY_UNCLAMP3"),
-	_T("CH2_TRAY_UNCLAMP4"),
-	_T("CH2_TRAY_UNCLAMP5"),
-	_T("CH2_TRAY_UNCLAMP6"),
-	_T("CH1_ADSORPTION_EJECTOR_DIGITAL_PRESSURE_GAUGE"),
-	_T("CH2_ADSORPTION_EJECTOR_DIGITAL_PRESSURE_GAUGE"),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T("CH1_KEYPAD_AUTO_MANUAL"),
-	_T("CH1_KEYPAD_BACK"),
-	_T("CH1_KEYPAD_NEXT"),
-	_T("CH1_KEYPAD_REPEAT"),
-	_T("CH1_KEYPAD_RESET"),
-	_T("CH1_KEYPAD_UP"),
-	_T("CH1_KEYPAD_DOWN"),
-	_T("CH1_KEYPAD_SEND"),
-	_T("CH2_KEYPAD_AUTO_MANUAL"),
-	_T("CH2_KEYPAD_BACK"),
-	_T("CH2_KEYPAD_NEXT"),
-	_T("CH2_KEYPAD_REPEAT"),
-	_T("CH2_KEYPAD_RESET"),
-	_T("CH2_KEYPAD_UP"),
-	_T("CH2_KEYPAD_DOWN"),
-	_T("CH2_KEYPAD_SEND")
-};
-
-CString strNameDOUT2[24] =
-{
-	_T("CH1_TRAY_UNCLAMP_1"),
-	_T("CH1_TRAY_UNCLAMP_2"),
-	_T("CH1_TRAY_UNCLAMP_3"),
-	_T("CH1_TRAY_UNCLAMP_4"),
-	_T("CH1_TRAY_UNCLAMP_5"),
-	_T("CH1_TRAY_UNCLAMP_6"),
-	_T("CH2_TRAY_UNCLAMP_1"),
-	_T("CH2_TRAY_UNCLAMP_2"),
-	_T("CH2_TRAY_UNCLAMP_3"),
-	_T("CH2_TRAY_UNCLAMP_4"),
-	_T("CH2_TRAY_UNCLAMP_5"),
-	_T("CH2_TRAY_UNCLAMP_6"),
-	_T("CH1_ADSORPTION_EJECTOR"),
-	_T("CH1_PIN_CYLINDER_UP"),
-	_T("CH2_ADSORPTION_EJECTOR"),
-	_T("CH2_PIN_CYLINDER_UP"),
-	_T(""),
-	_T(""),
-	_T(""),
-	_T("")
-};
-
+	// Button ICON
+	m_btnMoWriteDIO1.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
+	m_btnMoWriteDIO2.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
+}
 
 void CMaintenanceDIO::Lf_initListDIN()
 {
@@ -650,7 +848,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 
 	m_lstMoDio1In.InsertColumn(2, _T("Description"), LVCFMT_LEFT, -1, -1);
 	m_lstMoDio1In.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Judge
-	m_lstMoDio1In.SetColumnWidth(2, 300);
+	m_lstMoDio1In.SetColumnWidth(2, 230);
 
 	dwStype = m_lstMoDio1In.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES;
@@ -659,7 +857,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 	for (int i = 0; i < 40; i++)
 	{
 		m_lstMoDio1In.InsertItem(i, _T(""));
-		sdata.Format(_T("IN-%d"), i + 1);
+		sdata.Format(_T("DI%02dA"), i + 1);
 		m_lstMoDio1In.SetItem(i, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 		m_lstMoDio1In.SetItem(i, 2, LVIF_TEXT, strNameDIN1[i], 0, LVIF_STATE, 0, 0);
 	}
@@ -676,7 +874,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 
 	m_lstMoDio1Out.InsertColumn(2, _T("Description"), LVCFMT_LEFT, -1, -1);
 	m_lstMoDio1Out.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER);
-	m_lstMoDio1Out.SetColumnWidth(2, 250);
+	m_lstMoDio1Out.SetColumnWidth(2, 230);
 
 	dwStype = m_lstMoDio1Out.GetExtendedStyle();
 	dwStype |= /*LVS_EX_FULLROWSELECT*/ LVS_EX_SINGLEROW | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES;
@@ -685,7 +883,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 	for (int i = 0; i < 24; i++)
 	{
 		m_lstMoDio1Out.InsertItem(i, _T(""));
-		sdata.Format(_T("OUT-%d"), (i + 1));
+		sdata.Format(_T("DO%02dA"), (i + 1));
 		m_lstMoDio1Out.SetItem(i, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 		m_lstMoDio1Out.SetItem(i, 2, LVIF_TEXT, strNameDOUT1[i], 0, LVIF_STATE, 0, 0);
 	}
@@ -702,7 +900,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 
 	m_lstMoDio2In.InsertColumn(2, _T("Description"), LVCFMT_LEFT, -1, -1);
 	m_lstMoDio2In.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER); // Judge
-	m_lstMoDio2In.SetColumnWidth(2, 300);
+	m_lstMoDio2In.SetColumnWidth(2, 230);
 
 	dwStype = m_lstMoDio2In.GetExtendedStyle();
 	dwStype |= LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES;
@@ -711,7 +909,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 	for (int i = 0; i < 40; i++)
 	{
 		m_lstMoDio2In.InsertItem(i, _T(""));
-		sdata.Format(_T("IN-%d"), i + 1);
+		sdata.Format(_T("DI%02dB"), i + 1);
 		m_lstMoDio2In.SetItem(i, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 		m_lstMoDio2In.SetItem(i, 2, LVIF_TEXT, strNameDIN2[i], 0, LVIF_STATE, 0, 0);
 	}
@@ -728,7 +926,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 
 	m_lstMoDio2Out.InsertColumn(2, _T("Description"), LVCFMT_LEFT, -1, -1);
 	m_lstMoDio2Out.SetColumnWidth(2, LVSCW_AUTOSIZE | LVSCW_AUTOSIZE_USEHEADER);
-	m_lstMoDio2Out.SetColumnWidth(2, 250);
+	m_lstMoDio2Out.SetColumnWidth(2, 230);
 
 	dwStype = m_lstMoDio2Out.GetExtendedStyle();
 	dwStype |= /*LVS_EX_FULLROWSELECT*/ LVS_EX_SINGLEROW | LVS_EX_GRIDLINES | LVS_EX_CHECKBOXES;
@@ -737,7 +935,7 @@ void CMaintenanceDIO::Lf_initListDIN()
 	for (int i = 0; i < 24; i++)
 	{
 		m_lstMoDio2Out.InsertItem(i, _T(""));
-		sdata.Format(_T("OUT-%d"), (i + 1));
+		sdata.Format(_T("DO%02dB"), (i + 1));
 		m_lstMoDio2Out.SetItem(i, 1, LVIF_TEXT, sdata, 0, LVIF_STATE, 0, 0);
 		m_lstMoDio2Out.SetItem(i, 2, LVIF_TEXT, strNameDOUT2[i], 0, LVIF_STATE, 0, 0);
 	}
@@ -747,55 +945,55 @@ void CMaintenanceDIO::Lf_initListDIN()
 
 void CMaintenanceDIO::Lf_setListCheck()
 {
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_RED)					m_lstMoDio1Out.SetCheck(0, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_YELLOW)				m_lstMoDio1Out.SetCheck(1, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_GREEN)				m_lstMoDio1Out.SetCheck(2, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_BUZZER)				m_lstMoDio1Out.SetCheck(3, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_1)						m_lstMoDio1Out.SetCheck(4, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_2)						m_lstMoDio1Out.SetCheck(5, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_LEFT_SAFETY_DOOR_OPEN)			m_lstMoDio1Out.SetCheck(6, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_RIGHT_SAFETY_DOOR_OPEN)			m_lstMoDio1Out.SetCheck(7, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_FRONT_SHUTTER_DOWN >> 8))		m_lstMoDio1Out.SetCheck(8, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_FRONT_SHUTTER_UP >> 8))			m_lstMoDio1Out.SetCheck(9, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_REAR_SHUTTER_DOWN >> 8))		m_lstMoDio1Out.SetCheck(10, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_REAR_SHUTTER_UP >> 8))			m_lstMoDio1Out.SetCheck(11, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING01_DOWN >> 8))		m_lstMoDio1Out.SetCheck(12, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING01_UP >> 8))			m_lstMoDio1Out.SetCheck(13, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING02_DOWN >> 8))		m_lstMoDio1Out.SetCheck(14, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING02_UP >> 8))			m_lstMoDio1Out.SetCheck(15, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_BLOW >> 16))			m_lstMoDio1Out.SetCheck(16, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_ON_OFF >> 16))			m_lstMoDio1Out.SetCheck(17, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_LED_ON_OFF >> 16))				m_lstMoDio1Out.SetCheck(18, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE0 >> 16))					m_lstMoDio1Out.SetCheck(19, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16))			m_lstMoDio1Out.SetCheck(20, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE2 >> 16))					m_lstMoDio1Out.SetCheck(21, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE3 >> 16))					m_lstMoDio1Out.SetCheck(22, TRUE);
-	if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE4 >> 16))					m_lstMoDio1Out.SetCheck(23, TRUE);
+	m_lstMoDio1Out.SetCheck(0, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_RED));
+	m_lstMoDio1Out.SetCheck(1, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_YELLOW));
+	m_lstMoDio1Out.SetCheck(2, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_GREEN));
+	m_lstMoDio1Out.SetCheck(3, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_TOWER_LAMP_BUZZER));
+	m_lstMoDio1Out.SetCheck(4, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_1));
+	m_lstMoDio1Out.SetCheck(5, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_2));
+	m_lstMoDio1Out.SetCheck(6, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_LEFT_SAFETY_DOOR_OPEN));
+	m_lstMoDio1Out.SetCheck(7, (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_RIGHT_SAFETY_DOOR_OPEN));
+	m_lstMoDio1Out.SetCheck(8, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_FRONT_SHUTTER_DOWN >> 8)));
+	m_lstMoDio1Out.SetCheck(9, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_FRONT_SHUTTER_UP >> 8)));
+	m_lstMoDio1Out.SetCheck(10, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_REAR_SHUTTER_DOWN >> 8)));
+	m_lstMoDio1Out.SetCheck(11, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_REAR_SHUTTER_UP >> 8)));
+	m_lstMoDio1Out.SetCheck(12, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING01_DOWN >> 8)));
+	m_lstMoDio1Out.SetCheck(13, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING01_UP >> 8)));
+	m_lstMoDio1Out.SetCheck(14, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING02_DOWN >> 8)));
+	m_lstMoDio1Out.SetCheck(15, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING02_UP >> 8)));
+	m_lstMoDio1Out.SetCheck(16, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_BLOW_ON >> 16)));
+	m_lstMoDio1Out.SetCheck(17, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_ON_OFF >> 16)));
+	m_lstMoDio1Out.SetCheck(18, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_LED_ON_OFF >> 16)));
+	m_lstMoDio1Out.SetCheck(19, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_BLOW_OFF >> 16)));
+	m_lstMoDio1Out.SetCheck(20, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16)));
+	m_lstMoDio1Out.SetCheck(21, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SHUTTER_HOLDING_BACKWARD >> 16)));
+	m_lstMoDio1Out.SetCheck(22, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SHUTTER_HOLDING_FORWARD >> 16)));
+	m_lstMoDio1Out.SetCheck(23, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SPARE4 >> 16)));
 
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_1)				m_lstMoDio2Out.SetCheck(0, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_2)				m_lstMoDio2Out.SetCheck(1, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_3)				m_lstMoDio2Out.SetCheck(2, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_4)				m_lstMoDio2Out.SetCheck(3, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_5)				m_lstMoDio2Out.SetCheck(4, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_6)				m_lstMoDio2Out.SetCheck(5, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH2_TRAY_UNCLAMP_1)				m_lstMoDio2Out.SetCheck(6, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH2_TRAY_UNCLAMP_2)				m_lstMoDio2Out.SetCheck(7, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_3 >> 8))		m_lstMoDio2Out.SetCheck(8, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_4 >> 8))		m_lstMoDio2Out.SetCheck(9, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_5 >> 8))		m_lstMoDio2Out.SetCheck(10, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_6 >> 8))		m_lstMoDio2Out.SetCheck(11, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_ADSORPTION_EJECTOR >> 8))	m_lstMoDio2Out.SetCheck(12, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_PIN_CYLINDER_UP >> 8))		m_lstMoDio2Out.SetCheck(13, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_ADSORPTION_EJECTOR >> 8))	m_lstMoDio2Out.SetCheck(14, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_PIN_CYLINDER_UP >> 8))		m_lstMoDio2Out.SetCheck(15, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE1 >> 16))					m_lstMoDio2Out.SetCheck(16, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE2 >> 16))					m_lstMoDio2Out.SetCheck(17, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE3 >> 16))					m_lstMoDio2Out.SetCheck(18, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE4 >> 16))					m_lstMoDio2Out.SetCheck(19, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE5 >> 16))					m_lstMoDio2Out.SetCheck(20, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE6 >> 16))					m_lstMoDio2Out.SetCheck(21, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE7 >> 16))					m_lstMoDio2Out.SetCheck(22, TRUE);
-	if (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE8 >> 16))					m_lstMoDio2Out.SetCheck(23, TRUE);
+	m_lstMoDio2Out.SetCheck(0, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_1));
+	m_lstMoDio2Out.SetCheck(1, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_2));
+	m_lstMoDio2Out.SetCheck(2, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_3));
+	m_lstMoDio2Out.SetCheck(3, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_4));
+	m_lstMoDio2Out.SetCheck(4, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_5));
+	m_lstMoDio2Out.SetCheck(5, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH1_TRAY_UNCLAMP_6));
+	m_lstMoDio2Out.SetCheck(6, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH2_TRAY_UNCLAMP_1));
+	m_lstMoDio2Out.SetCheck(7, (m_pApp->m_nDioOutBit[CH2][0] & DOUT_D2_CH2_TRAY_UNCLAMP_2));
+	m_lstMoDio2Out.SetCheck(8, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_3 >> 8)));
+	m_lstMoDio2Out.SetCheck(9, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_4 >> 8)));
+	m_lstMoDio2Out.SetCheck(10, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_5 >> 8)));
+	m_lstMoDio2Out.SetCheck(11, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_6 >> 8)));
+	m_lstMoDio2Out.SetCheck(12, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_ADSORPTION_EJECTOR >> 8)));
+	m_lstMoDio2Out.SetCheck(13, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_PIN_CYLINDER_UP >> 8)));
+	m_lstMoDio2Out.SetCheck(14, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_ADSORPTION_EJECTOR >> 8)));
+	m_lstMoDio2Out.SetCheck(15, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_PIN_CYLINDER_UP >> 8)));
+	m_lstMoDio2Out.SetCheck(16, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE1 >> 16)));
+	m_lstMoDio2Out.SetCheck(17, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE2 >> 16)));
+	m_lstMoDio2Out.SetCheck(18, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE3 >> 16)));
+	m_lstMoDio2Out.SetCheck(19, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE4 >> 16)));
+	m_lstMoDio2Out.SetCheck(20, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE5 >> 16)));
+	m_lstMoDio2Out.SetCheck(21, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE6 >> 16)));
+	m_lstMoDio2Out.SetCheck(22, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE7 >> 16)));
+	m_lstMoDio2Out.SetCheck(23, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE8 >> 16)));
 }
 
 
@@ -808,9 +1006,9 @@ void CMaintenanceDIO::Lf_updateStautsDio1In()
 	m_lstMoDio1In.SetCheck(4, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LIGHT_CURTAIN));
 	m_lstMoDio1In.SetCheck(5, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR));
 	m_lstMoDio1In.SetCheck(6, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR));
-	m_lstMoDio1In.SetCheck(7, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SHUTTER_HOLDING_SENSOR));
+	m_lstMoDio1In.SetCheck(7, (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_SHUTTER_HOLDING_FORWARD));
 
-	m_lstMoDio1In.SetCheck(8, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_RIGHT_SHUTTER_HOLDING_SENSOR));
+	m_lstMoDio1In.SetCheck(8, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD));
 	m_lstMoDio1In.SetCheck(9, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_IN_ALARM));
 	m_lstMoDio1In.SetCheck(10, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_OUT_ALARM));
 	m_lstMoDio1In.SetCheck(11, (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_TEMPATURE_HIGH_ALARM));
@@ -833,13 +1031,13 @@ void CMaintenanceDIO::Lf_updateStautsDio1In()
 	m_lstMoDio1In.SetCheck(26, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD));
 	m_lstMoDio1In.SetCheck(27, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD));
 	m_lstMoDio1In.SetCheck(28, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR));
-	m_lstMoDio1In.SetCheck(29, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_1_SENSOR));
+	m_lstMoDio1In.SetCheck(29, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR));
 	m_lstMoDio1In.SetCheck(30, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR));
-	m_lstMoDio1In.SetCheck(31, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_2_SENSOR));
+	m_lstMoDio1In.SetCheck(31, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR));
 
 	m_lstMoDio1In.SetCheck(32, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR));
 	m_lstMoDio1In.SetCheck(33, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_UP_3_SENSOR));
-	m_lstMoDio1In.SetCheck(34, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE1));
+	m_lstMoDio1In.SetCheck(34, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM));
 	m_lstMoDio1In.SetCheck(35, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE2));
 	m_lstMoDio1In.SetCheck(36, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE3));
 	m_lstMoDio1In.SetCheck(37, (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SPARE4));
@@ -894,4 +1092,14 @@ void CMaintenanceDIO::Lf_updateStautsDio2In()
 	m_lstMoDio2In.SetCheck(37, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_UP));
 	m_lstMoDio2In.SetCheck(38, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_DOWN));
 	m_lstMoDio2In.SetCheck(39, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_SEND));
+}
+
+BOOL CMaintenanceDIO::Lf_checkSafetyAlarmOn()
+{
+	if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY ALARM"), ERROR_CODE_92);
+		return TRUE;
+	}
+	return FALSE;
 }

@@ -59,6 +59,7 @@ void CModelInfoData::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_MF_PWM_DUTY, m_edtMdPwmDuty);
 	DDX_Control(pDX, IDC_CMB_MD_PWM_LEVEL, m_cmbMdPwmLevel);
 	DDX_Control(pDX, IDC_CMB_MD_CABLE_OPEN, m_cmbMdCableOpenCheck);
+	DDX_Control(pDX, IDC_CMB_MD_JIG_TILTING_CHECK, m_cmbMdJigTiltingCheck);
 }
 
 
@@ -429,6 +430,7 @@ void CModelInfoData::Gf_controlEnableDisable(BOOL bEnable)
 	GetDlgItem(IDC_EDT_MF_PWM_DUTY)->EnableWindow(bEnable);
 	GetDlgItem(IDC_CMB_MD_PWM_LEVEL)->EnableWindow(bEnable);
 	GetDlgItem(IDC_CMB_MD_CABLE_OPEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_CMB_MD_JIG_TILTING_CHECK)->EnableWindow(bEnable);
 	GetDlgItem(IDC_CMB_MD_PTN_NAME)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDT_MD_PTN_VCC)->EnableWindow(bEnable);
 	GetDlgItem(IDC_EDT_MD_PTN_VEL)->EnableWindow(bEnable);
@@ -490,6 +492,7 @@ void CModelInfoData::Gf_DataSaveModelData(CString modelName)
 	//FUNCTION
 	//=====================================================================================================================
 	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("CABLE_OPEN_CHECK"), m_cmbMdCableOpenCheck.GetCurSel());
+	Write_ModelFile(modelName, _T("MODEL_DATA"), _T("JIG_TILTING_CHECK"), m_cmbMdJigTiltingCheck.GetCurSel());
 
 
 	//=====================================================================================================================
@@ -605,6 +608,7 @@ void CModelInfoData::Lf_InitDialogControl()
 	m_edtMdPwmDuty.SetWindowText(sdata);
 	m_cmbMdPwmLevel.SetCurSel(lpModelInfo->m_nPwmLevel);
 	m_cmbMdCableOpenCheck.SetCurSel(lpModelInfo->m_nCableOpenCheck);
+	m_cmbMdJigTiltingCheck.SetCurSel(lpModelInfo->m_nJigTiltingCheck);
 }
 
 void CModelInfoData::Lf_InitPatternListColum()

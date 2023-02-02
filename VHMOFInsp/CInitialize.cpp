@@ -553,6 +553,7 @@ void CInitialize::Lf_initConnPG()
 		m_pApp->bConnectInfo[CONN_PG1] = TRUE;
 
 		m_pApp->commApi->main_getCtrlFWVersion(CH1);
+		m_pApp->commApi->main_getPowerFWVersion(CH1);
 	}
 	else
 	{

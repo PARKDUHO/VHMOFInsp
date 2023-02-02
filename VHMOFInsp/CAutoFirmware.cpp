@@ -140,14 +140,28 @@ HBRUSH CAutoFirmware::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				pDC->SetTextColor(COLOR_WHITE);
 				return m_Brush[COLOR_IDX_BLUISH];
 			}
-
 			if (pWnd->GetDlgCtrlID() == IDC_STT_AF_STATUS)
 			{
-				pDC->SetBkColor(COLOR_BLACK);
-				pDC->SetTextColor(COLOR_CYAN);
-				return m_Brush[COLOR_IDX_BLACK];
+				if (m_downloadStatus == 1)
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+				else if (m_downloadStatus == 2)
+				{
+					pDC->SetBkColor(COLOR_RED128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED128];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_BLACK);
+					pDC->SetTextColor(COLOR_CYAN);
+					return m_Brush[COLOR_IDX_BLACK];
+				}
 			}
-			
+
 			break;
 		}
 	}	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
@@ -199,9 +213,20 @@ void CAutoFirmware::OnBnClickedBtnAfReadVersion()
 			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T("Fail"));
 		}
 	}
-	if (target == FW_TARGET_MAIN_FPGA)
+	if (target == FW_TARGET_POWER_MCU)
 	{
+		m_pApp->m_sPmmFWVersion[ch].Empty();
+		GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T(""));
+		delayMs(100);
 
+		if (m_pApp->commApi->main_getPowerFWVersion(ch) == TRUE)
+		{
+			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(m_pApp->m_sPmmFWVersion[ch]);
+		}
+		else
+		{
+			GetDlgItem(IDC_EDT_AF_READ_VERSION)->SetWindowText(_T("Fail"));
+		}
 	}
 	if (target == FW_TARGET_QSPI_BOARD)
 	{
@@ -227,13 +252,24 @@ void CAutoFirmware::OnBnClickedBtnAfDownloadStart()
 	int target = m_cmbAfTarget.GetCurSel();
 	int ch = m_cmbAfChSelect.GetCurSel();
 
+	if (GetDlgItem(IDC_EDT_AF_FILE_PATH)->GetWindowTextLength() == 0)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_60);
+		return;
+	}
+
+	GetDlgItem(IDC_CMB_AF_TARGET)->EnableWindow(FALSE);
+	GetDlgItem(IDC_CMB_AF_CH_SELECT)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_AF_FILE_OPEN)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_AF_READ_VERSION)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_AF_DOWNLOAD_START)->EnableWindow(FALSE);
 	GetDlgItem(IDC_BTN_AF_CLOSE)->EnableWindow(FALSE);
 
-	Lf_firmwareDownloadStart(ch);
+	if (target == FW_TARGET_MAIN_MCU)			Lf_fwMainMcuDownloadStart(ch);
+	else if (target == FW_TARGET_POWER_MCU)		Lf_fwPowerMcuDownloadStart(ch);
 
+	GetDlgItem(IDC_CMB_AF_TARGET)->EnableWindow(TRUE);
+	GetDlgItem(IDC_CMB_AF_CH_SELECT)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BTN_AF_FILE_OPEN)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BTN_AF_READ_VERSION)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BTN_AF_DOWNLOAD_START)->EnableWindow(TRUE);
@@ -253,6 +289,7 @@ void CAutoFirmware::Lf_InitLocalValue()
 {
 	m_cmbAfTarget.SetCurSel(0);
 	m_cmbAfChSelect.SetCurSel(0);
+	m_downloadStatus = 0;
 
 	m_pApp->m_nDownloadReadyAckCount = 0;					//Firmware Download ACK Receive Count 초기화.	
 	m_nFirmwareDataLen = 0;									//Firmware File Length 초기화
@@ -336,18 +373,35 @@ void CAutoFirmware::Lf_readyInitialize()
 void CAutoFirmware::Lf_loadFirmwareFile()
 {
 	CString m_sFirmwarePath;
+	CString m_sFileType;
 	TCHAR szFilePath[1024] = { 0, };
 
 	GetCurrentDirectory(sizeof(szFilePath), szFilePath);
 
-	CFileDialog m_ldFile(TRUE, _T("hex|*"), NULL, OFN_READONLY, _T("Intel Hex File(*.hex)|*.hex|All File(*.*)|*.*|"));
+	if (m_cmbAfTarget.GetCurSel() == FW_TARGET_MAIN_MCU)
+	{
+		m_sFileType = _T("Intel Hex File(App_MI20_0301_T8LC_HAL*.Hex;*.a90)|App_MI20_0301_T8LC_HAL*.HEX;*.a9|All File(*.*)|*.*|");
+ 	}
+	else if (m_cmbAfTarget.GetCurSel() == FW_TARGET_POWER_MCU)
+	{
+		m_sFileType = m_sFileType = _T("Binary File(*.bin;*.a90)|*.BIN;*.a9|All File(*.*)|*.*|");
+	}
+
+	CFileDialog m_ldFile(TRUE, _T("hex|*"), NULL, OFN_READONLY, m_sFileType);
 
 	if (m_ldFile.DoModal() == IDOK)
 	{
 		m_sFirmwarePath = m_ldFile.GetPathName();
 
 		GetDlgItem(IDC_EDT_AF_FILE_PATH)->SetWindowText(m_sFirmwarePath);
-		Lf_readFirmwareFile(m_sFirmwarePath);
+		if (m_cmbAfTarget.GetCurSel() == FW_TARGET_MAIN_MCU)
+		{
+			Lf_readFirmwareFile(m_sFirmwarePath);
+		}
+		else if (m_cmbAfTarget.GetCurSel() == FW_TARGET_POWER_MCU)
+		{
+			Lf_readPmmFile(m_sFirmwarePath);
+		}
 	}
 	SetCurrentDirectory(szFilePath);
 }
@@ -440,6 +494,8 @@ void CAutoFirmware::Lf_parseDataRecord(CString strRecord, BYTE* pData)
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CAutoFirmware::Lf_checkDownloadReady1(int ch)
 {
 	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Go To Boot Section!"));
@@ -586,16 +642,19 @@ BOOL CAutoFirmware::Lf_sendDownloadComplete(int ch)
 	return m_pApp->commApi->main_setDownloadComplete(ch);
 }
 
-BOOL CAutoFirmware::Lf_firmwareDownloadStart(int ch)
+BOOL CAutoFirmware::Lf_fwMainMcuDownloadStart(int ch)
 {
 	m_progAfProgress.SetPos(0);
 	int nRetryCount = 0;
+
+	m_downloadStatus = 0;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
 
 	// Step1. Download Ready Check - App
 	if (Lf_checkDownloadReady1(ch) == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_22);
-		goto ERR_EXCEPT;
+		goto FW_MAIN_MCU_ERR_EXCEPT;
 	}
 
 	// Step2. TCP ReConnection - BootSection
@@ -604,14 +663,14 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart(int ch)
 	if (Lf_TcpReConnection(ch) == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_23);
-		goto ERR_EXCEPT;
+		goto FW_MAIN_MCU_ERR_EXCEPT;
 	}
 
 	// Step3. Download Ready Check - Boot
 	if (Lf_checkDownloadReady2(ch) == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_24);
-		goto ERR_EXCEPT;
+		goto FW_MAIN_MCU_ERR_EXCEPT;
 	}
 
 	// Step4. Download Start
@@ -619,7 +678,7 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart(int ch)
 	if (Lf_sendFirmwareFile(ch) == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_25);
-		goto ERR_EXCEPT;
+		goto FW_MAIN_MCU_ERR_EXCEPT;
 	}
 
 	// Step5. Download Complete Check
@@ -627,7 +686,7 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart(int ch)
 	if (Lf_sendDownloadComplete(ch) == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_26);
-		goto ERR_EXCEPT;
+		goto FW_MAIN_MCU_ERR_EXCEPT;
 	}
 
 	// Step6. TCP ReConnection - App Section
@@ -636,7 +695,7 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart(int ch)
 	if (Lf_TcpReConnection(ch) == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_27);
-		goto ERR_EXCEPT;
+		goto FW_MAIN_MCU_ERR_EXCEPT;
 	}
 
 	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Firmware Download Complete!"));
@@ -647,15 +706,281 @@ BOOL CAutoFirmware::Lf_firmwareDownloadStart(int ch)
 	m_progAfProgress.SetPos(100);
 	GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(_T("( 100 % )"));
 
+	m_downloadStatus = 1;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
 	return TRUE;
 
-ERR_EXCEPT:
+FW_MAIN_MCU_ERR_EXCEPT:
 	// Error Exception. Initialize.
 	Lf_readyInitialize();
-	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Firmware Download Error."));
+
+	m_downloadStatus = 2;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
 
 	return FALSE;
 }
 
 
+
+/*********************************************************************************************************************************************/
+// Power Module MCU 관련 함수.
+/*********************************************************************************************************************************************/
+void CAutoFirmware::Lf_readPmmFile(CString strFilePath)
+{
+	CFile mFile;
+	BYTE version[8] = { 0, };
+	UINT index = 0;
+	CString sMsg;
+
+	m_nFrameCount = 0;
+	m_nFirmwareDataLen = 0;
+	memset(m_pFirmwareData, NULL, MAX_FILE_SIZE);
+
+	if (mFile.Open(strFilePath, CFile::modeRead) == FALSE)
+	{
+		sMsg.Format(_T("<FILE> Power MCU Firmware File read fail. (%s)"), strFilePath);
+		m_pApp->Gf_writeMLog(sMsg);
+		return;
+	}
+
+	m_nFirmwareDataLen = (UINT)mFile.GetLength();
+	mFile.Read((void*)m_pFirmwareData, m_nFirmwareDataLen);
+	mFile.Close();
+
+	m_nFrameCount = (m_nFirmwareDataLen / POWER_FW_PACKET_SIZE) + 1;
+
+}
+
+BOOL CAutoFirmware::Lf_checkPmmDownloadReady1(int ch)
+{
+	BOOL ret = FALSE;
+	int length = 0;
+	char szPacket[4096] = { 0, };
+	unsigned char calc_CRC8 = 0;
+
+	sprintf_s(szPacket, "%c1W0000", 0x02);
+	length = (int)strlen(szPacket);
+	calc_CRC8 = m_pApp->commApi->CRC8_Calc((BYTE*)&szPacket[1], length - 1);
+
+	sprintf_s(&szPacket[length], 4096 - length, "%02X%c", calc_CRC8, 0x03);
+	length = (int)strlen(szPacket);
+
+	ret = m_pApp->commApi->main_setSendQuery(CMD_CTRL_TRANSFER_TO_POWER, length, szPacket, ch);
+
+	return lpInspWorkInfo->m_nPmmAck;
+}
+
+BOOL CAutoFirmware::Lf_checkPmmDownloadReady2(int ch)
+{
+	BOOL ret = FALSE;
+	int length = 0;
+	char szPacket[4096] = { 0, };
+	unsigned char calc_CRC8 = 0;
+
+	sprintf_s(szPacket, "%c1X", 0x02);
+	length = (int)strlen(szPacket);
+	calc_CRC8 = m_pApp->commApi->CRC8_Calc((BYTE*)&szPacket[1], length - 1);
+
+	sprintf_s(&szPacket[length], 4096 - length, "%02X%c", calc_CRC8, 0x03);
+	length = (int)strlen(szPacket);
+
+	ret = m_pApp->commApi->main_setSendQuery(CMD_CTRL_TRANSFER_TO_POWER, length, szPacket, ch);
+
+	return lpInspWorkInfo->m_nPmmAck;
+}
+
+BOOL CAutoFirmware::Lf_sendPmmFirmwareFile(int ch)
+{
+	BOOL bRet = FALSE;
+	BOOL bFirstTime = TRUE;
+	int startAddr = 0, packetLen = 0;
+	int packetLen_temp = POWER_FW_PACKET_SIZE;
+	int sendcnt = 1, length = 0, nPos;
+	char szpacket[4096] = { 0, };
+	CString sPer;
+	CString sMsg;
+	unsigned char calc_CRC8 = 0;
+
+	while (1)
+	{
+		lpInspWorkInfo->m_nPmmAck = FALSE;
+
+		if ((startAddr + packetLen_temp) <= m_nFirmwareDataLen)
+		{
+			sprintf_s(szpacket, "%c1Y%04d%02d%02d", 0x02, POWER_FW_PACKET_SIZE, sendcnt, m_nFrameCount);
+
+			memcpy(&szpacket[11], (char*)&m_pFirmwareData[startAddr], packetLen_temp);
+			length = 11 + packetLen_temp;
+			calc_CRC8 = m_pApp->commApi->CRC8_Calc((BYTE*)&szpacket[1], length - 1);
+
+			sprintf_s(&szpacket[length], 4096 - length, "%02X%c", calc_CRC8, 0x03);
+			length += 3;// CRC8값과 ETX자리수를 더해 준다.
+
+			// 주의 //
+			// Power F/W는 절대 Retry 금지 //
+			m_pApp->commApi->main_setSendQuery(CMD_CTRL_TRANSFER_TO_POWER, length, szpacket, ch);
+			if (lpInspWorkInfo->m_nPmmAck == FALSE)
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			sprintf_s(szpacket, "%c1Y%04d%02d%02d", 0x02, (m_nFirmwareDataLen - startAddr), sendcnt, m_nFrameCount);
+
+			memcpy(&szpacket[11], (char*)&m_pFirmwareData[startAddr], (m_nFirmwareDataLen - startAddr));
+			length = 11 + (m_nFirmwareDataLen - startAddr);
+			calc_CRC8 = m_pApp->commApi->CRC8_Calc((BYTE*)&szpacket[1], length - 1);
+
+			sprintf_s(&szpacket[length], 4096 - length, "%02X%c", calc_CRC8, 0x03);
+			length += 3;// CRC8값과 ETX자리수를 더해 준다.
+
+			// 주의 //
+			// Power F/W는 절대 Retry 금지 //
+			m_pApp->commApi->main_setSendQuery(CMD_CTRL_TRANSFER_TO_POWER, length, szpacket, ch);
+			if (lpInspWorkInfo->m_nPmmAck == FALSE)
+			{
+				return FALSE;
+			}
+
+			startAddr += (m_nFirmwareDataLen - startAddr);
+
+			nPos = (startAddr * 100) / m_nFirmwareDataLen;
+			m_progAfProgress.SetPos(nPos);
+
+			sPer.Format(_T("(%d%%)"), nPos);
+			GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(sPer);
+			break;
+		}
+
+		sendcnt++;
+		ZeroMemory(szpacket, sizeof(szpacket));
+		startAddr += packetLen_temp;
+
+		nPos = (startAddr * 100) / m_nFirmwareDataLen;
+		m_progAfProgress.SetPos(nPos);
+
+		sPer.Format(_T("(%d%%)"), nPos);
+		GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(sPer);
+
+		sMsg.Format(_T("Power F/W Raw File Downloading. Send Data (%d/%d)"), startAddr + packetLen_temp, m_nFirmwareDataLen);
+		GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(sMsg);
+
+		ProcessMessage();
+
+		if (bFirstTime == TRUE)
+		{
+			bFirstTime = FALSE;
+			delayMs(1000);
+		}
+		else
+		{
+			delayMs(100);
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL CAutoFirmware::Lf_sendPmmDownloadComplete(int ch)
+{
+	BOOL ret = FALSE;
+	int length = 0;
+	char szPacket[4096] = { 0, };
+	unsigned char calc_CRC8 = 0;
+	unsigned short crc16 = 0;
+	CString sMsg;
+
+	crc16 = m_pApp->commApi->CRC16_Calc((BYTE*)m_pFirmwareData, m_nFirmwareDataLen);
+
+	sprintf_s(szPacket, "%c1Z%02d%04X", 0x02, m_nFrameCount, crc16);
+	length = (int)strlen(szPacket);
+	calc_CRC8 = m_pApp->commApi->CRC8_Calc((BYTE*)&szPacket[1], length - 1);
+
+	sprintf_s(&szPacket[length], 4096 - length, "%02X%c", calc_CRC8, 0x03);
+	length = (int)strlen(szPacket);
+
+	for (int retryCnt = 0; retryCnt < 10; retryCnt++)
+	{
+		m_pApp->commApi->main_setSendQuery(CMD_CTRL_TRANSFER_TO_POWER, length, szPacket, ch);
+
+		if (lpInspWorkInfo->m_nPmmAck == FALSE)
+		{
+			sMsg.Format(_T("Power Firmware Download Complete check.Retry Count(%d)"), retryCnt);
+			GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(sMsg);
+
+			delayMs(100);
+			continue;
+		}
+
+		break;
+	}
+
+
+	return lpInspWorkInfo->m_nPmmAck;
+}
+
+
+BOOL CAutoFirmware::Lf_fwPowerMcuDownloadStart(int ch)
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	BOOL bRet = FALSE;
+	CString sdata;
+	int i = 0;
+
+	m_downloadStatus = 0;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
+	// Step1.download status check
+	if (Lf_checkPmmDownloadReady1(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_61);
+		goto FW_POWER_MCU_ERR_EXCEPT;
+	}
+	delayMs(1000);
+
+	// Step2.download status check2
+	if (Lf_checkPmmDownloadReady2(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_62);
+		goto FW_POWER_MCU_ERR_EXCEPT;
+	}
+
+	// Step3. Flash에bin Data를 Write 한다.
+	if (Lf_sendPmmFirmwareFile(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_63);
+		goto FW_POWER_MCU_ERR_EXCEPT;
+	}
+
+	// Step6. Flash의 Write Protect 기능을 ON 시킨다.
+	if (Lf_sendPmmDownloadComplete(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_64);
+		goto FW_POWER_MCU_ERR_EXCEPT;
+	}
+
+	GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(_T("(100%)"));
+	m_progAfProgress.SetPos(100);
+
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Firmware Download Complete"));
+
+	m_downloadStatus = 1;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
+	return TRUE;
+
+
+FW_POWER_MCU_ERR_EXCEPT:
+	// Error Exception. Initialize.
+	Lf_readyInitialize();
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Firmware Download Error"));
+
+	m_downloadStatus = 2;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
+	return FALSE;
+}
 

@@ -82,4 +82,5 @@ public:
 	afx_msg void OnBnClickedBtnMiCancel();
 	afx_msg void OnBnClickedBtnMiFusing();
 	afx_msg void OnBnClickedBtnMiModify();
+	CButton m_btnMiModifyEnable;
 };

@@ -283,7 +283,7 @@ void CTestReady::Lf_readyInitialize()
 	Lf_updateQuantityCount();
 
 	ZeroMemory(lpInspWorkInfo, sizeof(INSPWORKINFO));
-	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T(""));
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Ready"));
 }
 
 void CTestReady::Lf_updateQuantityCount()
@@ -376,6 +376,96 @@ ERR_EXCEPT:
 	Lf_InspRoomLEDOnOff(ROOM_LED_ON);
 
 	return FALSE;
+}
+
+BOOL CTestReady::Lf_MachineStartIDLEMode()
+{
+	int retry;
+
+	if (Lf_aif_RobotWaitingCheck() == TRUE)
+	{
+		for (retry = 0; retry < 3; retry++)
+		{
+			if (Lf_aif_ClampUnLockCheck() == TRUE)
+				break;
+
+			Lf_aif_ClampUnLock();
+			delayMs(500);
+		}
+		if (Lf_aif_ClampUnLockCheck() == FALSE)
+		{
+			Lf_aif_ClampErrorDisplay(CLAMP_ERROR_UNLOCK);
+			return FALSE;
+		}
+
+		if (Lf_aif_RearDoorOpen() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_RobotInSensorCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_CarrierJigInCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_ClampLock() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_ClampLockCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_RobotOutSensorCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_RearDoorClose() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_JigTiltingUp() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_JigTiltingUpCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_FrontDoorOpen() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_FrontDoorHoldingOn() == FALSE)
+			return FALSE;
+
+		if (Lf_FinalTestStart(CH1) == FALSE)
+			return FALSE;
+
+		if (Lf_aif_FrontDoorHoldingOff() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_FrontDoorClose() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_JigTiltingDown() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_JigTiltingDownCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_ClampUnLock() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_ClampUnLockCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_RearDoorOpen() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_CarrierJigOutCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_RobotOutSensorCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_RearDoorClose() == FALSE)
+			return FALSE;
+	}
+
+	return TRUE;
 }
 
 BOOL CTestReady::Lf_InspRoomLEDOnOff(BOOL bOnOff)
@@ -657,4 +747,674 @@ BOOL CTestReady::Lf_sendPanelResult(int ch)
 
 	return FALSE;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 물류/ROBOT Interface Flow
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CTestReady::Lf_aif_RobotWaitingCheck()
+{
+	BOOL bRet = FALSE;
+
+	if (DEBUG_ROBOT_WAIT_CHECK_ON == 1)
+		return TRUE;
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_RearDoorOpen()
+{
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_RearDoorOpen();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR OPEN TIME OUT"), ERROR_CODE_77);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_RearDoorClose()
+{
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_RearDoorClose();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR CLOSE TIME OUT"), ERROR_CODE_78);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_RobotInSensorCheck()
+{
+	BOOL bRet = FALSE;
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
+			|| (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_ROBOT_IN_SENSOR_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT IN SENSOR CHECK TIME OUT"), ERROR_CODE_79);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_RobotOutSensorCheck()
+{
+	BOOL bRet = FALSE;
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if (((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1) == 0)
+			&& ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2) == 0)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_ROBOT_OUT_SENSOR_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT IN SENSOR CHECK TIME OUT"), ERROR_CODE_79);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_CarrierJigInCheck()
+{
+	BOOL bRet = FALSE;
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR)
+			|| (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_CARRIER_JIG_IN_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CARRIER JIG IN SENSOR CHECK TIME OUT"), ERROR_CODE_80);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_CarrierJigOutCheck()
+{
+	BOOL bRet = FALSE;
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if (((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR) == 0)
+		 && ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR) == 0)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_CARRIER_JIG_IN_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("CARRIER JIG OUT SENSOR CHECK TIME OUT"), ERROR_CODE_91);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_ClampLock()
+{
+	BOOL bRet = TRUE;
+
+	m_pApp->commApi->dio_JigClampLock(CH1);
+	bRet = m_pApp->commApi->dio_JigClampLock(CH2);
+	if (bRet == TRUE)
+	{
+		delayMs(500);
+		if (Lf_aif_ClampLockCheck() == FALSE)
+		{
+			Lf_aif_ClampErrorDisplay(CLAMP_ERROR_LOCK);
+			bRet = FALSE;
+		}
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_ClampUnLock()
+{
+	BOOL bRet = TRUE;
+
+	m_pApp->commApi->dio_JigClampUnLock(CH1);
+	bRet = m_pApp->commApi->dio_JigClampUnLock(CH2);
+	if (bRet == TRUE)
+	{
+		delayMs(500);
+		if (Lf_aif_ClampUnLockCheck() == FALSE)
+		{
+			Lf_aif_ClampErrorDisplay(CLAMP_ERROR_UNLOCK);
+			bRet = FALSE;
+		}
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_ClampLockCheck()
+{
+	BOOL bRet = TRUE;
+
+	if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+		|| (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+		|| (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+		|| (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+		)
+	{
+		bRet = FALSE;
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_ClampUnLockCheck()
+{
+	BOOL bRet = FALSE;
+
+	if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+		&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+		&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+		&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+		)
+	{
+		bRet = TRUE;
+	}
+
+	return bRet;
+}
+
+void CTestReady::Lf_aif_ClampErrorDisplay(int checkType)
+{
+	BOOL bRet = TRUE;
+	CString errString;
+
+	if (checkType == CLAMP_ERROR_LOCK)
+	{
+		if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_65);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_66);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_67);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_68);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_69);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_70);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_71);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_72);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_73);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_74);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_75);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_76);
+		}
+	}
+	if (checkType == CLAMP_ERROR_UNLOCK)
+	{
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_65);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_66);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_67);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_68);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_69);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_70);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_71);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_72);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_73);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_74);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_75);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_76);
+		}
+	}
+
+}
+
+BOOL CTestReady::Lf_aif_JigTiltingUp()
+{
+	BOOL bRet = TRUE;
+
+	bRet = m_pApp->commApi->dio_JigTiltingUp();
+	if (bRet == TRUE)
+	{
+		delayMs(500);
+		if (Lf_aif_JigTiltingUpCheck() == FALSE)
+		{
+			bRet = FALSE;
+		}
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_JigTiltingUpCheck()
+{
+	BOOL bRet = FALSE;
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if (lpModelInfo->m_nJigTiltingCheck == 0)	// 60도
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
+			 && (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR))
+			{
+				bRet = TRUE;
+				break;
+			}
+		}
+		else if (lpModelInfo->m_nJigTiltingCheck == 1)	// 70도
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
+				&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR)
+				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		if (lpModelInfo->m_nJigTiltingCheck == 0)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_81);
+			}
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_93);
+			}
+		}
+		else if (lpModelInfo->m_nJigTiltingCheck == 1)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_81);
+			}
+			if ((m_pApp->m_nDioInBit[CH1][0] & DIN_D2_TILTING_70_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_82);
+			}
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_94);
+			}
+		}
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_FrontDoorOpen()
+{
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_FrontDoorOpen();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD)
+			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR OPEN TIME OUT"), ERROR_CODE_83);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_FrontDoorClose()
+{
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_FrontDoorClose();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD)
+			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR CLOSE TIME OUT"), ERROR_CODE_84);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_FrontDoorHoldingOn()
+{
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_FrontDoorHoldingOn();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_SHUTTER_HOLDING_FORWARD)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING ON TIME OUT"), ERROR_CODE_85);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_FrontDoorHoldingOff()
+{
+	BOOL bRet = FALSE;
+
+	m_pApp->commApi->dio_FrontDoorHoldingOff();
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_JigTiltingDown()
+{
+	BOOL bRet = TRUE;
+
+	bRet = m_pApp->commApi->dio_JigTiltingDown();
+	if (bRet == TRUE)
+	{
+		delayMs(500);
+		if (Lf_aif_JigTiltingDownCheck() == FALSE)
+		{
+			bRet = FALSE;
+		}
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_JigTiltingDownCheck()
+{
+	BOOL bRet = FALSE;
+
+	DWORD sTick, eTick;
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
+			&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
+			&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+			break;
+	}
+
+	if (bRet == FALSE)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_87);
+		}
+		else if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_88);
+		}
+		else if ((m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_89);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_90);
+		}
+	}
+
+	return bRet;
+}
+
+
+
 

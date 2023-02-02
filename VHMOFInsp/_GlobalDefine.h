@@ -17,13 +17,14 @@
 #define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_TCP_RECEIVE_OK			1
+#define DEBUG_TCP_RECEIVE_OK			0
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_TCP_COMM_LOG				0
 #define DEBUG_PALLET_ARRIVE				0
 #define DEBUG_DIO_SKIP					0
+#define DEBUG_ROBOT_WAIT_CHECK_ON		1
 #define DEBUG_PG1_TEST_ONLY				1
-#define DEBUG_DIO_ALARM_DISABLE			1
+#define DEBUG_DIO_ALARM_DISABLE			0
 
 /////////////////////////////////////////////////////////////////////////////
 #define TCP_MAIN1_MCU_IP				_T("192.168.1.14")	// 13
@@ -110,6 +111,161 @@
 /////////////////////////////////////////////////////////////////////////////
 //DIO
 /////////////////////////////////////////////////////////////////////////////
+#define AIF_NORMAL_CYLINDER_WAIT_TIME	2000
+#define AIF_DOOR_OPEN_CLOSE_WAIT_TIME	10000
+#define AIF_ROBOT_IN_SENSOR_WAIT_TIME	30000
+#define AIF_ROBOT_OUT_SENSOR_WAIT_TIME	30000
+#define AIF_CARRIER_JIG_IN_WAIT_TIME	10000
+#define AIF_JIG_TILTING_WAIT_TIME		10000
+
+#define CLAMP_ERROR_LOCK				0
+#define CLAMP_ERROR_UNLOCK				1
+
+
+static CString strNameDIN1[40] =
+{
+	_T("EMO_SWITCH"),
+	_T("START_SWITCH"),
+	_T("RESET_SWITCH"),
+	_T("MUTTING_SWITCH"),
+	_T("LIGHT_CURTAIN"),
+	_T("LEFT_SAFETY_DOOR"),
+	_T("RIGHT_SAFETY_DOOR"),
+	_T("DOOR HOLDING FORWARD"),
+	_T("DOOR HOLDING BACKWARD"),
+	_T("FAN_IN_ALARM"),
+	_T("FAN_OUT_ALARM"),
+	_T("TEMPATURE_HIGH_ALARM"),
+	_T("MAIN_AIR_DIGITAL_GAGE"),
+	_T("IONIZER_AIR_DIGITAL_GAGE"),
+	_T("CYLINDER_DIGITAL_GAGE"),
+	_T("JIG_DIGITAL_GAGE"),
+	_T("IONIZER_ALARM"),
+	_T(""),
+	_T("ROBOT_IN_SENSOR_1"),
+	_T("ROBOT_IN_SENSOR_2"),
+	_T("FRONT_DOOR_LEFT_DOWN"),
+	_T("FRONT_DOOR_LEFT_UP"),
+	_T("FRONT_DOOR_RIGHT_DOWN"),
+	_T("FRONT_DOOR_RIGHT_UP"),
+	_T("REAR_DOOR_LEFT_DOWN"),
+	_T("REAR_DOOR_LEFT_UP"),
+	_T("REAR_DOOR_RIGHT_DOWN"),
+	_T("REAR_DOOR_RIGHT_UP"),
+	_T("JIG_DOWN_1_SENSOR"),
+	_T("JIG_UP_CYLINDER_60_SENSOR"),
+	_T("JIG_DOWN_2_SENSOR"),
+	_T("JIG_UP_CYLINDER_70_SENSOR"),
+	_T("JIG_DOWN_3_SENSOR"),
+	_T("JIG_UP_3_SENSOR"),
+	_T("SAFETY ALARM"),
+	_T(""),
+	_T(""),
+	_T(""),
+	_T(""),
+	_T("")
+};
+
+static CString strNameDIN2[40] =
+{
+	_T("JIG_HOME_SENSOR"),
+	_T("JIG_DOOR_CLOSE_SENSOR"),
+	_T("TILTING_60_SENSOR"),
+	_T("TILTING_70_SENSOR"),
+	_T("CH1_JIG_TRAY_IN_SENSOR"),
+	_T("CH2_JIG_TRAY_IN_SENSOR"),
+	_T("CH1_TRAY_UNCLAMP1"),
+	_T("CH1_TRAY_UNCLAMP2"),
+	_T("CH1_TRAY_UNCLAMP3"),
+	_T("CH1_TRAY_UNCLAMP4"),
+	_T("CH1_TRAY_UNCLAMP5"),
+	_T("CH1_TRAY_UNCLAMP6"),
+	_T("CH2_TRAY_UNCLAMP1"),
+	_T("CH2_TRAY_UNCLAMP2"),
+	_T("CH2_TRAY_UNCLAMP3"),
+	_T("CH2_TRAY_UNCLAMP4"),
+	_T("CH2_TRAY_UNCLAMP5"),
+	_T("CH2_TRAY_UNCLAMP6"),
+	_T("CH1_ADSORPTION_GAUGE1"),
+	_T("CH1_ADSORPTION_GAUGE2"),
+	_T("CH2_ADSORPTION_GAUGE1"),
+	_T("CH2_ADSORPTION_GAUGE2"),
+	_T("CH1_PIN_BLOCK_CLOSE"),
+	_T("CH2_PIN_BLOCK_CLOSE"),
+	_T("CH1_KEY_AUTO_MANUAL"),
+	_T("CH1_KEY_BACK"),
+	_T("CH1_KEY_NEXT"),
+	_T("CH1_KEY_REPEAT"),
+	_T("CH1_KEY_RESET"),
+	_T("CH1_KEY_UP"),
+	_T("CH1_KEY_DOWN"),
+	_T("CH1_KEY_SEND"),
+	_T("CH2_KEY_AUTO_MANUAL"),
+	_T("CH2_KEY_BACK"),
+	_T("CH2_KEY_NEXT"),
+	_T("CH2_KEY_REPEAT"),
+	_T("CH2_KEY_RESET"),
+	_T("CH2_KEY_UP"),
+	_T("CH2_KEY_DOWN"),
+	_T("CH2_KEY_SEND")
+};
+
+static CString strNameDOUT1[24] =
+{
+	_T("TOWER_LAMP_RED"),
+	_T("TOWER_LAMP_YELLOW"),
+	_T("TOWER_LAMP_GREEN"),
+	_T("TOWER_LAMP_BUZZER"),
+	_T("MUTTING_1"),
+	_T("MUTTING_2"),
+	_T("LEFT_SAFETY_DOOR_OPEN"),
+	_T("RIGHT_SAFETY_DOOR_OPEN"),
+	_T("FRONT_DOOR_DOWN"),
+	_T("FRONT_DOOR_UP"),
+	_T("REAR_DOOR_DOWN"),
+	_T("REAR_DOOR_UP"),
+	_T("JIG_TILTING01_DOWN"),
+	_T("JIG_TILTING01_UP"),
+	_T("JIG_TILTING02_DOWN"),
+	_T("JIG_TILTING02_UP"),
+	_T("IONIZER_BLOW_ON"),
+	_T("IONIZER_ON_OFF"),
+	_T("LED_ON_OFF"),
+	_T("IONIZER_BLOW_OFF"),
+	_T("ROBOT_IN_LAMP_ON"),
+	_T("DOOR HOLDING BACKWARD"),
+	_T("DOOR HOLDING FORWARD"),
+	_T("")
+};
+
+static CString strNameDOUT2[24] =
+{
+	_T("CH1_TRAY_UNCLAMP_1"),
+	_T("CH1_TRAY_UNCLAMP_2"),
+	_T("CH1_TRAY_UNCLAMP_3"),
+	_T("CH1_TRAY_UNCLAMP_4"),
+	_T("CH1_TRAY_UNCLAMP_5"),
+	_T("CH1_TRAY_UNCLAMP_6"),
+	_T("CH2_TRAY_UNCLAMP_1"),
+	_T("CH2_TRAY_UNCLAMP_2"),
+	_T("CH2_TRAY_UNCLAMP_3"),
+	_T("CH2_TRAY_UNCLAMP_4"),
+	_T("CH2_TRAY_UNCLAMP_5"),
+	_T("CH2_TRAY_UNCLAMP_6"),
+	_T("CH1_ADSORPTION_EJECTOR1"),
+	_T("CH1_ADSORPTION_EJECTOR2"),
+	_T("CH1_PIN_CYLINDER_UP"),
+	_T("CH2_ADSORPTION_EJECTOR1"),
+	_T("CH2_ADSORPTION_EJECTOR2"),
+	_T("CH2_PIN_CYLINDER_UP"),
+	_T(""),
+	_T(""),
+	_T(""),
+	_T(""),
+	_T(""),
+	_T("")
+};
+
 #define DIN_D1_EMO_SWITCH							(0x01 << 0)
 #define DIN_D1_START_SWITCH							(0x01 << 1)
 #define DIN_D1_RESET_SWITCH							(0x01 << 2)
@@ -117,9 +273,9 @@
 #define DIN_D1_LIGHT_CURTAIN						(0x01 << 4)
 #define DIN_D1_LEFT_SAFETY_DOOR						(0x01 << 5)
 #define DIN_D1_RIGHT_SAFETY_DOOR					(0x01 << 6)
-#define DIN_D1_LEFT_SHUTTER_HOLDING_SENSOR			(0x01 << 7)
+#define DIN_D1_SHUTTER_HOLDING_FORWARD				(0x01 << 7)
 
-#define DIN_D1_RIGHT_SHUTTER_HOLDING_SENSOR			(0x01 << 0)
+#define DIN_D1_SHUTTER_HOLDING_BACKWARD				(0x01 << 0)
 #define DIN_D1_FAN_IN_ALARM							(0x01 << 1)
 #define DIN_D1_FAN_OUT_ALARM						(0x01 << 2)
 #define DIN_D1_TEMPATURE_HIGH_ALARM					(0x01 << 3)
@@ -142,13 +298,13 @@
 #define DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD			(0x01 << 2)
 #define DIN_D1_REAR_SHUTTER_RIGHT_FORWARD			(0x01 << 3)
 #define DIN_D1_JIG_DOWN_1_SENSOR					(0x01 << 4)
-#define DIN_D1_JIG_UP_1_SENSOR						(0x01 << 5)
+#define DIN_D1_JIG_UP_CYLINDER_60_SENSOR			(0x01 << 5)
 #define DIN_D1_JIG_DOWN_2_SENSOR					(0x01 << 6)
-#define DIN_D1_JIG_UP_2_SENSOR						(0x01 << 7)
+#define DIN_D1_JIG_UP_CYLINDER_70_SENSOR			(0x01 << 7)
 
 #define DIN_D1_JIG_DOWN_3_SENSOR					(0x01 << 0)
 #define DIN_D1_JIG_UP_3_SENSOR						(0x01 << 1)
-#define DIN_D1_SPARE1								(0x01 << 2)
+#define DIN_D1_SAFETY_PLC_ALARM						(0x01 << 2)
 #define DIN_D1_SPARE2								(0x01 << 3)
 #define DIN_D1_SPARE3								(0x01 << 4)
 #define DIN_D1_SPARE4								(0x01 << 5)
@@ -172,13 +328,13 @@
 #define	DOUT_D1_JIG_TILTING01_UP					0x002000
 #define	DOUT_D1_JIG_TILTING02_DOWN					0x004000
 #define	DOUT_D1_JIG_TILTING02_UP					0x008000
-#define	DOUT_D1_IONIZER_BLOW						0x010000
+#define	DOUT_D1_IONIZER_BLOW_ON						0x010000
 #define	DOUT_D1_IONIZER_ON_OFF						0x020000
 #define	DOUT_D1_LED_ON_OFF							0x040000
-#define	DOUT_D1_SPARE0								0x080000
+#define	DOUT_D1_IONIZER_BLOW_OFF					0x080000
 #define	DOUT_D1_ROBOT_IN_LED						0x100000
-#define	DOUT_D1_SPARE2								0x200000
-#define	DOUT_D1_SPARE3								0x400000
+#define	DOUT_D1_SHUTTER_HOLDING_BACKWARD			0x200000
+#define	DOUT_D1_SHUTTER_HOLDING_FORWARD				0x400000
 #define	DOUT_D1_SPARE4								0x800000
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -460,6 +616,7 @@ typedef enum _COLOR_IDX_{
 #define CMD_CTRL_ARE_YOU_READY				0xC0
 #define CMD_CTRL_POWER_SEND_PACKET_BYPASS	0xCF // POWER CAL. BY Pass CMD (21.03.04)
 
+#define CMD_CTRL_TRANSFER_TO_POWER			0xE0
 
 #define CMD_CTRL_FW_DOWNLOAD				0xF0
 #define CMD_CTRL_FW_UPLOAD					0xF1

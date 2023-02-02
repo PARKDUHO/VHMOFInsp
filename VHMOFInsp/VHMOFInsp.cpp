@@ -803,6 +803,7 @@ void CVHMOFInspApp::Gf_LoadModelData(CString modelName)
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("PWM_LEVEL"), &lpModelInfo->m_nPwmLevel);
 
 	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("CABLE_OPEN_CHECK"), &lpModelInfo->m_nCableOpenCheck);
+	Read_ModelFile(modelName, _T("MODEL_DATA"), _T("JIG_TILTING_CHECK"), &lpModelInfo->m_nJigTiltingCheck);
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Pattern File 
@@ -1285,6 +1286,11 @@ BOOL CVHMOFInspApp::main_tcpProcessPacket(int ch, char* recvPacket)
 		{
 			break;
 		}
+		case CMD_CTRL_TRANSFER_TO_POWER:
+		{
+			main_parse_PmmStatus(ch, recvPacket);
+			break;
+		}
 		case CMD_CTRL_GOTO_BOOT_SECTION:
 		{
 			main_parse_GoToBootSection(ch, recvPacket);
@@ -1357,6 +1363,38 @@ void CVHMOFInspApp::main_parse_GioControl(int ch, char* recvPacket)
 		lpInspWorkInfo->nGioReadInfo[1] = _ttoi(strPacket.Mid(PACKET_PT_DATA+1, 1));
 		lpInspWorkInfo->nGioReadInfo[2] = _ttoi(strPacket.Mid(PACKET_PT_DATA+2, 1));
 		lpInspWorkInfo->nGioReadInfo[3] = _ttoi(strPacket.Mid(PACKET_PT_DATA+3, 1));
+	}
+}
+
+void CVHMOFInspApp::main_parse_PmmStatus(int ch, char* recvPacket)
+{
+	int retcode = 0;
+	char recvCmd;
+
+	retcode = recvPacket[PACKET_PT_RET];
+	recvCmd = recvPacket[PACKET_PT_DATA + 2];
+
+	if (retcode == '0')	// Main Board ACK
+	{
+		if (recvPacket[PACKET_PT_DATA + 3] == '0')	// Power Module ACK
+		{
+			lpInspWorkInfo->m_nPmmAck = TRUE;
+
+			if (recvCmd == 'V')
+			{
+				m_pApp->m_sPmmFWVersion[ch].Format(_T("%s"), char_To_wchar(recvPacket));
+				m_pApp->m_sPmmFWVersion[ch].Delete(0, PACKET_PT_DATA + 4);
+				m_pApp->m_sPmmFWVersion[ch] = m_pApp->m_sPmmFWVersion[ch].Left(m_pApp->m_sPmmFWVersion[ch].GetLength() - 6);
+			}
+		}
+		else
+		{
+			lpInspWorkInfo->m_nPmmAck = FALSE;
+		}
+	}
+	else
+	{
+		lpInspWorkInfo->m_nPmmAck = FALSE;
 	}
 }
 
@@ -1581,12 +1619,12 @@ BOOL CVHMOFInspApp::Lf_checkDoorOpenInterLock()
 
 	if (m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR)
 	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_56);
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_40);
 		return FALSE;
 	}
 	if (m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR)
 	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_57);
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("SAFETY DOOR OPEN"), ERROR_CODE_41);
 		return FALSE;
 	}
 

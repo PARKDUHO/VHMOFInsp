@@ -42,6 +42,7 @@ protected:
 	void Lf_updateQuantityCount();
 
 	BOOL Lf_FinalTestStart(int ch);
+	BOOL Lf_MachineStartIDLEMode();
 	BOOL Lf_InspRoomLEDOnOff(BOOL bOnOff);
 	BOOL Lf_checkPanelID(int ch);
 	BOOL Lf_getControlBdReady(int ch);
@@ -54,6 +55,34 @@ protected:
 
 	BOOL Lf_openGMESJudge();
 	BOOL Lf_sendPanelResult(int ch);
+
+
+	///////////////////////////////////////////////////////////////////////
+	// 물류/ROBOT 자동 Interface Function
+	///////////////////////////////////////////////////////////////////////
+	BOOL Lf_aif_RobotWaitingCheck();
+	BOOL Lf_aif_RearDoorOpen();
+	BOOL Lf_aif_RearDoorClose();
+	BOOL Lf_aif_RobotInSensorCheck();
+	BOOL Lf_aif_RobotOutSensorCheck();
+	BOOL Lf_aif_CarrierJigInCheck();
+	BOOL Lf_aif_ClampLock();
+	BOOL Lf_aif_ClampUnLock();
+	BOOL Lf_aif_ClampLockCheck();
+	BOOL Lf_aif_ClampUnLockCheck();
+	void Lf_aif_ClampErrorDisplay(int checkType);
+	BOOL Lf_aif_JigTiltingUp();
+	BOOL Lf_aif_JigTiltingUpCheck();
+	BOOL Lf_aif_FrontDoorOpen();
+	BOOL Lf_aif_FrontDoorClose();
+	BOOL Lf_aif_FrontDoorHoldingOn();
+	BOOL Lf_aif_FrontDoorHoldingOff();
+	BOOL Lf_aif_JigTiltingDown();
+	BOOL Lf_aif_JigTiltingDownCheck();
+	BOOL Lf_aif_CarrierJigOutCheck();
+
+
+
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

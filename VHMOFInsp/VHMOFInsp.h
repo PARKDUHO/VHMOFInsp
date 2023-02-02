@@ -82,6 +82,7 @@ public:
 	void main_parse_PowerMeasureAll(int ch, char* recvPacket);
 	void main_parse_CableOpenCheck(int ch, char* recvPacket);
 	void main_parse_GioControl(int ch, char* recvPacket);
+	void main_parse_PmmStatus(int ch, char* recvPacket);
 	void main_parse_FirmwareVersion(int ch, char* recvPacket);
 	void main_parse_GoToBootSection(int ch, char* recvPacket);
 
@@ -141,6 +142,7 @@ public:
 
 	// Firmware Version
 	CString m_sQspiFWVersion[MAX_CH];
+	CString m_sPmmFWVersion[MAX_CH];
 	CString m_sPgFWVersion[MAX_CH];
 	CString m_sSwVersion;
 

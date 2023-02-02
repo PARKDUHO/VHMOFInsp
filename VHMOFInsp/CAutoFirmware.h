@@ -3,9 +3,10 @@
 #define MAX_FILE_SIZE			1024*1024		// 최대 1M Buff 할당.
 #define MAX_DATASIZE			400000			// FW File에서 읽을 수있는 최대 크기
 #define FW_PACKET_SIZE			1024
+#define POWER_FW_PACKET_SIZE	1024
 
 #define FW_TARGET_MAIN_MCU		0
-#define FW_TARGET_MAIN_FPGA		1
+#define FW_TARGET_POWER_MCU		1
 #define FW_TARGET_QSPI_BOARD	2
 
 
@@ -45,7 +46,7 @@ protected:
 
 	void Lf_readyInitialize();
 
-	// MCU Firmware File Load
+	// Main MCU Firmware File Load
 	void Lf_loadFirmwareFile();
 	void Lf_readFirmwareFile(CString strFilePath);
 	void Lf_parseDataRecord(CString strRecord, BYTE* pData);
@@ -56,11 +57,24 @@ protected:
 	BOOL Lf_checkDownloadReady2(int ch);
 	BOOL Lf_sendFirmwareFile(int ch);
 	BOOL Lf_sendDownloadComplete(int ch);
-	BOOL Lf_firmwareDownloadStart(int ch);
+	BOOL Lf_fwMainMcuDownloadStart(int ch);
 
+	int   m_downloadStatus;
 	int	  m_nFirmwareDataLen;
 	BYTE* m_pFirmwareData;
 	BYTE* szParsingData;
+
+
+	// Power MCU Firmware File Load
+	int m_nFrameCount;
+	void Lf_readPmmFile(CString strFilePath);
+	BOOL Lf_checkPmmDownloadReady1(int ch);
+	BOOL Lf_checkPmmDownloadReady2(int ch);
+	BOOL Lf_sendPmmFirmwareFile(int ch);
+	BOOL Lf_sendPmmDownloadComplete(int ch);
+	BOOL Lf_fwPowerMcuDownloadStart(int ch);
+
+
 
 
 private:

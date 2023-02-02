@@ -126,4 +126,5 @@ public:
 	CEdit m_edtMdPwmDuty;
 	CComboBox m_cmbMdPwmLevel;
 	CComboBox m_cmbMdCableOpenCheck;
+	CComboBox m_cmbMdJigTiltingCheck;
 };

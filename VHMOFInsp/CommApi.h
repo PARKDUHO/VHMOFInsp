@@ -46,6 +46,11 @@ public:
 	BOOL main_setControlrReset(int ch);
 	BOOL main_getCtrlFWVersion(int ch);
 
+	// Control Function (POWER MCU)
+	BYTE CRC8_Calc(BYTE* pBuf, WORD usLen);
+	WORD CRC16_Calc(BYTE* pBuf, WORD usLen);
+	BOOL main_getPowerFWVersion(int ch);
+
 	int	 main_setSendQuery(int nCommand, int nLength, char* pData, int ch);
 	BOOL main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime);
 	char gszMainRcvPacket[MAX_CH][256];
@@ -82,6 +87,16 @@ public:
 	BOOL dio_LeftSafetyDoorOpen();
 	BOOL dio_RightSafetyDoorOpen();
 	BOOL dio_RobotInLEDOnOff(BOOL bOnOff);
+	BOOL dio_RearDoorOpen();
+	BOOL dio_RearDoorClose();
+	BOOL dio_FrontDoorOpen();
+	BOOL dio_FrontDoorClose();
+	BOOL dio_FrontDoorHoldingOn();
+	BOOL dio_FrontDoorHoldingOff();
+	BOOL dio_JigClampLock(int ch);
+	BOOL dio_JigClampUnLock(int ch);
+	BOOL dio_JigTiltingUp();
+	BOOL dio_JigTiltingDown();
 
 	
 

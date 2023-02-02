@@ -32,11 +32,14 @@ protected:
 	void Lf_InitLocalValue();
 	void Lf_InitFontset();
 	void Lf_InitColorBrush();
+	void Lf_InitDlgDesign();
 	void Lf_initListDIN();
 
 	void Lf_setListCheck();
 	void Lf_updateStautsDio1In();
 	void Lf_updateStautsDio2In();
+
+	BOOL Lf_checkSafetyAlarmOn();
 
 private:
 	CFont m_Font[FONT_IDX_MAX];
@@ -65,4 +68,39 @@ public:
 	afx_msg void OnNMCustomdrawLstMoDio2Out(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedBtnMoWriteDio1();
 	afx_msg void OnBnClickedBtnMoWriteDio2();
+	CButton m_btnMoWriteDIO1;
+	CButton m_btnMoWriteDIO2;
+	CStatic m_sttMoFrontDoorOpen;
+	CStatic m_sttMoFrontDoorClose;
+	CStatic m_sttMoFrontDoorHoldingOn;
+	CStatic m_sttMoFrontDoorHoldingOff;
+	CStatic m_sttMoRearDoorOpen;
+	CStatic m_sttMoRearDoorClose;
+	CStatic m_sttMoLightCurationMuteOn;
+	CStatic m_sttMoLightCurationMuteOff;
+	CStatic m_sttMoJigTiltingUp;
+	CStatic m_sttMoJigTiltingDown;
+	CStatic m_sttMoLeftSafetyDoorOpen;
+	CStatic m_sttMoRightSafetyDoorOpen;
+	CStatic m_sttMoClampLockCh1;
+	CStatic m_sttMoClampUnLockCh1;
+	CStatic m_sttMoClampLockCh2;
+	CStatic m_sttMoClampUnLockCh2;
+	CButton m_chkMoAutoConfirm;
+	afx_msg void OnStnClickedSttMoFrontDoorOpen();
+	afx_msg void OnStnClickedSttMoFrontDoorClose();
+	afx_msg void OnStnClickedSttMoFrontDoorHoldingOn();
+	afx_msg void OnStnClickedSttMoFrontDoorHoldingOff();
+	afx_msg void OnStnClickedSttMoRearDoorOpen();
+	afx_msg void OnStnClickedSttMoRearDoorClose();
+	afx_msg void OnStnClickedSttMoLightCurtainMuteOn();
+	afx_msg void OnStnClickedSttMoLightCurtainMuteOff();
+	afx_msg void OnStnClickedSttMoJigTiltingUp();
+	afx_msg void OnStnClickedSttMoJigTiltingDown();
+	afx_msg void OnStnClickedSttMoLeftSafetyDoorOpen();
+	afx_msg void OnStnClickedSttMoRightSafetyDoorOpen();
+	afx_msg void OnStnClickedSttMoClampLockCh1();
+	afx_msg void OnStnClickedSttMoClampUnlockCh1();
+	afx_msg void OnStnClickedSttMoClampLockCh2();
+	afx_msg void OnStnClickedSttMoClampUnlockCh2();
 };
