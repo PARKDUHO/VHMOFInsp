@@ -63,6 +63,9 @@ public:
 	afx_msg void OnBnClickedBtnSyPatternFilePath();
 	afx_msg void OnBnClickedBtnSyEdidFilePath();
 	CEdit m_edtSyEqpName;
+	CComboBox m_cmbSyCarrierType;
+	CEdit m_edtSyLBStartAddr;
+	CEdit m_edtSyLWStartAddr;
 	CEdit m_edtSyMesServicePort;
 	CEdit m_edtSyMesNetwork;
 	CEdit m_edtSyMesDaemonPort;

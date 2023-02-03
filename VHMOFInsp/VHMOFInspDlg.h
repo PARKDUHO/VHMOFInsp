@@ -90,6 +90,7 @@ public:
 	CBitmapButton m_btnMainSystem;
 	CBitmapButton m_btnMainInitial;
 	CBitmapButton m_btnMainFirmware;
+	CBitmapButton m_btnMainErrorList;
 	CBitmapButton m_btnMainExit;
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	CStatic m_sttMainMlogView;
@@ -103,6 +104,7 @@ public:
 	afx_msg void OnBnClickedBtnMaSystem();
 	afx_msg void OnBnClickedBtnMaInitial();
 	afx_msg void OnBnClickedBtnMaFirmware();
+	afx_msg void OnBnClickedBtnMaErrorList();
 	afx_msg void OnBnClickedBtnMaExit();
 	afx_msg void OnBnClickedBtnDioCtrlLedOff();
 	afx_msg void OnBnClickedBtnDioCtrlLedOn();

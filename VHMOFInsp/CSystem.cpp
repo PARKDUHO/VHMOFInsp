@@ -32,6 +32,9 @@ void CSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_SY_SAVE_EXIT, m_btnSySaveExit);
 	DDX_Control(pDX, IDC_BTN_SY_CANCEL, m_btnSyCancel);
 	DDX_Control(pDX, IDC_EDT_SY_EQP_NAME, m_edtSyEqpName);
+	DDX_Control(pDX, IDC_CBO_SY_CARRIER_TYPE, m_cmbSyCarrierType);
+	DDX_Control(pDX, IDC_EDT_SY_LB_START_ADDR, m_edtSyLBStartAddr);
+	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR, m_edtSyLWStartAddr);
 	DDX_Control(pDX, IDC_EDT_SY_MES_SERVICEPORT, m_edtSyMesServicePort);
 	DDX_Control(pDX, IDC_EDT_SY_MES_NETWORK, m_edtSyMesNetwork);
 	DDX_Control(pDX, IDC_EDT_SY_MES_DEMONPORT, m_edtSyMesDaemonPort);
@@ -154,6 +157,7 @@ HBRUSH CSystem::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				return m_Brush[COLOR_IDX_DEEP_BLUE];
 			}
 			if ((pWnd->GetDlgCtrlID() == IDC_STT_SY_STATION_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_MELSEC_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_MES_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_EAS_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_PATH_TIT)
@@ -266,6 +270,7 @@ void CSystem::Lf_InitFontset()
 
 	m_Font[3].CreateFont(19, 8, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 	GetDlgItem(IDC_STT_SY_STATION_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_SY_MELSEC_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SY_MES_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SY_EAS_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SY_PATH_TIT)->SetFont(&m_Font[3]);
@@ -315,6 +320,11 @@ void CSystem::Lf_InitDialogControl()
 	CString sdata = _T("");
 
 	m_edtSyEqpName.SetWindowText(lpSystemInfo->m_sEqpName);
+	m_cmbSyCarrierType.SetCurSel(lpSystemInfo->m_nCarrierType);
+	sdata.Format(_T("%04X"), lpSystemInfo->m_nLBStartAddr);
+	m_edtSyLBStartAddr.SetWindowText(sdata);
+	sdata.Format(_T("%04X"), lpSystemInfo->m_nLWStartAddr);
+	m_edtSyLWStartAddr.SetWindowText(sdata);
 	m_edtSyMesServicePort.SetWindowText(lpSystemInfo->m_sMesServicePort);
 	m_edtSyMesNetwork.SetWindowText(lpSystemInfo->m_sMesNetWork);
 	m_edtSyMesDaemonPort.SetWindowText(lpSystemInfo->m_sMesDaemonPort);
@@ -349,6 +359,17 @@ void CSystem::Lf_saveSystemInfo()
 	m_edtSyEqpName.GetWindowText(sdata);
 	lpSystemInfo->m_sEqpName.Format(_T("%s"), sdata);
 	Write_SysIniFile(_T("SYSTEM"), _T("EQP_NAME"), lpSystemInfo->m_sEqpName);
+
+	m_edtSyLBStartAddr.GetWindowText(sdata);
+	lpSystemInfo->m_nLBStartAddr = _tcstol(sdata, NULL, 16);
+	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LB_START_ADDR"), sdata);
+
+	m_edtSyLWStartAddr.GetWindowText(sdata);
+	lpSystemInfo->m_nLWStartAddr = _tcstol(sdata, NULL, 16);
+	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR"), sdata);
+
+	lpSystemInfo->m_nCarrierType = m_cmbSyCarrierType.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("CARRIER_TYPE"), lpSystemInfo->m_nCarrierType);
 
 	m_edtSyMesServicePort.GetWindowText(lpSystemInfo->m_sMesServicePort);
 	Write_SysIniFile(_T("MES"), _T("MES_SERVICE"), lpSystemInfo->m_sMesServicePort);

@@ -39,6 +39,9 @@ protected:
 	void Lf_updateStautsDio1In();
 	void Lf_updateStautsDio2In();
 
+	void Lf_controlButtonEnable(BOOL bEnable);
+	BOOL Lf_confirmDioWrite();
+
 	BOOL Lf_checkSafetyAlarmOn();
 
 private:

@@ -262,15 +262,24 @@ BOOL CUserID::Lf_loginProcess()
 		m_pApp->m_sLoginUserName = _T("");
 		m_pApp->m_bUserIdGieng = TRUE;
 		m_pApp->m_bUserIdPM = FALSE;
+		m_pApp->m_bUserIdIdle = FALSE;
 		m_pApp->Gf_writeMLog(_T("<USER> UserID : Administrator"));
 	}
-	// 20150112 라인 작업자 요청에 의해 삭제 CNZ
 	else if ((!strUserid.Compare(_T("PM"))) || (!strUserid.Compare(_T("pm"))))
 	{
 		m_pApp->m_sLoginUserID = strUserid;
 		m_pApp->m_sLoginUserName = _T("");
 		m_pApp->m_bUserIdGieng = FALSE;
 		m_pApp->m_bUserIdPM = TRUE;
+		m_pApp->m_bUserIdIdle = FALSE;
+	}
+	else if ((!strUserid.Compare(_T("IDLE"))) || (!strUserid.Compare(_T("idle"))))
+	{
+		m_pApp->m_sLoginUserID = strUserid;
+		m_pApp->m_sLoginUserName = _T("");
+		m_pApp->m_bUserIdGieng = FALSE;
+		m_pApp->m_bUserIdPM = FALSE;
+		m_pApp->m_bUserIdIdle = TRUE;
 	}
 	else
 	{
@@ -312,33 +321,32 @@ BOOL CUserID::Lf_loginProcess()
 		{
 			m_pApp->m_bUserIdGieng = FALSE;
 			m_pApp->m_bUserIdPM = FALSE;
+			m_pApp->m_bUserIdIdle = FALSE;
 
+			if (m_pApp->m_bIsSendEAYT == FALSE)
 			{
-				if (m_pApp->m_bIsSendEAYT == FALSE)
-				{
-					if (m_pApp->Gf_gmesSendHost(HOST_EAYT) == FALSE)
-					{
-						return FALSE;
-					}
-					m_pApp->m_bIsSendEAYT = TRUE;
-				}
-
-				m_pApp->m_pCimNet->SetUserId(strUserid);
-				if (m_pApp->Gf_gmesSendHost(HOST_UCHK) == FALSE)
+				if (m_pApp->Gf_gmesSendHost(HOST_EAYT) == FALSE)
 				{
 					return FALSE;
 				}
-
-				if (m_pApp->Gf_gmesSendHost(HOST_EDTI) == FALSE)
-				{
-					return FALSE;
-				}
-
-				CString sLog;
-				sLog.Format(_T("<PGM> User ID : %s"), strUserid);
-				m_pApp->Gf_writeMLog(sLog);
-				CDialog::OnOK();
+				m_pApp->m_bIsSendEAYT = TRUE;
 			}
+
+			m_pApp->m_pCimNet->SetUserId(strUserid);
+			if (m_pApp->Gf_gmesSendHost(HOST_UCHK) == FALSE)
+			{
+				return FALSE;
+			}
+
+			if (m_pApp->Gf_gmesSendHost(HOST_EDTI) == FALSE)
+			{
+				return FALSE;
+			}
+
+			CString sLog;
+			sLog.Format(_T("<PGM> User ID : %s"), strUserid);
+			m_pApp->Gf_writeMLog(sLog);
+			CDialog::OnOK();
 		}
 		else
 		{

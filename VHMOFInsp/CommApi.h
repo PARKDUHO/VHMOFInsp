@@ -96,7 +96,9 @@ public:
 	BOOL dio_JigClampLock(int ch);
 	BOOL dio_JigClampUnLock(int ch);
 	BOOL dio_JigTiltingUp();
+	BOOL dio_JigTiltingUpCheck();
 	BOOL dio_JigTiltingDown();
+	BOOL dio_JigTiltingDownCheck();
 
 	
 

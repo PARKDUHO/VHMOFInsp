@@ -171,6 +171,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>./MelsecNetG/lib/_x64/MdFunc32.lib;</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -186,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="CAutoFirmware.h" />
     <ClInclude Include="CDefectResult.h" />
+    <ClInclude Include="CErrorList.h" />
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="CInitialize.h" />
     <ClInclude Include="CMaintenance.h" />
@@ -227,6 +229,7 @@
   <ItemGroup>
     <ClCompile Include="CAutoFirmware.cpp" />
     <ClCompile Include="CDefectResult.cpp" />
+    <ClCompile Include="CErrorList.cpp" />
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="CInitialize.cpp" />
     <ClCompile Include="CMaintenance.cpp" />
@@ -283,6 +286,7 @@
     <Image Include="res\bmp00007.bmp" />
     <Image Include="res\bmp00008.bmp" />
     <Image Include="res\bmp00009.bmp" />
+    <Image Include="res\bmp00010.bmp" />
     <Image Include="res\ico00001.ico" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\icon2.ico" />

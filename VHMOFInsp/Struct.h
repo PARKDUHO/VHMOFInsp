@@ -158,6 +158,11 @@ typedef struct _ST_MODELINFO_{
 typedef struct _ST_SYSTEMINFO_{
 	// STATION 정보 설정 //
 	CString m_sEqpName;					// EQP NAME
+	int		m_nCarrierType;
+
+	// MELSEC 정보 설정 //
+	int		m_nLBStartAddr;
+	int		m_nLWStartAddr;
 
 	CString	m_sLastModelName;			// 마지막 M/C 모델명
 	int		m_nQuantityOKTotal;
@@ -248,6 +253,14 @@ typedef struct _ST_INSPWORKINFO_{
 	int   nMeasErrResult;			// 0:Normal, 1:Low, 2:High
 	int   nMeasErrValue;			// Error Value : 1/1000V, 1/1000A 단위
 	int   nGioReadInfo[4];			// GIO PIN Read Value
+
+	int   tt_MachineTactTime;		// 1Cycle TactTime
+	int   tt_FrontDoorUpTime;		// Front Door Up Time
+	int   tt_FrontDoorDownTime;		// Front Door Down Time
+	int   tt_RearDoorUpTime;		// Rear Door Up Time
+	int   tt_RearDoorDownTime;		// Rear Door Down Time
+	int   tt_JigTiltingUpTime;		// JIG Tilting Up Time
+	int   tt_JigTiltingDownTime;	// JIG Tilting Down Time
 
 	char  def_INSPTIME_START[30];	// 검사 시작 시간(YYYYMMDDHHMMSS)
 	char  def_INSPTIME_END[30];		// 검사 종료 시간(YYYYMMDDHHMMSS)

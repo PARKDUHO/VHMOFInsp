@@ -19,6 +19,7 @@
 #include "CPassword.h"
 #include "CSafetyLock.h"
 #include "CMessageQuestion.h"
+#include "CErrorList.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -98,6 +99,7 @@ void CVHMOFInspDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_MA_SYSTEM, m_btnMainSystem);
 	DDX_Control(pDX, IDC_BTN_MA_INITIAL, m_btnMainInitial);
 	DDX_Control(pDX, IDC_BTN_MA_FIRMWARE, m_btnMainFirmware);
+	DDX_Control(pDX, IDC_BTN_MA_ERROR_LIST, m_btnMainErrorList);
 	DDX_Control(pDX, IDC_BTN_MA_EXIT, m_btnMainExit);
 	DDX_Control(pDX, IDC_STT_MAIN_MLOG_VIEW, m_sttMainMlogView);
 	DDX_Control(pDX, IDC_LST_MA_DIN_LIST_A, m_lstMaDinListA);
@@ -121,6 +123,7 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_MA_SYSTEM, &CVHMOFInspDlg::OnBnClickedBtnMaSystem)
 	ON_BN_CLICKED(IDC_BTN_MA_INITIAL, &CVHMOFInspDlg::OnBnClickedBtnMaInitial)
 	ON_BN_CLICKED(IDC_BTN_MA_FIRMWARE, &CVHMOFInspDlg::OnBnClickedBtnMaFirmware)
+	ON_BN_CLICKED(IDC_BTN_MA_ERROR_LIST, &CVHMOFInspDlg::OnBnClickedBtnMaErrorList)
 	ON_BN_CLICKED(IDC_BTN_MA_EXIT, &CVHMOFInspDlg::OnBnClickedBtnMaExit)
 	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_LED_OFF, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOff)
 	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_LED_ON, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOn)
@@ -839,6 +842,13 @@ void CVHMOFInspDlg::OnBnClickedBtnMaFirmware()
 	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
 }
 
+void CVHMOFInspDlg::OnBnClickedBtnMaErrorList()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CErrorList errList_dlg;
+	errList_dlg.DoModal();
+}
+
 
 void CVHMOFInspDlg::OnBnClickedBtnMaExit()
 {
@@ -1073,8 +1083,8 @@ void CVHMOFInspDlg::Lf_InitItemValue()
 	m_btnMainInitial.SizeToContent();
 	m_btnMainFirmware.LoadBitmaps(IDB_BMP_FIRMWARE, IDB_BMP_FIRMWARE, IDB_BMP_FIRMWARE, IDB_BMP_FIRMWARE);
 	m_btnMainFirmware.SizeToContent();
-//	m_btnMainBmp.LoadBitmaps(IDB_BITMAP_BMP, IDB_BITMAP_BMP_P, IDB_BITMAP_BMP, IDB_BITMAP_BMP);
-//	m_btnMainBmp.SizeToContent();
+	m_btnMainErrorList.LoadBitmaps(IDB_BMP_ERROR_LIST, IDB_BMP_ERROR_LIST, IDB_BMP_ERROR_LIST, IDB_BMP_ERROR_LIST);
+	m_btnMainErrorList.SizeToContent();
 	m_btnMainExit.LoadBitmaps(IDB_BMP_EXIT, IDB_BMP_EXIT, IDB_BMP_EXIT, IDB_BMP_EXIT);
 	m_btnMainExit.SizeToContent();
 // 
@@ -1281,7 +1291,7 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 
 	GetDlgItem(IDC_STT_EQP_NAME_VALUE)->SetWindowText(lpSystemInfo->m_sEqpName);
 
-	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE))
+	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdIdle == TRUE))
 		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("OFF-LINE"));
 	else
 		GetDlgItem(IDC_STT_OP_MODE_VALUE)->SetWindowText(_T("IN-LINE"));
@@ -1324,6 +1334,23 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 		GetDlgItem(IDC_STT_POWER_MCU_VALUE)->SetWindowText(m_pApp->m_sPmmFWVersion[CH1].Mid(17, 5));
 	}
 	GetDlgItem(IDC_STT_MAIN_SPI_VER_VALUE)->SetWindowText(_T(""));
+
+
+	// TactTime Update
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_MachineTactTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_MACHINE_VAL)->SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_FrontDoorUpTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_FRONTDOORUP_VAL)->SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_FrontDoorDownTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_FRONTDOORDOWN_VAL)->SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_RearDoorUpTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_REARDOORUP_VAL)->SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_RearDoorDownTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_REARDOORDOWN_VAL)->SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_JigTiltingUpTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGUP_VAL)->SetWindowText(sdata);
+	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_JigTiltingDownTime / 1000.0);
+	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGDOWN_VAL)->SetWindowText(sdata);
 
 
 	GetDlgItem(IDC_STT_CONNECT_MES)->Invalidate(FALSE);
@@ -1379,15 +1406,15 @@ void CVHMOFInspDlg::Lf_updateIOStautsDIN1()
 	m_lstMaDinListA.SetCheck(17, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_SPARE));
 	m_lstMaDinListA.SetCheck(18, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1));
 	m_lstMaDinListA.SetCheck(19, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2));
-	m_lstMaDinListA.SetCheck(20, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD));
-	m_lstMaDinListA.SetCheck(21, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD));
-	m_lstMaDinListA.SetCheck(22, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD));
-	m_lstMaDinListA.SetCheck(23, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD));
+	m_lstMaDinListA.SetCheck(20, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_DOWN));
+	m_lstMaDinListA.SetCheck(21, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_UP));
+	m_lstMaDinListA.SetCheck(22, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_DOWN));
+	m_lstMaDinListA.SetCheck(23, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_UP));
 
-	m_lstMaDinListA.SetCheck(24, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD));
-	m_lstMaDinListA.SetCheck(25, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD));
-	m_lstMaDinListA.SetCheck(26, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD));
-	m_lstMaDinListA.SetCheck(27, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD));
+	m_lstMaDinListA.SetCheck(24, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN));
+	m_lstMaDinListA.SetCheck(25, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_UP));
+	m_lstMaDinListA.SetCheck(26, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_DOWN));
+	m_lstMaDinListA.SetCheck(27, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_UP));
 	m_lstMaDinListA.SetCheck(28, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR));
 	m_lstMaDinListA.SetCheck(29, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR));
 	m_lstMaDinListA.SetCheck(30, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR));
@@ -1465,21 +1492,21 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_38);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_38, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_38, strErr);
 		heavyAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LIGHT_CURTAIN)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_39);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_39, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_39, strErr);
 		heavyAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_40);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_40, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_40, strErr);
 		heavyAlarm = TRUE;
 
 		// Safefy Door가 Open되면 Lock을 건다.
@@ -1489,7 +1516,7 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_41);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_41, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_41, strErr);
 		heavyAlarm = TRUE;
 
 		// Safefy Door가 Open되면 Lock을 건다.
@@ -1499,83 +1526,83 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_42);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_42, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_42, strErr);
 		lightAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_FAN_OUT_ALARM) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_43);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_43, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_43, strErr);
 		lightAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_TEMPATURE_HIGH_ALARM)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_44);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_44, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_44, strErr);
 		heavyAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_ALARM)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_45);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_45, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_45, strErr);
 		heavyAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_MAIN_AIR_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_46);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_46, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_46, strErr);
 		heavyAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_IONIZER_AIR_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_47);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_47, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_47, strErr);
 		heavyAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_48);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_48, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_48, strErr);
 		heavyAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_JIG_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_49);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
-		m_pApp->Gf_writeAlarmLog(ERROR_CODE_49, strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_49, strErr);
 		heavyAlarm = TRUE;
 	}
 
-	//	// 2023-01-27 PDH. 알람 RESET시 재가동이 필요하므로 DIO 출력을 중단시키지는 않아야 하기에 DIO 출력 중지는 주석 처리한다.
-	// 	//                 Cylinder 축정지 TYPE으로 변경시 DOOR OPEN하면 자동으로 정지된다.
-	//	// 2023-01-19 PDH .Heavy Alarm 발생 시 DIO 출력 중지시킨다.
-	// 	if (heavyAlarm == TRUE)
-	// 	{
-	// 		int DOut;
-	// 
-	// 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
-	// 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
-	// 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
-	// 
-	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
-	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
-	// 		DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
-	// 		DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
-	// 		DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
-	// 		DOut &= ~DOUT_D1_JIG_TILTING01_UP;
-	// 		DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
-	// 		DOut &= ~DOUT_D1_JIG_TILTING02_UP;
-	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
-	// 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
-	// 
-	// 		m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
-	// 	}
+	// 2023-01-27 PDH. 알람 RESET시 재가동이 필요하므로 DIO 출력을 중단시키지는 않아야 하기에 DIO 출력 중지는 주석 처리한다.
+ 	//                 Cylinder 축정지 TYPE으로 변경시 DOOR OPEN하면 자동으로 정지된다.
+	// 2023-01-19 PDH .Heavy Alarm 발생 시 DIO 출력 중지시킨다.
+ 	if (heavyAlarm == TRUE)
+ 	{
+ 		int DOut=0;
+ 
+ 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
+ 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
+ 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
+ 
+ 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+ 		DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
+ 		DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
+ 		DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
+ 		DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
+ 		DOut &= ~DOUT_D1_JIG_TILTING01_UP;
+ 		DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
+ 		DOut &= ~DOUT_D1_JIG_TILTING02_UP;
+ 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+ 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+ 
+ 		m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
+ 	}
 
 	if ((lightAlarm == TRUE) || (heavyAlarm == TRUE))
 	{
@@ -1661,6 +1688,8 @@ void CVHMOFInspDlg::Lf_updateMaQuantityCount()
 	);
 	m_pApp->Gf_writeMLog(sdata);
 }
+
+
 
 
 

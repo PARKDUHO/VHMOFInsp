@@ -41,6 +41,8 @@
 #define IDD_DEFECT_RESULT               182
 #define IDD_SAFETY_LOCK                 184
 #define IDD_SENSOR_VIEW                 187
+#define IDB_BMP_ERROR_LIST              189
+#define IDD_ERROR_LIST                  190
 #define IDC_BTN_MA_USERID               1000
 #define IDC_BTN_MA_MODEL_CHANGE         1001
 #define IDC_STT_USER_ID_TITLE           1001
@@ -59,6 +61,7 @@
 #define IDC_BTN_MA_EXIT                 1008
 #define IDC_STT_ERR_TITLE               1008
 #define IDC_BTN_ERR_CLOSE               1009
+#define IDC_BTN_MA_ERROR_LIST           1009
 #define IDC_STT_MAIN_MLOG_VIEW          1010
 #define IDC_STT_MI_MODEL_NAME           1011
 #define IDC_STT_MI_MODEL_NAME_VALUE     1012
@@ -68,6 +71,7 @@
 #define IDC_BTN_MI_SAVE_EXIT            1016
 #define IDC_BTN_MI_CANCEL               1017
 #define IDC_STT_MF_POWER_SEQ_TITLE      1017
+#define IDC_LST_EL_ERRORLIST_VIEW       1017
 #define IDC_STT_MF_POWER_INFO_TITLE     1018
 #define IDC_BTN_MI_FUSING               1018
 #define IDC_STT_MF_POWER_LIMIT_TITLE    1019
@@ -121,13 +125,17 @@
 #define IDC_EDT_SY_EQP_NAME             1059
 #define IDC_CMB_MF_SIGNAL_TYPE          1060
 #define IDC_CMB_MD_PTN_NAME             1060
+#define IDC_EDT_SY_LB_START_ADDR        1060
 #define IDC_CMB_MF_SIGNAL_FRS_MODE      1061
 #define IDC_CMB_MD_SPI_PULL_UP          1061
+#define IDC_EDT_SY_EQP_NAME3            1061
+#define IDC_EDT_SY_LW_START_ADDR        1061
 #define IDC_CMB_MF_SIGNAL_BIT_SELECT    1062
 #define IDC_CMB_MD_SPI_LEVEL            1062
 #define IDC_CBO_SY_EAS_USE              1062
 #define IDC_EDT_MF_TIMING_FREQ          1063
 #define IDC_CMB_MD_SPI_CLOCK            1063
+#define IDC_CBO_SY_CARRIER_TYPE         1063
 #define IDC_EDT_MF_TIMING_VSYNC         1064
 #define IDC_EDT_MD_PTN_VCC              1064
 #define IDC_EDT_MF_TIMING_HOR_TOTAL     1065
@@ -384,6 +392,7 @@
 #define IDC_LST_MO_DIO2_OUT             1156
 #define IDC_STT_TACTTIME_INFO_TIT       1156
 #define IDC_BTN_MO_WRITE_DIO1           1157
+#define IDC_STT_SY_MELSEC_TIT           1157
 #define IDC_STT_SY_MES_TIT              1158
 #define IDC_BTN_MO_WRITE_DIO2           1158
 #define IDC_IPD_SY_MES_LOCAL_IP         1159
@@ -608,6 +617,7 @@
 #define IDC_BTN_DEF_CONFIRM             1354
 #define IDC_BTN_DEF_CANCEL              1355
 #define IDC_BTN_DEF_UNDO                1356
+#define IDC_CTR_EL_DATETIME             1558
 #define IDC_STT_SL_TOP                  1580
 #define IDC_STT_SL_FIRST                1581
 #define IDC_STT_SL_SECOND               1582
@@ -617,12 +627,15 @@
 #define IDC_STT_SL_BOTTOM2              1586
 #define IDC_BTN_SL_OK                   1587
 #define IDC_BTN_SL_SENSOR_VIEW          1588
+#define IDC_STT_EL_TITLE                1617
+#define IDC_BTN_EL_CLOSE                1618
+#define IDC_STT_EL_ERRORLIST_OPE        1619
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        189
+#define _APS_NEXT_RESOURCE_VALUE        192
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1253
 #define _APS_NEXT_SYMED_VALUE           101

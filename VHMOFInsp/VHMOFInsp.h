@@ -46,7 +46,7 @@ public:
 	void Gf_writeMLog(char* szLogData);
 	void Gf_writeMLog(CString sLogData);
 	void Gf_writeSummaryLog(int ch);
-	void Gf_writeAlarmLog(int errorCode, CString strError);
+	void Gf_writeErrorList(int errorCode, CString strError);
 	BOOL Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorCode, CString AppendMessage=_T(""));
 	void Gf_QtyCountUp(int ch, int ok_ng);
 	void Gf_QtyCountReset(int ch);
@@ -125,6 +125,7 @@ public:
 	CString m_sLoginUserName;
 	BOOL m_bUserIdGieng;
 	BOOL m_bUserIdPM;
+	BOOL m_bUserIdIdle;
 
 	// DIO Board Data
 	int m_nAckCmdDio[2];

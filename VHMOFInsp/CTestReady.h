@@ -72,13 +72,13 @@ protected:
 	BOOL Lf_aif_ClampUnLockCheck();
 	void Lf_aif_ClampErrorDisplay(int checkType);
 	BOOL Lf_aif_JigTiltingUp();
-	BOOL Lf_aif_JigTiltingUpCheck();
+	BOOL Lf_aif_JigTiltingDown();
 	BOOL Lf_aif_FrontDoorOpen();
 	BOOL Lf_aif_FrontDoorClose();
 	BOOL Lf_aif_FrontDoorHoldingOn();
 	BOOL Lf_aif_FrontDoorHoldingOff();
-	BOOL Lf_aif_JigTiltingDown();
-	BOOL Lf_aif_JigTiltingDownCheck();
+	BOOL Lf_aif_FrontDoorHoldingOnCheck();
+	BOOL Lf_aif_FrontDoorHoldingOffCheck();
 	BOOL Lf_aif_CarrierJigOutCheck();
 
 

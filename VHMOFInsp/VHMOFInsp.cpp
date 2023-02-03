@@ -204,6 +204,7 @@ void CVHMOFInspApp::Lf_initGlobalVariable()
 	Read_SysIniFile(_T("DIO"), _T("CH2_OUT_DATA3"), &m_pApp->m_nDioOutBit[CH2][2]);
 
 	ZeroMemory(bConnectInfo, sizeof(bConnectInfo));
+	ZeroMemory(lpInspWorkInfo, sizeof(INSPWORKINFO));
 
 	m_bIsSendEAYT = FALSE;
 	m_bSafetyDlgOpen = FALSE;
@@ -416,7 +417,7 @@ void CVHMOFInspApp::Gf_writeSummaryLog(int ch)
 }
 
 
-void CVHMOFInspApp::Gf_writeAlarmLog(int errorCode, CString strError)
+void CVHMOFInspApp::Gf_writeErrorList(int errorCode, CString strError)
 {
 	FILE* fp;
 	FILE* fp_hidden;
@@ -448,20 +449,20 @@ void CVHMOFInspApp::Gf_writeAlarmLog(int errorCode, CString strError)
 	sprintf_s(szMonth, "%02d", time.GetMonth());
 	sprintf_s(szDay, "%02d", time.GetDay());
 
-	if ((_access(".\\Logs\\AlarmLog", 0)) == -1)
-		_mkdir(".\\Logs\\AlarmLog");
+	if ((_access(".\\Logs\\ErrorList", 0)) == -1)
+		_mkdir(".\\Logs\\ErrorList");
 
-	sprintf_s(szbuf, ".\\Logs\\AlarmLog\\%s", szYear);
+	sprintf_s(szbuf, ".\\Logs\\ErrorList\\%s", szYear);
 	if ((_access(szbuf, 0)) == -1)
 		_mkdir(szbuf);
 
-	sprintf_s(szbuf, ".\\Logs\\AlarmLog\\%s\\%s", szYear, szMonth);
+	sprintf_s(szbuf, ".\\Logs\\ErrorList\\%s\\%s", szYear, szMonth);
 	if ((_access(szbuf, 0)) == -1)
 		_mkdir(szbuf);
 
 
 	// 2. file을 open한다.
-	sprintf_s(filename, "%04d%02d%02d_AlarmLog.txt", time.GetYear(), time.GetMonth(), time.GetDay());
+	sprintf_s(filename, "%04d%02d%02d_ErrorList.txt", time.GetYear(), time.GetMonth(), time.GetDay());
 	sprintf_s(filepath, "%s\\%s", szbuf, filename);
 
 	fopen_s(&fp, filepath, "r+");
@@ -478,24 +479,24 @@ void CVHMOFInspApp::Gf_writeAlarmLog(int errorCode, CString strError)
 	//**************************************************************************************************************//
 	// Alarm Log 숨김파일 생성 알고리즘 추가.
 	//**************************************************************************************************************//
-	if ((_access(".\\Logs\\AlarmLog_Hidden", 0)) == -1)
+	if ((_access(".\\Logs\\ErrorList_Hidden", 0)) == -1)
 	{
-		_mkdir(".\\Logs\\AlarmLog_Hidden");
+		_mkdir(".\\Logs\\ErrorList_Hidden");
 
-		CString strFile = _T(".\\Logs\\AlarmLog_Hidden");
+		CString strFile = _T(".\\Logs\\ErrorList_Hidden");
 		DWORD attr = GetFileAttributes(strFile);
 		SetFileAttributes(strFile, attr | FILE_ATTRIBUTE_HIDDEN);
 	}
 
-	sprintf_s(szbuf_hidden, ".\\Logs\\AlarmLog_Hidden\\%s", szYear);
+	sprintf_s(szbuf_hidden, ".\\Logs\\ErrorList_Hidden\\%s", szYear);
 	if ((_access(szbuf_hidden, 0)) == -1)
 		_mkdir(szbuf_hidden);
 
-	sprintf_s(szbuf_hidden, ".\\Logs\\AlarmLog_Hidden\\%s\\%s", szYear, szMonth);
+	sprintf_s(szbuf_hidden, ".\\Logs\\ErrorList_Hidden\\%s\\%s", szYear, szMonth);
 	if ((_access(szbuf_hidden, 0)) == -1)
 		_mkdir(szbuf_hidden);
 
-	sprintf_s(filename_hidden, "%04d%02d%02d_AlarmLog.txt", time.GetYear(), time.GetMonth(), time.GetDay());
+	sprintf_s(filename_hidden, "%04d%02d%02d_ErrorList.txt", time.GetYear(), time.GetMonth(), time.GetDay());
 	sprintf_s(filepath_hidden, "%s\\%s", szbuf_hidden, filename_hidden);
 
 	fopen_s(&fp_hidden, filepath_hidden, "r+");
@@ -548,6 +549,11 @@ BOOL CVHMOFInspApp::Gf_ShowMessageBox(int msg_type, CString strTitle, int ErrorC
 	{
 		strMessage.Append(_T("\r\n"));
 		strMessage.Append(AppendMessage);
+	}
+
+	if (msg_type == MSG_ERROR)
+	{
+		m_pApp->Gf_writeErrorList(ErrorCode, strMessage);
 	}
 
 	CMessageError errDlg;
@@ -860,6 +866,11 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 
 	Read_SysIniFile(_T("SYSTEM"),			_T("LAST_MODELNAME"),			&lpSystemInfo->m_sLastModelName);
 	Read_SysIniFile(_T("SYSTEM"),			_T("EQP_NAME"),					&lpSystemInfo->m_sEqpName);
+	Read_SysIniFile(_T("SYSTEM"),			_T("CARRIER_TYPE"),				&lpSystemInfo->m_nCarrierType);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LB_START_ADDRESS"),	&sValue);
+	lpSystemInfo->m_nLBStartAddr = _tcstol(sValue, NULL, 16);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDRESS"),	&sValue);
+	lpSystemInfo->m_nLWStartAddr = _tcstol(sValue, NULL, 16);
 	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
 	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
 	Read_SysIniFile(_T("MES"),				_T("MES_DAEMON_PORT"),			&lpSystemInfo->m_sMesDaemonPort);
@@ -1086,7 +1097,7 @@ BOOL CVHMOFInspApp::Gf_gmesSendHost(int nHostCmd)
 	CString strBuff;
 	char Luc_PF = 0;
 
-	if (m_bUserIdGieng == TRUE || m_bUserIdPM == TRUE)
+	if ((m_bUserIdGieng == TRUE) || (m_bUserIdPM == TRUE) || (m_bUserIdIdle == TRUE))
 		return TRUE;
 
 Send_RETRY:

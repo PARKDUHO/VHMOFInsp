@@ -1,4 +1,4 @@
-// CommApi.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// CommApi.cpp : Â±Â¸Ã‡Ã¶ Ã†Ã„Ã€ÃÃ€Ã”Â´ÃÂ´Ã™.
 //
 
 #include "pch.h"
@@ -252,8 +252,8 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 	//ret = m_pApp->rs232_sendPacket(ch,CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, bAck);
 	ret = main_setSendQuery(CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, ch);
 
-	// Firmware¿¡¼­´Â Power Sequence On/Off¿¡¼­ Delay¸¦ °¡Á®°¡Áö ¾Ê°í ACK¸¦ ¹Ù·Î Àü´ŞÇÑ´Ù.
-	// µû¶ó¼­, Power On/Off Sequence Delay´Â S/W¿¡¼­ °¡Á®°£´Ù.
+	// FirmwareÂ¿Â¡Â¼Â­Â´Ã‚ Power Sequence On/OffÂ¿Â¡Â¼Â­ DelayÂ¸Â¦ Â°Â¡ÃÂ®Â°Â¡ÃÃ¶ Â¾ÃŠÂ°Ã­ ACKÂ¸Â¦ Â¹Ã™Â·Ã Ã€Ã¼Â´ÃÃ‡Ã‘Â´Ã™.
+	// ÂµÃ»Â¶Ã³Â¼Â­, Power On/Off Sequence DelayÂ´Ã‚ S/WÂ¿Â¡Â¼Â­ Â°Â¡ÃÂ®Â°Â£Â´Ã™.
 	if((ret==TRUE) && (bAck==ACK))
 	{
 		DWORD dwTickS, dwTickE, dwDelay;
@@ -263,7 +263,7 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 		else
 			dwDelay = lpModelInfo->m_nPowerOffDelay1 + lpModelInfo->m_nPowerOffDelay2 + lpModelInfo->m_nPowerOffDelay3 + lpModelInfo->m_nPowerOffDelay4 + lpModelInfo->m_nPowerOffDelay5;
 
-		dwDelay = dwDelay + 500;	// Power Sequenceº¸´Ù ´ë±â½Ã°£À» ±æ°Ô ¼³Á¤ÇÑ´Ù.
+		dwDelay = dwDelay + 500;	// Power SequenceÂºÂ¸Â´Ã™ Â´Ã«Â±Ã¢Â½ÃƒÂ°Â£Ã€Â» Â±Ã¦Â°Ã” Â¼Â³ÃÂ¤Ã‡Ã‘Â´Ã™.
 		while(1)
 		{
 			dwTickE = ::GetTickCount();
@@ -301,7 +301,7 @@ BOOL CCommApi::main_setPGInfoPatternName(int ch, CString ptn_name, BOOL Ack)
 	wchar_To_char(strtmp.GetBuffer(0), szPacket);
 	length = (int)strlen(szPacket);
 
-	//ret= m_pApp->rs232_sendPacket(ch, CMD_PG_PATTERN_INFO, length, szPacket, Ack); // È­¸é Display Fail ´ëÀÀ. 2019.08.20
+	//ret= m_pApp->rs232_sendPacket(ch, CMD_PG_PATTERN_INFO, length, szPacket, Ack); // ÃˆÂ­Â¸Ã© Display Fail Â´Ã«Ã€Ã€. 2019.08.20
 	ret = main_setSendQuery(CMD_PG_PATTERN_INFO, length, szPacket, ch);
 
 	return ret;	
@@ -460,25 +460,25 @@ int CCommApi::main_makeI2cClock(int index)
 	int i2c_freq;
 
 #if 1
-	if (index == 0)		i2c_freq = 20;	//½ÇÁ¦20
-	if (index == 1)		i2c_freq = 50;	//½ÇÁ¦50
-	if (index == 2)		i2c_freq = 100;	//½ÇÁ¦100
-	if (index == 3)		i2c_freq = 154;	//½ÇÁ¦150
-	if (index == 4)		i2c_freq = 208;	//½ÇÁ¦200
-	if (index == 5)		i2c_freq = 250;	//½ÇÁ¦240
-	if (index == 6)		i2c_freq = 319;	//½ÇÁ¦300
-	if (index == 7)		i2c_freq = 376;	//½ÇÁ¦350
-	if (index == 8)		i2c_freq = 422;	//½ÇÁ¦400
+	if (index == 0)		i2c_freq = 20;	//Â½Ã‡ÃÂ¦20
+	if (index == 1)		i2c_freq = 50;	//Â½Ã‡ÃÂ¦50
+	if (index == 2)		i2c_freq = 100;	//Â½Ã‡ÃÂ¦100
+	if (index == 3)		i2c_freq = 154;	//Â½Ã‡ÃÂ¦150
+	if (index == 4)		i2c_freq = 208;	//Â½Ã‡ÃÂ¦200
+	if (index == 5)		i2c_freq = 250;	//Â½Ã‡ÃÂ¦240
+	if (index == 6)		i2c_freq = 319;	//Â½Ã‡ÃÂ¦300
+	if (index == 7)		i2c_freq = 376;	//Â½Ã‡ÃÂ¦350
+	if (index == 8)		i2c_freq = 422;	//Â½Ã‡ÃÂ¦400
 #else
-	if (lpModelInfo->m_nI2cFrequency == 0)		i2c_freq = 20;	//½ÇÁ¦20
-	if (lpModelInfo->m_nI2cFrequency == 1)		i2c_freq = 50;	//½ÇÁ¦50
-	if (lpModelInfo->m_nI2cFrequency == 2)		i2c_freq = 100;	//½ÇÁ¦100
-	if (lpModelInfo->m_nI2cFrequency == 3)		i2c_freq = 150;	//½ÇÁ¦147
-	if (lpModelInfo->m_nI2cFrequency == 4)		i2c_freq = 200;	//½ÇÁ¦192
-	if (lpModelInfo->m_nI2cFrequency == 5)		i2c_freq = 240;	//½ÇÁ¦232
-	if (lpModelInfo->m_nI2cFrequency == 6)		i2c_freq = 300;	//½ÇÁ¦290
-	if (lpModelInfo->m_nI2cFrequency == 7)		i2c_freq = 350;	//½ÇÁ¦333
-	if (lpModelInfo->m_nI2cFrequency == 8)		i2c_freq = 400;	//½ÇÁ¦373
+	if (lpModelInfo->m_nI2cFrequency == 0)		i2c_freq = 20;	//Â½Ã‡ÃÂ¦20
+	if (lpModelInfo->m_nI2cFrequency == 1)		i2c_freq = 50;	//Â½Ã‡ÃÂ¦50
+	if (lpModelInfo->m_nI2cFrequency == 2)		i2c_freq = 100;	//Â½Ã‡ÃÂ¦100
+	if (lpModelInfo->m_nI2cFrequency == 3)		i2c_freq = 150;	//Â½Ã‡ÃÂ¦147
+	if (lpModelInfo->m_nI2cFrequency == 4)		i2c_freq = 200;	//Â½Ã‡ÃÂ¦192
+	if (lpModelInfo->m_nI2cFrequency == 5)		i2c_freq = 240;	//Â½Ã‡ÃÂ¦232
+	if (lpModelInfo->m_nI2cFrequency == 6)		i2c_freq = 300;	//Â½Ã‡ÃÂ¦290
+	if (lpModelInfo->m_nI2cFrequency == 7)		i2c_freq = 350;	//Â½Ã‡ÃÂ¦333
+	if (lpModelInfo->m_nI2cFrequency == 8)		i2c_freq = 400;	//Â½Ã‡ÃÂ¦373
 #endif
 
 	return i2c_freq;
@@ -494,35 +494,35 @@ BOOL CCommApi::qspi_setSendQuery(int ch, int nCommand, int nLength, char* pData,
 	char lpbuff[20] = { 0, };
 	BYTE nChkSum = 0;
 
-	// data ¾Õ±îÁö Packet »ı¼º
+	// data Â¾Ã•Â±Ã®ÃÃ¶ Packet Â»Ã½Â¼Âº
 	sprintf_s(szpacket, "%cA1A400%02X%04X", 0x02, nCommand, nLength);
 
-	// data¸¦ Æ÷ÇÔÇÏ¿© packet »ı¼º. hex·Î Àü¼ÛÇÒ data°¡ ÀÖÀ¸¹Ç·Î memcpy¸¦ »ç¿ë
+	// dataÂ¸Â¦ Ã†Ã·Ã‡Ã”Ã‡ÃÂ¿Â© packet Â»Ã½Â¼Âº. hexÂ·Ã Ã€Ã¼Â¼Ã›Ã‡Ã’ dataÂ°Â¡ Ã€Ã–Ã€Â¸Â¹Ã‡Â·Ã memcpyÂ¸Â¦ Â»Ã§Â¿Ã«
 	packetlen = (int)strlen(szpacket);
 	memcpy(&szpacket[packetlen], pData, nLength);
 
-	// data ¸¦ Æ÷ÇÔÇÑ packetÀÇ ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	// data Â¸Â¦ Ã†Ã·Ã‡Ã”Ã‡Ã‘ packetÃ€Ã‡ Â±Ã¦Ã€ÃŒÂ¸Â¦ Â±Â¸Ã‡Ã‘Â´Ã™.
 	packetlen += nLength;
 
-	// »ı¼ºµÈ PacketÀ» ÀÌ¿ëÇÏ¿© CheckSumÀ» ±¸ÇÑ´Ù.
+	// Â»Ã½Â¼ÂºÂµÃˆ PacketÃ€Â» Ã€ÃŒÂ¿Ã«Ã‡ÃÂ¿Â© CheckSumÃ€Â» Â±Â¸Ã‡Ã‘Â´Ã™.
 	for (int j = 1; j < packetlen; j++)		// Check Sum
 	{
 		nChkSum += szpacket[j];
 	}
 	sprintf_s(lpbuff, "%02X%c", nChkSum, 0x03);
 
-	// Checksum°ú ETX 3byte¸¦ ºÙ¿© ´Ù½Ã PacketÀ» ¸¸µç´Ù.
+	// ChecksumÂ°Ãº ETX 3byteÂ¸Â¦ ÂºÃ™Â¿Â© Â´Ã™Â½Ãƒ PacketÃ€Â» Â¸Â¸ÂµÃ§Â´Ã™.
 	memcpy(&szpacket[packetlen], lpbuff, 3);
 	packetlen += 3;
 
-	// PacketÀÇ ¸¶Áö¸·¿¡ StringÀÇ ³¡À» ¾Ë¸®±â À§ÇÏ¿© NULLÀ» Ãß°¡ÇÑ´Ù.
+	// PacketÃ€Ã‡ Â¸Â¶ÃÃ¶Â¸Â·Â¿Â¡ StringÃ€Ã‡ Â³Â¡Ã€Â» Â¾Ã‹Â¸Â®Â±Ã¢ Ã€Â§Ã‡ÃÂ¿Â© NULLÃ€Â» ÃƒÃŸÂ°Â¡Ã‡Ã‘Â´Ã™.
 	szpacket[packetlen] = 0x00;
 
 
-	// Receive Buff¸¦ Clear
+	// Receive BuffÂ¸Â¦ Clear
 	ZeroMemory(m_szQspiRecvData[ch], sizeof(m_szQspiRecvData[ch]));
 
-	// »ı¼ºµÈ PacketÀ» Àü¼Û.
+	// Â»Ã½Â¼ÂºÂµÃˆ PacketÃ€Â» Ã€Ã¼Â¼Ã›.
 	if (ch == CH1)	m_pApp->m_pSocketTCPMain->tcp_SPI_SendQuery(ch, szpacket, packetlen);
 	if (ch == CH2)	m_pApp->m_pSocketTCPMain->tcp_SPI_SendQuery(ch, szpacket, packetlen);
 
@@ -636,7 +636,7 @@ BOOL CCommApi::Lf_setQSPI_FlashWrite(int ch, int startReg, int wrLength, BYTE* w
 	int length;
 
 	// 256 : bytePerPage 
-	// 3   : pageWriteDelay(3->5Å×½ºÆ®)
+	// 3   : pageWriteDelay(3->5Ã…Ã—Â½ÂºÃ†Â®)
 	// 1   :  0: 24bit, 1 (32bbit)  => bitOfAddr (20.12.21)
 	// 
 	sprintf_s(szPacket, "%04d%04d%01d%08X%04X", 256, 3, 1/* bitOfAddr */, startReg, wrLength);
@@ -674,7 +674,7 @@ int CCommApi::Lf_getQSPI_FlashStatusRead(int ch)
 	}
 	return -1;
 }
-//TEST¿ëÇÔ¼ö
+//TESTÂ¿Ã«Ã‡Ã”Â¼Ã¶
 int CCommApi::Lf_getQSPI_FlashStatusRead_Temp(int ch)
 {
 	//char szData[1024 * 32];
@@ -751,7 +751,7 @@ BOOL CCommApi::Lf_setQSPI_GPIO_Init(int ch)
 		, lpModelInfo->m_nQspiGpioInOut2
 		, lpModelInfo->m_nQspiGpioInOut3
 		, lpModelInfo->m_nQspiGpioInOut4);
-	//sprintf_s(szPacket, "%01d%01d%01d%01d%01d", lpModelInfo->m_nQspiGpioLevel , 1, 1, 1, 1); //ÁÖ¼®Ã³¸®(21.02.24)
+	//sprintf_s(szPacket, "%01d%01d%01d%01d%01d", lpModelInfo->m_nQspiGpioLevel , 1, 1, 1, 1); //ÃÃ–Â¼Â®ÃƒÂ³Â¸Â®(21.02.24)
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_GPIO_INITIALIZE, length, szPacket, ACK, 2000);
 }
@@ -764,7 +764,7 @@ BOOL CCommApi::Lf_setQSPI_GpioWriteBit(int ch)
 		, lpModelInfo->m_nQspiGpioLowHigh2
 		, lpModelInfo->m_nQspiGpioLowHigh3
 		, lpModelInfo->m_nQspiGpioLowHigh4);
-	//sprintf_s(szPacket, "%01d%01d%01d%01d", 0,0,0,1); // »ç¿ë ÁÖ¼®Ã³¸®(21.02.24)
+	//sprintf_s(szPacket, "%01d%01d%01d%01d", 0,0,0,1); // Â»Ã§Â¿Ã« ÃÃ–Â¼Â®ÃƒÂ³Â¸Â®(21.02.24)
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_GPIO_WRITE_BIT, length, szPacket, ACK, 2000);
 }
@@ -1006,7 +1006,9 @@ BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 	length = (int)strlen(szPacket);
 
 	Critical_Dio[ch].Lock();//(22.11.18)
+	delayMs(1);
 	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
+	delayMs(1);
 	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
@@ -1032,11 +1034,20 @@ BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
 		m_pApp->m_nDioOutBit[ch][2] &= (BYTE)(OutBit >> 16);
 	}
 
+	CString strKey;
+	for (int i = 0; i < 3; i++)
+	{
+		strKey.Format(_T("CH%d_OUT_DATA%d"), (ch + 1), (i + 1));
+		Write_SysIniFile(_T("DIO"), strKey, m_pApp->m_nDioOutBit[ch][i]);
+	}
+
 	sprintf_s(szPacket, "%02X00%02X00%02X00", m_pApp->m_nDioOutBit[ch][2], m_pApp->m_nDioOutBit[ch][1], m_pApp->m_nDioOutBit[ch][0]);
 	length = (int)strlen(szPacket);
 
 	Critical_Dio[ch].Lock();//(22.11.18)
+	delayMs(1);
 	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
+	delayMs(1);
 	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
@@ -1049,7 +1060,9 @@ BOOL CCommApi::dio_readDioInput(int ch, BOOL bACK)
 	char szPacket[128] = { 0, };
 
 	Critical_Dio[ch].Lock();//(22.11.18)
+	delayMs(1);
 	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_INPUT, 0, NULL, bACK);
+	delayMs(1);
 	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
@@ -1059,11 +1072,11 @@ BOOL CCommApi::dio_LEDOnOff(BOOL bOnOff)
 {
 	if (bOnOff == ON)
 	{
-		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_ON_OFF, OFF);	// LOW°¡ LED ONÀÌ´Ù.
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, OFF);	// LOWÂ°Â¡ LED ONÃ€ÃŒÂ´Ã™.
 	}
 	else
 	{
-		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_ON_OFF, ON);	// HIGH°¡ LED OFFÀÌ´Ù.
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, ON);	// HIGHÂ°Â¡ LED OFFÃ€ÃŒÂ´Ã™.
 	}
 }
 
@@ -1109,26 +1122,138 @@ BOOL CCommApi::dio_RobotInLEDOnOff(BOOL bOnOff)
 
 BOOL CCommApi::dio_RearDoorOpen()
 {
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
+
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_DOWN, OFF);
-	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_UP, ON);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_UP, ON);
+
+	if (bRet == TRUE)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_UP)
+				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_UP)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+			delayMs(1);
+
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+		}
+	}
+
+	lpInspWorkInfo->tt_RearDoorUpTime = eTick - sTick;
+
+	return bRet;
 }
 
 BOOL CCommApi::dio_RearDoorClose()
 {
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
+
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_UP, OFF);
-	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_DOWN, ON);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_DOWN, ON);
+
+	if (bRet == TRUE)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN)
+				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_DOWN)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+			delayMs(1);
+
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+		}
+	}
+
+	lpInspWorkInfo->tt_RearDoorDownTime = eTick - sTick;
+
+	return bRet;
 }
 
 BOOL CCommApi::dio_FrontDoorOpen()
 {
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
+
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_DOWN, OFF);
-	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_UP, ON);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_UP, ON);
+
+	if (bRet == TRUE)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_UP)
+				&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_UP)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+			delayMs(1);
+
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+		}
+	}
+
+	lpInspWorkInfo->tt_FrontDoorUpTime = eTick - sTick;
+
+	return bRet;
 }
 
 BOOL CCommApi::dio_FrontDoorClose()
 {
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
+
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_UP, OFF);
-	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_DOWN, ON);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_DOWN, ON);
+
+	if (bRet == TRUE)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_DOWN)
+				&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_DOWN)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+			delayMs(1);
+
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+		}
+	}
+
+	lpInspWorkInfo->tt_FrontDoorDownTime = eTick - sTick;
+
+	return bRet;
 }
 
 BOOL CCommApi::dio_FrontDoorHoldingOn()
@@ -1208,17 +1333,107 @@ BOOL CCommApi::dio_JigClampUnLock(int ch)
 BOOL CCommApi::dio_JigTiltingUp()
 {
 	BOOL bRet = FALSE;
-	int clampData = 0;
+	DWORD sTick, eTick;
 
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_DOWN | DOUT_D1_JIG_TILTING02_DOWN), OFF);
 	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_UP | DOUT_D1_JIG_TILTING02_UP), ON);
 
 	if (bRet == TRUE)
 	{
-		if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_UP_3_SENSOR)
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
 		{
-			m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_JIG_TILTING02_UP, OFF);
-			bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_JIG_TILTING02_DOWN, ON);
+			if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_UP_3_SENSOR)
+			{
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_JIG_TILTING02_UP, OFF);
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_JIG_TILTING02_DOWN, ON);
+			}
+
+			if (lpModelInfo->m_nJigTiltingCheck == 0)	// 60ë„
+			{
+				if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
+					&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR))
+				{
+					bRet = TRUE;
+					break;
+				}
+			}
+			else if (lpModelInfo->m_nJigTiltingCheck == 1)	// 70ë„
+			{
+				if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
+					&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR)
+					&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
+					)
+				{
+					bRet = TRUE;
+					break;
+				}
+			}
+
+			delayMs(1);
+
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+				break;
+		}
+	}
+
+	lpInspWorkInfo->tt_JigTiltingUpTime = eTick - sTick;
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_JigTiltingUpCheck()
+{
+	BOOL bRet = FALSE;
+
+	if (lpModelInfo->m_nJigTiltingCheck == 0)	// 60ë„
+	{
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR))
+		{
+			bRet = TRUE;
+		}
+	}
+	else if (lpModelInfo->m_nJigTiltingCheck == 1)	// 70ë„
+	{
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
+			&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR)
+			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
+			)
+		{
+			bRet = TRUE;
+		}
+	}
+
+	if (bRet == FALSE)
+	{
+		if (lpModelInfo->m_nJigTiltingCheck == 0)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_81);
+			}
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_93);
+			}
+		}
+		else if (lpModelInfo->m_nJigTiltingCheck == 1)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_81);
+			}
+			if ((m_pApp->m_nDioInBit[CH1][0] & DIN_D2_TILTING_70_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_82);
+			}
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR) == 0)
+			{
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_94);
+			}
 		}
 	}
 
@@ -1228,14 +1443,75 @@ BOOL CCommApi::dio_JigTiltingUp()
 BOOL CCommApi::dio_JigTiltingDown()
 {
 	BOOL bRet = FALSE;
-	int clampData = 0;
+	DWORD sTick, eTick;
 
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_UP | DOUT_D1_JIG_TILTING02_UP), OFF);
 	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_DOWN | DOUT_D1_JIG_TILTING02_DOWN), ON);
 
+	if (bRet == TRUE)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
+				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
+				&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
+				&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+
+			delayMs(1);
+
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+				break;
+		}
+	}
+
+	lpInspWorkInfo->tt_JigTiltingDownTime = eTick - sTick;
+
 	return bRet;
 }
 
+BOOL CCommApi::dio_JigTiltingDownCheck()
+{
+	BOOL bRet = FALSE;
+
+	if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
+		&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
+		&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
+		&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
+		)
+	{
+		bRet = TRUE;
+	}
+
+	if (bRet == FALSE)
+	{
+		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_87);
+		}
+		else if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_88);
+		}
+		else if ((m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_89);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_90);
+		}
+	}
+
+	return bRet;
+}
 
 
 //////////////////////////////////////////////////////////////////////
@@ -1249,32 +1525,32 @@ int  CCommApi::main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 	char szbuff[5] = { 0, };
 	BYTE nChkSum = 0;
 
-	// Checksum ¾Õ±îÁö Packet »ı¼º
+	// Checksum Â¾Ã•Â±Ã®ÃÃ¶ Packet Â»Ã½Â¼Âº
 	sprintf_s(szpacket, "%cA1%02X00%02X%04X", 0x02, TARGET_MAIN, nCommand, nLength);
 
-	// data¸¦ Æ÷ÇÔÇÏ¿© packet »ı¼º. hex·Î Àü¼ÛÇÒ data°¡ ÀÖÀ¸¹Ç·Î memcpy¸¦ »ç¿ë
+	// dataÂ¸Â¦ Ã†Ã·Ã‡Ã”Ã‡ÃÂ¿Â© packet Â»Ã½Â¼Âº. hexÂ·Ã Ã€Ã¼Â¼Ã›Ã‡Ã’ dataÂ°Â¡ Ã€Ã–Ã€Â¸Â¹Ã‡Â·Ã memcpyÂ¸Â¦ Â»Ã§Â¿Ã«
 	packetlen = (int)strlen(szpacket);
 
 	memcpy(&szpacket[packetlen], pData, nLength);
 
-	// data ¸¦ Æ÷ÇÔÇÑ packetÀÇ ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	// data Â¸Â¦ Ã†Ã·Ã‡Ã”Ã‡Ã‘ packetÃ€Ã‡ Â±Ã¦Ã€ÃŒÂ¸Â¦ Â±Â¸Ã‡Ã‘Â´Ã™.
 	packetlen += nLength;
 
-	// »ı¼ºµÈ PacketÀ» ÀÌ¿ëÇÏ¿© CheckSumÀ» ±¸ÇÑ´Ù.
+	// Â»Ã½Â¼ÂºÂµÃˆ PacketÃ€Â» Ã€ÃŒÂ¿Ã«Ã‡ÃÂ¿Â© CheckSumÃ€Â» Â±Â¸Ã‡Ã‘Â´Ã™.
 	for (int j = 1; j < packetlen; j++)		// Check Sum
 	{
 		nChkSum += szpacket[j];
 	}
 	sprintf_s(szbuff, "%02X%c", nChkSum, 0x03);
 
-	// Checksum°ú ETX 3byte¸¦ ºÙ¿© ´Ù½Ã PacketÀ» ¸¸µç´Ù.
+	// ChecksumÂ°Ãº ETX 3byteÂ¸Â¦ ÂºÃ™Â¿Â© Â´Ã™Â½Ãƒ PacketÃ€Â» Â¸Â¸ÂµÃ§Â´Ã™.
 	memcpy(&szpacket[packetlen], szbuff, 3);
 	packetlen += 3;
 
-	// PacketÀÇ ¸¶Áö¸·¿¡ StringÀÇ ³¡À» ¾Ë¸®±â À§ÇÏ¿© NULLÀ» Ãß°¡ÇÑ´Ù.
+	// PacketÃ€Ã‡ Â¸Â¶ÃÃ¶Â¸Â·Â¿Â¡ StringÃ€Ã‡ Â³Â¡Ã€Â» Â¾Ã‹Â¸Â®Â±Ã¢ Ã€Â§Ã‡ÃÂ¿Â© NULLÃ€Â» ÃƒÃŸÂ°Â¡Ã‡Ã‘Â´Ã™.
 	szpacket[packetlen] = 0x00;
 
-	// »ı¼ºµÈ PacketÀ» Àü¼Û.
+	// Â»Ã½Â¼ÂºÂµÃˆ PacketÃ€Â» Ã€Ã¼Â¼Ã›.
 	int ret = 0;
 
 	ret = m_pApp->m_pSocketTCPMain->tcp_Main_SendQuery(ch, szpacket, packetlen);
@@ -1282,7 +1558,7 @@ int  CCommApi::main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 	if (DEBUG_TCP_RECEIVE_OK == 1)
 		return TRUE;
 
-	// FusingÀº ¾à 3ÃÊÁ¤µµ °É¸²
+	// FusingÃ€Âº Â¾Ã  3ÃƒÃŠÃÂ¤ÂµÂµ Â°Ã‰Â¸Â²
 	int ackWaitTime = ETH_ACK_NOR_WAIT_TIME;
 	if (nCommand == CMD_CTRL_FUSING_SYSTEM)
 	{
@@ -1315,7 +1591,7 @@ BOOL CCommApi::main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTim
 
 		if (rcvSize != 0)
 		{
-			// Receive Data¸¦ °¡Á®¿Â´Ù.
+			// Receive DataÂ¸Â¦ Â°Â¡ÃÂ®Â¿Ã‚Â´Ã™.
 			memset(m_szRcvPacket, 0, sizeof(m_szRcvPacket));
 			m_pApp->m_pSocketTCPMain->tcp_Main_GetReceivePacketData(ch, m_szRcvPacket);
 
@@ -1332,7 +1608,7 @@ BOOL CCommApi::main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTim
 			}
 		}
 
-		// Ack¸¦ ±â´Ù¸°´Ù. Wait Time¾È¿¡ Ack°¡ µé¾î¿ÀÁö ¾ÊÀ¸¸é False¸¦ ReturnÇÑ´Ù.
+		// AckÂ¸Â¦ Â±Ã¢Â´Ã™Â¸Â°Â´Ã™. Wait TimeÂ¾ÃˆÂ¿Â¡ AckÂ°Â¡ ÂµÃ©Â¾Ã®Â¿Ã€ÃÃ¶ Â¾ÃŠÃ€Â¸Â¸Ã© FalseÂ¸Â¦ ReturnÃ‡Ã‘Â´Ã™.
 		eTick = ::GetTickCount();
 		if ((sTick + ackWaitTime) < eTick)
 		{

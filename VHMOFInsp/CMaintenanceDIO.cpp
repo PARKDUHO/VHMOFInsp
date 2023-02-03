@@ -4,6 +4,8 @@
 #include "pch.h"
 #include "VHMOFInsp.h"
 #include "CMaintenanceDIO.h"
+#include "CPassword.h"
+#include "CMessageQuestion.h"
 #include "afxdialogex.h"
 
 
@@ -183,6 +185,18 @@ HBRUSH CMaintenanceDIO::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_CLOSE)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_HOLDING_ON)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_FRONT_DOOR_HOLDING_OFF)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_REAR_DOOR_OPEN)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_REAR_DOOR_CLOSE)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_LIGHT_CURTAIN_MUTE_ON)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_LIGHT_CURTAIN_MUTE_OFF)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_JIG_TILTING_UP)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_JIG_TILTING_DOWN)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_LEFT_SAFETY_DOOR_OPEN)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_RIGHT_SAFETY_DOOR_OPEN)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_LOCK_CH1)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_UNLOCK_CH1)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_LOCK_CH2)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_UNLOCK_CH2)
 				)
 			{
 				pDC->SetBkColor(COLOR_GREEN128);
@@ -230,6 +244,8 @@ void CMaintenanceDIO::OnTimer(UINT_PTR nIDEvent)
 			// DIO 상태 변수는 Main Dialog의 Thread에서 업데이트 된다.
 			Lf_updateStautsDio2In();
 		}
+
+
 
 		SetTimer(1, 500, NULL);
 	}
@@ -395,7 +411,7 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 	if (m_lstMoDio1Out.GetCheck(15) == TRUE)	nDOut |= DOUT_D1_JIG_TILTING02_UP;
 	if (m_lstMoDio1Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D1_IONIZER_BLOW_ON;
 	if (m_lstMoDio1Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D1_IONIZER_ON_OFF;
-	if (m_lstMoDio1Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D1_LED_ON_OFF;
+	if (m_lstMoDio1Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D1_LED_OFF;
 	if (m_lstMoDio1Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D1_IONIZER_BLOW_OFF;
 	if (m_lstMoDio1Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D1_ROBOT_IN_LED;
 	if (m_lstMoDio1Out.GetCheck(21) == TRUE)	nDOut |= DOUT_D1_SHUTTER_HOLDING_BACKWARD;
@@ -500,72 +516,30 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio2()
 void CMaintenanceDIO::OnStnClickedSttMoFrontDoorOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
 
 	bRet = m_pApp->commApi->dio_FrontDoorHoldingOff();
 	Lf_setListCheck();
+
 	if (bRet == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
 		return;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	m_pApp->commApi->dio_FrontDoorOpen();
-	Lf_setListCheck();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD)
-			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
-	}
-
-	if (bRet == TRUE)
-	{
-		m_pApp->commApi->dio_FrontDoorHoldingOn();
-		Lf_setListCheck();
-	}
-	else
-	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR OPEN TIME OUT"), ERROR_CODE_83);
-	}
-
-}
-
-
-void CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose()
-{
-	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	BOOL bRet = FALSE;
-	DWORD sTick, eTick;
-
-	bRet = m_pApp->commApi->dio_FrontDoorHoldingOff();
-	Lf_setListCheck();
-	if (bRet == FALSE)
-	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
-		return;
-	}
-
+	bRet = FALSE;
 	sTick = ::GetTickCount();
 	while (1)
 	{
 		if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD)
 		{
 			bRet = TRUE;
-			return;
+			break;
 		}
 		delayMs(1);
 
@@ -576,20 +550,50 @@ void CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose()
 	if (bRet == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+		Lf_controlButtonEnable(TRUE);
 		return;
 	}
 
-
 	/////////////////////////////////////////////////////////////////////////////////////
-	m_pApp->commApi->dio_FrontDoorClose();
+	bRet = m_pApp->commApi->dio_FrontDoorOpen();
 	Lf_setListCheck();
 
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR OPEN TIME OUT"), ERROR_CODE_83);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	Lf_controlButtonEnable(TRUE);
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
+
+	bRet = m_pApp->commApi->dio_FrontDoorHoldingOff();
+	Lf_setListCheck();
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+		Lf_controlButtonEnable(TRUE);
+		return;
+	}
+
+	bRet = FALSE;
 	sTick = ::GetTickCount();
 	while (1)
 	{
-		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD)
-			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD)
-			)
+		if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD)
 		{
 			bRet = TRUE;
 			break;
@@ -597,176 +601,250 @@ void CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose()
 		delayMs(1);
 
 		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
 			break;
 	}
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+		Lf_controlButtonEnable(TRUE);
+		return;
+	}
+
+
+	/////////////////////////////////////////////////////////////////////////////////////
+	bRet = m_pApp->commApi->dio_FrontDoorClose();
+	Lf_setListCheck();
 
 	if (bRet == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR CLOSE TIME OUT"), ERROR_CODE_84);
 	}
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOn()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_FrontDoorHoldingOn();
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOff()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_FrontDoorHoldingOff();
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoRearDoorOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	BOOL bRet = FALSE;
-
-	m_pApp->commApi->dio_RearDoorOpen();
+	bRet = m_pApp->commApi->dio_RearDoorOpen();
 	Lf_setListCheck();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
-	}
 
 	if (bRet == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR OPEN TIME OUT"), ERROR_CODE_77);
 	}
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoRearDoorClose()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	BOOL bRet = FALSE;
 
-	m_pApp->commApi->dio_RearDoorClose();
+	bRet = m_pApp->commApi->dio_RearDoorClose();
 	Lf_setListCheck();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
-	}
 
 	if (bRet == FALSE)
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR CLOSE TIME OUT"), ERROR_CODE_78);
 	}
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOn()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_LightCurtainMuteOnOff(ON);
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOff()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_LightCurtainMuteOnOff(OFF);
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoJigTiltingUp()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->commApi->dio_JigTiltingUp();
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	if (m_pApp->commApi->dio_JigTiltingUp() == FALSE)
+	{
+		m_pApp->commApi->dio_JigTiltingUpCheck();
+	}
 	Lf_setListCheck();
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoJigTiltingDown()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->commApi->dio_JigTiltingDown();
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	if (m_pApp->commApi->dio_JigTiltingDown() == FALSE)
+	{
+		m_pApp->commApi->dio_JigTiltingDownCheck();
+	}
 	Lf_setListCheck();
+
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoLeftSafetyDoorOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->commApi->dio_LeftSafetyDoorOpen();
-	Lf_setListCheck();
+	CPassword pass_dlg;
+	pass_dlg.password_mode = 2;
+	if (pass_dlg.DoModal() == IDOK)
+	{
+		m_pApp->commApi->dio_LeftSafetyDoorOpen();
+		Lf_setListCheck();
+	}
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoRightSafetyDoorOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_pApp->commApi->dio_RightSafetyDoorOpen();
-	Lf_setListCheck();
+	CPassword pass_dlg;
+	pass_dlg.password_mode = 2;
+	if (pass_dlg.DoModal() == IDOK)
+	{
+		m_pApp->commApi->dio_RightSafetyDoorOpen();
+		Lf_setListCheck();
+	}
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoClampLockCh1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_JigClampLock(CH1);
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_JigClampUnLock(CH1);
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoClampLockCh2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_JigClampLock(CH2);
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
 void CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
 	m_pApp->commApi->dio_JigClampUnLock(CH2);
 	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
 }
 
 
@@ -791,6 +869,23 @@ void CMaintenanceDIO::Lf_InitFontset()
 	GetDlgItem(IDC_BTN_MO_WRITE_DIO2)->SetFont(&m_Font[2]);
 
 	m_Font[3].CreateFont(21, 9, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_OPEN)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_CLOSE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_HOLDING_ON)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_HOLDING_OFF)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_REAR_DOOR_OPEN)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_REAR_DOOR_CLOSE)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_LIGHT_CURTAIN_MUTE_ON)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_LIGHT_CURTAIN_MUTE_OFF)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_JIG_TILTING_UP)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_JIG_TILTING_DOWN)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_LEFT_SAFETY_DOOR_OPEN)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_RIGHT_SAFETY_DOOR_OPEN)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH1)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH1)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH2)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH2)->SetFont(&m_Font[3]);
+
 
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
@@ -963,7 +1058,7 @@ void CMaintenanceDIO::Lf_setListCheck()
 	m_lstMoDio1Out.SetCheck(15, (m_pApp->m_nDioOutBit[CH1][1] & (DOUT_D1_JIG_TILTING02_UP >> 8)));
 	m_lstMoDio1Out.SetCheck(16, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_BLOW_ON >> 16)));
 	m_lstMoDio1Out.SetCheck(17, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_ON_OFF >> 16)));
-	m_lstMoDio1Out.SetCheck(18, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_LED_ON_OFF >> 16)));
+	m_lstMoDio1Out.SetCheck(18, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_LED_OFF >> 16)));
 	m_lstMoDio1Out.SetCheck(19, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_IONIZER_BLOW_OFF >> 16)));
 	m_lstMoDio1Out.SetCheck(20, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16)));
 	m_lstMoDio1Out.SetCheck(21, (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_SHUTTER_HOLDING_BACKWARD >> 16)));
@@ -1021,15 +1116,15 @@ void CMaintenanceDIO::Lf_updateStautsDio1In()
 	m_lstMoDio1In.SetCheck(17, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_SPARE));
 	m_lstMoDio1In.SetCheck(18, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1));
 	m_lstMoDio1In.SetCheck(19, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2));
-	m_lstMoDio1In.SetCheck(20, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD));
-	m_lstMoDio1In.SetCheck(21, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD));
-	m_lstMoDio1In.SetCheck(22, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD));
-	m_lstMoDio1In.SetCheck(23, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD));
+	m_lstMoDio1In.SetCheck(20, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_DOWN));
+	m_lstMoDio1In.SetCheck(21, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_UP));
+	m_lstMoDio1In.SetCheck(22, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_DOWN));
+	m_lstMoDio1In.SetCheck(23, (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_UP));
 
-	m_lstMoDio1In.SetCheck(24, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD));
-	m_lstMoDio1In.SetCheck(25, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD));
-	m_lstMoDio1In.SetCheck(26, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD));
-	m_lstMoDio1In.SetCheck(27, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD));
+	m_lstMoDio1In.SetCheck(24, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN));
+	m_lstMoDio1In.SetCheck(25, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_UP));
+	m_lstMoDio1In.SetCheck(26, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_DOWN));
+	m_lstMoDio1In.SetCheck(27, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_UP));
 	m_lstMoDio1In.SetCheck(28, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR));
 	m_lstMoDio1In.SetCheck(29, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR));
 	m_lstMoDio1In.SetCheck(30, (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR));
@@ -1093,6 +1188,49 @@ void CMaintenanceDIO::Lf_updateStautsDio2In()
 	m_lstMoDio2In.SetCheck(38, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_DOWN));
 	m_lstMoDio2In.SetCheck(39, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_SEND));
 }
+
+
+void CMaintenanceDIO::Lf_controlButtonEnable(BOOL bEnable)
+{
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_OPEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_CLOSE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_HOLDING_ON)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_FRONT_DOOR_HOLDING_OFF)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_REAR_DOOR_OPEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_REAR_DOOR_CLOSE)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_LIGHT_CURTAIN_MUTE_ON)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_LIGHT_CURTAIN_MUTE_OFF)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_JIG_TILTING_UP)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_JIG_TILTING_DOWN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_LEFT_SAFETY_DOOR_OPEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_RIGHT_SAFETY_DOOR_OPEN)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH1)->EnableWindow(bEnable);
+
+	GetDlgItem(IDC_BTN_MO_WRITE_DIO1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_BTN_MO_WRITE_DIO2)->EnableWindow(bEnable);
+}
+
+
+BOOL CMaintenanceDIO::Lf_confirmDioWrite()
+{
+	if (m_chkMoAutoConfirm.GetCheck() == TRUE)
+		return TRUE;
+
+	CMessageQuestion que_dlg;
+	que_dlg.m_strQMessage.Format(_T("Do you want DIO Write ?"));
+	que_dlg.m_strLButton = _T("YES");
+	que_dlg.m_strRButton = _T("NO");
+	if (que_dlg.DoModal() == IDOK)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 
 BOOL CMaintenanceDIO::Lf_checkSafetyAlarmOn()
 {

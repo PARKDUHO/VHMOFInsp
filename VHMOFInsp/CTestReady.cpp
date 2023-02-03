@@ -190,31 +190,49 @@ void CTestReady::OnTimer(UINT_PTR nIDEvent)
 void CTestReady::OnBnClickedBtnTrTestStart()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	for (int ch = CH1; ch < MAX_CH; ch++)
+	GetDlgItem(IDC_BTN_TR_TEST_START)->EnableWindow(FALSE);
+
+	if (m_pApp->m_bUserIdIdle == TRUE)
 	{
-		if (DEBUG_PG1_TEST_ONLY == TRUE)
+		CMessageQuestion que_dlg;
+		que_dlg.m_strQMessage.Format(_T("Do you want run IDLE Mode?"));
+		que_dlg.m_strLButton = _T("YES");
+		que_dlg.m_strRButton = _T("NO");
+		if (que_dlg.DoModal() == IDOK)
 		{
-			Lf_FinalTestStart(ch);
-			break;
+			Lf_MachineStartIDLEMode();
 		}
-		else
+	}
+	else
+	{
+		for (int ch = CH1; ch < MAX_CH; ch++)
 		{
-			if (ch == CH1)
+			if (DEBUG_PG1_TEST_ONLY == TRUE)
 			{
-				if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR)
-				{
-					Lf_FinalTestStart(ch);
-				}
+				Lf_FinalTestStart(ch);
+				break;
 			}
-			if (ch == CH2)
+			else
 			{
-				if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR)
+				if (ch == CH1)
 				{
-					Lf_FinalTestStart(ch);
+					if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR)
+					{
+						Lf_FinalTestStart(ch);
+					}
+				}
+				if (ch == CH2)
+				{
+					if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR)
+					{
+						Lf_FinalTestStart(ch);
+					}
 				}
 			}
 		}
 	}
+
+	GetDlgItem(IDC_BTN_TR_TEST_START)->EnableWindow(TRUE);
 }
 
 
@@ -301,7 +319,7 @@ BOOL CTestReady::Lf_FinalTestStart(int ch)
 		goto ERR_EXCEPT;
 	}
 
-	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE))
+	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdIdle == TRUE))
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("PM MODE"), ERROR_CODE_0);
 	}
@@ -422,9 +440,6 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 		if (Lf_aif_JigTiltingUp() == FALSE)
 			return FALSE;
 
-		if (Lf_aif_JigTiltingUpCheck() == FALSE)
-			return FALSE;
-
 		if (Lf_aif_FrontDoorOpen() == FALSE)
 			return FALSE;
 
@@ -441,9 +456,6 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 			return FALSE;
 
 		if (Lf_aif_JigTiltingDown() == FALSE)
-			return FALSE;
-
-		if (Lf_aif_JigTiltingDownCheck() == FALSE)
 			return FALSE;
 
 		if (Lf_aif_ClampUnLock() == FALSE)
@@ -470,7 +482,7 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 
 BOOL CTestReady::Lf_InspRoomLEDOnOff(BOOL bOnOff)
 {
-	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_ON_OFF, bOnOff);
+	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, bOnOff);
 }
 
 BOOL CTestReady::Lf_checkPanelID(int ch)
@@ -558,7 +570,7 @@ BOOL CTestReady::Lf_setSystemAutoFusing(int ch)
 
 BOOL CTestReady::Lf_AutoModelChange()
 {
-	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE))
+	if ((m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdIdle == TRUE))
 		return TRUE;
 
 	CString strTopModelName;
@@ -765,25 +777,7 @@ BOOL CTestReady::Lf_aif_RearDoorOpen()
 {
 	BOOL bRet = FALSE;
 
-	m_pApp->commApi->dio_RearDoorOpen();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_BACKWARD)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_BACKWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
-	}
+	bRet = m_pApp->commApi->dio_RearDoorOpen();
 
 	if (bRet == FALSE)
 	{
@@ -797,25 +791,7 @@ BOOL CTestReady::Lf_aif_RearDoorClose()
 {
 	BOOL bRet = FALSE;
 
-	m_pApp->commApi->dio_RearDoorClose();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_LEFT_FORWARD)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_SHUTTER_RIGHT_FORWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
-	}
+	bRet = m_pApp->commApi->dio_RearDoorClose();
 
 	if (bRet == FALSE)
 	{
@@ -1149,7 +1125,7 @@ BOOL CTestReady::Lf_aif_JigTiltingUp()
 	if (bRet == TRUE)
 	{
 		delayMs(500);
-		if (Lf_aif_JigTiltingUpCheck() == FALSE)
+		if (m_pApp->commApi->dio_JigTiltingUpCheck() == FALSE)
 		{
 			bRet = FALSE;
 		}
@@ -1158,68 +1134,16 @@ BOOL CTestReady::Lf_aif_JigTiltingUp()
 	return bRet;
 }
 
-BOOL CTestReady::Lf_aif_JigTiltingUpCheck()
+BOOL CTestReady::Lf_aif_JigTiltingDown()
 {
-	BOOL bRet = FALSE;
+	BOOL bRet = TRUE;
 
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
+	bRet = m_pApp->commApi->dio_JigTiltingDown();
+	if (bRet == TRUE)
 	{
-		if (lpModelInfo->m_nJigTiltingCheck == 0)	// 60도
+		if (m_pApp->commApi->dio_JigTiltingDownCheck() == FALSE)
 		{
-			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
-			 && (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR))
-			{
-				bRet = TRUE;
-				break;
-			}
-		}
-		else if (lpModelInfo->m_nJigTiltingCheck == 1)	// 70도
-		{
-			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
-				&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR)
-				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
-				)
-			{
-				bRet = TRUE;
-				break;
-			}
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
-			break;
-	}
-
-	if (bRet == FALSE)
-	{
-		if (lpModelInfo->m_nJigTiltingCheck == 0)
-		{
-			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR) == 0)
-			{
-				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_81);
-			}
-			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR) == 0)
-			{
-				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_93);
-			}
-		}
-		else if (lpModelInfo->m_nJigTiltingCheck == 1)
-		{
-			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR) == 0)
-			{
-				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_81);
-			}
-			if ((m_pApp->m_nDioInBit[CH1][0] & DIN_D2_TILTING_70_SENSOR) == 0)
-			{
-				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_82);
-			}
-			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR) == 0)
-			{
-				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING UP CHECK TIME OUT"), ERROR_CODE_94);
-			}
+			bRet = FALSE;
 		}
 	}
 
@@ -1230,25 +1154,14 @@ BOOL CTestReady::Lf_aif_FrontDoorOpen()
 {
 	BOOL bRet = FALSE;
 
-	m_pApp->commApi->dio_FrontDoorOpen();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
+	// Front Door 제어전 Holding JIG 상태를 확인한다.
+	if (Lf_aif_FrontDoorHoldingOffCheck() == FALSE)
 	{
-		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_BACKWARD)
-			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_BACKWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
+		if (Lf_aif_FrontDoorHoldingOff() == FALSE)
+			return FALSE;
 	}
+
+	bRet = m_pApp->commApi->dio_FrontDoorOpen();
 
 	if (bRet == FALSE)
 	{
@@ -1262,25 +1175,14 @@ BOOL CTestReady::Lf_aif_FrontDoorClose()
 {
 	BOOL bRet = FALSE;
 
-	m_pApp->commApi->dio_FrontDoorClose();
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
+	// Front Door 제어전 Holding JIG 상태를 확인한다.
+	if (Lf_aif_FrontDoorHoldingOffCheck() == FALSE)
 	{
-		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_LEFT_FORWARD)
-			&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_SHUTTER_RIGHT_FORWARD)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-			break;
+		if (Lf_aif_FrontDoorHoldingOff() == FALSE)
+			return FALSE;
 	}
+
+	bRet = m_pApp->commApi->dio_FrontDoorClose();
 
 	if (bRet == FALSE)
 	{
@@ -1296,6 +1198,19 @@ BOOL CTestReady::Lf_aif_FrontDoorHoldingOn()
 
 	m_pApp->commApi->dio_FrontDoorHoldingOn();
 
+	bRet = Lf_aif_FrontDoorHoldingOnCheck();
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING ON TIME OUT"), ERROR_CODE_85);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_FrontDoorHoldingOnCheck()
+{
+	BOOL bRet = FALSE;
 	DWORD sTick, eTick;
 	sTick = ::GetTickCount();
 	while (1)
@@ -1312,11 +1227,6 @@ BOOL CTestReady::Lf_aif_FrontDoorHoldingOn()
 			break;
 	}
 
-	if (bRet == FALSE)
-	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING ON TIME OUT"), ERROR_CODE_85);
-	}
-
 	return bRet;
 }
 
@@ -1325,7 +1235,19 @@ BOOL CTestReady::Lf_aif_FrontDoorHoldingOff()
 	BOOL bRet = FALSE;
 
 	m_pApp->commApi->dio_FrontDoorHoldingOff();
+	bRet = Lf_aif_FrontDoorHoldingOffCheck();
 
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_FrontDoorHoldingOffCheck()
+{
+	BOOL bRet = FALSE;
 	DWORD sTick, eTick;
 	sTick = ::GetTickCount();
 	while (1)
@@ -1342,78 +1264,9 @@ BOOL CTestReady::Lf_aif_FrontDoorHoldingOff()
 			break;
 	}
 
-	if (bRet == FALSE)
-	{
-		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING OFF TIME OUT"), ERROR_CODE_86);
-	}
-
 	return bRet;
 }
 
-BOOL CTestReady::Lf_aif_JigTiltingDown()
-{
-	BOOL bRet = TRUE;
-
-	bRet = m_pApp->commApi->dio_JigTiltingDown();
-	if (bRet == TRUE)
-	{
-		delayMs(500);
-		if (Lf_aif_JigTiltingDownCheck() == FALSE)
-		{
-			bRet = FALSE;
-		}
-	}
-
-	return bRet;
-}
-
-BOOL CTestReady::Lf_aif_JigTiltingDownCheck()
-{
-	BOOL bRet = FALSE;
-
-	DWORD sTick, eTick;
-	sTick = ::GetTickCount();
-	while (1)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
-			&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
-			&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
-			)
-		{
-			bRet = TRUE;
-			break;
-		}
-
-		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
-			break;
-	}
-
-	if (bRet == FALSE)
-	{
-		if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_87);
-		}
-		else if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_88);
-		}
-		else if ((m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_89);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_90);
-		}
-	}
-
-	return bRet;
-}
 
 
 
