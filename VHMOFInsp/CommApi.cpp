@@ -252,8 +252,8 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 	//ret = m_pApp->rs232_sendPacket(ch,CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, bAck);
 	ret = main_setSendQuery(CMD_CTRL_POWER_SEQUENCE_ONOFF, length, szPacket, ch);
 
-	// Firmware¿¡¼­´Â Power Sequence On/Off¿¡¼­ Delay¸¦ °¡Á®°¡Áö ¾Ê°í ACK¸¦ ¹Ù·Î Àü´ÞÇÑ´Ù.
-	// µû¶ó¼­, Power On/Off Sequence Delay´Â S/W¿¡¼­ °¡Á®°£´Ù.
+	// Firmware에서는 Power Sequence On/Off에서 Delay를 가져가지 않고 ACK를 바로 전달한다.
+	// 따라서, Power On/Off Sequence Delay는 S/W에서 가져간다.
 	if((ret==TRUE) && (bAck==ACK))
 	{
 		DWORD dwTickS, dwTickE, dwDelay;
@@ -263,7 +263,7 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 		else
 			dwDelay = lpModelInfo->m_nPowerOffDelay1 + lpModelInfo->m_nPowerOffDelay2 + lpModelInfo->m_nPowerOffDelay3 + lpModelInfo->m_nPowerOffDelay4 + lpModelInfo->m_nPowerOffDelay5;
 
-		dwDelay = dwDelay + 500;	// Power Sequenceº¸´Ù ´ë±â½Ã°£À» ±æ°Ô ¼³Á¤ÇÑ´Ù.
+		dwDelay = dwDelay + 500;	// Power Sequence보다 대기시간을 길게 설정한다.
 		while(1)
 		{
 			dwTickE = ::GetTickCount();
@@ -301,7 +301,7 @@ BOOL CCommApi::main_setPGInfoPatternName(int ch, CString ptn_name, BOOL Ack)
 	wchar_To_char(strtmp.GetBuffer(0), szPacket);
 	length = (int)strlen(szPacket);
 
-	//ret= m_pApp->rs232_sendPacket(ch, CMD_PG_PATTERN_INFO, length, szPacket, Ack); // È­¸é Display Fail ´ëÀÀ. 2019.08.20
+	//ret= m_pApp->rs232_sendPacket(ch, CMD_PG_PATTERN_INFO, length, szPacket, Ack); // 화면 Display Fail 대응. 2019.08.20
 	ret = main_setSendQuery(CMD_PG_PATTERN_INFO, length, szPacket, ch);
 
 	return ret;	
@@ -460,25 +460,25 @@ int CCommApi::main_makeI2cClock(int index)
 	int i2c_freq;
 
 #if 1
-	if (index == 0)		i2c_freq = 20;	//½ÇÁ¦20
-	if (index == 1)		i2c_freq = 50;	//½ÇÁ¦50
-	if (index == 2)		i2c_freq = 100;	//½ÇÁ¦100
-	if (index == 3)		i2c_freq = 154;	//½ÇÁ¦150
-	if (index == 4)		i2c_freq = 208;	//½ÇÁ¦200
-	if (index == 5)		i2c_freq = 250;	//½ÇÁ¦240
-	if (index == 6)		i2c_freq = 319;	//½ÇÁ¦300
-	if (index == 7)		i2c_freq = 376;	//½ÇÁ¦350
-	if (index == 8)		i2c_freq = 422;	//½ÇÁ¦400
+	if (index == 0)		i2c_freq = 20;	//실제20
+	if (index == 1)		i2c_freq = 50;	//실제50
+	if (index == 2)		i2c_freq = 100;	//실제100
+	if (index == 3)		i2c_freq = 154;	//실제150
+	if (index == 4)		i2c_freq = 208;	//실제200
+	if (index == 5)		i2c_freq = 250;	//실제240
+	if (index == 6)		i2c_freq = 319;	//실제300
+	if (index == 7)		i2c_freq = 376;	//실제350
+	if (index == 8)		i2c_freq = 422;	//실제400
 #else
-	if (lpModelInfo->m_nI2cFrequency == 0)		i2c_freq = 20;	//½ÇÁ¦20
-	if (lpModelInfo->m_nI2cFrequency == 1)		i2c_freq = 50;	//½ÇÁ¦50
-	if (lpModelInfo->m_nI2cFrequency == 2)		i2c_freq = 100;	//½ÇÁ¦100
-	if (lpModelInfo->m_nI2cFrequency == 3)		i2c_freq = 150;	//½ÇÁ¦147
-	if (lpModelInfo->m_nI2cFrequency == 4)		i2c_freq = 200;	//½ÇÁ¦192
-	if (lpModelInfo->m_nI2cFrequency == 5)		i2c_freq = 240;	//½ÇÁ¦232
-	if (lpModelInfo->m_nI2cFrequency == 6)		i2c_freq = 300;	//½ÇÁ¦290
-	if (lpModelInfo->m_nI2cFrequency == 7)		i2c_freq = 350;	//½ÇÁ¦333
-	if (lpModelInfo->m_nI2cFrequency == 8)		i2c_freq = 400;	//½ÇÁ¦373
+	if (lpModelInfo->m_nI2cFrequency == 0)		i2c_freq = 20;	//실제20
+	if (lpModelInfo->m_nI2cFrequency == 1)		i2c_freq = 50;	//실제50
+	if (lpModelInfo->m_nI2cFrequency == 2)		i2c_freq = 100;	//실제100
+	if (lpModelInfo->m_nI2cFrequency == 3)		i2c_freq = 150;	//실제147
+	if (lpModelInfo->m_nI2cFrequency == 4)		i2c_freq = 200;	//실제192
+	if (lpModelInfo->m_nI2cFrequency == 5)		i2c_freq = 240;	//실제232
+	if (lpModelInfo->m_nI2cFrequency == 6)		i2c_freq = 300;	//실제290
+	if (lpModelInfo->m_nI2cFrequency == 7)		i2c_freq = 350;	//실제333
+	if (lpModelInfo->m_nI2cFrequency == 8)		i2c_freq = 400;	//실제373
 #endif
 
 	return i2c_freq;
@@ -494,35 +494,35 @@ BOOL CCommApi::qspi_setSendQuery(int ch, int nCommand, int nLength, char* pData,
 	char lpbuff[20] = { 0, };
 	BYTE nChkSum = 0;
 
-	// data ¾Õ±îÁö Packet »ý¼º
+	// data 앞까지 Packet 생성
 	sprintf_s(szpacket, "%cA1A400%02X%04X", 0x02, nCommand, nLength);
 
-	// data¸¦ Æ÷ÇÔÇÏ¿© packet »ý¼º. hex·Î Àü¼ÛÇÒ data°¡ ÀÖÀ¸¹Ç·Î memcpy¸¦ »ç¿ë
+	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
 	packetlen = (int)strlen(szpacket);
 	memcpy(&szpacket[packetlen], pData, nLength);
 
-	// data ¸¦ Æ÷ÇÔÇÑ packetÀÇ ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	// data 를 포함한 packet의 길이를 구한다.
 	packetlen += nLength;
 
-	// »ý¼ºµÈ PacketÀ» ÀÌ¿ëÇÏ¿© CheckSumÀ» ±¸ÇÑ´Ù.
+	// 생성된 Packet을 이용하여 CheckSum을 구한다.
 	for (int j = 1; j < packetlen; j++)		// Check Sum
 	{
 		nChkSum += szpacket[j];
 	}
 	sprintf_s(lpbuff, "%02X%c", nChkSum, 0x03);
 
-	// Checksum°ú ETX 3byte¸¦ ºÙ¿© ´Ù½Ã PacketÀ» ¸¸µç´Ù.
+	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
 	memcpy(&szpacket[packetlen], lpbuff, 3);
 	packetlen += 3;
 
-	// PacketÀÇ ¸¶Áö¸·¿¡ StringÀÇ ³¡À» ¾Ë¸®±â À§ÇÏ¿© NULLÀ» Ãß°¡ÇÑ´Ù.
+	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
 	szpacket[packetlen] = 0x00;
 
 
-	// Receive Buff¸¦ Clear
+	// Receive Buff를 Clear
 	ZeroMemory(m_szQspiRecvData[ch], sizeof(m_szQspiRecvData[ch]));
 
-	// »ý¼ºµÈ PacketÀ» Àü¼Û.
+	// 생성된 Packet을 전송.
 	if (ch == CH1)	m_pApp->m_pSocketTCPMain->tcp_SPI_SendQuery(ch, szpacket, packetlen);
 	if (ch == CH2)	m_pApp->m_pSocketTCPMain->tcp_SPI_SendQuery(ch, szpacket, packetlen);
 
@@ -636,7 +636,7 @@ BOOL CCommApi::Lf_setQSPI_FlashWrite(int ch, int startReg, int wrLength, BYTE* w
 	int length;
 
 	// 256 : bytePerPage 
-	// 3   : pageWriteDelay(3->5Å×½ºÆ®)
+	// 3   : pageWriteDelay(3->5테스트)
 	// 1   :  0: 24bit, 1 (32bbit)  => bitOfAddr (20.12.21)
 	// 
 	sprintf_s(szPacket, "%04d%04d%01d%08X%04X", 256, 3, 1/* bitOfAddr */, startReg, wrLength);
@@ -674,7 +674,7 @@ int CCommApi::Lf_getQSPI_FlashStatusRead(int ch)
 	}
 	return -1;
 }
-//TEST¿ëÇÔ¼ö
+//TEST용함수
 int CCommApi::Lf_getQSPI_FlashStatusRead_Temp(int ch)
 {
 	//char szData[1024 * 32];
@@ -751,7 +751,7 @@ BOOL CCommApi::Lf_setQSPI_GPIO_Init(int ch)
 		, lpModelInfo->m_nQspiGpioInOut2
 		, lpModelInfo->m_nQspiGpioInOut3
 		, lpModelInfo->m_nQspiGpioInOut4);
-	//sprintf_s(szPacket, "%01d%01d%01d%01d%01d", lpModelInfo->m_nQspiGpioLevel , 1, 1, 1, 1); //ÁÖ¼®Ã³¸®(21.02.24)
+	//sprintf_s(szPacket, "%01d%01d%01d%01d%01d", lpModelInfo->m_nQspiGpioLevel , 1, 1, 1, 1); //주석처리(21.02.24)
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_GPIO_INITIALIZE, length, szPacket, ACK, 2000);
 }
@@ -764,7 +764,7 @@ BOOL CCommApi::Lf_setQSPI_GpioWriteBit(int ch)
 		, lpModelInfo->m_nQspiGpioLowHigh2
 		, lpModelInfo->m_nQspiGpioLowHigh3
 		, lpModelInfo->m_nQspiGpioLowHigh4);
-	//sprintf_s(szPacket, "%01d%01d%01d%01d", 0,0,0,1); // »ç¿ë ÁÖ¼®Ã³¸®(21.02.24)
+	//sprintf_s(szPacket, "%01d%01d%01d%01d", 0,0,0,1); // 사용 주석처리(21.02.24)
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_GPIO_WRITE_BIT, length, szPacket, ACK, 2000);
 }
@@ -1072,11 +1072,11 @@ BOOL CCommApi::dio_LEDOnOff(BOOL bOnOff)
 {
 	if (bOnOff == ON)
 	{
-		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, OFF);	// LOW°¡ LED ONÀÌ´Ù.
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, OFF);	// LOW가 LED ON이다.
 	}
 	else
 	{
-		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, ON);	// HIGH°¡ LED OFFÀÌ´Ù.
+		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, ON);	// HIGH가 LED OFF이다.
 	}
 }
 
@@ -1525,32 +1525,32 @@ int  CCommApi::main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 	char szbuff[5] = { 0, };
 	BYTE nChkSum = 0;
 
-	// Checksum ¾Õ±îÁö Packet »ý¼º
+	// Checksum 앞까지 Packet 생성
 	sprintf_s(szpacket, "%cA1%02X00%02X%04X", 0x02, TARGET_MAIN, nCommand, nLength);
 
-	// data¸¦ Æ÷ÇÔÇÏ¿© packet »ý¼º. hex·Î Àü¼ÛÇÒ data°¡ ÀÖÀ¸¹Ç·Î memcpy¸¦ »ç¿ë
+	// data를 포함하여 packet 생성. hex로 전송할 data가 있으므로 memcpy를 사용
 	packetlen = (int)strlen(szpacket);
 
 	memcpy(&szpacket[packetlen], pData, nLength);
 
-	// data ¸¦ Æ÷ÇÔÇÑ packetÀÇ ±æÀÌ¸¦ ±¸ÇÑ´Ù.
+	// data 를 포함한 packet의 길이를 구한다.
 	packetlen += nLength;
 
-	// »ý¼ºµÈ PacketÀ» ÀÌ¿ëÇÏ¿© CheckSumÀ» ±¸ÇÑ´Ù.
+	// 생성된 Packet을 이용하여 CheckSum을 구한다.
 	for (int j = 1; j < packetlen; j++)		// Check Sum
 	{
 		nChkSum += szpacket[j];
 	}
 	sprintf_s(szbuff, "%02X%c", nChkSum, 0x03);
 
-	// Checksum°ú ETX 3byte¸¦ ºÙ¿© ´Ù½Ã PacketÀ» ¸¸µç´Ù.
+	// Checksum과 ETX 3byte를 붙여 다시 Packet을 만든다.
 	memcpy(&szpacket[packetlen], szbuff, 3);
 	packetlen += 3;
 
-	// PacketÀÇ ¸¶Áö¸·¿¡ StringÀÇ ³¡À» ¾Ë¸®±â À§ÇÏ¿© NULLÀ» Ãß°¡ÇÑ´Ù.
+	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
 	szpacket[packetlen] = 0x00;
 
-	// »ý¼ºµÈ PacketÀ» Àü¼Û.
+	// 생성된 Packet을 전송.
 	int ret = 0;
 
 	ret = m_pApp->m_pSocketTCPMain->tcp_Main_SendQuery(ch, szpacket, packetlen);
@@ -1558,7 +1558,7 @@ int  CCommApi::main_setSendQuery(int nCommand, int nLength, char* pData, int ch)
 	if (DEBUG_TCP_RECEIVE_OK == 1)
 		return TRUE;
 
-	// FusingÀº ¾à 3ÃÊÁ¤µµ °É¸²
+	// Fusing은 약 3초정도 걸림
 	int ackWaitTime = ETH_ACK_NOR_WAIT_TIME;
 	if (nCommand == CMD_CTRL_FUSING_SYSTEM)
 	{
@@ -1591,7 +1591,7 @@ BOOL CCommApi::main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTim
 
 		if (rcvSize != 0)
 		{
-			// Receive Data¸¦ °¡Á®¿Â´Ù.
+			// Receive Data를 가져온다.
 			memset(m_szRcvPacket, 0, sizeof(m_szRcvPacket));
 			m_pApp->m_pSocketTCPMain->tcp_Main_GetReceivePacketData(ch, m_szRcvPacket);
 
@@ -1608,7 +1608,7 @@ BOOL CCommApi::main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTim
 			}
 		}
 
-		// Ack¸¦ ±â´Ù¸°´Ù. Wait Time¾È¿¡ Ack°¡ µé¾î¿ÀÁö ¾ÊÀ¸¸é False¸¦ ReturnÇÑ´Ù.
+		// Ack를 기다린다. Wait Time안에 Ack가 들어오지 않으면 False를 Return한다.
 		eTick = ::GetTickCount();
 		if ((sTick + ackWaitTime) < eTick)
 		{
