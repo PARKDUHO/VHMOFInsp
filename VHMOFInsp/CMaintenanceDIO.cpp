@@ -536,16 +536,16 @@ void CMaintenanceDIO::OnStnClickedSttMoFrontDoorOpen()
 	sTick = ::GetTickCount();
 	while (1)
 	{
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
+			break;
+
 		if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD)
 		{
 			bRet = TRUE;
 			break;
 		}
 		delayMs(1);
-
-		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
-			break;
 	}
 	if (bRet == FALSE)
 	{
@@ -564,7 +564,6 @@ void CMaintenanceDIO::OnStnClickedSttMoFrontDoorOpen()
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	Lf_controlButtonEnable(TRUE);
 }
@@ -621,8 +620,6 @@ void CMaintenanceDIO::OnStnClickedSttMoFrontDoorClose()
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR CLOSE TIME OUT"), ERROR_CODE_84);
 	}
 
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
-
 	Lf_controlButtonEnable(TRUE);
 }
 
@@ -671,8 +668,6 @@ void CMaintenanceDIO::OnStnClickedSttMoRearDoorOpen()
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR OPEN TIME OUT"), ERROR_CODE_77);
 	}
 
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
-
 	Lf_controlButtonEnable(TRUE);
 }
 
@@ -693,8 +688,6 @@ void CMaintenanceDIO::OnStnClickedSttMoRearDoorClose()
 	{
 		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("REAR DOOR CLOSE TIME OUT"), ERROR_CODE_78);
 	}
-
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	Lf_controlButtonEnable(TRUE);
 }
@@ -741,8 +734,6 @@ void CMaintenanceDIO::OnStnClickedSttMoJigTiltingUp()
 	}
 	Lf_setListCheck();
 
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
-
 	Lf_controlButtonEnable(TRUE);
 }
 
@@ -759,8 +750,6 @@ void CMaintenanceDIO::OnStnClickedSttMoJigTiltingDown()
 		m_pApp->commApi->dio_JigTiltingDownCheck();
 	}
 	Lf_setListCheck();
-
-	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	Lf_controlButtonEnable(TRUE);
 }

@@ -627,6 +627,13 @@ void CSensorView::Lf_updateErrorMessageList()
 		strErr.Insert(0, _T("▶"));
 		m_lstSvErrorList.AddString(strErr);
 	}
+	if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_92);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		strErr.Insert(0, _T("▶"));
+		m_lstSvErrorList.AddString(strErr);
+	}
 }
 
 

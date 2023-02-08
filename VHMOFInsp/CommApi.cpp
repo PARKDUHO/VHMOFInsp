@@ -1134,6 +1134,10 @@ BOOL CCommApi::dio_RearDoorOpen()
 		sTick = ::GetTickCount();
 		while (1)
 		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+
 			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_UP)
 				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_UP)
 				)
@@ -1143,13 +1147,12 @@ BOOL CCommApi::dio_RearDoorOpen()
 			}
 			delayMs(1);
 
-			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-				break;
 		}
+
+		lpInspWorkInfo->tt_RearDoorUpTime = eTick - sTick;
+		AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 	}
 
-	lpInspWorkInfo->tt_RearDoorUpTime = eTick - sTick;
 
 	return bRet;
 }
@@ -1168,6 +1171,10 @@ BOOL CCommApi::dio_RearDoorClose()
 		sTick = ::GetTickCount();
 		while (1)
 		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+
 			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN)
 				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_DOWN)
 				)
@@ -1176,14 +1183,12 @@ BOOL CCommApi::dio_RearDoorClose()
 				break;
 			}
 			delayMs(1);
-
-			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-				break;
 		}
+
+		lpInspWorkInfo->tt_RearDoorDownTime = eTick - sTick;
+		AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 	}
 
-	lpInspWorkInfo->tt_RearDoorDownTime = eTick - sTick;
 
 	return bRet;
 }
@@ -1202,6 +1207,10 @@ BOOL CCommApi::dio_FrontDoorOpen()
 		sTick = ::GetTickCount();
 		while (1)
 		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+
 			if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_UP)
 				&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_UP)
 				)
@@ -1210,14 +1219,11 @@ BOOL CCommApi::dio_FrontDoorOpen()
 				break;
 			}
 			delayMs(1);
-
-			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-				break;
 		}
-	}
 
-	lpInspWorkInfo->tt_FrontDoorUpTime = eTick - sTick;
+		lpInspWorkInfo->tt_FrontDoorUpTime = eTick - sTick;
+		AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+	}
 
 	return bRet;
 }
@@ -1236,6 +1242,10 @@ BOOL CCommApi::dio_FrontDoorClose()
 		sTick = ::GetTickCount();
 		while (1)
 		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+				break;
+
 			if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_DOWN)
 				&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_DOWN)
 				)
@@ -1244,14 +1254,11 @@ BOOL CCommApi::dio_FrontDoorClose()
 				break;
 			}
 			delayMs(1);
-
-			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
-				break;
 		}
-	}
 
-	lpInspWorkInfo->tt_FrontDoorDownTime = eTick - sTick;
+		lpInspWorkInfo->tt_FrontDoorDownTime = eTick - sTick;
+		AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+	}
 
 	return bRet;
 }
@@ -1333,7 +1340,7 @@ BOOL CCommApi::dio_JigClampUnLock(int ch)
 BOOL CCommApi::dio_JigTiltingUp()
 {
 	BOOL bRet = FALSE;
-	DWORD sTick, eTick;
+	DWORD sTick=0, eTick=0;
 
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_DOWN | DOUT_D1_JIG_TILTING02_DOWN), OFF);
 	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_UP | DOUT_D1_JIG_TILTING02_UP), ON);
@@ -1344,6 +1351,10 @@ BOOL CCommApi::dio_JigTiltingUp()
 		sTick = ::GetTickCount();
 		while (1)
 		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+				break;
+
 			if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_UP_3_SENSOR)
 			{
 				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_JIG_TILTING02_UP, OFF);
@@ -1372,14 +1383,11 @@ BOOL CCommApi::dio_JigTiltingUp()
 			}
 
 			delayMs(1);
-
-			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
-				break;
 		}
 	}
 
 	lpInspWorkInfo->tt_JigTiltingUpTime = eTick - sTick;
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	return bRet;
 }
@@ -1443,7 +1451,7 @@ BOOL CCommApi::dio_JigTiltingUpCheck()
 BOOL CCommApi::dio_JigTiltingDown()
 {
 	BOOL bRet = FALSE;
-	DWORD sTick, eTick;
+	DWORD sTick=0, eTick=0;
 
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_UP | DOUT_D1_JIG_TILTING02_UP), OFF);
 	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_JIG_TILTING01_DOWN | DOUT_D1_JIG_TILTING02_DOWN), ON);
@@ -1454,10 +1462,16 @@ BOOL CCommApi::dio_JigTiltingDown()
 		sTick = ::GetTickCount();
 		while (1)
 		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+				break;
+
 			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
 				&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
 				&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
+#if (DEBUG_JIG_HOME_SENSOR_PASS == 0)
 				&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
+#endif
 				)
 			{
 				bRet = TRUE;
@@ -1465,14 +1479,11 @@ BOOL CCommApi::dio_JigTiltingDown()
 			}
 
 			delayMs(1);
-
-			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
-				break;
 		}
 	}
 
 	lpInspWorkInfo->tt_JigTiltingDownTime = eTick - sTick;
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 
 	return bRet;
 }
@@ -1484,7 +1495,9 @@ BOOL CCommApi::dio_JigTiltingDownCheck()
 	if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
 		&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
 		&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
+#if (DEBUG_JIG_HOME_SENSOR_PASS == 0)
 		&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
+#endif
 		)
 	{
 		bRet = TRUE;

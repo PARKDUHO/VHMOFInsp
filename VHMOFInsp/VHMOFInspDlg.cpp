@@ -1578,6 +1578,13 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 		m_pApp->Gf_writeErrorList(ERROR_CODE_49, strErr);
 		heavyAlarm = TRUE;
 	}
+	if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_92);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_92, strErr);
+		heavyAlarm = TRUE;
+	}
 
 	// 2023-01-27 PDH. 알람 RESET시 재가동이 필요하므로 DIO 출력을 중단시키지는 않아야 하기에 DIO 출력 중지는 주석 처리한다.
  	//                 Cylinder 축정지 TYPE으로 변경시 DOOR OPEN하면 자동으로 정지된다.

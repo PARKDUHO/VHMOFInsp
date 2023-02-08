@@ -240,7 +240,6 @@ void CTestReady::OnBnClickedBtnTrTestStart()
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CTestReady::Lf_InitLocalValue()
 {
-
 }
 
 void CTestReady::Lf_InitFontset()
@@ -301,7 +300,15 @@ void CTestReady::Lf_readyInitialize()
 	Lf_updateQuantityCount();
 
 	ZeroMemory(lpInspWorkInfo, sizeof(INSPWORKINFO));
-	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Ready"));
+
+	if (m_pApp->m_bUserIdIdle == TRUE)
+	{
+		GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("IDLE Mode Ready"));
+	}
+	else
+	{
+		GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Ready"));
+	}
 }
 
 void CTestReady::Lf_updateQuantityCount()
@@ -396,10 +403,30 @@ ERR_EXCEPT:
 	return FALSE;
 }
 
+BOOL CTestReady::Lf_IdleModeReadyCheck()
+{
+	Lf_aif_ClampUnLock();
+	Lf_aif_ClampUnLockCheck();
+
+	Lf_aif_RearDoorOpen();
+
+	Lf_aif_JigTiltingDown();
+
+	Lf_aif_FrontDoorHoldingOff();
+	Lf_aif_FrontDoorClose();
+
+	return TRUE;
+}
+
 BOOL CTestReady::Lf_MachineStartIDLEMode()
 {
 	int retry;
+	DWORD sTick = 0, eTick = 0;
 
+	if (Lf_IdleModeReadyCheck() == FALSE)
+		return FALSE;
+
+	sTick = ::GetTickCount();
 	if (Lf_aif_RobotWaitingCheck() == TRUE)
 	{
 		for (retry = 0; retry < 3; retry++)
@@ -419,11 +446,11 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 		if (Lf_aif_RearDoorOpen() == FALSE)
 			return FALSE;
 
-		if (Lf_aif_RobotInSensorCheck() == FALSE)
-			return FALSE;
+//		if (Lf_aif_RobotInSensorCheck() == FALSE)
+//			return FALSE;
 
-		if (Lf_aif_CarrierJigInCheck() == FALSE)
-			return FALSE;
+//		if (Lf_aif_CarrierJigInCheck() == FALSE)
+//			return FALSE;
 
 		if (Lf_aif_ClampLock() == FALSE)
 			return FALSE;
@@ -446,8 +473,8 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 		if (Lf_aif_FrontDoorHoldingOn() == FALSE)
 			return FALSE;
 
-		if (Lf_FinalTestStart(CH1) == FALSE)
-			return FALSE;
+//		if (Lf_FinalTestStart(CH1) == FALSE)
+//			return FALSE;
 
 		if (Lf_aif_FrontDoorHoldingOff() == FALSE)
 			return FALSE;
@@ -476,6 +503,12 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 		if (Lf_aif_RearDoorClose() == FALSE)
 			return FALSE;
 	}
+
+	eTick = ::GetTickCount();
+	lpInspWorkInfo->tt_MachineTactTime = eTick - sTick;
+	AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("IDLE Mode Ready"));
 
 	return TRUE;
 }
@@ -777,6 +810,8 @@ BOOL CTestReady::Lf_aif_RearDoorOpen()
 {
 	BOOL bRet = FALSE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Rear Door Open..."));
+
 	bRet = m_pApp->commApi->dio_RearDoorOpen();
 
 	if (bRet == FALSE)
@@ -791,6 +826,8 @@ BOOL CTestReady::Lf_aif_RearDoorClose()
 {
 	BOOL bRet = FALSE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Rear Door Close..."));
+
 	bRet = m_pApp->commApi->dio_RearDoorClose();
 
 	if (bRet == FALSE)
@@ -804,8 +841,10 @@ BOOL CTestReady::Lf_aif_RearDoorClose()
 BOOL CTestReady::Lf_aif_RobotInSensorCheck()
 {
 	BOOL bRet = FALSE;
-
 	DWORD sTick, eTick;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Robot In Sensor Check..."));
+
 	sTick = ::GetTickCount();
 	while (1)
 	{
@@ -834,8 +873,10 @@ BOOL CTestReady::Lf_aif_RobotInSensorCheck()
 BOOL CTestReady::Lf_aif_RobotOutSensorCheck()
 {
 	BOOL bRet = FALSE;
-
 	DWORD sTick, eTick;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Robot Out Sensor Check..."));
+
 	sTick = ::GetTickCount();
 	while (1)
 	{
@@ -864,8 +905,10 @@ BOOL CTestReady::Lf_aif_RobotOutSensorCheck()
 BOOL CTestReady::Lf_aif_CarrierJigInCheck()
 {
 	BOOL bRet = FALSE;
-
 	DWORD sTick, eTick;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Carrier JIG In Check..."));
+
 	sTick = ::GetTickCount();
 	while (1)
 	{
@@ -925,6 +968,8 @@ BOOL CTestReady::Lf_aif_ClampLock()
 {
 	BOOL bRet = TRUE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Clamp Lock..."));
+
 	m_pApp->commApi->dio_JigClampLock(CH1);
 	bRet = m_pApp->commApi->dio_JigClampLock(CH2);
 	if (bRet == TRUE)
@@ -944,6 +989,8 @@ BOOL CTestReady::Lf_aif_ClampUnLock()
 {
 	BOOL bRet = TRUE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Clamp UnLock..."));
+
 	m_pApp->commApi->dio_JigClampUnLock(CH1);
 	bRet = m_pApp->commApi->dio_JigClampUnLock(CH2);
 	if (bRet == TRUE)
@@ -961,24 +1008,39 @@ BOOL CTestReady::Lf_aif_ClampUnLock()
 
 BOOL CTestReady::Lf_aif_ClampLockCheck()
 {
-	BOOL bRet = TRUE;
+	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
 
-	if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
-		|| (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
-		|| (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
-		|| (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
-		|| (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
-		)
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Clamp Lock Check"));
+
+	sTick = ::GetTickCount();
+	while (1)
 	{
-		bRet = FALSE;
+		if (((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
+			break;
 	}
+
+
 
 	return bRet;
 }
@@ -986,22 +1048,36 @@ BOOL CTestReady::Lf_aif_ClampLockCheck()
 BOOL CTestReady::Lf_aif_ClampUnLockCheck()
 {
 	BOOL bRet = FALSE;
+	DWORD sTick, eTick;
 
-	if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
-		&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
-		&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
-		&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
-		&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
-		)
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Clamp UnLock Check"));
+
+	sTick = ::GetTickCount();
+	while (1)
 	{
-		bRet = TRUE;
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+			&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+			&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+			&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+			)
+		{
+			bRet = TRUE;
+			break;
+		}
+		delayMs(1);
+
+		eTick = ::GetTickCount();
+		if ((eTick - sTick) > AIF_NORMAL_CYLINDER_WAIT_TIME)
+			break;
+
 	}
 
 	return bRet;
@@ -1121,6 +1197,8 @@ BOOL CTestReady::Lf_aif_JigTiltingUp()
 {
 	BOOL bRet = TRUE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("JIG Tilting Up..."));
+
 	bRet = m_pApp->commApi->dio_JigTiltingUp();
 	if (bRet == TRUE)
 	{
@@ -1138,6 +1216,8 @@ BOOL CTestReady::Lf_aif_JigTiltingDown()
 {
 	BOOL bRet = TRUE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("JIG Tilting Down..."));
+
 	bRet = m_pApp->commApi->dio_JigTiltingDown();
 	if (bRet == TRUE)
 	{
@@ -1154,12 +1234,16 @@ BOOL CTestReady::Lf_aif_FrontDoorOpen()
 {
 	BOOL bRet = FALSE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Front Holding Sensor Check..."));
+
 	// Front Door 제어전 Holding JIG 상태를 확인한다.
 	if (Lf_aif_FrontDoorHoldingOffCheck() == FALSE)
 	{
 		if (Lf_aif_FrontDoorHoldingOff() == FALSE)
 			return FALSE;
 	}
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Front Door Open..."));
 
 	bRet = m_pApp->commApi->dio_FrontDoorOpen();
 
@@ -1175,12 +1259,16 @@ BOOL CTestReady::Lf_aif_FrontDoorClose()
 {
 	BOOL bRet = FALSE;
 
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Front Holding Sensor Check..."));
+
 	// Front Door 제어전 Holding JIG 상태를 확인한다.
 	if (Lf_aif_FrontDoorHoldingOffCheck() == FALSE)
 	{
 		if (Lf_aif_FrontDoorHoldingOff() == FALSE)
 			return FALSE;
 	}
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Front Door Close..."));
 
 	bRet = m_pApp->commApi->dio_FrontDoorClose();
 
@@ -1195,6 +1283,8 @@ BOOL CTestReady::Lf_aif_FrontDoorClose()
 BOOL CTestReady::Lf_aif_FrontDoorHoldingOn()
 {
 	BOOL bRet = FALSE;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Front Door Holding On..."));
 
 	m_pApp->commApi->dio_FrontDoorHoldingOn();
 
@@ -1233,6 +1323,8 @@ BOOL CTestReady::Lf_aif_FrontDoorHoldingOnCheck()
 BOOL CTestReady::Lf_aif_FrontDoorHoldingOff()
 {
 	BOOL bRet = FALSE;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Front Door Holding Off..."));
 
 	m_pApp->commApi->dio_FrontDoorHoldingOff();
 	bRet = Lf_aif_FrontDoorHoldingOffCheck();

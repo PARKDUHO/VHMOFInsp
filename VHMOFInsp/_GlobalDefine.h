@@ -24,6 +24,7 @@
 #define DEBUG_DIO_SKIP					0
 #define DEBUG_ROBOT_WAIT_CHECK_ON		1
 #define DEBUG_PG1_TEST_ONLY				1
+#define DEBUG_JIG_HOME_SENSOR_PASS		1
 #define DEBUG_DIO_ALARM_DISABLE			0
 
 /////////////////////////////////////////////////////////////////////////////
@@ -111,7 +112,7 @@
 /////////////////////////////////////////////////////////////////////////////
 //DIO
 /////////////////////////////////////////////////////////////////////////////
-#define AIF_NORMAL_CYLINDER_WAIT_TIME	2000
+#define AIF_NORMAL_CYLINDER_WAIT_TIME	5000
 #define AIF_DOOR_OPEN_CLOSE_WAIT_TIME	15000
 #define AIF_ROBOT_IN_SENSOR_WAIT_TIME	30000
 #define AIF_ROBOT_OUT_SENSOR_WAIT_TIME	30000

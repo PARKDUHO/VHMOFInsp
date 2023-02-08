@@ -43,6 +43,7 @@ protected:
 
 	BOOL Lf_FinalTestStart(int ch);
 	BOOL Lf_MachineStartIDLEMode();
+	BOOL Lf_IdleModeReadyCheck();
 	BOOL Lf_InspRoomLEDOnOff(BOOL bOnOff);
 	BOOL Lf_checkPanelID(int ch);
 	BOOL Lf_getControlBdReady(int ch);
