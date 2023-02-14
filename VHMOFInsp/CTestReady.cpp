@@ -9,6 +9,7 @@
 #include "CPanelID.h"
 #include "CMessageQuestion.h"
 #include "CDefectResult.h"
+#include "CIOReadyCheck.h"
 
 // CTestReady 대화 상자
 
@@ -405,15 +406,14 @@ ERR_EXCEPT:
 
 BOOL CTestReady::Lf_IdleModeReadyCheck()
 {
-	Lf_aif_ClampUnLock();
-	Lf_aif_ClampUnLockCheck();
-
-	Lf_aif_RearDoorOpen();
-
-	Lf_aif_JigTiltingDown();
-
-	Lf_aif_FrontDoorHoldingOff();
-	Lf_aif_FrontDoorClose();
+	if (m_pApp->commApi->dio_InspReadyCheck() == FALSE)
+	{
+		CIOReadyCheck ioready_dlg;
+		if (ioready_dlg.DoModal() == IDOK)
+			return TRUE;
+		else
+			return FALSE;
+	}
 
 	return TRUE;
 }
@@ -429,18 +429,21 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 	sTick = ::GetTickCount();
 	if (Lf_aif_RobotWaitingCheck() == TRUE)
 	{
-		for (retry = 0; retry < 3; retry++)
+		if (lpSystemInfo->m_nCarrierType == INSP_TYPE_CARRIER)
 		{
-			if (Lf_aif_ClampUnLockCheck() == TRUE)
-				break;
+			for (retry = 0; retry < 3; retry++)
+			{
+				if (Lf_aif_ClampUnLockCheck() == TRUE)
+					break;
 
-			Lf_aif_ClampUnLock();
-			delayMs(500);
-		}
-		if (Lf_aif_ClampUnLockCheck() == FALSE)
-		{
-			Lf_aif_ClampErrorDisplay(CLAMP_ERROR_UNLOCK);
-			return FALSE;
+				Lf_aif_ClampUnLock();
+				delayMs(500);
+			}
+			if (Lf_aif_ClampUnLockCheck() == FALSE)
+			{
+				m_pApp->commApi->dio_JigClampErrorDisplay(CLAMP_UNLOCK);
+				return FALSE;
+			}
 		}
 
 		if (Lf_aif_RearDoorOpen() == FALSE)
@@ -452,19 +455,39 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 //		if (Lf_aif_CarrierJigInCheck() == FALSE)
 //			return FALSE;
 
-		if (Lf_aif_ClampLock() == FALSE)
-			return FALSE;
+		if (lpSystemInfo->m_nCarrierType == INSP_TYPE_CARRIER)
+		{
+			if (Lf_aif_ClampLock() == FALSE)
+				return FALSE;
 
-		if (Lf_aif_ClampLockCheck() == FALSE)
-			return FALSE;
+			if (Lf_aif_ClampLockCheck() == FALSE)
+				return FALSE;
+		}
+
+#if 0
+		if (lpSystemInfo->m_nCarrierType == INSP_TYPE_NONE_CARRIER)
+		{
+			if (Lf_aif_AdsorptionOn() == FALSE)
+				return FALSE;
+
+			if (Lf_aif_AdsorptionCheck() == FALSE)
+				return FALSE;
+		}
+#endif
 
 		if (Lf_aif_RobotOutSensorCheck() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_IonizerBlowOn() == FALSE)
 			return FALSE;
 
 		if (Lf_aif_RearDoorClose() == FALSE)
 			return FALSE;
 
 		if (Lf_aif_JigTiltingUp() == FALSE)
+			return FALSE;
+
+		if (Lf_aif_IonizerBlowOff() == FALSE)
 			return FALSE;
 
 		if (Lf_aif_FrontDoorOpen() == FALSE)
@@ -485,11 +508,14 @@ BOOL CTestReady::Lf_MachineStartIDLEMode()
 		if (Lf_aif_JigTiltingDown() == FALSE)
 			return FALSE;
 
-		if (Lf_aif_ClampUnLock() == FALSE)
-			return FALSE;
+		if (lpSystemInfo->m_nCarrierType == INSP_TYPE_CARRIER)
+		{
+			if (Lf_aif_ClampUnLock() == FALSE)
+				return FALSE;
 
-		if (Lf_aif_ClampUnLockCheck() == FALSE)
-			return FALSE;
+			if (Lf_aif_ClampUnLockCheck() == FALSE)
+				return FALSE;
+		}
 
 		if (Lf_aif_RearDoorOpen() == FALSE)
 			return FALSE;
@@ -838,6 +864,38 @@ BOOL CTestReady::Lf_aif_RearDoorClose()
 	return bRet;
 }
 
+BOOL CTestReady::Lf_aif_IonizerBlowOn()
+{
+	BOOL bRet = FALSE;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("IONIZER BLOW ON..."));
+
+	bRet = m_pApp->commApi->dio_IonizerBlowOn();
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("IONIZER ERROR"), ERROR_CODE_45);
+	}
+
+	return bRet;
+}
+
+BOOL CTestReady::Lf_aif_IonizerBlowOff()
+{
+	BOOL bRet = FALSE;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("IONIZER BLOW OFF..."));
+
+	bRet = m_pApp->commApi->dio_IonizerBlowOff();
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("IONIZER ERROR"), ERROR_CODE_45);
+	}
+
+	return bRet;
+}
+
 BOOL CTestReady::Lf_aif_RobotInSensorCheck()
 {
 	BOOL bRet = FALSE;
@@ -977,7 +1035,7 @@ BOOL CTestReady::Lf_aif_ClampLock()
 		delayMs(500);
 		if (Lf_aif_ClampLockCheck() == FALSE)
 		{
-			Lf_aif_ClampErrorDisplay(CLAMP_ERROR_LOCK);
+			m_pApp->commApi->dio_JigClampErrorDisplay(CLAMP_LOCK);
 			bRet = FALSE;
 		}
 	}
@@ -998,7 +1056,7 @@ BOOL CTestReady::Lf_aif_ClampUnLock()
 		delayMs(500);
 		if (Lf_aif_ClampUnLockCheck() == FALSE)
 		{
-			Lf_aif_ClampErrorDisplay(CLAMP_ERROR_UNLOCK);
+			m_pApp->commApi->dio_JigClampErrorDisplay(CLAMP_UNLOCK);
 			bRet = FALSE;
 		}
 	}
@@ -1016,19 +1074,7 @@ BOOL CTestReady::Lf_aif_ClampLockCheck()
 	sTick = ::GetTickCount();
 	while (1)
 	{
-		if (((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
-			&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
-			)
+		if (m_pApp->commApi->dio_JigClampStatusCheck(MAX_CH, CLAMP_LOCK) == TRUE)
 		{
 			bRet = TRUE;
 			break;
@@ -1055,19 +1101,7 @@ BOOL CTestReady::Lf_aif_ClampUnLockCheck()
 	sTick = ::GetTickCount();
 	while (1)
 	{
-		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
-			&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
-			&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
-			&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
-			&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
-			)
+		if (m_pApp->commApi->dio_JigClampStatusCheck(MAX_CH, CLAMP_UNLOCK) == TRUE)
 		{
 			bRet = TRUE;
 			break;
@@ -1081,116 +1115,6 @@ BOOL CTestReady::Lf_aif_ClampUnLockCheck()
 	}
 
 	return bRet;
-}
-
-void CTestReady::Lf_aif_ClampErrorDisplay(int checkType)
-{
-	BOOL bRet = TRUE;
-	CString errString;
-
-	if (checkType == CLAMP_ERROR_LOCK)
-	{
-		if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_65);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_66);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_67);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_68);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_69);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_70);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_71);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_72);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_73);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_74);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_75);
-		}
-		else if (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_76);
-		}
-	}
-	if (checkType == CLAMP_ERROR_UNLOCK)
-	{
-		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_65);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_66);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_67);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_68);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_69);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_70);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_71);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_72);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_73);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_74);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_75);
-		}
-		else if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
-		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_76);
-		}
-	}
-
 }
 
 BOOL CTestReady::Lf_aif_JigTiltingUp()
@@ -1360,6 +1284,49 @@ BOOL CTestReady::Lf_aif_FrontDoorHoldingOffCheck()
 }
 
 
+BOOL CTestReady::Lf_aif_AdsorptionOn()
+{
+	BOOL bRet = FALSE;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Adsorption On..."));
+
+	m_pApp->commApi->dio_AdsorptionOnOff(CH1, _ON_);
+	m_pApp->commApi->dio_AdsorptionOnOff(CH2, _ON_);
+	bRet = Lf_aif_AdsorptionCheck();
+
+	if (bRet == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ADSORPTION FAIL"), ERROR_CODE_97);
+	}
+
+	return bRet;
+}
+
+
+BOOL CTestReady::Lf_aif_AdsorptionCheck()
+{
+	BOOL bRet1 = FALSE, bRet2 = FALSE;
+
+	GetDlgItem(IDC_STT_TR_STATUS_MSG)->SetWindowText(_T("Adsorption On..."));
+
+	bRet1 = m_pApp->commApi->dio_AdsorptionCheck(CH1);
+	bRet2 = m_pApp->commApi->dio_AdsorptionCheck(CH2);
+
+	if (bRet1 == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ADSORPTION FAIL"), ERROR_CODE_97);
+	}
+	if (bRet2 == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ADSORPTION FAIL"), ERROR_CODE_99);
+	}
+
+
+	if ((bRet1 == TRUE) && (bRet2 == TRUE))
+		return TRUE;
+	else
+		return FALSE;
+}
 
 
 

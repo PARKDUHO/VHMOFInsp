@@ -190,6 +190,7 @@
     <ClInclude Include="CErrorList.h" />
     <ClInclude Include="CIMNetCommApp.h" />
     <ClInclude Include="CInitialize.h" />
+    <ClInclude Include="CIOReadyCheck.h" />
     <ClInclude Include="CMaintenance.h" />
     <ClInclude Include="CMaintenanceDIO.h" />
     <ClInclude Include="CMaintenancePG.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="GradientStatic.h" />
     <ClInclude Include="IniProfileAPI.h" />
     <ClInclude Include="MelsecnetG.h" />
+    <ClInclude Include="ModuleECS.h" />
     <ClInclude Include="PatternView.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
@@ -232,6 +234,7 @@
     <ClCompile Include="CErrorList.cpp" />
     <ClCompile Include="CIMNetCommApp.cpp" />
     <ClCompile Include="CInitialize.cpp" />
+    <ClCompile Include="CIOReadyCheck.cpp" />
     <ClCompile Include="CMaintenance.cpp" />
     <ClCompile Include="CMaintenanceDIO.cpp" />
     <ClCompile Include="CMaintenancePG.cpp" />
@@ -253,6 +256,7 @@
     <ClCompile Include="GradientStatic.cpp" />
     <ClCompile Include="IniProfileAPI.cpp" />
     <ClCompile Include="MelsecnetG.cpp" />
+    <ClCompile Include="ModuleECS.cpp" />
     <ClCompile Include="PatternView.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -287,7 +291,12 @@
     <Image Include="res\bmp00008.bmp" />
     <Image Include="res\bmp00009.bmp" />
     <Image Include="res\bmp00010.bmp" />
+    <Image Include="res\bmp00011.bmp" />
+    <Image Include="res\bmp00012.bmp" />
+    <Image Include="res\bmp00013.bmp" />
     <Image Include="res\ico00001.ico" />
+    <Image Include="res\ico00002.ico" />
+    <Image Include="res\ico00003.ico" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\icon2.ico" />
     <Image Include="res\VHMOFInsp.ico" />

@@ -64,7 +64,11 @@ public:
 	CButton m_btnSvReset;
 	afx_msg void OnBnClickedBtnSvReset();
 	CButton m_btnSvLeftDoorOpen;
+	CButton m_btnSvLeftDoorClose;
 	CButton m_btnSvRightDoorOpen;
+	CButton m_btnSvRightDoorClose;
 	afx_msg void OnBnClickedBtnSvLeftDoorOpen();
 	afx_msg void OnBnClickedBtnSvRightDoorOpen();
+	afx_msg void OnBnClickedBtnSvLeftDoorClose();
+	afx_msg void OnBnClickedBtnSvRightDoorClose();
 };

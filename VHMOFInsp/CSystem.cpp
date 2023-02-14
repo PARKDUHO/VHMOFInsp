@@ -32,9 +32,11 @@ void CSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_SY_SAVE_EXIT, m_btnSySaveExit);
 	DDX_Control(pDX, IDC_BTN_SY_CANCEL, m_btnSyCancel);
 	DDX_Control(pDX, IDC_EDT_SY_EQP_NAME, m_edtSyEqpName);
+	DDX_Control(pDX, IDC_CBO_SY_LINE_TYPE, m_cmbSyLineType);
 	DDX_Control(pDX, IDC_CBO_SY_CARRIER_TYPE, m_cmbSyCarrierType);
 	DDX_Control(pDX, IDC_EDT_SY_LB_START_ADDR, m_edtSyLBStartAddr);
 	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR, m_edtSyLWStartAddr);
+	DDX_Control(pDX, IDC_CBO_SY_ECS_EQP_NUMBER, m_cmbSyEcsEqpNumber);
 	DDX_Control(pDX, IDC_EDT_SY_MES_SERVICEPORT, m_edtSyMesServicePort);
 	DDX_Control(pDX, IDC_EDT_SY_MES_NETWORK, m_edtSyMesNetwork);
 	DDX_Control(pDX, IDC_EDT_SY_MES_DEMONPORT, m_edtSyMesDaemonPort);
@@ -319,12 +321,20 @@ void CSystem::Lf_InitDialogControl()
 {
 	CString sdata = _T("");
 
+	for (int i = 0; i < 65; i++)	// 가장 먼저 Combo Box에 값을 넣어야 한다.
+	{
+		sdata.Format(_T("%02d"), i);
+		m_cmbSyEcsEqpNumber.AddString(sdata);
+	}
+
 	m_edtSyEqpName.SetWindowText(lpSystemInfo->m_sEqpName);
+	m_cmbSyLineType.SetCurSel(lpSystemInfo->m_nLineType);
 	m_cmbSyCarrierType.SetCurSel(lpSystemInfo->m_nCarrierType);
 	sdata.Format(_T("%04X"), lpSystemInfo->m_nLBStartAddr);
 	m_edtSyLBStartAddr.SetWindowText(sdata);
 	sdata.Format(_T("%04X"), lpSystemInfo->m_nLWStartAddr);
 	m_edtSyLWStartAddr.SetWindowText(sdata);
+	m_cmbSyEcsEqpNumber.SetCurSel(lpSystemInfo->m_nEcsEqpNumber);
 	m_edtSyMesServicePort.SetWindowText(lpSystemInfo->m_sMesServicePort);
 	m_edtSyMesNetwork.SetWindowText(lpSystemInfo->m_sMesNetWork);
 	m_edtSyMesDaemonPort.SetWindowText(lpSystemInfo->m_sMesDaemonPort);
@@ -348,6 +358,8 @@ void CSystem::Lf_InitDialogControl()
 	m_edtSyModelFilePath.SetWindowText(lpSystemInfo->m_sDataFileModel);
 	m_edtSyPatternFilePath.SetWindowText(lpSystemInfo->m_sDataFilePattern);
 	m_edtSyEdidFilePath.SetWindowText(lpSystemInfo->m_sDataFileEdid);
+
+
 }
 
 void CSystem::Lf_saveSystemInfo()
@@ -360,6 +372,12 @@ void CSystem::Lf_saveSystemInfo()
 	lpSystemInfo->m_sEqpName.Format(_T("%s"), sdata);
 	Write_SysIniFile(_T("SYSTEM"), _T("EQP_NAME"), lpSystemInfo->m_sEqpName);
 
+	lpSystemInfo->m_nLineType = m_cmbSyLineType.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("LINE_TYPE"), lpSystemInfo->m_nLineType);
+
+	lpSystemInfo->m_nCarrierType = m_cmbSyCarrierType.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("CARRIER_TYPE"), lpSystemInfo->m_nCarrierType);
+
 	m_edtSyLBStartAddr.GetWindowText(sdata);
 	lpSystemInfo->m_nLBStartAddr = _tcstol(sdata, NULL, 16);
 	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LB_START_ADDR"), sdata);
@@ -368,8 +386,8 @@ void CSystem::Lf_saveSystemInfo()
 	lpSystemInfo->m_nLWStartAddr = _tcstol(sdata, NULL, 16);
 	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR"), sdata);
 
-	lpSystemInfo->m_nCarrierType = m_cmbSyCarrierType.GetCurSel();
-	Write_SysIniFile(_T("SYSTEM"), _T("CARRIER_TYPE"), lpSystemInfo->m_nCarrierType);
+	lpSystemInfo->m_nEcsEqpNumber = m_cmbSyEcsEqpNumber.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_EQP_NUMBER"), lpSystemInfo->m_nEcsEqpNumber);
 
 	m_edtSyMesServicePort.GetWindowText(lpSystemInfo->m_sMesServicePort);
 	Write_SysIniFile(_T("MES"), _T("MES_SERVICE"), lpSystemInfo->m_sMesServicePort);

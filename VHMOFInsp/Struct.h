@@ -158,11 +158,13 @@ typedef struct _ST_MODELINFO_{
 typedef struct _ST_SYSTEMINFO_{
 	// STATION 정보 설정 //
 	CString m_sEqpName;					// EQP NAME
+	int		m_nLineType;
 	int		m_nCarrierType;
 
 	// MELSEC 정보 설정 //
 	int		m_nLBStartAddr;
 	int		m_nLWStartAddr;
+	int		m_nEcsEqpNumber;
 
 	CString	m_sLastModelName;			// 마지막 M/C 모델명
 	int		m_nQuantityOKTotal;

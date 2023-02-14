@@ -985,6 +985,126 @@ BOOL CCommApi::main_getPowerFWVersion(int ch)
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // DIO
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CCommApi::dio_InspReadyCheck()
+{
+	BOOL bRet = TRUE;
+
+	// REAR DOOR : LEFT CYLINDER DOWN
+	if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN)
+		&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_DOWN))
+	{
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+	// FRONT DOOR : LEFT CYLINDER DOWN
+	if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_DOWN)
+		&& (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_DOWN))
+	{
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+	// FRONT DOOR HOLDING : CYLINDER BACKWARD
+	if (m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD)
+	{
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+
+	// ROBOT IN SENSOR : ROBOT IN SENSOR 1
+	if (((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1) == 0)
+		&& ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2) == 0))
+	{
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+
+	// JIG TILTING DOWN : JIG DOWN SENSOR1
+	if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
+		&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_2_SENSOR)
+		&& (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_DOWN_3_SENSOR)
+#if (DEBUG_JIG_HOME_SENSOR_PASS == 0)
+		&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR)
+#endif
+		)
+	{
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+
+	// JIG DOOR CLOSE : JIG DOOR CLOSE SENSOR
+	if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR)
+	{
+	}
+	else
+	{
+		bRet = FALSE;
+	}
+
+
+	if (lpSystemInfo->m_nCarrierType == INSP_TYPE_CARRIER)
+	{
+		// JIG TRAY IN : CH1 JIG TRAY IN
+		if (((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR) == 0)
+			&& ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH2_JIG_TRAY_IN_SENSOR) == 0))
+		{
+		}
+		else
+		{
+			bRet = FALSE;
+		}
+	}
+
+	if (lpSystemInfo->m_nCarrierType == INSP_TYPE_CARRIER)
+	{
+		// CH1 CLAMP UNLOCK : CH1 CLAMP1 UNLOCK
+		if (m_pApp->commApi->dio_JigClampStatusCheck(CH1, CLAMP_UNLOCK) == FALSE)
+		{
+			bRet = FALSE;
+		}
+
+
+		// CH2 CLAMP UNLOCK : CH2 CLAMP1 UNLOCK
+		if (m_pApp->commApi->dio_JigClampStatusCheck(CH2, CLAMP_UNLOCK) == FALSE)
+		{
+			bRet = FALSE;
+		}
+	}
+
+	if (lpSystemInfo->m_nCarrierType == INSP_TYPE_NONE_CARRIER)
+	{
+		// CH1 ADSORPTION : CH1 ADSORPTION EJECTION CHECK - 흡착 상태이면 흡착을 풀고 IDLE 모드 운전한다
+		if (m_pApp->commApi->dio_AdsorptionCheck(CH1) == TRUE)
+		{
+			bRet = FALSE;
+		}
+
+		// CH2 ADSORPTION : CH2 ADSORPTION EJECTION CHECK - 흡착 상태이면 흡착을 풀고 IDLE 모드 운전한다
+		if (m_pApp->commApi->dio_AdsorptionCheck(CH2) == TRUE)
+		{
+			bRet = FALSE;
+		}
+
+	}
+
+
+	return bRet;
+}
+
 BOOL CCommApi::dio_writeDioOutput(int ch, int OutData)
 {
 	BOOL ret = FALSE;
@@ -1082,16 +1202,16 @@ BOOL CCommApi::dio_LEDOnOff(BOOL bOnOff)
 
 BOOL CCommApi::dio_LightCurtainMuteOnOff(BOOL bOnOff)
 {
+	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, OFF);
+	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, OFF);
+
 	if (bOnOff == ON)
 	{
+		delayMs(1000);
+
 		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, ON);
 		delayMs(200);
 		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, ON);
-	}
-	else
-	{
-		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, OFF);
-		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, OFF);
 	}
 
 	return TRUE;
@@ -1102,9 +1222,19 @@ BOOL CCommApi::dio_LeftSafetyDoorOpen()
 	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LEFT_SAFETY_DOOR_OPEN, ON);
 }
 
+BOOL CCommApi::dio_LeftSafetyDoorClose()
+{
+	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LEFT_SAFETY_DOOR_OPEN, OFF);
+}
+
 BOOL CCommApi::dio_RightSafetyDoorOpen()
 {
 	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_RIGHT_SAFETY_DOOR_OPEN, ON);
+}
+
+BOOL CCommApi::dio_RightSafetyDoorClose()
+{
+	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_RIGHT_SAFETY_DOOR_OPEN, OFF);
 }
 
 BOOL CCommApi::dio_RobotInLEDOnOff(BOOL bOnOff)
@@ -1118,6 +1248,18 @@ BOOL CCommApi::dio_RobotInLEDOnOff(BOOL bOnOff)
 		return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, OFF);
 	}
 
+}
+
+BOOL CCommApi::dio_RobotInSensorCheck()
+{
+	if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
+		|| (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
+		)
+	{
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 BOOL CCommApi::dio_RearDoorOpen()
@@ -1161,6 +1303,12 @@ BOOL CCommApi::dio_RearDoorClose()
 {
 	BOOL bRet = FALSE;
 	DWORD sTick, eTick;
+
+	if (dio_RobotInSensorCheck() == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_57);
+		return FALSE;
+	}
 
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_UP, OFF);
 	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_REAR_SHUTTER_DOWN, ON);
@@ -1233,6 +1381,12 @@ BOOL CCommApi::dio_FrontDoorClose()
 	BOOL bRet = FALSE;
 	DWORD sTick, eTick;
 
+	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_SHUTTER_HOLDING_BACKWARD) == 0)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR HOLDING SENSOR CHECK FAIL"), ERROR_CODE_86);
+		return FALSE;
+	}
+
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_UP, OFF);
 	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_FRONT_SHUTTER_DOWN, ON);
 
@@ -1265,6 +1419,13 @@ BOOL CCommApi::dio_FrontDoorClose()
 
 BOOL CCommApi::dio_FrontDoorHoldingOn()
 {
+	if (((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_UP) == 0)
+		|| ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_RIGHT_CYLINDER_UP) == 0))
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("FRONT DOOR CLOSED"), ERROR_CODE_83);
+		return FALSE;
+	}
+		
 	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_SHUTTER_HOLDING_BACKWARD, OFF);
 	return m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_SHUTTER_HOLDING_FORWARD, ON);
 }
@@ -1337,6 +1498,224 @@ BOOL CCommApi::dio_JigClampUnLock(int ch)
 	return bRet;
 }
 
+BOOL CCommApi::dio_JigClampStatusCheck(int ch, int lockType)
+{
+	BOOL bRet = FALSE;
+
+	if (ch == CH1)
+	{
+		if (lockType == CLAMP_LOCK)
+		{
+			if (((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
+				)
+			{
+				bRet = TRUE;
+			}
+		}
+		else if (lockType == CLAMP_UNLOCK)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+				&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+				)
+			{
+				bRet = TRUE;
+			}
+		}
+	}
+	if (ch == CH2)
+	{
+		if (lockType == CLAMP_LOCK)
+		{
+			if (((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
+				)
+			{
+				bRet = TRUE;
+			}
+		}
+		else if (lockType == CLAMP_UNLOCK)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+				&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+				&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+				)
+			{
+				bRet = TRUE;
+			}
+		}
+	}
+	if (ch == MAX_CH)
+	{
+		if (lockType == CLAMP_LOCK)
+		{
+			if (((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
+				&& ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
+				)
+			{
+				bRet = TRUE;
+			}
+		}
+		else if (lockType == CLAMP_UNLOCK)
+		{
+			if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+				&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+				&& (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+				&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+				&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+				)
+			{
+				bRet = TRUE;
+			}
+		}
+	}
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_JigClampErrorDisplay(int checkType)
+{
+	BOOL bRet = TRUE;
+	CString errString;
+
+	if (checkType == CLAMP_LOCK)
+	{
+		if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_65);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_66);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_67);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_68);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_69);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_70);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_71);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_72);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_73);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_74);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_75);
+		}
+		else if (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_76);
+		}
+	}
+	if (checkType == CLAMP_UNLOCK)
+	{
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP1) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_65);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_TRAY_UNCLAMP2) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_66);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP3) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_67);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP4) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_68);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP5) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_69);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH1_TRAY_UNCLAMP6) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_70);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP1) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_71);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP2) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_72);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP3) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_73);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][1] & DIN_D2_CH2_TRAY_UNCLAMP4) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_74);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_75);
+		}
+		else if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6) == 0)
+		{
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("UNCLAMP SENSOR ERROR"), ERROR_CODE_76);
+		}
+	}
+
+	return TRUE;
+}
+
 BOOL CCommApi::dio_JigTiltingUp()
 {
 	BOOL bRet = FALSE;
@@ -1364,7 +1743,8 @@ BOOL CCommApi::dio_JigTiltingUp()
 			if (lpModelInfo->m_nJigTiltingCheck == 0)	// 60도
 			{
 				if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
-					&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR))
+//					&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR)
+					)
 				{
 					bRet = TRUE;
 					break;
@@ -1374,7 +1754,7 @@ BOOL CCommApi::dio_JigTiltingUp()
 			{
 				if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
 					&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR)
-					&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
+//					&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
 					)
 				{
 					bRet = TRUE;
@@ -1399,7 +1779,8 @@ BOOL CCommApi::dio_JigTiltingUpCheck()
 	if (lpModelInfo->m_nJigTiltingCheck == 0)	// 60도
 	{
 		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR))
+//			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_60_SENSOR)
+			)
 		{
 			bRet = TRUE;
 		}
@@ -1408,7 +1789,7 @@ BOOL CCommApi::dio_JigTiltingUpCheck()
 	{
 		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR)
 			&& (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR)
-			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
+//			&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_UP_CYLINDER_70_SENSOR)
 			)
 		{
 			bRet = TRUE;
@@ -1520,6 +1901,150 @@ BOOL CCommApi::dio_JigTiltingDownCheck()
 		else if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR) == 0)
 		{
 			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("JIG TILTING DOWN CHECK TIME OUT"), ERROR_CODE_90);
+		}
+	}
+
+	return bRet;
+}
+
+
+BOOL CCommApi::dio_IonizerBlowOn()
+{
+	BOOL bRet;
+
+	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_IONIZER_BLOW_OFF, OFF);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_IONIZER_ON_OFF | DOUT_D1_IONIZER_BLOW_ON), ON);
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_IonizerBlowOff()
+{
+	BOOL bRet;
+
+	m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_IONIZER_ON_OFF | DOUT_D1_IONIZER_BLOW_ON), OFF);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_IONIZER_BLOW_OFF, ON);
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_LedLampOn()
+{
+	BOOL bRet;
+
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, OFF);
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_LedLampOff()
+{
+	BOOL bRet;
+
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LED_OFF, ON);
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_TowerLampOnOff(BOOL bRED, BOOL bYELLOW, BOOL bGREEN, BOOL bBUZZER)
+{
+	BOOL bRet;
+	int ntemp, DOutData = 0;
+
+	DOutData |= (m_pApp->m_nDioOutBit[CH1][2] << 16);
+	DOutData |= (m_pApp->m_nDioOutBit[CH1][1] << 8);
+	DOutData |= (m_pApp->m_nDioOutBit[CH1][0] << 0);
+
+	ntemp = (DOUT_D1_TOWER_LAMP_RED | DOUT_D1_TOWER_LAMP_YELLOW | DOUT_D1_TOWER_LAMP_GREEN | DOUT_D1_TOWER_LAMP_BUZZER);
+	DOutData &= ~ntemp;
+
+	if (bRED == TRUE)		DOutData |= DOUT_D1_TOWER_LAMP_RED;
+	if (bYELLOW == TRUE)	DOutData |= DOUT_D1_TOWER_LAMP_YELLOW;
+	if (bGREEN == TRUE)		DOutData |= DOUT_D1_TOWER_LAMP_GREEN;
+	if (bBUZZER == TRUE)	DOutData |= DOUT_D1_TOWER_LAMP_BUZZER;
+
+	bRet = m_pApp->commApi->dio_writeDioOutput(CH1, DOutData);
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_AdsorptionOnOff(int ch, BOOL bOnOff)
+{
+	BOOL bRet;
+
+	if (ch == CH1)
+	{
+		if (bOnOff == _ON_)
+		{
+			bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH2, (DOUT_D2_CH1_ADSORPTION_EJECTOR1 | DOUT_D2_CH1_ADSORPTION_EJECTOR2), ON);
+		}
+		if (bOnOff == _OFF_)
+		{
+			bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH2, (DOUT_D2_CH1_ADSORPTION_EJECTOR1 | DOUT_D2_CH1_ADSORPTION_EJECTOR2), OFF);
+		}
+	}
+	if (ch == CH2)
+	{
+		if (bOnOff == _ON_)
+		{
+			bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH2, (DOUT_D2_CH2_ADSORPTION_EJECTOR1 | DOUT_D2_CH2_ADSORPTION_EJECTOR2), ON);
+		}
+		if (bOnOff == _OFF_)
+		{
+			bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH2, (DOUT_D2_CH2_ADSORPTION_EJECTOR1 | DOUT_D2_CH2_ADSORPTION_EJECTOR2), OFF);
+		}
+	}
+
+	return bRet;
+}
+
+
+BOOL CCommApi::dio_AdsorptionCheck(int ch)
+{
+	BOOL bRet = FALSE;
+	DWORD sTick = 0, eTick = 0;
+
+	if (ch == CH1)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > 200)
+				break;
+
+			if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_ADSORPTION_GAUGE1)
+				&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_ADSORPTION_GAUGE2)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+
+			delayMs(1);
+		}
+	}
+
+	if (ch == CH2)
+	{
+		bRet = FALSE;
+		sTick = ::GetTickCount();
+		while (1)
+		{
+			eTick = ::GetTickCount();
+			if ((eTick - sTick) > 200)
+				break;
+
+			if ((m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_ADSORPTION_GAUGE1)
+				&& (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_ADSORPTION_GAUGE2)
+				)
+			{
+				bRet = TRUE;
+				break;
+			}
+
+			delayMs(1);
 		}
 	}
 

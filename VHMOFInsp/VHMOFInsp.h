@@ -16,6 +16,7 @@
 #include "SocketUDP.h"
 #include "CIMNetCommApp.h"
 #include "MelsecnetG.h"
+#include "ModuleECS.h"
 
 
 // CVHMOFInspApp:
@@ -113,6 +114,7 @@ public:
 	CCommApi* commApi;
 	CCimNetCommApi*			m_pCimNet;
 	CMelsecnetG*			pMelsecnetG;
+	CModuleECS*				pModuleECS;
 
 	HANDLE					m_hAppMutex;
 
@@ -126,6 +128,8 @@ public:
 	BOOL m_bUserIdGieng;
 	BOOL m_bUserIdPM;
 	BOOL m_bUserIdIdle;
+	BOOL m_bAdminPassword;
+	BOOL m_bLightCurationMute;
 
 	// DIO Board Data
 	int m_nAckCmdDio[2];

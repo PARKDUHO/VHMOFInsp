@@ -79,14 +79,18 @@ public:
 
 
 	//GI DIO Board º¯°æ
+	BOOL dio_InspReadyCheck();
 	BOOL dio_writeDioOutput(int ch, int OutData);
 	BOOL dio_readDioInput(int ch, int bACK=ACK);
 	BOOL dio_writeDioPortOnOff(int ch, int OutBit, int onoff);
 	BOOL dio_LEDOnOff(BOOL bOnOff);
 	BOOL dio_LightCurtainMuteOnOff(BOOL bOnOff);
 	BOOL dio_LeftSafetyDoorOpen();
+	BOOL dio_LeftSafetyDoorClose();
 	BOOL dio_RightSafetyDoorOpen();
+	BOOL dio_RightSafetyDoorClose();
 	BOOL dio_RobotInLEDOnOff(BOOL bOnOff);
+	BOOL dio_RobotInSensorCheck();
 	BOOL dio_RearDoorOpen();
 	BOOL dio_RearDoorClose();
 	BOOL dio_FrontDoorOpen();
@@ -95,10 +99,19 @@ public:
 	BOOL dio_FrontDoorHoldingOff();
 	BOOL dio_JigClampLock(int ch);
 	BOOL dio_JigClampUnLock(int ch);
+	BOOL dio_JigClampStatusCheck(int ch, int lockType);
+	BOOL dio_JigClampErrorDisplay(int checkType);
 	BOOL dio_JigTiltingUp();
 	BOOL dio_JigTiltingUpCheck();
 	BOOL dio_JigTiltingDown();
 	BOOL dio_JigTiltingDownCheck();
+	BOOL dio_IonizerBlowOn();
+	BOOL dio_IonizerBlowOff();
+	BOOL dio_LedLampOn();
+	BOOL dio_LedLampOff();
+	BOOL dio_TowerLampOnOff(BOOL bRED, BOOL bYELLOW, BOOL bGREEN, BOOL bBUZZER);
+	BOOL dio_AdsorptionOnOff(int ch, BOOL bOnOff);
+	BOOL dio_AdsorptionCheck(int ch);
 
 	
 

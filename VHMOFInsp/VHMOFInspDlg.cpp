@@ -20,6 +20,7 @@
 #include "CSafetyLock.h"
 #include "CMessageQuestion.h"
 #include "CErrorList.h"
+#include "CIOReadyCheck.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,6 +40,90 @@ UINT ThreadStatusRead_DIO(LPVOID pParam)
 		if (m_pApp->bConnectInfo[CONN_DIO2] == TRUE)
 		{
 			m_pApp->commApi->dio_readDioInput(CH2, NACK);
+		}
+
+		if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_LEFT_SAFETY_DOOR)
+		{
+			// Safefy Door가 Open되면 Lock을 건다.
+			if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_LEFT_SAFETY_DOOR_OPEN)
+			{
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_LEFT_SAFETY_DOOR_OPEN, OFF);
+			}
+		}
+		if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_RIGHT_SAFETY_DOOR)
+		{
+			// Safefy Door가 Open되면 Lock을 건다.
+			if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_RIGHT_SAFETY_DOOR_OPEN)
+			{
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_RIGHT_SAFETY_DOOR_OPEN, OFF);
+			}
+		}
+		if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_MUTTING_SWITCH)
+		{
+			if (m_pApp->m_bLightCurationMute == FALSE)
+			{
+				m_pApp->m_bLightCurationMute = TRUE;
+				// 프로그램 처음 시작 시 MUTE I/O가 확인되면 강제로 한번은 MUTE 동작시킨다.
+				m_pApp->commApi->dio_LightCurtainMuteOnOff(TRUE);
+			}
+			else
+			{
+				// MUTE SWITCH ON되면 LIGHT CURTAION MUTE 시킨다.
+				if (((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_1) == 0)
+					|| ((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_2) == 0)
+					)
+				{
+					m_pApp->commApi->dio_LightCurtainMuteOnOff(TRUE);
+				}
+			}
+		}
+		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
+			|| (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
+			)
+		{
+			// ROBOT 센서가 감지되면 ROBOT LAMP를 ON 시킨다.
+			if ((m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16)) == 0)
+			{
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, ON);
+			}
+		}
+		else
+		{
+			// ROBOT 센서가 감지되면 ROBOT LAMP를 ON 시킨다.
+			if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16))
+			{
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, OFF);
+			}
+		}
+		if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
+		{
+			// 2023-01-19 PDH. SAFETY PLC ALARM 발생하면 DIO 출력 중지시킨다.
+			int DOut = 0;
+
+			DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
+			DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
+			DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
+
+			if ((DOut & DOUT_D1_FRONT_SHUTTER_DOWN)
+				|| (DOut & DOUT_D1_FRONT_SHUTTER_UP)
+				|| (DOut & DOUT_D1_REAR_SHUTTER_DOWN)
+				|| (DOut & DOUT_D1_REAR_SHUTTER_UP)
+				|| (DOut & DOUT_D1_JIG_TILTING01_DOWN)
+				|| (DOut & DOUT_D1_JIG_TILTING01_UP)
+				|| (DOut & DOUT_D1_JIG_TILTING02_DOWN)
+				|| (DOut & DOUT_D1_JIG_TILTING02_UP)
+				)
+			{
+				DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
+				DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
+				DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
+				DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
+				DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
+				DOut &= ~DOUT_D1_JIG_TILTING01_UP;
+				DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
+				DOut &= ~DOUT_D1_JIG_TILTING02_UP;
+				m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
+			}
 		}
 
 		Sleep(500);
@@ -304,11 +389,15 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			case 'c':
 			case 'C':
 			{
-				CModelChange mcDlg;
-				mcDlg.DoModal();
+				CPassword passwor_dlg;
+				if (passwor_dlg.DoModal() == IDOK)
+				{
+					CModelChange mcDlg;
+					mcDlg.DoModal();
 
-				Lf_updateSystemInfo();
-				return TRUE;
+					Lf_updateSystemInfo();
+					return TRUE;
+				}
 			}
 			case 'd':
 			case 'D':
@@ -326,11 +415,18 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			case 'i':
 			case 'I':
 			{
-				CInitialize initDlg;
-				initDlg.DoModal();
+				CMessageQuestion que_dlg;
+				que_dlg.m_strQMessage.Format(_T("Do you want system initialize?"));
+				que_dlg.m_strLButton = _T("YES");
+				que_dlg.m_strRButton = _T("NO");
+				if (que_dlg.DoModal() == IDOK)
+				{
+					CInitialize initDlg;
+					initDlg.DoModal();
 
-				Lf_updateSystemInfo();
-				return TRUE;
+					Lf_updateSystemInfo();
+					return TRUE;
+				}
 			}
 			case 'l':
 			case 'L':
@@ -341,12 +437,16 @@ BOOL CVHMOFInspDlg::PreTranslateMessage(MSG* pMsg)
 			case 'm':
 			case 'M':
 			{
-				if (m_pApp->Lf_checkDoorOpenInterLock() == TRUE)
+				CPassword passwor_dlg;
+				if (passwor_dlg.DoModal() == IDOK)
 				{
-					CMaintenance maintDlg;
-					maintDlg.DoModal();
+					if (m_pApp->Lf_checkDoorOpenInterLock() == TRUE)
+					{
+						CMaintenance maintDlg;
+						maintDlg.DoModal();
+					}
+					return TRUE;
 				}
-				return TRUE;
 			}
 			case 's':
 			case 'S':
@@ -773,10 +873,18 @@ void CVHMOFInspDlg::OnBnClickedBtnMaModelInfo()
 void CVHMOFInspDlg::OnBnClickedBtnMaTest()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CTestReady ready_dlg;
-	ready_dlg.DoModal();
+	if (m_pApp->commApi->dio_InspReadyCheck() == TRUE)
+	{
+		CTestReady ready_dlg;
+		ready_dlg.DoModal();
 
-	GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
+		GetDlgItem(IDC_BTN_MA_TEST)->SetFocus();	// Space Key 단축키 동작 시 Test Start 진행하기 위함.
+	}
+	else
+	{
+		CIOReadyCheck ioready_dlg;
+		ioready_dlg.DoModal();
+	}
 }
 
 
@@ -1434,7 +1542,7 @@ void CVHMOFInspDlg::Lf_updateIOStautsDIN1()
 void CVHMOFInspDlg::Lf_updateIOStautsDIN2()
 {
 	m_lstMaDinListB.SetCheck(0, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR));
-	m_lstMaDinListB.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_PHOTO_SENSOR));
+	m_lstMaDinListB.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR));
 	m_lstMaDinListB.SetCheck(2, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR));
 	m_lstMaDinListB.SetCheck(3, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR));
 	m_lstMaDinListB.SetCheck(4, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR));
@@ -1453,12 +1561,12 @@ void CVHMOFInspDlg::Lf_updateIOStautsDIN2()
 
 	m_lstMaDinListB.SetCheck(16, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5));
 	m_lstMaDinListB.SetCheck(17, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6));
-	m_lstMaDinListB.SetCheck(18, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE1));
-	m_lstMaDinListB.SetCheck(19, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE2));
-	m_lstMaDinListB.SetCheck(20, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE3));
-	m_lstMaDinListB.SetCheck(21, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE4));
-	m_lstMaDinListB.SetCheck(22, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE5));
-	m_lstMaDinListB.SetCheck(23, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE6));
+	m_lstMaDinListB.SetCheck(18, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_ADSORPTION_GAUGE1));
+	m_lstMaDinListB.SetCheck(19, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_ADSORPTION_GAUGE2));
+	m_lstMaDinListB.SetCheck(20, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_ADSORPTION_GAUGE1));
+	m_lstMaDinListB.SetCheck(21, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_ADSORPTION_GAUGE2));
+	m_lstMaDinListB.SetCheck(22, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_PIN_BLOCK_CLOSE));
+	m_lstMaDinListB.SetCheck(23, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_PIN_BLOCK_CLOSE));
 
 	m_lstMaDinListB.SetCheck(24, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_AUTO_MANUAL));
 	m_lstMaDinListB.SetCheck(25, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_BACK));
@@ -1486,6 +1594,9 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 	CString strKey, strErr;
 
 	if (DEBUG_DIO_ALARM_DISABLE == 1)
+		return;
+
+	if (m_pApp->m_bAdminPassword == TRUE)
 		return;
 
 	if (m_pApp->m_nDioInBit[CH1][0] & DIN_D1_EMO_SWITCH)
@@ -1541,42 +1652,42 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 		strKey.Format(_T("%d"), ERROR_CODE_44);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
 		m_pApp->Gf_writeErrorList(ERROR_CODE_44, strErr);
-		heavyAlarm = TRUE;
+		lightAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_ALARM)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_45);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
 		m_pApp->Gf_writeErrorList(ERROR_CODE_45, strErr);
-		heavyAlarm = TRUE;
+		lightAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_MAIN_AIR_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_46);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
 		m_pApp->Gf_writeErrorList(ERROR_CODE_46, strErr);
-		heavyAlarm = TRUE;
+		lightAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_IONIZER_AIR_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_47);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
 		m_pApp->Gf_writeErrorList(ERROR_CODE_47, strErr);
-		heavyAlarm = TRUE;
+		lightAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_48);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
 		m_pApp->Gf_writeErrorList(ERROR_CODE_48, strErr);
-		heavyAlarm = TRUE;
+		lightAlarm = TRUE;
 	}
 	if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_JIG_DIGITAL_PRESSURE_GAGE) == 0)
 	{
 		strKey.Format(_T("%d"), ERROR_CODE_49);
 		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
 		m_pApp->Gf_writeErrorList(ERROR_CODE_49, strErr);
-		heavyAlarm = TRUE;
+		lightAlarm = TRUE;
 	}
 	if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
 	{
@@ -1585,31 +1696,13 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 		m_pApp->Gf_writeErrorList(ERROR_CODE_92, strErr);
 		heavyAlarm = TRUE;
 	}
-
-	// 2023-01-27 PDH. 알람 RESET시 재가동이 필요하므로 DIO 출력을 중단시키지는 않아야 하기에 DIO 출력 중지는 주석 처리한다.
- 	//                 Cylinder 축정지 TYPE으로 변경시 DOOR OPEN하면 자동으로 정지된다.
-	// 2023-01-19 PDH .Heavy Alarm 발생 시 DIO 출력 중지시킨다.
- 	if (heavyAlarm == TRUE)
- 	{
- 		int DOut=0;
- 
- 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][2] << 16);
- 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][1] << 8);
- 		DOut = DOut | (m_pApp->m_nDioOutBit[CH1][0] << 0);
- 
- 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
- 		DOut &= ~DOUT_D1_FRONT_SHUTTER_UP;
- 		DOut &= ~DOUT_D1_REAR_SHUTTER_DOWN;
- 		DOut &= ~DOUT_D1_REAR_SHUTTER_UP;
- 		DOut &= ~DOUT_D1_JIG_TILTING01_DOWN;
- 		DOut &= ~DOUT_D1_JIG_TILTING01_UP;
- 		DOut &= ~DOUT_D1_JIG_TILTING02_DOWN;
- 		DOut &= ~DOUT_D1_JIG_TILTING02_UP;
- 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
- 		DOut &= ~DOUT_D1_FRONT_SHUTTER_DOWN;
- 
- 		m_pApp->commApi->dio_writeDioOutput(CH1, DOut);
- 	}
+	if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR) == 0)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_56);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		m_pApp->Gf_writeErrorList(ERROR_CODE_56, strErr);
+		lightAlarm = TRUE;
+	}
 
 	if ((lightAlarm == TRUE) || (heavyAlarm == TRUE))
 	{

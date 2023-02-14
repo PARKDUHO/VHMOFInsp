@@ -29,7 +29,9 @@ void CSensorView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BTN_SV_EXIT, m_btnSvExit);
 	DDX_Control(pDX, IDC_BTN_SV_RESET, m_btnSvReset);
 	DDX_Control(pDX, IDC_BTN_SV_LEFT_DOOR_OPEN, m_btnSvLeftDoorOpen);
+	DDX_Control(pDX, IDC_BTN_SV_LEFT_DOOR_CLOSE, m_btnSvLeftDoorClose);
 	DDX_Control(pDX, IDC_BTN_SV_RIGHT_DOOR_OPEN, m_btnSvRightDoorOpen);
+	DDX_Control(pDX, IDC_BTN_SV_RIGHT_DOOR_CLOSE, m_btnSvRightDoorClose);
 }
 
 
@@ -42,6 +44,8 @@ BEGIN_MESSAGE_MAP(CSensorView, CDialog)
 	ON_BN_CLICKED(IDC_BTN_SV_RESET, &CSensorView::OnBnClickedBtnSvReset)
 	ON_BN_CLICKED(IDC_BTN_SV_LEFT_DOOR_OPEN, &CSensorView::OnBnClickedBtnSvLeftDoorOpen)
 	ON_BN_CLICKED(IDC_BTN_SV_RIGHT_DOOR_OPEN, &CSensorView::OnBnClickedBtnSvRightDoorOpen)
+	ON_BN_CLICKED(IDC_BTN_SV_LEFT_DOOR_CLOSE, &CSensorView::OnBnClickedBtnSvLeftDoorClose)
+	ON_BN_CLICKED(IDC_BTN_SV_RIGHT_DOOR_CLOSE, &CSensorView::OnBnClickedBtnSvRightDoorClose)
 END_MESSAGE_MAP()
 
 
@@ -311,6 +315,37 @@ HBRUSH CSensorView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 					return m_Brush[COLOR_IDX_GREEN128];
 				}
 			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_SV_SAFETY_PLC)
+			{
+				if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
+				{
+					pDC->SetBkColor(COLOR_RED);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+			}
+			if (pWnd->GetDlgCtrlID() == IDC_STT_SV_JIG_DOOR_OPEN)
+			{
+				if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR) == 0)
+				{
+					pDC->SetBkColor(COLOR_RED);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_RED];
+				}
+				else
+				{
+					pDC->SetBkColor(COLOR_GREEN128);
+					pDC->SetTextColor(COLOR_WHITE);
+					return m_Brush[COLOR_IDX_GREEN128];
+				}
+			}
+
 			break;
 	}
 
@@ -369,6 +404,13 @@ void CSensorView::OnBnClickedBtnSvLeftDoorOpen()
 }
 
 
+void CSensorView::OnBnClickedBtnSvLeftDoorClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_LeftSafetyDoorClose();
+}
+
+
 void CSensorView::OnBnClickedBtnSvRightDoorOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
@@ -378,6 +420,13 @@ void CSensorView::OnBnClickedBtnSvRightDoorOpen()
 	{
 		m_pApp->commApi->dio_RightSafetyDoorOpen();
 	}
+}
+
+
+void CSensorView::OnBnClickedBtnSvRightDoorClose()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_RightSafetyDoorClose();
 }
 
 
@@ -431,9 +480,13 @@ void CSensorView::Lf_InitFontset()
 	GetDlgItem(IDC_STT_SV_CYLINDER_AIR)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_STT_SV_JIG_AIR)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_STT_SV_IONIZER)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_SV_SAFETY_PLC)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_STT_SV_JIG_DOOR_OPEN)->SetFont(&m_Font[5]);
 
 	GetDlgItem(IDC_BTN_SV_LEFT_DOOR_OPEN)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_BTN_SV_LEFT_DOOR_CLOSE)->SetFont(&m_Font[5]);
 	GetDlgItem(IDC_BTN_SV_RIGHT_DOOR_OPEN)->SetFont(&m_Font[5]);
+	GetDlgItem(IDC_BTN_SV_RIGHT_DOOR_CLOSE)->SetFont(&m_Font[5]);
 }
 
 void CSensorView::Lf_InitColorBrush()
@@ -461,8 +514,10 @@ void CSensorView::Lf_InitColorBrush()
 void CSensorView::Lf_InitDlgDesign()
 {
 	// Button ICON
-	m_btnSvLeftDoorOpen.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
-	m_btnSvRightDoorOpen.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
+	m_btnSvLeftDoorOpen.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_UNLOCK));
+	m_btnSvLeftDoorClose.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_LOCK));
+	m_btnSvRightDoorOpen.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_UNLOCK));
+	m_btnSvRightDoorClose.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_LOCK));
 
 	m_btnSvReset.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_ENABLE));
 	m_btnSvExit.SetIcon(AfxGetApp()->LoadIcon(IDI_ICON_DISABLE));
@@ -505,6 +560,8 @@ void CSensorView::Lf_toggleSensorPosition(BOOL bFlag)
 		GetDlgItem(IDC_STT_SV_CYLINDER_AIR)->ShowWindow(SW_SHOWNORMAL);
 		GetDlgItem(IDC_STT_SV_JIG_AIR)->ShowWindow(SW_SHOWNORMAL);
 		GetDlgItem(IDC_STT_SV_IONIZER)->ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STT_SV_SAFETY_PLC)->ShowWindow(SW_SHOWNORMAL);
+		GetDlgItem(IDC_STT_SV_JIG_DOOR_OPEN)->ShowWindow(SW_SHOWNORMAL);
 	}
 	else
 	{
@@ -520,6 +577,8 @@ void CSensorView::Lf_toggleSensorPosition(BOOL bFlag)
 		if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_CYLINDER_DIGITAL_PRESSURE_GAGE) == 0)		GetDlgItem(IDC_STT_SV_CYLINDER_AIR)->ShowWindow(SW_HIDE);
 		if ((m_pApp->m_nDioInBit[CH1][1] & DIN_D1_JIG_DIGITAL_PRESSURE_GAGE) == 0)			GetDlgItem(IDC_STT_SV_JIG_AIR)->ShowWindow(SW_HIDE);
 		if (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_IONIZER_ALARM)								GetDlgItem(IDC_STT_SV_IONIZER)->ShowWindow(SW_HIDE);
+		if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)							GetDlgItem(IDC_STT_SV_SAFETY_PLC)->ShowWindow(SW_HIDE);
+		if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR) == 0)				GetDlgItem(IDC_STT_SV_JIG_DOOR_OPEN)->ShowWindow(SW_HIDE);
 	}
 
 	GetDlgItem(IDC_STT_SV_EMO)->Invalidate(FALSE);
@@ -534,8 +593,12 @@ void CSensorView::Lf_toggleSensorPosition(BOOL bFlag)
 	GetDlgItem(IDC_STT_SV_CYLINDER_AIR)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_SV_JIG_AIR)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_SV_IONIZER)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_SV_SAFETY_PLC)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_SV_JIG_DOOR_OPEN)->Invalidate(FALSE);
 	GetDlgItem(IDC_BTN_SV_LEFT_DOOR_OPEN)->Invalidate(FALSE);
+	GetDlgItem(IDC_BTN_SV_LEFT_DOOR_CLOSE)->Invalidate(FALSE);
 	GetDlgItem(IDC_BTN_SV_RIGHT_DOOR_OPEN)->Invalidate(FALSE);
+	GetDlgItem(IDC_BTN_SV_RIGHT_DOOR_CLOSE)->Invalidate(FALSE);
 }
 
 void CSensorView::Lf_updateErrorMessageList()
@@ -634,7 +697,29 @@ void CSensorView::Lf_updateErrorMessageList()
 		strErr.Insert(0, _T("▶"));
 		m_lstSvErrorList.AddString(strErr);
 	}
+	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_LEFT_SAFETY_DOOR_OPEN)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_95);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		strErr.Insert(0, _T("▶"));
+		m_lstSvErrorList.AddString(strErr);
+	}
+	if (m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_RIGHT_SAFETY_DOOR_OPEN)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_96);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		strErr.Insert(0, _T("▶"));
+		m_lstSvErrorList.AddString(strErr);
+	}
+	if ((m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR) == 0)
+	{
+		strKey.Format(_T("%d"), ERROR_CODE_56);
+		Read_ErrorCode(_T("EQP_ERROR"), strKey, &strErr);
+		strErr.Insert(0, _T("▶"));
+		m_lstSvErrorList.AddString(strErr);
+	}
 }
+
 
 
 

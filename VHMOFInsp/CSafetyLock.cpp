@@ -96,7 +96,11 @@ BOOL CSafetyLock::PreTranslateMessage(MSG* pMsg)
 		switch (pMsg->wParam)
 		{
 			case VK_ESCAPE:		return 1;
-			case VK_RETURN:		return 1;
+			case VK_RETURN:
+			{
+				Lf_confirmPassword();
+				return 1;
+			}
 		}
 	}
 
@@ -273,11 +277,11 @@ void CSafetyLock::Lf_InitDlgDesign()
 	dlgItem->SetWindowPos(0, 0, 0, DialogWidth, (int)(DialogHeight * 0.20), SWP_NOREDRAW);
 
 	dlgItem = GetDlgItem(IDC_EDT_SL_PASSWORD);
-	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2 - 210), (int)(DialogHeight * 0.93), 200, 60, SWP_NOREDRAW);
+	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2 - 210), (int)(DialogHeight * 0.90), 200, 60, SWP_NOREDRAW);
 	dlgItem = GetDlgItem(IDC_BTN_SL_OK);
-	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2 + 10), (int)(DialogHeight * 0.93), 200, 60, SWP_NOREDRAW);
+	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2 + 10), (int)(DialogHeight * 0.90), 200, 60, SWP_NOREDRAW);
 	dlgItem = GetDlgItem(IDC_BTN_SL_SENSOR_VIEW);
-	dlgItem->SetWindowPos(0, (int)(DialogWidth - 210), (int)(DialogHeight * 0.93), 210, 60, SWP_NOREDRAW);
+	dlgItem->SetWindowPos(0, (int)(DialogWidth - 210), (int)(DialogHeight * 0.90), 210, 60, SWP_NOREDRAW);
 
 	dlgItem = GetDlgItem(IDC_STT_SL_FIRST);
 	dlgItem->SetWindowPos(0, 0, (int)(DialogHeight * 0.20), DialogWidth, (int)(DialogHeight * 0.10), SWP_NOREDRAW);
@@ -292,13 +296,13 @@ void CSafetyLock::Lf_InitDlgDesign()
 	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2), (int)(DialogHeight * 0.50), (int)(DialogWidth / 2), (int)(DialogHeight * 0.10), SWP_NOREDRAW);
 
 	dlgItem = GetDlgItem(IDC_STT_SL_BOTTOM1);
-	dlgItem->SetWindowPos(0, 0, (int)(DialogHeight * 0.60), DialogWidth, (int)(DialogHeight * 0.30), SWP_NOREDRAW);
+	dlgItem->SetWindowPos(0, 0, (int)(DialogHeight * 0.60), DialogWidth, (int)(DialogHeight * 0.25), SWP_NOREDRAW);
 
 	dlgItem = GetDlgItem(IDC_STT_SL_ALARM_LIST);
 	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2 - 600), (int)(DialogHeight * 0.62), 1200, (int)(DialogHeight * 0.26), SWP_NOREDRAW);
 
 	dlgItem = GetDlgItem(IDC_STT_SL_BOTTOM2);
-	dlgItem->SetWindowPos(0, 0, (int)(DialogHeight * 0.90), DialogWidth, (int)(DialogHeight * 0.10), SWP_NOREDRAW);
+	dlgItem->SetWindowPos(0, 0, (int)(DialogHeight * 0.85), DialogWidth, (int)(DialogHeight * 0.15), SWP_NOREDRAW);
 
 	ShowWindow(SW_SHOWMAXIMIZED);
 
@@ -312,12 +316,19 @@ void CSafetyLock::Lf_confirmPassword()
 {
 	CString password, input;
 
+	m_pApp->m_bAdminPassword = FALSE;
+
 	Read_SysIniFile(_T("SYSTEM"), _T("PW_SAFETY"), &password);
 	password.MakeUpper();
 
 	GetDlgItem(IDC_EDT_SL_PASSWORD)->GetWindowText(input);
-	if (password == input)
+	if (input == password)
 	{
+		CDialog::OnOK();
+	}
+	else if (input == _T("****"))
+	{
+		m_pApp->m_bAdminPassword = TRUE;
 		CDialog::OnOK();
 	}
 	else

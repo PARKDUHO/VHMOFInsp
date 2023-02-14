@@ -24,12 +24,12 @@
 #define DEBUG_DIO_SKIP					0
 #define DEBUG_ROBOT_WAIT_CHECK_ON		1
 #define DEBUG_PG1_TEST_ONLY				1
-#define DEBUG_JIG_HOME_SENSOR_PASS		1
+#define DEBUG_JIG_HOME_SENSOR_PASS		0
 #define DEBUG_DIO_ALARM_DISABLE			0
 
 /////////////////////////////////////////////////////////////////////////////
-#define TCP_MAIN1_MCU_IP				_T("192.168.1.14")	// 13
-#define TCP_MAIN2_MCU_IP				_T("192.168.1.15")	// 14
+#define TCP_MAIN1_MCU_IP				_T("192.168.1.13")	// 13
+#define TCP_MAIN2_MCU_IP				_T("192.168.1.14")	// 14
 
 #define TCP_MAIN1_FPGA_IP				_T("192.168.1.3")
 #define TCP_MAIN2_FPGA_IP				_T("192.168.1.4")
@@ -105,9 +105,19 @@
 #define MSG_WARNING						1
 
 
+/////////////////////////////////////////////////////////////////////////////
 #define CH1								0
 #define CH2								1
 #define MAX_CH							2
+
+/////////////////////////////////////////////////////////////////////////////
+#define CLAMP_LOCK						0
+#define CLAMP_UNLOCK					1
+
+
+/////////////////////////////////////////////////////////////////////////////
+#define INSP_TYPE_CARRIER				0
+#define INSP_TYPE_NONE_CARRIER			1
 
 /////////////////////////////////////////////////////////////////////////////
 //DIO
@@ -117,10 +127,7 @@
 #define AIF_ROBOT_IN_SENSOR_WAIT_TIME	30000
 #define AIF_ROBOT_OUT_SENSOR_WAIT_TIME	30000
 #define AIF_CARRIER_JIG_IN_WAIT_TIME	10000
-#define AIF_JIG_TILTING_WAIT_TIME		20000
-
-#define CLAMP_ERROR_LOCK				0
-#define CLAMP_ERROR_UNLOCK				1
+#define AIF_JIG_TILTING_WAIT_TIME		30000
 
 
 static CString strNameDIN1[40] =
@@ -255,9 +262,9 @@ static CString strNameDOUT2[24] =
 	_T("CH2_TRAY_UNCLAMP_6"),
 	_T("CH1_ADSORPTION_EJECTOR1"),
 	_T("CH1_ADSORPTION_EJECTOR2"),
-	_T("CH1_PIN_CYLINDER_UP"),
 	_T("CH2_ADSORPTION_EJECTOR1"),
 	_T("CH2_ADSORPTION_EJECTOR2"),
+	_T("CH1_PIN_CYLINDER_UP"),
 	_T("CH2_PIN_CYLINDER_UP"),
 	_T(""),
 	_T(""),
@@ -340,7 +347,7 @@ static CString strNameDOUT2[24] =
 
 ////////////////////////////////////////////////////////////////////////////////
 #define DIN_D2_JIG_HOME_SENSOR						(0x01 << 0)
-#define DIN_D2_JIG_DOOR_CLOSE_PHOTO_SENSOR			(0x01 << 1)
+#define DIN_D2_JIG_DOOR_CLOSE_SENSOR				(0x01 << 1)
 #define DIN_D2_TILTING_60_SENSOR					(0x01 << 2)
 #define DIN_D2_TILTING_70_SENSOR					(0x01 << 3)
 #define DIN_D2_CH1_JIG_TRAY_IN_SENSOR				(0x01 << 4)
@@ -359,12 +366,13 @@ static CString strNameDOUT2[24] =
 
 #define DIN_D2_CH2_TRAY_UNCLAMP5					(0x01 << 0)
 #define DIN_D2_CH2_TRAY_UNCLAMP6					(0x01 << 1)
-#define DIN_D2_SPARE1								(0x01 << 2)
-#define DIN_D2_SPARE2								(0x01 << 3)
-#define DIN_D2_SPARE3								(0x01 << 4)
-#define DIN_D2_SPARE4								(0x01 << 5)
-#define DIN_D2_SPARE5								(0x01 << 6)
-#define DIN_D2_SPARE6								(0x01 << 7)
+#define DIN_D2_CH1_ADSORPTION_GAUGE1				(0x01 << 2)
+#define DIN_D2_CH1_ADSORPTION_GAUGE2				(0x01 << 3)
+#define DIN_D2_CH2_ADSORPTION_GAUGE1				(0x01 << 4)
+#define DIN_D2_CH2_ADSORPTION_GAUGE2				(0x01 << 5)
+#define DIN_D2_CH1_PIN_BLOCK_CLOSE					(0x01 << 6)
+#define DIN_D2_CH2_PIN_BLOCK_CLOSE					(0x01 << 7)
+
 
 #define DIN_D2_CH1_KEYPAD_AUTO_MANUAL				(0x01 << 0)
 #define DIN_D2_CH1_KEYPAD_BACK						(0x01 << 1)
@@ -397,12 +405,12 @@ static CString strNameDOUT2[24] =
 #define	DOUT_D2_CH2_TRAY_UNCLAMP_4					0x000200
 #define	DOUT_D2_CH2_TRAY_UNCLAMP_5					0x000400
 #define	DOUT_D2_CH2_TRAY_UNCLAMP_6					0x000800
-#define	DOUT_D2_CH1_ADSORPTION_EJECTOR				0x001000
-#define	DOUT_D2_CH1_PIN_CYLINDER_UP					0x002000
-#define	DOUT_D2_CH2_ADSORPTION_EJECTOR				0x004000
-#define	DOUT_D2_CH2_PIN_CYLINDER_UP					0x008000
-#define	DOUT_D2_SPARE1								0x010000
-#define	DOUT_D2_SPARE2								0x020000
+#define	DOUT_D2_CH1_ADSORPTION_EJECTOR1				0x001000
+#define	DOUT_D2_CH1_ADSORPTION_EJECTOR2				0x002000
+#define	DOUT_D2_CH2_ADSORPTION_EJECTOR1				0x004000
+#define	DOUT_D2_CH2_ADSORPTION_EJECTOR2				0x008000
+#define	DOUT_D2_CH1_PIN_CYLINDER_UP					0x010000
+#define	DOUT_D2_CH2_PIN_CYLINDER_UP					0x020000
 #define	DOUT_D2_SPARE3								0x040000
 #define	DOUT_D2_SPARE4								0x080000
 #define	DOUT_D2_SPARE5								0x100000
@@ -634,6 +642,14 @@ typedef enum _COLOR_IDX_{
 #define CMD_DIO_INPUT						0x03	// DIO Board Input
 #define CMD_DIO_TIME_OUT					0xFF
 
+
+/////////////////////////////////////////////////////////////////////////////
+// LINE TYPE
+/////////////////////////////////////////////////////////////////////////////
+#define LINE_TYPE_CGA						0
+#define LINE_TYPE_CP						1
+#define LINE_TYPE_OQC						2
+#define LINE_TYPE_ASSEMBLY					3
 
 /////////////////////////////////////////////////////////////////////////////
 // MELSEC 통신 ErrorCode Define
@@ -888,6 +904,17 @@ enum
 	ERROR_CODE_97,
 	ERROR_CODE_98,
 	ERROR_CODE_99,
+	ERROR_CODE_100,
+	ERROR_CODE_101,
+	ERROR_CODE_102,
+	ERROR_CODE_103,
+	ERROR_CODE_104,
+	ERROR_CODE_105,
+	ERROR_CODE_106,
+	ERROR_CODE_107,
+	ERROR_CODE_108,
+	ERROR_CODE_109,
+	ERROR_CODE_110,
 	ERROR_CODE_2000 = 2000,		// MELSEC ERROR CODE : 2000 ~
 	ERROR_CODE_2001,
 	ERROR_CODE_2002,

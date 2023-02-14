@@ -138,6 +138,12 @@
     <ClInclude Include="CErrorList.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CIOReadyCheck.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleECS.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VHMOFInsp.cpp">
@@ -245,6 +251,12 @@
     <ClCompile Include="CErrorList.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="CIOReadyCheck.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleECS.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VHMOFInsp.rc">
@@ -303,6 +315,21 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\bmp00010.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ico00002.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\ico00003.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00011.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00012.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\bmp00013.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

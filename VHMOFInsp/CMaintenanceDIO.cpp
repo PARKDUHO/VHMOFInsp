@@ -37,22 +37,6 @@ void CMaintenanceDIO::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LST_MO_DIO2_OUT, m_lstMoDio2Out);
 	DDX_Control(pDX, IDC_BTN_MO_WRITE_DIO1, m_btnMoWriteDIO1);
 	DDX_Control(pDX, IDC_BTN_MO_WRITE_DIO2, m_btnMoWriteDIO2);
-	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_OPEN, m_sttMoFrontDoorOpen);
-	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_CLOSE, m_sttMoFrontDoorClose);
-	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_HOLDING_ON, m_sttMoFrontDoorHoldingOn);
-	DDX_Control(pDX, IDC_STT_MO_FRONT_DOOR_HOLDING_OFF, m_sttMoFrontDoorHoldingOff);
-	DDX_Control(pDX, IDC_STT_MO_REAR_DOOR_OPEN, m_sttMoRearDoorOpen);
-	DDX_Control(pDX, IDC_STT_MO_REAR_DOOR_CLOSE, m_sttMoRearDoorClose);
-	DDX_Control(pDX, IDC_STT_MO_LIGHT_CURTAIN_MUTE_ON, m_sttMoLightCurationMuteOn);
-	DDX_Control(pDX, IDC_STT_MO_LIGHT_CURTAIN_MUTE_OFF, m_sttMoLightCurationMuteOff);
-	DDX_Control(pDX, IDC_STT_MO_JIG_TILTING_UP, m_sttMoJigTiltingUp);
-	DDX_Control(pDX, IDC_STT_MO_JIG_TILTING_DOWN, m_sttMoJigTiltingDown);
-	DDX_Control(pDX, IDC_STT_MO_LEFT_SAFETY_DOOR_OPEN, m_sttMoLeftSafetyDoorOpen);
-	DDX_Control(pDX, IDC_STT_MO_RIGHT_SAFETY_DOOR_OPEN, m_sttMoRightSafetyDoorOpen);
-	DDX_Control(pDX, IDC_STT_MO_CLAMP_LOCK_CH1, m_sttMoClampLockCh1);
-	DDX_Control(pDX, IDC_STT_MO_CLAMP_UNLOCK_CH1, m_sttMoClampUnLockCh1);
-	DDX_Control(pDX, IDC_STT_MO_CLAMP_LOCK_CH2, m_sttMoClampLockCh2);
-	DDX_Control(pDX, IDC_STT_MO_CLAMP_UNLOCK_CH2, m_sttMoClampUnLockCh2);
 	DDX_Control(pDX, IDC_CHK_MO_AUTO_CONFIRM, m_chkMoAutoConfirm);
 }
 
@@ -84,6 +68,12 @@ BEGIN_MESSAGE_MAP(CMaintenanceDIO, CDialog)
 	ON_STN_CLICKED(IDC_STT_MO_CLAMP_UNLOCK_CH2, &CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh2)
 	ON_STN_CLICKED(IDC_STT_MO_FRONT_DOOR_HOLDING_ON, &CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOn)
 	ON_STN_CLICKED(IDC_STT_MO_FRONT_DOOR_HOLDING_OFF, &CMaintenanceDIO::OnStnClickedSttMoFrontDoorHoldingOff)
+	ON_STN_CLICKED(IDC_STT_MO_IONIZER_BLOW_ON, &CMaintenanceDIO::OnStnClickedSttMoIonizerBlowOn)
+	ON_STN_CLICKED(IDC_STT_MO_IONIZER_BLOW_OFF, &CMaintenanceDIO::OnStnClickedSttMoIonizerBlowOff)
+	ON_STN_CLICKED(IDC_STT_MO_LED_ON, &CMaintenanceDIO::OnStnClickedSttMoLedOn)
+	ON_STN_CLICKED(IDC_STT_MO_LED_OFF, &CMaintenanceDIO::OnStnClickedSttMoLedOff)
+	ON_STN_CLICKED(IDC_STT_MO_TOWER_LAMP_ON, &CMaintenanceDIO::OnStnClickedSttMoTowerLampOn)
+	ON_STN_CLICKED(IDC_STT_MO_TOWER_LAMP_OFF, &CMaintenanceDIO::OnStnClickedSttMoTowerLampOff)
 END_MESSAGE_MAP()
 
 
@@ -197,6 +187,12 @@ HBRUSH CMaintenanceDIO::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_UNLOCK_CH1)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_LOCK_CH2)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_CLAMP_UNLOCK_CH2)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_IONIZER_BLOW_ON)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_IONIZER_BLOW_OFF)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_LED_ON)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_LED_OFF)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_TOWER_LAMP_ON)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_MO_TOWER_LAMP_OFF)
 				)
 			{
 				pDC->SetBkColor(COLOR_GREEN128);
@@ -453,7 +449,7 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 			|| (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2)
 			)
 		{
-			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_56);
+			m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_57);
 			return;
 		}
 		else
@@ -494,12 +490,12 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio2()
 	if (m_lstMoDio2Out.GetCheck(9) == TRUE)		nDOut |= DOUT_D2_CH2_TRAY_UNCLAMP_4;
 	if (m_lstMoDio2Out.GetCheck(10) == TRUE)	nDOut |= DOUT_D2_CH2_TRAY_UNCLAMP_5;
 	if (m_lstMoDio2Out.GetCheck(11) == TRUE)	nDOut |= DOUT_D2_CH2_TRAY_UNCLAMP_6;
-	if (m_lstMoDio2Out.GetCheck(12) == TRUE)	nDOut |= DOUT_D2_CH1_ADSORPTION_EJECTOR;
-	if (m_lstMoDio2Out.GetCheck(13) == TRUE)	nDOut |= DOUT_D2_CH1_PIN_CYLINDER_UP;
-	if (m_lstMoDio2Out.GetCheck(14) == TRUE)	nDOut |= DOUT_D2_CH2_ADSORPTION_EJECTOR;
-	if (m_lstMoDio2Out.GetCheck(15) == TRUE)	nDOut |= DOUT_D2_CH2_PIN_CYLINDER_UP;
-	if (m_lstMoDio2Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D2_SPARE1;
-	if (m_lstMoDio2Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D2_SPARE2;
+	if (m_lstMoDio2Out.GetCheck(12) == TRUE)	nDOut |= DOUT_D2_CH1_ADSORPTION_EJECTOR1;
+	if (m_lstMoDio2Out.GetCheck(13) == TRUE)	nDOut |= DOUT_D2_CH1_ADSORPTION_EJECTOR2;
+	if (m_lstMoDio2Out.GetCheck(14) == TRUE)	nDOut |= DOUT_D2_CH2_ADSORPTION_EJECTOR1;
+	if (m_lstMoDio2Out.GetCheck(15) == TRUE)	nDOut |= DOUT_D2_CH2_ADSORPTION_EJECTOR2;
+	if (m_lstMoDio2Out.GetCheck(16) == TRUE)	nDOut |= DOUT_D2_CH1_PIN_CYLINDER_UP;
+	if (m_lstMoDio2Out.GetCheck(17) == TRUE)	nDOut |= DOUT_D2_CH2_PIN_CYLINDER_UP;
 	if (m_lstMoDio2Out.GetCheck(18) == TRUE)	nDOut |= DOUT_D2_SPARE3;
 	if (m_lstMoDio2Out.GetCheck(19) == TRUE)	nDOut |= DOUT_D2_SPARE4;
 	if (m_lstMoDio2Out.GetCheck(20) == TRUE)	nDOut |= DOUT_D2_SPARE5;
@@ -836,6 +832,88 @@ void CMaintenanceDIO::OnStnClickedSttMoClampUnlockCh2()
 	Lf_controlButtonEnable(TRUE);
 }
 
+void CMaintenanceDIO::OnStnClickedSttMoIonizerBlowOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	m_pApp->commApi->dio_IonizerBlowOn();
+	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoIonizerBlowOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	m_pApp->commApi->dio_IonizerBlowOff();
+	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoLedOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	m_pApp->commApi->dio_LedLampOn();
+	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoLedOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	m_pApp->commApi->dio_LedLampOff();
+	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoTowerLampOn()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	m_pApp->commApi->dio_TowerLampOnOff(TRUE, TRUE, TRUE, TRUE);
+	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
+}
+
+
+void CMaintenanceDIO::OnStnClickedSttMoTowerLampOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (Lf_confirmDioWrite() == FALSE)
+		return;
+	Lf_controlButtonEnable(FALSE);
+
+	m_pApp->commApi->dio_TowerLampOnOff(FALSE, FALSE, FALSE, FALSE);
+	Lf_setListCheck();
+
+	Lf_controlButtonEnable(TRUE);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -874,7 +952,12 @@ void CMaintenanceDIO::Lf_InitFontset()
 	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH1)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH2)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH2)->SetFont(&m_Font[3]);
-
+	GetDlgItem(IDC_STT_MO_IONIZER_BLOW_ON)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_IONIZER_BLOW_OFF)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_LED_ON)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_LED_OFF)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_TOWER_LAMP_ON)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_MO_TOWER_LAMP_OFF)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
 
@@ -1066,12 +1149,12 @@ void CMaintenanceDIO::Lf_setListCheck()
 	m_lstMoDio2Out.SetCheck(9, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_4 >> 8)));
 	m_lstMoDio2Out.SetCheck(10, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_5 >> 8)));
 	m_lstMoDio2Out.SetCheck(11, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_TRAY_UNCLAMP_6 >> 8)));
-	m_lstMoDio2Out.SetCheck(12, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_ADSORPTION_EJECTOR >> 8)));
-	m_lstMoDio2Out.SetCheck(13, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_PIN_CYLINDER_UP >> 8)));
-	m_lstMoDio2Out.SetCheck(14, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_ADSORPTION_EJECTOR >> 8)));
-	m_lstMoDio2Out.SetCheck(15, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_PIN_CYLINDER_UP >> 8)));
-	m_lstMoDio2Out.SetCheck(16, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE1 >> 16)));
-	m_lstMoDio2Out.SetCheck(17, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE2 >> 16)));
+	m_lstMoDio2Out.SetCheck(12, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_ADSORPTION_EJECTOR1 >> 8)));
+	m_lstMoDio2Out.SetCheck(13, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH1_ADSORPTION_EJECTOR2 >> 8)));
+	m_lstMoDio2Out.SetCheck(14, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_ADSORPTION_EJECTOR1 >> 8)));
+	m_lstMoDio2Out.SetCheck(15, (m_pApp->m_nDioOutBit[CH2][1] & (DOUT_D2_CH2_ADSORPTION_EJECTOR2 >> 8)));
+	m_lstMoDio2Out.SetCheck(16, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_CH1_PIN_CYLINDER_UP >> 16)));
+	m_lstMoDio2Out.SetCheck(17, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_CH2_PIN_CYLINDER_UP >> 16)));
 	m_lstMoDio2Out.SetCheck(18, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE3 >> 16)));
 	m_lstMoDio2Out.SetCheck(19, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE4 >> 16)));
 	m_lstMoDio2Out.SetCheck(20, (m_pApp->m_nDioOutBit[CH2][2] & (DOUT_D2_SPARE5 >> 16)));
@@ -1133,7 +1216,7 @@ void CMaintenanceDIO::Lf_updateStautsDio1In()
 void CMaintenanceDIO::Lf_updateStautsDio2In()
 {
 	m_lstMoDio2In.SetCheck(0, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_HOME_SENSOR));
-	m_lstMoDio2In.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_PHOTO_SENSOR));
+	m_lstMoDio2In.SetCheck(1, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_JIG_DOOR_CLOSE_SENSOR));
 	m_lstMoDio2In.SetCheck(2, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_60_SENSOR));
 	m_lstMoDio2In.SetCheck(3, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_TILTING_70_SENSOR));
 	m_lstMoDio2In.SetCheck(4, (m_pApp->m_nDioInBit[CH2][0] & DIN_D2_CH1_JIG_TRAY_IN_SENSOR));
@@ -1152,12 +1235,12 @@ void CMaintenanceDIO::Lf_updateStautsDio2In()
 
 	m_lstMoDio2In.SetCheck(16, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP5));
 	m_lstMoDio2In.SetCheck(17, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_TRAY_UNCLAMP6));
-	m_lstMoDio2In.SetCheck(18, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE1));
-	m_lstMoDio2In.SetCheck(19, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE2));
-	m_lstMoDio2In.SetCheck(20, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE3));
-	m_lstMoDio2In.SetCheck(21, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE4));
-	m_lstMoDio2In.SetCheck(22, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE5));
-	m_lstMoDio2In.SetCheck(23, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_SPARE6));
+	m_lstMoDio2In.SetCheck(18, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_ADSORPTION_GAUGE1));
+	m_lstMoDio2In.SetCheck(19, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_ADSORPTION_GAUGE2));
+	m_lstMoDio2In.SetCheck(20, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_ADSORPTION_GAUGE1));
+	m_lstMoDio2In.SetCheck(21, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_ADSORPTION_GAUGE2));
+	m_lstMoDio2In.SetCheck(22, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH1_PIN_BLOCK_CLOSE));
+	m_lstMoDio2In.SetCheck(23, (m_pApp->m_nDioInBit[CH2][2] & DIN_D2_CH2_PIN_BLOCK_CLOSE));
 
 	m_lstMoDio2In.SetCheck(24, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_AUTO_MANUAL));
 	m_lstMoDio2In.SetCheck(25, (m_pApp->m_nDioInBit[CH2][3] & DIN_D2_CH1_KEYPAD_BACK));
@@ -1196,7 +1279,13 @@ void CMaintenanceDIO::Lf_controlButtonEnable(BOOL bEnable)
 	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH1)->EnableWindow(bEnable);
 	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH1)->EnableWindow(bEnable);
 	GetDlgItem(IDC_STT_MO_CLAMP_LOCK_CH2)->EnableWindow(bEnable);
-	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH1)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_CLAMP_UNLOCK_CH2)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_IONIZER_BLOW_ON)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_IONIZER_BLOW_OFF)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_LED_ON)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_LED_OFF)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_TOWER_LAMP_ON)->EnableWindow(bEnable);
+	GetDlgItem(IDC_STT_MO_TOWER_LAMP_OFF)->EnableWindow(bEnable);
 
 	GetDlgItem(IDC_BTN_MO_WRITE_DIO1)->EnableWindow(bEnable);
 	GetDlgItem(IDC_BTN_MO_WRITE_DIO2)->EnableWindow(bEnable);
@@ -1230,3 +1319,7 @@ BOOL CMaintenanceDIO::Lf_checkSafetyAlarmOn()
 	}
 	return FALSE;
 }
+
+
+
+

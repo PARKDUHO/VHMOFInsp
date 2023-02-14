@@ -41,6 +41,7 @@ CVHMOFInspApp::CVHMOFInspApp()
 	commApi				= new CCommApi;
 	m_pCimNet			= new CCimNetCommApi;
 	pMelsecnetG			= new CMelsecnetG;
+	pModuleECS			= new CModuleECS;
 
 
 	m_pStaticMainLog = NULL;
@@ -208,6 +209,8 @@ void CVHMOFInspApp::Lf_initGlobalVariable()
 
 	m_bIsSendEAYT = FALSE;
 	m_bSafetyDlgOpen = FALSE;
+	m_bAdminPassword = FALSE;
+	m_bLightCurationMute = FALSE;
 }
 
 
@@ -866,11 +869,13 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 
 	Read_SysIniFile(_T("SYSTEM"),			_T("LAST_MODELNAME"),			&lpSystemInfo->m_sLastModelName);
 	Read_SysIniFile(_T("SYSTEM"),			_T("EQP_NAME"),					&lpSystemInfo->m_sEqpName);
+	Read_SysIniFile(_T("SYSTEM"),			_T("LINE_TYPE"),				&lpSystemInfo->m_nLineType);
 	Read_SysIniFile(_T("SYSTEM"),			_T("CARRIER_TYPE"),				&lpSystemInfo->m_nCarrierType);
 	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LB_START_ADDRESS"),	&sValue);
 	lpSystemInfo->m_nLBStartAddr = _tcstol(sValue, NULL, 16);
 	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDRESS"),	&sValue);
 	lpSystemInfo->m_nLWStartAddr = _tcstol(sValue, NULL, 16);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_EQP_NUMBER"),			&lpSystemInfo->m_nEcsEqpNumber);
 	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
 	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
 	Read_SysIniFile(_T("MES"),				_T("MES_DAEMON_PORT"),			&lpSystemInfo->m_sMesDaemonPort);
