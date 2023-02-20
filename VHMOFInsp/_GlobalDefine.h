@@ -52,6 +52,9 @@
 #define _OFF_							0
 #define _ON_							1
 
+#define OFF								FALSE
+#define ON								TRUE
+
 #define _DISABLE_						0
 #define _ENABLE_						1
 
@@ -94,6 +97,12 @@
 #define QUAD							2
 
 /////////////////////////////////////////////////////////////////////////////
+#define SIG_6BIT						0
+#define SIG_8BIT						1
+#define SIG_10BIT						2
+#define SIG_12BIT						3
+
+/////////////////////////////////////////////////////////////////////////////
 #define I2C_LINE_ODC					0
 #define I2C_LINE_GENERIC				3
 
@@ -114,10 +123,18 @@
 #define CLAMP_LOCK						0
 #define CLAMP_UNLOCK					1
 
-
 /////////////////////////////////////////////////////////////////////////////
 #define INSP_TYPE_CARRIER				0
 #define INSP_TYPE_NONE_CARRIER			1
+
+/////////////////////////////////////////////////////////////////////////////
+#define ECS_OFFLINE						0
+#define ECS_ONLINE						1
+
+/////////////////////////////////////////////////////////////////////////////
+#define EQP_STATUS_RUN					1
+#define EQP_STATUS_IDLE					2
+#define EQP_STATUS_DOWN					3
 
 /////////////////////////////////////////////////////////////////////////////
 //DIO
@@ -741,20 +758,6 @@ typedef enum _COLOR_IDX_{
 #define MNETG_ERROR_9024H			_T("Hardware self-diagnosis error. An error was detected by the hardware self-diagnosis.")
 
 
-//----------------------------------------------------------------------------
-// LED B/L 점등기 제어 Command
-
-#define	_MIN_									0
-#define	_MAX_									1
-#define	_USERSET_								2
-
-#define OFF										FALSE
-#define ON										TRUE
-
-#define SIG_6BIT	0
-#define SIG_8BIT	1
-#define SIG_10BIT	2
-#define SIG_12BIT	3
 
 /////////////////////////////////////////////////////////////////////////////
 // Macro Define
@@ -915,6 +918,26 @@ enum
 	ERROR_CODE_108,
 	ERROR_CODE_109,
 	ERROR_CODE_110,
+	ERROR_CODE_111,
+	ERROR_CODE_112,
+	ERROR_CODE_113,
+	ERROR_CODE_114,
+	ERROR_CODE_115,
+	ERROR_CODE_116,
+	ERROR_CODE_117,
+	ERROR_CODE_118,
+	ERROR_CODE_119,
+	ERROR_CODE_120,
+	ERROR_CODE_121,
+	ERROR_CODE_122,
+	ERROR_CODE_123,
+	ERROR_CODE_124,
+	ERROR_CODE_125,
+	ERROR_CODE_126,
+	ERROR_CODE_127,
+	ERROR_CODE_128,
+	ERROR_CODE_129,
+	ERROR_CODE_130,
 	ERROR_CODE_2000 = 2000,		// MELSEC ERROR CODE : 2000 ~
 	ERROR_CODE_2001,
 	ERROR_CODE_2002,

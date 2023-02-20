@@ -33,6 +33,7 @@ CCommApi::~CCommApi()
 BEGIN_MESSAGE_MAP(CCommApi, CCmdTarget)
 END_MESSAGE_MAP()
 
+
 void CCommApi::makeFusingData(char* pszData)
 {
 #if 1
@@ -270,7 +271,7 @@ BOOL CCommApi::main_setPowerSequenceOnOff(int ch, int onoff,BOOL bAck)
 			if((dwTickE-dwTickS) > dwDelay)
 				break;
 
-			//ProcessMessage();
+			delayMs(1);
 		}
 	}
 	return ret;
@@ -588,7 +589,7 @@ BOOL CCommApi::qspi_procWaitRecvACK(int ch, int cmd, DWORD waitTime)
 			}
 		}
 
-		//ProcessMessage();
+		delayMs(1);
 	}
 	return FALSE;
 }
@@ -1168,7 +1169,7 @@ BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
 	delayMs(1);
 	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
 	delayMs(1);
-	Critical_Dio[ch].Unlock();//(22.11.18)
+	//Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
 }
@@ -2154,7 +2155,7 @@ BOOL CCommApi::main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTim
 			break;
 		}
 
-		ProcessMessage();
+		delayMs(1);
 	}
 
 	return ret;

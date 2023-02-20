@@ -663,11 +663,14 @@ void CInitialize::Lf_initConnMelsec()
 {
 	int mnetG_Err;
 
+	m_pApp->pMelsecnetG->mnetg_mdClose();
 	mnetG_Err = m_pApp->pMelsecnetG->mnetg_mdOpen(151, -1);
 	if (mnetG_Err == MNETG_OK)
 	{
 		nSysInitResult[INIT_MELSEC] = INIT_OK;
 		m_pApp->bConnectInfo[CONN_MELSEC] = TRUE;
+
+		m_pApp->pModuleECS->ecs_ControlStatusChangeReport();
 	}
 	else
 	{

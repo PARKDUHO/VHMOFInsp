@@ -73,10 +73,10 @@ int CMelsecnetG::mnetg_mdClose()
 //				long stno;		//Station number								IN
 //				long devtyp;	//Device type									IN
 //				long devno;		//Start device number							IN
-//				long* size;		//Written byte size								IN/OUT
+//				long* pWriteByte;//Written byte size							IN/OUT
 //				short data[];	//Written data (single-precision integer array)	IN
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CMelsecnetG::mnetg_mdSendEx(LONG devtyp, LONG devno, LONG* prdsize, WORD* data)
+int CMelsecnetG::mnetg_mdSendEx(LONG devtyp, LONG devno, LONG* pWriteByte, WORD* data)
 {
 	int ret=0;
 	LONG netno, stno;
@@ -89,7 +89,7 @@ int CMelsecnetG::mnetg_mdSendEx(LONG devtyp, LONG devno, LONG* prdsize, WORD* da
 	stno = 255;				/*	station No. 255 fixed			*/
 	//	devtyp = 13;				/*	device type "D" fixed		*/ 
 
-	ret = mdSendEx(m_mnetPath, netno, stno, devtyp, devno, prdsize, data);
+	ret = mdSendEx(m_mnetPath, netno, stno, devtyp, devno, pWriteByte, data);
 
 	return ret;
 }
@@ -105,10 +105,10 @@ int CMelsecnetG::mnetg_mdSendEx(LONG devtyp, LONG devno, LONG* prdsize, WORD* da
 //				long stno;		//Station number								IN
 //				long devtyp;	//Device type									IN
 //				long devno;		//Start device number							IN
-//				long* size;		//Read byte size								IN/OUT
+//				long* pReadByte;//Read byte size (Must be set Even Size)		IN/OUT
 //				short data[];	//Read data (single-precision integer array)	OUT
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-int CMelsecnetG::mnetg_mdReceiveEx(LONG devtyp, LONG devno, LONG* prdsize, WORD* data)
+int CMelsecnetG::mnetg_mdReceiveEx(LONG devtyp, LONG devno, LONG* pReadByte, WORD* data)
 {
 	int ret=0;
 	LONG netno, stno;
@@ -121,7 +121,7 @@ int CMelsecnetG::mnetg_mdReceiveEx(LONG devtyp, LONG devno, LONG* prdsize, WORD*
 	stno = 255;					/*	station No. 255 fixed			*/
 //	devtyp = 13;				/*	device type "D" fixed		*/
 
-	ret = mdReceiveEx(m_mnetPath, netno, stno, devtyp, devno, prdsize, data);
+	ret = mdReceiveEx(m_mnetPath, netno, stno, devtyp, devno, pReadByte, data);
 
 	return ret;
 }

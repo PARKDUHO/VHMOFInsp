@@ -162,8 +162,10 @@ typedef struct _ST_SYSTEMINFO_{
 	int		m_nCarrierType;
 
 	// MELSEC 정보 설정 //
+	int		m_nEcsOnLineMode;
 	int		m_nLBStartAddr;
-	int		m_nLWStartAddr;
+	int		m_nLWStartAddr1;
+	int		m_nLWStartAddr2;
 	int		m_nEcsEqpNumber;
 
 	CString	m_sLastModelName;			// 마지막 M/C 모델명

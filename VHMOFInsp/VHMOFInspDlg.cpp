@@ -84,7 +84,7 @@ UINT ThreadStatusRead_DIO(LPVOID pParam)
 			// ROBOT 센서가 감지되면 ROBOT LAMP를 ON 시킨다.
 			if ((m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16)) == 0)
 			{
-				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, ON);
+				m_pApp->commApi->dio_RobotInLEDOnOff(TRUE);
 			}
 		}
 		else
@@ -92,7 +92,7 @@ UINT ThreadStatusRead_DIO(LPVOID pParam)
 			// ROBOT 센서가 감지되면 ROBOT LAMP를 ON 시킨다.
 			if (m_pApp->m_nDioOutBit[CH1][2] & (DOUT_D1_ROBOT_IN_LED >> 16))
 			{
-				m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_ROBOT_IN_LED, OFF);
+				m_pApp->commApi->dio_RobotInLEDOnOff(FALSE);
 			}
 		}
 		if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_SAFETY_PLC_ALARM)
@@ -126,7 +126,7 @@ UINT ThreadStatusRead_DIO(LPVOID pParam)
 			}
 		}
 
-		Sleep(500);
+		Sleep(200);
 	}
 }
 
@@ -220,6 +220,7 @@ BEGIN_MESSAGE_MAP(CVHMOFInspDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BTN_DIO_CTRL_DOOR_OPEN, &CVHMOFInspDlg::OnBnClickedBtnDioCtrlDoorOpen)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LST_MA_DIN_LIST_A, &CVHMOFInspDlg::OnNMCustomdrawLstMaDinListA)
 	ON_NOTIFY(NM_CUSTOMDRAW, IDC_LST_MA_DIN_LIST_B, &CVHMOFInspDlg::OnNMCustomdrawLstMaDinListB)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -296,6 +297,14 @@ BOOL CVHMOFInspDlg::OnInitDialog()
 	AfxBeginThread(ThreadStatusRead_DIO, this);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
+}
+
+void CVHMOFInspDlg::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	PostQuitMessage(0);
 }
 
 void CVHMOFInspDlg::OnSysCommand(UINT nID, LPARAM lParam)
@@ -603,7 +612,7 @@ HBRUSH CVHMOFInspDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			}
 			if (pWnd->GetDlgCtrlID() == IDC_STT_CONNECT_ECS)
 			{
-				if (m_pApp->bConnectInfo[CONN_ECS] == TRUE)
+				if (lpSystemInfo->m_nEcsOnLineMode == ECS_ONLINE)
 				{
 					pDC->SetBkColor(COLOR_GREEN128);
 					pDC->SetTextColor(COLOR_WHITE);
@@ -804,10 +813,7 @@ void CVHMOFInspDlg::OnTimer(UINT_PTR nIDEvent)
 		Lf_updateIOStautsDIN1();
 		Lf_updateIOStautsDIN2();
 
-		Lf_checkExtAlarmDio1();
-		Lf_checkExtAlarmDio2();
-
-		Lf_checkRobotInSensor();
+		Lf_checkExtAlarmDio();
 
 		SetTimer(2, 500, NULL);
 	}
@@ -1460,7 +1466,6 @@ void CVHMOFInspDlg::Lf_updateSystemInfo()
 	sdata.Format(_T("%.1f"), (float)lpInspWorkInfo->tt_JigTiltingDownTime / 1000.0);
 	GetDlgItem(IDC_STT_MA_TT_JIGTILTINGDOWN_VAL)->SetWindowText(sdata);
 
-
 	GetDlgItem(IDC_STT_CONNECT_MES)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_CONNECT_EAS)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_CONNECT_ECS)->Invalidate(FALSE);
@@ -1587,7 +1592,7 @@ void CVHMOFInspDlg::Lf_updateIOStautsDIN2()
 	m_lstMaDinListB.SetCheck(39, (m_pApp->m_nDioInBit[CH2][4] & DIN_D2_CH2_KEYPAD_SEND));
 }
 
-void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
+void CVHMOFInspDlg::Lf_checkExtAlarmDio()
 {
 	BOOL lightAlarm = FALSE;
 	BOOL heavyAlarm = FALSE;
@@ -1708,37 +1713,12 @@ void CVHMOFInspDlg::Lf_checkExtAlarmDio1()
 	{
 		if (m_pApp->m_bSafetyDlgOpen == FALSE)
 		{
+			m_pApp->Gf_setEQPStatus(EQP_STATUS_DOWN);
+
 			CSafetyLock dlg;
 			dlg.DoModal();
 		}
 	}
-}
-
-void CVHMOFInspDlg::Lf_checkExtAlarmDio2()
-{
-
-}
-
-
-void CVHMOFInspDlg::Lf_checkRobotInSensor()
-{
-	if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1) || (m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_2))
-	{
-		if (m_bRobotInLedStatus == FALSE)
-		{
-			m_pApp->commApi->dio_RobotInLEDOnOff(TRUE);
-			m_bRobotInLedStatus = TRUE;
-		}
-	}
-	else
-	{
-		if (m_bRobotInLedStatus == TRUE)
-		{
-			m_pApp->commApi->dio_RobotInLEDOnOff(FALSE);
-			m_bRobotInLedStatus = FALSE;
-		}
-	}
-
 }
 
 
@@ -1788,6 +1768,7 @@ void CVHMOFInspDlg::Lf_updateMaQuantityCount()
 	);
 	m_pApp->Gf_writeMLog(sdata);
 }
+
 
 
 

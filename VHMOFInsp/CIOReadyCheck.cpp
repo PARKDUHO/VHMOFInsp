@@ -956,17 +956,6 @@ void CIOReadyCheck::Lf_updateIOReadyStatus()
 		m_picCh2Clamp6Unlock.SetBitmap(m_BitButtonGreen);
 	}
 
-
-	GetDlgItem(IDC_STT_IR_REAR_DOOR_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_FRONT_DOOR_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_FRONT_DOOR_HOLDING_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_ROBOT_IN_SENSOR_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_JIG_TILTING_DOWN_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_JIG_DOOR_CLOSE_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_JIG_TRAY_IN_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_CH1_CLAMP_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_CH2_CLAMP_READY)->Invalidate(FALSE);
-
 	if (m_ingRearDoorClose == TRUE)
 	{
 		if (m_bVisiableToggle == TRUE)	GetDlgItem(IDC_STT_IR_REAR_DOOR_READY)->ShowWindow(SW_SHOWNORMAL);
@@ -1006,6 +995,20 @@ void CIOReadyCheck::Lf_updateIOReadyStatus()
 	{
 		m_bVisiableToggle = TRUE;
 	}
+
+
+	LockWindowUpdate();
+	GetDlgItem(IDC_STT_IR_REAR_DOOR_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_FRONT_DOOR_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_FRONT_DOOR_HOLDING_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_ROBOT_IN_SENSOR_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_JIG_TILTING_DOWN_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_JIG_DOOR_CLOSE_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_JIG_TRAY_IN_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_CH1_CLAMP_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_CH2_CLAMP_READY)->Invalidate(FALSE);
+	UnlockWindowUpdate();
+
 }
 
 

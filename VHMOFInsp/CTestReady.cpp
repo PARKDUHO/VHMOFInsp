@@ -10,6 +10,7 @@
 #include "CMessageQuestion.h"
 #include "CDefectResult.h"
 #include "CIOReadyCheck.h"
+#include "CMessageError.h"
 
 // CTestReady 대화 상자
 
@@ -201,7 +202,11 @@ void CTestReady::OnBnClickedBtnTrTestStart()
 		que_dlg.m_strRButton = _T("NO");
 		if (que_dlg.DoModal() == IDOK)
 		{
+			m_pApp->Gf_setEQPStatus(EQP_STATUS_RUN);
+
 			Lf_MachineStartIDLEMode();
+
+			m_pApp->Gf_setEQPStatus(EQP_STATUS_IDLE);
 		}
 	}
 	else
@@ -329,7 +334,11 @@ BOOL CTestReady::Lf_FinalTestStart(int ch)
 
 	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdIdle == TRUE))
 	{
-		m_pApp->Gf_ShowMessageBox(MSG_WARNING, _T("PM MODE"), ERROR_CODE_0);
+		CMessageError errDlg;
+		errDlg.m_nMessageType = MSG_WARNING;
+		errDlg.m_sErrorTitle = _T("PM MODE");
+		errDlg.m_sErrorMessage = _T("PM Mode Login.OFF - Line Mode Test.");
+		errDlg.DoModal();
 	}
 
 	m_pApp->tt_startTime = CTime::GetCurrentTime();

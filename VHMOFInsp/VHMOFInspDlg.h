@@ -59,9 +59,7 @@ protected:
 
 	void Lf_updateIOStautsDIN1();
 	void Lf_updateIOStautsDIN2();
-	void Lf_checkExtAlarmDio1();
-	void Lf_checkExtAlarmDio2();
-	void Lf_checkRobotInSensor();
+	void Lf_checkExtAlarmDio();
 
 	void Lf_updateMaQuantityCount();
 
@@ -118,4 +116,5 @@ public:
 	CListCtrl m_lstMaDinListB;
 	afx_msg void OnNMCustomdrawLstMaDinListA(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnNMCustomdrawLstMaDinListB(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnDestroy();
 };

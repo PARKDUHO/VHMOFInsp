@@ -49,6 +49,7 @@
 #define IDB_BMP_BUTTON_RED              196
 #define IDB_BMP_BUTTON_GREEN            197
 #define IDB_BMP_BUTTON_GREEN2           198
+#define IDD_MAINTENANCE_ECS             199
 #define IDC_BTN_MA_USERID               1000
 #define IDC_BTN_MA_MODEL_CHANGE         1001
 #define IDC_STT_USER_ID_TITLE           1001
@@ -135,7 +136,7 @@
 #define IDC_CMB_MF_SIGNAL_FRS_MODE      1061
 #define IDC_CMB_MD_SPI_PULL_UP          1061
 #define IDC_EDT_SY_EQP_NAME3            1061
-#define IDC_EDT_SY_LW_START_ADDR        1061
+#define IDC_EDT_SY_LW_START_ADDR1       1061
 #define IDC_CMB_MF_SIGNAL_BIT_SELECT    1062
 #define IDC_CMB_MD_SPI_LEVEL            1062
 #define IDC_CBO_SY_EAS_USE              1062
@@ -183,8 +184,10 @@
 #define IDC_BTN_MC_LOAD                 1076
 #define IDC_CMB_MF_PWR_OFF_DELAY_6      1076
 #define IDC_BTN_MD_PTN_DEL              1076
+#define IDC_CBO_SY_ECS_ONLINE_MODE      1076
 #define IDC_BTN_MD_PTN_UP               1077
 #define IDC_EDT_MF_VDD                  1077
+#define IDC_EDT_SY_LW_START_ADDR2       1077
 #define IDC_BTN_MD_PTN_DOWN             1078
 #define IDC_EDT_MF_VDD_OFFSET           1078
 #define IDC_PIC_MD_PTN_PREVIEW          1079
@@ -624,8 +627,11 @@
 #define IDC_STT_DEF_4_TO_9              1297
 #define IDC_PIC_IR_CH2_CLAMP6_UNLOCK    1297
 #define IDC_STT_DEF_4_TO_10             1298
+#define IDC_EDT_ME_STATION_NO           1298
 #define IDC_STT_DEF_5_TO_2              1299
+#define IDC_EDT_ME_LB_ADDRESS           1299
 #define IDC_STT_DEF_5_TO_3              1300
+#define IDC_EDT_ME_LW_ADDRESS           1300
 #define IDC_STT_DEF_5_TO_4              1301
 #define IDC_STT_DEF_5_TO_5              1302
 #define IDC_STT_DEF_5_TO_6              1303
@@ -700,9 +706,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        199
+#define _APS_NEXT_RESOURCE_VALUE        201
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1298
+#define _APS_NEXT_CONTROL_VALUE         1299
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -301,8 +301,7 @@ BOOL CSocketUDP::SendToUDP(CString remoteIP, int length, char* m_sendPacket)
 		{
 			if (GetLastError() ==  WSAEWOULDBLOCK)
 			{
-				//Sleep(10);
-				ProcessMessage();
+				delayMs(1);
 				continue;;
 			}
 			else

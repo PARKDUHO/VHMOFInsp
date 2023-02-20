@@ -96,8 +96,6 @@ UINT ThreadSocketSPI_1(LPVOID pParam)
 				// 받아야할 Data가 더 있다면...
 				if (recvLen < totRecvLen)
 				{
-					//ProcessMessage();
-					//SleepEx(1, FALSE);
 					while (1)
 					{
 						nLength = recv(pSocketTcp->hSocket[SOC_SERVER_SPI_1], szbuf, sizeof(szbuf), 0);
@@ -111,12 +109,12 @@ UINT ThreadSocketSPI_1(LPVOID pParam)
 						{
 							memcpy(&pSocketTcp->szRcvDataTcp[SOC_SERVER_SPI_1][recvLen], szbuf, nLength);
 							recvLen += nLength;
-							//SleepEx(1, FALSE);
-							//ProcessMessage();
 						}
 						sprintf_s(szbuf, "recvLen=%d nLength=%d totRecvLen=%d", recvLen, nLength, totRecvLen);
 						pSocketTcp->Gf_DEBUGfucWriteMLog(szbuf);
 						if (recvLen >= totRecvLen)	break;	// 모든 Data를 받았으면 빠져나간다.
+
+						delayMs(1);
 					}
 				}
 			}
@@ -145,7 +143,7 @@ UINT ThreadSocketSPI_1(LPVOID pParam)
 		nLength = 0;
 		ZeroMemory(szbuf, sizeof(szbuf));
 
-		Sleep(2);
+		Sleep(10);
 	}
 	return 0;
 }
@@ -178,8 +176,6 @@ UINT ThreadSocketSPI_2(LPVOID pParam)
 				// 받아야할 Data가 더 있다면...
 				if (recvLen < totRecvLen)
 				{
-					//ProcessMessage();
-					//SleepEx(1, FALSE);
 					while (1)
 					{
 						nLength = recv(pSocketTcp->hSocket[SOC_SERVER_SPI_2], szbuf, sizeof(szbuf), 0);
@@ -193,11 +189,11 @@ UINT ThreadSocketSPI_2(LPVOID pParam)
 						{
 							memcpy(&pSocketTcp->szRcvDataTcp[SOC_SERVER_SPI_2][recvLen], szbuf, nLength);
 							recvLen += nLength;
-							//SleepEx(1, FALSE);
-							//ProcessMessage();
 						}
 
 						if (recvLen >= totRecvLen)	break;	// 모든 Data를 받았으면 빠져나간다.
+
+						delayMs(1);
 					}
 				}
 			}
@@ -227,7 +223,7 @@ UINT ThreadSocketSPI_2(LPVOID pParam)
 		nLength = 0;
 		ZeroMemory(szbuf, sizeof(szbuf));
 
-		Sleep(2);
+		Sleep(10);
 	}
 	return 0;
 }

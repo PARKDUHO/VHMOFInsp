@@ -65,8 +65,10 @@ public:
 	CEdit m_edtSyEqpName;
 	CComboBox m_cmbSyLineType;
 	CComboBox m_cmbSyCarrierType;
+	CComboBox m_cmbSyEcsOnLineMode;
 	CEdit m_edtSyLBStartAddr;
-	CEdit m_edtSyLWStartAddr;
+	CEdit m_edtSyLWStartAddr1;
+	CEdit m_edtSyLWStartAddr2;
 	CComboBox m_cmbSyEcsEqpNumber;
 	CEdit m_edtSyMesServicePort;
 	CEdit m_edtSyMesNetwork;

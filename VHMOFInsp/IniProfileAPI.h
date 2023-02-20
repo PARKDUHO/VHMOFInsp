@@ -18,7 +18,7 @@ static CString	sRetString;
 static void ProcessMessage()
 {
 	MSG msg;
-	if( PeekMessage( &msg, 0, 0, 0, PM_REMOVE ) )
+	if( PeekMessage( &msg, 0, 0, 500, PM_REMOVE ) )
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);

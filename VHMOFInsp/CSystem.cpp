@@ -34,8 +34,10 @@ void CSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_SY_EQP_NAME, m_edtSyEqpName);
 	DDX_Control(pDX, IDC_CBO_SY_LINE_TYPE, m_cmbSyLineType);
 	DDX_Control(pDX, IDC_CBO_SY_CARRIER_TYPE, m_cmbSyCarrierType);
+	DDX_Control(pDX, IDC_CBO_SY_ECS_ONLINE_MODE, m_cmbSyEcsOnLineMode);
 	DDX_Control(pDX, IDC_EDT_SY_LB_START_ADDR, m_edtSyLBStartAddr);
-	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR, m_edtSyLWStartAddr);
+	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR1, m_edtSyLWStartAddr1);
+	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR2, m_edtSyLWStartAddr2);
 	DDX_Control(pDX, IDC_CBO_SY_ECS_EQP_NUMBER, m_cmbSyEcsEqpNumber);
 	DDX_Control(pDX, IDC_EDT_SY_MES_SERVICEPORT, m_edtSyMesServicePort);
 	DDX_Control(pDX, IDC_EDT_SY_MES_NETWORK, m_edtSyMesNetwork);
@@ -330,11 +332,16 @@ void CSystem::Lf_InitDialogControl()
 	m_edtSyEqpName.SetWindowText(lpSystemInfo->m_sEqpName);
 	m_cmbSyLineType.SetCurSel(lpSystemInfo->m_nLineType);
 	m_cmbSyCarrierType.SetCurSel(lpSystemInfo->m_nCarrierType);
+
+	m_cmbSyEcsOnLineMode.SetCurSel(lpSystemInfo->m_nEcsOnLineMode);
 	sdata.Format(_T("%04X"), lpSystemInfo->m_nLBStartAddr);
 	m_edtSyLBStartAddr.SetWindowText(sdata);
-	sdata.Format(_T("%04X"), lpSystemInfo->m_nLWStartAddr);
-	m_edtSyLWStartAddr.SetWindowText(sdata);
+	sdata.Format(_T("%04X"), lpSystemInfo->m_nLWStartAddr1);
+	m_edtSyLWStartAddr1.SetWindowText(sdata);
+	sdata.Format(_T("%04X"), lpSystemInfo->m_nLWStartAddr2);
+	m_edtSyLWStartAddr2.SetWindowText(sdata);
 	m_cmbSyEcsEqpNumber.SetCurSel(lpSystemInfo->m_nEcsEqpNumber);
+
 	m_edtSyMesServicePort.SetWindowText(lpSystemInfo->m_sMesServicePort);
 	m_edtSyMesNetwork.SetWindowText(lpSystemInfo->m_sMesNetWork);
 	m_edtSyMesDaemonPort.SetWindowText(lpSystemInfo->m_sMesDaemonPort);
@@ -378,13 +385,20 @@ void CSystem::Lf_saveSystemInfo()
 	lpSystemInfo->m_nCarrierType = m_cmbSyCarrierType.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("CARRIER_TYPE"), lpSystemInfo->m_nCarrierType);
 
+	lpSystemInfo->m_nEcsOnLineMode = m_cmbSyEcsOnLineMode.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_ONLINE_MODE"), lpSystemInfo->m_nEcsOnLineMode);
+
 	m_edtSyLBStartAddr.GetWindowText(sdata);
 	lpSystemInfo->m_nLBStartAddr = _tcstol(sdata, NULL, 16);
 	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LB_START_ADDR"), sdata);
 
-	m_edtSyLWStartAddr.GetWindowText(sdata);
-	lpSystemInfo->m_nLWStartAddr = _tcstol(sdata, NULL, 16);
-	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR"), sdata);
+	m_edtSyLWStartAddr1.GetWindowText(sdata);
+	lpSystemInfo->m_nLWStartAddr1 = _tcstol(sdata, NULL, 16);
+	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR1"), sdata);
+
+	m_edtSyLWStartAddr2.GetWindowText(sdata);
+	lpSystemInfo->m_nLWStartAddr2 = _tcstol(sdata, NULL, 16);
+	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR2"), sdata);
 
 	lpSystemInfo->m_nEcsEqpNumber = m_cmbSyEcsEqpNumber.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("ECS_EQP_NUMBER"), lpSystemInfo->m_nEcsEqpNumber);

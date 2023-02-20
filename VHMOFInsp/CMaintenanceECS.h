@@ -1,51 +1,41 @@
 ﻿#pragma once
 
-#include "afxcmn.h"
-#include "afxwin.h"
-#include "CMaintenancePG.h"
-#include "CMaintenanceDIO.h"
-#include "CMaintenanceECS.h"
 
+// CMaintenanceECS 대화 상자
 
-// CMaintenance 대화 상자
-
-class CMaintenance : public CDialog
+class CMaintenanceECS : public CDialog
 {
-	DECLARE_DYNAMIC(CMaintenance)
+	DECLARE_DYNAMIC(CMaintenanceECS)
 
 public:
-	CMaintenance(CWnd* pParent = nullptr);   // 표준 생성자입니다.
-	virtual ~CMaintenance();
+	CMaintenanceECS(CWnd* pParent = nullptr);   // 표준 생성자입니다.
+	virtual ~CMaintenanceECS();
 
 // 대화 상자 데이터입니다.
-#ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_MAINTENANCE };
-#endif
+//#ifdef AFX_DESIGN_TIME
+	enum { IDD = IDD_MAINTENANCE_ECS };
+//#endif
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 지원입니다.
 
 	DECLARE_MESSAGE_MAP()
 
+
+
 ///////////////////////////////////////////////////////////////////////////
 // 사용자 정의 Function
 ///////////////////////////////////////////////////////////////////////////
 public:
 
+
 protected:
+	LPSYSTEMINFO	lpSystemInfo;
+	LPMODELINFO		lpModelInfo;
+	LPINSPWORKINFO	lpInspWorkInfo;
 	void Lf_InitLocalValue();
 	void Lf_InitFontset();
 	void Lf_InitColorBrush();
-	void Lf_InitDlgDesign();
-
-	void Lf_InitTabControl();
-
-
-
-	CMaintenancePG* m_pMaintenancePG;
-	CMaintenanceDIO* m_pMaintenanceDIO;
-	CMaintenanceECS* m_pMaintenanceECS;
-
 
 
 private:
@@ -57,6 +47,9 @@ private:
 ///////////////////////////////////////////////////////////////////////////
 
 
+
+
+
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
@@ -64,6 +57,4 @@ public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnPaint();
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	afx_msg void OnBnClickedBtnMtClose();
-	CXTabCtrl m_tabMtMaintenance;
 };

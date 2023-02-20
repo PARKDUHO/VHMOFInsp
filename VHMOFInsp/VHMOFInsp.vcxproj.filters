@@ -144,6 +144,9 @@
     <ClInclude Include="ModuleECS.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CMaintenanceECS.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VHMOFInsp.cpp">
@@ -255,6 +258,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ModuleECS.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CMaintenanceECS.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

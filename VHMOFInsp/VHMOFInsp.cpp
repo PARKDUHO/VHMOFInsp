@@ -54,13 +54,11 @@ CVHMOFInspApp::~CVHMOFInspApp()
 
 
 // 유일한 CVHMOFInspApp 개체입니다.
-
 CVHMOFInspApp theApp;
 CVHMOFInspApp* m_pApp;
 
 
 // CVHMOFInspApp 초기화
-
 BOOL CVHMOFInspApp::InitInstance()
 {
 	//프로그램 중복 실행 방지
@@ -211,6 +209,8 @@ void CVHMOFInspApp::Lf_initGlobalVariable()
 	m_bSafetyDlgOpen = FALSE;
 	m_bAdminPassword = FALSE;
 	m_bLightCurationMute = FALSE;
+	m_nEcsEqpStatus = EQP_STATUS_IDLE;
+	m_nLastAlarmCode = 0;
 }
 
 
@@ -436,6 +436,10 @@ void CVHMOFInspApp::Gf_writeErrorList(int errorCode, CString strError)
 	char filepath_hidden[1024] = { 0 };
 	char dataline[4096] = { 0 };
 
+	// 마지막 Error Code 정보를 전역변수에 저장한다.
+	m_pApp->m_nLastAlarmCode = errorCode;
+
+
 	CString strDate;
 	CString strTime;
 
@@ -445,7 +449,6 @@ void CVHMOFInspApp::Gf_writeErrorList(int errorCode, CString strError)
 
 	strDate.Format(_T("%04d%02d%02d"), time.GetYear(), time.GetMonth(), time.GetDay());
 	strTime.Format(_T("%02d:%02d:%02d"), time.GetHour(), time.GetMinute(), time.GetSecond());
-
 
 	// 1. 경로를 찾고 없으면 생성한다.
 	sprintf_s(szYear, "%04d", time.GetYear());
@@ -871,11 +874,16 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 	Read_SysIniFile(_T("SYSTEM"),			_T("EQP_NAME"),					&lpSystemInfo->m_sEqpName);
 	Read_SysIniFile(_T("SYSTEM"),			_T("LINE_TYPE"),				&lpSystemInfo->m_nLineType);
 	Read_SysIniFile(_T("SYSTEM"),			_T("CARRIER_TYPE"),				&lpSystemInfo->m_nCarrierType);
-	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LB_START_ADDRESS"),	&sValue);
+
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_ONLINE_MODE"),			&lpSystemInfo->m_nEcsOnLineMode);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LB_START_ADDR"),		&sValue);
 	lpSystemInfo->m_nLBStartAddr = _tcstol(sValue, NULL, 16);
-	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDRESS"),	&sValue);
-	lpSystemInfo->m_nLWStartAddr = _tcstol(sValue, NULL, 16);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDR1"),	&sValue);
+	lpSystemInfo->m_nLWStartAddr1 = _tcstol(sValue, NULL, 16);
+	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDR2"),	&sValue);
+	lpSystemInfo->m_nLWStartAddr2 = _tcstol(sValue, NULL, 16);
 	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_EQP_NUMBER"),			&lpSystemInfo->m_nEcsEqpNumber);
+
 	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
 	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
 	Read_SysIniFile(_T("MES"),				_T("MES_DAEMON_PORT"),			&lpSystemInfo->m_sMesDaemonPort);
@@ -954,6 +962,26 @@ BOOL CVHMOFInspApp::Gf_LoadModelFile()
 	return ret;
 }
 
+BOOL CVHMOFInspApp::Gf_setEQPStatus(int eqp_status)
+{
+	m_nEcsEqpStatus = eqp_status;
+	pModuleECS->ecs_EQPStatusChangeReport();
+
+	if (eqp_status == EQP_STATUS_IDLE)
+	{
+		commApi->dio_TowerLampOnOff(FALSE, TRUE, FALSE, FALSE);
+	}
+	else if (eqp_status == EQP_STATUS_RUN)
+	{
+		commApi->dio_TowerLampOnOff(FALSE, FALSE, TRUE, FALSE);
+	}
+	else if (eqp_status == EQP_STATUS_DOWN)
+	{
+		commApi->dio_TowerLampOnOff(TRUE, FALSE, FALSE, TRUE);
+	}
+
+	return TRUE;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // MES Function
@@ -1549,7 +1577,7 @@ BOOL CVHMOFInspApp::udp_procWaitRecvACK_DIO(int ch, int cmd, DWORD waitTime)
 			return FALSE;
 		}
 
-		ProcessMessage();
+		delayMs(1);
 	}
 	return FALSE;
 }

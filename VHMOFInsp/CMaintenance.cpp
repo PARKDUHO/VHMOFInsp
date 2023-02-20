@@ -243,6 +243,10 @@ void CMaintenance::Lf_InitTabControl()
 	m_pMaintenanceDIO->Create(CMaintenanceDIO::IDD, &m_tabMtMaintenance);
 	m_tabMtMaintenance.AddTab(m_pMaintenanceDIO, _T("  DIO  "), 0);
 
+	m_pMaintenanceECS = new CMaintenanceECS;
+	m_pMaintenanceECS->Create(CMaintenanceECS::IDD, &m_tabMtMaintenance);
+	m_tabMtMaintenance.AddTab(m_pMaintenanceECS, _T("  ECS  "), 0);
+
 	//** customizing the tab control --------
 	m_tabMtMaintenance.SetDisabledColor(RGB(0, 0, 0));
 	m_tabMtMaintenance.SetSelectedColor(RGB(0, 0, 255));

@@ -58,6 +58,9 @@ public:
 	BOOL Gf_LoadSystemData();
 	BOOL Gf_LoadModelFile();
 
+	BOOL Gf_setEQPStatus(int eqp_status);
+
+
 	BOOL Gf_FindModelFile(CString modelName);
 	void Gf_LoadModelData(CString modelName);
 
@@ -91,7 +94,7 @@ public:
 	// UDP 통신 Protocol (DIO Board)
 	void Lf_initCreateUdpSocket();
 	BOOL Lf_initLocalHostIPAddress();
-	BOOL udp_sendPacketUDP_DIO(int ch, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 1000);
+	BOOL udp_sendPacketUDP_DIO(int ch, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 100);
 	BOOL udp_procWaitRecvACK_DIO(int ch, int cmd, DWORD waitTime);
 	void udp_processDioPacket(int ch, CString strPacket);
 	BOOL udp_procParseDIO(int ch, CString packet);
@@ -130,6 +133,8 @@ public:
 	BOOL m_bUserIdIdle;
 	BOOL m_bAdminPassword;
 	BOOL m_bLightCurationMute;
+	int  m_nEcsEqpStatus;
+	int  m_nLastAlarmCode;
 
 	// DIO Board Data
 	int m_nAckCmdDio[2];
@@ -184,7 +189,7 @@ protected:
 
 private:
 
-	
+
 /////////////////////////////////////////////////////////////////////////////
 
 };

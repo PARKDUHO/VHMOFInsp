@@ -606,7 +606,7 @@ BOOL CAutoFirmware::Lf_sendFirmwareFile(int ch)
 			return FALSE;
 		}
 
-		ProcessMessage();
+		delayMs(1);
 	}
 	if (nRemainPageCnt != 0)
 	{
@@ -868,7 +868,7 @@ BOOL CAutoFirmware::Lf_sendPmmFirmwareFile(int ch)
 		sMsg.Format(_T("Power F/W Raw File Downloading. Send Data (%d/%d)"), startAddr + packetLen_temp, m_nFirmwareDataLen);
 		GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(sMsg);
 
-		ProcessMessage();
+		delayMs(1);
 
 		if (bFirstTime == TRUE)
 		{
