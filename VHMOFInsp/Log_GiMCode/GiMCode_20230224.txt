@@ -1,0 +1,58 @@
+[10:11:58 945]	[FullDisp] : Defect Initialize START
+[10:11:58 947]	[FullDisp] : Variable Reset Complete
+[10:11:59 009]	[FullDisp] : Screen Reform Complete
+[10:11:59 009]	[FullDisp] : Color Button Attach Complete
+[10:11:59 013]	[FullDisp] : Defect Button Initialize Complete
+[10:11:59 013]	[FullDisp] : Defect Button Position Set Complete
+[10:11:59 013]	Favorite Set : Start
+[10:11:59 019]	Favorite Set : New Button Make Complete
+[10:11:59 020]	Favorite Set : Result Button Update Complete
+[10:11:59 023]	Favorite Set : Display Button Reset Complete
+[10:11:59 023]	[FullDisp] : User Button Info Set Complete
+[10:11:59 038]	[FullDisp] : Button Color Set Complete
+[10:11:59 040]	[FullDisp] : Defect Initialize END
+[10:15:40 310]	[FullDisp] : Defect Initialize START
+[10:15:40 310]	[FullDisp] : Variable Reset Complete
+[10:15:40 369]	[FullDisp] : Screen Reform Complete
+[10:15:40 369]	[FullDisp] : Color Button Attach Complete
+[10:15:40 373]	[FullDisp] : Defect Button Initialize Complete
+[10:15:40 450]	[FullDisp] : Defect Button Position Set Complete
+[10:15:40 450]	Favorite Set : Start
+[10:15:40 464]	Favorite Set : New Button Make Complete
+[10:15:40 464]	Favorite Set : Result Button Update Complete
+[10:15:40 693]	Favorite Set : Display Button Reset Complete
+[10:15:40 693]	[FullDisp] : User Button Info Set Complete
+[10:15:40 694]	[FullDisp] : Button Color Set Complete
+[10:15:40 696]	[FullDisp] : Defect Initialize END
+[10:15:42 774]	Result[Full Display] : 'NextPage' Button Click
+[10:15:42 774]	Result[Full Display] : Zoom Bad Code Hide
+[10:15:42 784]	Result[Full Display] : Select Bad Code Button Cancel(ExtCode Clear)
+[10:15:42 802]	Result[Full Display] : Bad Code Button All Hide
+[10:15:42 819]	Result[Full Display] : Result Button Initialize
+[10:15:42 873]	Result[Full Display] : Result Button Set Position
+[10:15:42 873]	Favorite Set : Start
+[10:15:42 873]	Favorite Set : New Button Make Complete
+[10:15:42 879]	Favorite Set : Result Button Update Complete
+[10:15:43 010]	Favorite Set : Display Button Reset Complete
+[10:15:43 019]	Result[Full Display] : Set Favorite Button Position
+[10:15:43 021]	Result[Full Display] : Set Color Button
+[10:15:43 544]	Result[Full Display] : 'NextPage' Button Click
+[10:15:43 544]	Result[Full Display] : Zoom Bad Code Hide
+[10:15:43 561]	Result[Full Display] : Select Bad Code Button Cancel(ExtCode Clear)
+[10:15:43 579]	Result[Full Display] : Bad Code Button All Hide
+[10:15:43 599]	Result[Full Display] : Result Button Initialize
+[10:15:43 619]	Result[Full Display] : Result Button Set Position
+[10:15:43 619]	Favorite Set : Start
+[10:15:43 633]	Favorite Set : New Button Make Complete
+[10:15:43 634]	Favorite Set : Result Button Update Complete
+[10:15:43 689]	Favorite Set : Display Button Reset Complete
+[10:15:43 689]	Result[Full Display] : Set Favorite Button Position
+[10:15:43 689]	Result[Full Display] : Set Color Button
+[10:15:44 795]	Favorite Set : Start
+[10:15:44 795]	Favorite Set : New Button Make Complete
+[10:15:44 795]	Favorite Set : Result Button Update Complete
+[10:15:44 913]	Favorite Set : Display Button Reset Complete
+[10:15:45 021]	Favorite Set : Start
+[10:15:45 021]	Favorite Set : New Button Make Complete
+[10:15:45 027]	Favorite Set : Result Button Update Complete
+[10:15:45 137]	Favorite Set : Display Button Reset Complete

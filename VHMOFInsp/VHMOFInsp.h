@@ -17,6 +17,7 @@
 #include "CIMNetCommApp.h"
 #include "MelsecnetG.h"
 #include "ModuleECS.h"
+#include "FTPInterface.h"
 
 
 // CVHMOFInspApp:
@@ -105,6 +106,19 @@ public:
 	// MELSEC Function
 	int Lf_getMelsecErrorCode(int mnetg_err);
 
+	///////////////////////////////////////////////////////////
+	// FTP Function
+	///////////////////////////////////////////////////////////
+	BOOL Gf_ftpConnectDFS();
+	BOOL Gf_ftpDisConnectDFS();
+	BOOL Gf_ftpSetHomeDirectory();
+	BOOL Gf_ftpSetCurrentDirectory(CString strPath);
+	BOOL Gf_ftpCreateDirectory(CFTPInterface* lpFtp, CString strDirectory);
+	BOOL Gf_ftpDownloadModuleIniFile();
+	CString Gf_ftpGetModuleIniFilaName();
+
+
+
 
 	LPMODELINFO				GetModelInfo();
 	LPSYSTEMINFO			GetSystemInfo();
@@ -118,6 +132,7 @@ public:
 	CCimNetCommApi*			m_pCimNet;
 	CMelsecnetG*			pMelsecnetG;
 	CModuleECS*				pModuleECS;
+	CFTPInterface*			lpFtpDFS;
 
 	HANDLE					m_hAppMutex;
 

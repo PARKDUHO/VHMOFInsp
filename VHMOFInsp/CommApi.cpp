@@ -990,6 +990,9 @@ BOOL CCommApi::dio_InspReadyCheck()
 {
 	BOOL bRet = TRUE;
 
+	if (m_pApp->m_bUserIdPM == TRUE)
+		return TRUE;
+
 	// REAR DOOR : LEFT CYLINDER DOWN
 	if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN)
 		&& (m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_RIGHT_CYLINDER_DOWN))
@@ -1203,19 +1206,21 @@ BOOL CCommApi::dio_LEDOnOff(BOOL bOnOff)
 
 BOOL CCommApi::dio_LightCurtainMuteOnOff(BOOL bOnOff)
 {
-	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, OFF);
-	m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, OFF);
+	BOOL bRet;
+
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, OFF);
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, OFF);
 
 	if (bOnOff == ON)
 	{
-		delayMs(1000);
+		delayMs(500);
 
-		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, ON);
+		bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_1, ON);
 		delayMs(200);
-		m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, ON);
+		bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_MUTTING_2, ON);
 	}
 
-	return TRUE;
+	return bRet;
 }
 
 BOOL CCommApi::dio_LeftSafetyDoorOpen()
@@ -1331,6 +1336,16 @@ BOOL CCommApi::dio_RearDoorClose()
 				bRet = TRUE;
 				break;
 			}
+
+			// Rear Door 다운 중 ROBOT 센서가 감지되면 다운동작 SOL 정지시키고 Alarm 발생시킨다.
+			if (dio_RobotInSensorCheck() == FALSE)
+			{
+				m_pApp->commApi->dio_writeDioPortOnOff(CH1, (DOUT_D1_REAR_SHUTTER_UP | DOUT_D1_REAR_SHUTTER_DOWN), OFF);
+
+				m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("ROBOT SENSOR IN"), ERROR_CODE_57);
+				return FALSE;
+			}
+
 			delayMs(1);
 		}
 

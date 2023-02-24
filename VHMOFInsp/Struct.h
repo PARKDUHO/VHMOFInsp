@@ -167,6 +167,9 @@ typedef struct _ST_SYSTEMINFO_{
 	int		m_nLWStartAddr1;
 	int		m_nLWStartAddr2;
 	int		m_nEcsEqpNumber;
+	int		m_nRobotInspUnitNumber;
+	int		m_nRobotLBStartAddr;
+	int		m_nRobotLWStartAddr1;
 
 	CString	m_sLastModelName;			// 마지막 M/C 모델명
 	int		m_nQuantityOKTotal;
@@ -347,3 +350,25 @@ typedef struct _ST_SUMMARY_
 	CString	m_sumData[SUM_INFO_MAX];
 
 } SUMMARYINFO, * LPSUMMARYINFO;
+
+
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// ★                                   주의                                     ★
+// ★ Glass Data는 Memory Copy로 Data가 넘어가므로 변수 순서를 변경하면 안된다.  ★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+typedef struct _ST_ECSGLASSDATA_
+{
+	DWORD LOT_ID[8];
+	DWORD ProcessingCode[4];
+	DWORD LOT_AddData[4];
+	DWORD RecipeNumber;
+	DWORD PanelType;
+	DWORD PanelCODE;
+	DWORD PanelID[8];
+	DWORD PanelJudge;
+	DWORD PanelAddData[4];
+	DWORD PreviousUnitProcessingData[8];
+	DWORD PanelProcessingStatus[8];
+	DWORD MeterialID[15];
+	DWORD MeterialType;
+} ECSGLASSDATA, * LPECSGLASSDATA;

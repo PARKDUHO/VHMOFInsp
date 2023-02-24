@@ -115,4 +115,5 @@ public:
 	afx_msg void OnStnClickedSttIrJigTrayInReady();
 	afx_msg void OnStnClickedSttIrCh1ClampReady();
 	afx_msg void OnStnClickedSttIrCh2ClampReady();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

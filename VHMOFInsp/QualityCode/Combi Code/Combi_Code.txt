@@ -1,0 +1,483 @@
+﻿[Version]
+C_VH_ASSY_MODULE_VIETNAM_20210609000000
+
+[Combination Code Set]
+Code#1=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>G7H-Gate Dim:G-DIM không cùng PD(PD미동반 G-DIM)
+Code#2=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>2QU-등간격가로선_GIP,<상세형태>J0A-해당없음:Vạch ngang khảng cách đều nhau_GIP(등간격가로선_GIP)
+Code#3=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>2QV-Siganl(Side)_GIP:Một bên bất thường_GIP(편측구동불량_GIP)
+Code#4=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>2QT-Multi_GIP:Multi_GIP(Multi_GIP)
+Code#5=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>28L-ADPD(SE),<연결정보>L0H-Don't define:ADPD1
+Code#6=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>28M-ADPD(SC1),<연결정보>L0H-Don't define:ADPD2
+Code#7=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>28N-ADPD(SC2),<연결정보>L0H-Don't define:ADPD3
+Code#8=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>541-AD-PD(IS),<연결정보>L0H-Don't define:ADPD4
+Code#9=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I4Y-On RF Bright Dot,<연결정보>L0H-Don't define:Điểm sáng On RF(On RF 휘점)
+Code#10=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I4Z-Black Brigt Dot,<연결정보>L0H-Don't define:Điểm sáng Black(BLACK 휘점)
+Code#11=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I50-64Gray Bright Dot,<연결정보>L0H-Don't define:Điểm sáng 64Gray(64Gray 휘점)
+Code#12=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G1N-Reverse Bright Dot,<연결정보>L0H-Don't define:Điểm sáng ngược lại(반전휘점)
+Code#13=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I3R-Progressive PD,<연결정보>L0H-Don't define:Điểm sáng phát sinh(진행성휘점)
+Code#14=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G6L-Torn of the CF,<연결정보>L0H-Don't define:CF bị bong tróc(CF뜯김)
+Code#15=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I2N-Drizzle,<연결정보>L0H-Don't define:Hạt mưa phùn(이슬비)
+Code#16=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L1G-Dark Dot 1P&Weak Dark Dot 3P:Điểm tối YẾU 4P(약암4P)
+Code#17=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5G-Don't define,<연결정보>L01-More than 3Connection:Điểm sáng điểm tối liền kề(휘암연결)
+Code#18=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5S-Bright&Dark Dot,<연결정보>L01-More than 3Connection:Điểm sáng điểm tối 4P(휘암4P)
+Code#19=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5T-Bright Dot,<연결정보>L01-More than 3Connection:Điểm sáng liền kề(휘점연결)
+Code#20=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>2GP-W Dark Dot Compensation,<연결정보>L0H-Don't define:Bù sáng nhầm điểm tối W(W암점 오보상)
+Code#21=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L01-More than 3Connection:Điểm tối liền kề(암점연결)
+Code#22=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L04-Numbers Over:OVER số lượng điểm tối(암점개수 OVER)
+Code#23=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L0G-Minimum Destance:Cự ly tối thiểu điểm tối(암점최소거리)
+Code#24=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L0Q-Density:Cụm điểm tối(암점무리)
+Code#25=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L13-2Connection:OVER 2 liền kề(2연결 OVER)
+Code#26=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3H-Light Bright Dot,<연결정보>L0H-Don't define:Điểm sáng nhẹ(약휘점)
+Code#27=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5T-Bright Dot,<연결정보>L0Q-Density:Cụm điểm sáng(휘점무리)
+Code#28=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I51-White Dark Dot,<연결정보>L04-Numbers Over:Điểm tối W OVER(W암점 OVER)
+Code#29=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I55-Weak Dark Dot,<연결정보>L01-More than 3Connection: Điểm tối yếu liền kề(약암연결)
+Code#30=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I6A-White Dark Dot 4P,<연결정보>L0H-Don't define:Điểm tối W 4P (W암점4P)
+Code#31=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I6B-White Weak Dark Dot,<연결정보>L0H-Don't define:Điểm tối yếu W(W약암)
+Code#32=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>22W-AMI Bright Dot PD(Special),<연결정보>L0H-Don't define:Điểm sáng AMI (đặc biệt)-Không có loại tương ứng
+Code#33=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-암점,<연결정보>L13-2Connection,<ADR>90V-WDR_Type1:WDR_Type1
+Code#34=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-암점,<연결정보>L13-2Connection,<ADR>90Y-WDR_Type4:WDR_Type4
+Code#35=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>5B3-DBPC 실패,<연결정보>L0H-해당없음: DBPC thất bại
+Code#36=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>I69-DLD Repair,<상세형태>J0A-해당없음:DLD_không cùng điểm tối(DLD_암점미동반)
+Code#37=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6W-Data Dim,<상세형태>J07-with Dark Dot:D-DIM cùng PD(PD동반 D-DIM)
+Code#38=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6W-Data Dim,<상세형태>J0A-Don't define:D-DIM không cùng PD(PD미동반 D-DIM)
+Code#39=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6W-Data Dim,<상세형태>J45-단일패턴:D-DIM Pattern đơn lẻ(PD미동반 D-DIM 단일패턴)
+Code#40=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6Z-DG(Block),<상세형태>J0A-Don't define:LD trên 1 By 1 Green
+Code#41=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>I58-Side Line,<상세형태>J0A-Don't define:Viền LD(끝단LD)
+Code#42=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>5B2-SLDD LD,<상세형태>J0A-해당없음:SLDD LD(PAD)
+Code#43=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>5B2-SLDD LD,<상세형태>J07-암점동반:SLDD LD(PD동반)
+Code#44=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>5B2-SLDD LD,<상세형태>J09-이물성:SLDD PD
+Code#45=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>3XR-Partial Dim(SCRAP),<상세형태>J0A-해당없음:Part DIM (Scrap)(부분DIM(폐기))
+Code#46=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G7J-GDS,<상세형태>J0A-Don't define:GDS(GDS Don't define)
+Code#47=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2C3-Width RT2:RT2 Ngang(가로RT2)
+Code#48=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>3C9-JB Sensing NG:JB Sensing NG
+Code#49=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GMY-White Chromaticity:White Chromaticity (Tọa độ màu White)
+Code#50=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GMZ-Red Chromaticity:Red Chromaticity (Tọa độ màu Red)
+Code#51=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GN0-Green Chromaticity:Green Chromaticity (Tọa độ màu Green)
+Code#52=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GN1-Blue Chromaticity:Blue Chromaticity (Tọa độ màu Blue)
+Code#53=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GN5-White Luminance:White Luminance NG (Độ sáng White NG)
+Code#54=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>G52-탐:Cháy Panel(Panel탐)
+Code#55=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I21-Vth Max. NG:Vth Max. NG (Vth tối đa NG)
+Code#56=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I22-Vth Min. NG:Vth Min. NG (Vth mức tối thiếu NG)
+Code#57=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I23-Vth Range out:Vth Range out
+Code#58=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I24-DVth NG:DVth NG
+Code#59=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I25-Sensing Out:Sensing Out
+Code#60=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I2L-Luminance Uniformity NG:Luminance Uniformity NG
+Code#61=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I3Q-Color viewing angle:Color viewing angle (Góc nhìn màu NG)
+Code#62=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4Q-Gamut NG:Gamut NG
+Code#63=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4R-Red Luminance NG:Red Luminance NG (Độ sáng Red NG)
+Code#64=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4S-Blue Luminance NG:Blue Luminance NG (Độ sáng Blue NG)
+Code#65=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4T-Green Luminance NG:Green Luminance NG (Độ sáng Green NG)
+Code#66=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>64K-6 Gray Color Coordinate:6 Gray Color Coordinate (6 Gray 색좌표)
+Code#67=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>2T8-PD동반얼룩 Repair,<적용한도>TKP-PD동반 얼룩:RP vết loang cùng PD (PD동반얼룩 R/P)
+Code#68=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G5X-흑점,<적용한도>T5F-P_흑점:Điểm đen(흑점)
+Code#69=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>UFF-선형약암무리,<적용한도>TLR-선형약암무리:Cụm điểm tối yếu dạng đường
+Code#70=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3C-암점무리,<색상>K04-Black,<적용한도>T8U-원형암점무리:Mảng điểm tối hình tròn(원형암점무리)
+Code#71=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2K-선(Wave),<색상>K04-Black,<적용한도>T5H-P_흑선:Đường màu đen(흑선)
+Code#72=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2K-선(Wave),<색상>K0E-White,<적용한도>T5J-P_백선:Đường màu trắng(백선)
+Code#73=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0G-Hot bar,<형태>264-몽글이,<적용한도>T04-해당없음:Chuyển sang PQC(PQC 인계)
+Code#74=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G1R-백점,<적용한도>T56-P_백점:Điểm trắng(백점)
+Code#75=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3Q-원형,<색상>K06-Blue,<적용한도>T6G-P_원형얼룩_흑:Điểm trắng Blue (Blue백점)
+Code#76=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3Q-원형,<색상>K09-Green,<적용한도>T6G-P_원형얼룩_흑:Điểm trắng Green (Green백점)
+Code#77=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3Q-원형,<색상>K0C-Red,<적용한도>T6G-P_원형얼룩_흑:Điểm trắng Red (Red백점)
+Code#78=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2S-세로띠형,<Map(위치)>Q23-Tab간격,<적용한도>T8K-P_세로B/DIM:B/DIM dọc(세로B/DIM)
+Code#79=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0D-Red Class,<형태>I9C-Vertical Difference Level,<적용한도>T04-해당없음:Bất thường Red(Red 단차)
+Code#80=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F06-Black Class,<형태>G27-Light leakage,<적용한도>T04-해당없음:Rò rỉ ảnh sáng (빛샘)
+Code#81=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F01-Unknown,<형태>G3A-Unknown,<적용한도>T04-해당없음:Lỗi Mura đặc biệt(특이얼룩)
+Code#82=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>G5G-Don't define,<적용한도>T04-해당없음:Lỗi Mura khác(기타얼룩)
+Code#83=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>583-모서리부정형,<적용한도>TMC-모서리부정형:Góc không định hình(모서리 부정형)
+Code#84=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>G3Q-원형,<적용한도>T6G-P_원형얼룩_흑:Loang nến/ hình tròn(원형 / 촛불 얼룩)
+Code#85=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>G4B-점형,<적용한도>T04-해당없음:Vết ố Moire(Moire 얼룩)
+Code#86=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>G5G-해당없음,<적용한도>T04-해당없음:Dư ảnh GB BOX (GB BOX 잔상)
+Code#87=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>586-Corner abnormal color,<적용한도>T04-해당없음:Bất thường màu sắc ở góc
+Code#88=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>2T7-CB얼룩,<적용한도>TJC-CB얼룩:Vết ố CB(CB얼룩)
+Code#89=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G05-가로띠형,<적용한도>T62-P_가로띠_흑:Vạch Ngang(가로띠)
+Code#90=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G05-가로띠형,<Map(위치)>Q23-Tab간격,<적용한도>T8J-P_가로B/DIM:B/DIM ngang(가로B/DIM)
+Code#91=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G06-가로선형,<적용한도>T64-P_가로선_흑:Sọc ngang(가로선)
+Code#92=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G06-가로선형,<Map(위치)>Q0E-전면,<적용한도>T6A-P_전면가로선_흑:Vạch ngang cả màn hình (전면가로선)
+Code#93=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G1Y-부정형,<적용한도>T6J-P_부정형얼룩_흑:Mura không định hình(부정형얼룩)
+Code#94=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>ZB3-Stitch,<적용한도>TMJ-Stitch:Vết loang Stitch (스티치얼룩)
+Code#95=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2C-사선형,<적용한도>T6E-P_사선얼룩_흑:Vết loang chéo (사선 얼룩)
+Code#96=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2F-색감차,<적용한도>T8F-색이상:Lỗi khác biệt màu(색감차)
+Code#97=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2H-색이상,<적용한도>T8F-색이상:Bất thường màu sắc(색이상)
+Code#98=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2S-세로띠형,<적용한도>T66-P_세로띠_흑:Vạch DỌC (세로띠)
+Code#99=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2S-세로띠형,<색상>K0B-Magenta,<적용한도>TM2-XMB세로띠:Vạch dọc XMB (XMB세로띠)
+Code#100=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2T-세로선형,<적용한도>T68-P_세로선_흑:Sọc dọc(세로선)
+Code#101=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2T-세로선형,<Map(위치)>Q0E-전면,<적용한도>T6C-P_전면세로선_흑:Sọc dọc cả màn hình (전면세로선)
+Code#105=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>581-Pinmiss,<적용한도>TM4-Pinmiss:Vết ố Pinmiss(Pinmiss 얼룩)
+Code#102=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>585-CST얼룩,<적용한도>TMF-CST얼룩:Vết ố CST(CST 얼룩)
+Code#103=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G50-타원형,<적용한도>T66-P_세로띠_흑:Vạch dọc hình tròn  (원형 세로띠)
+Code#104=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G69-B&W,<적용한도>T12-T_조개얼룩:Vết loang hình sò(조개얼룩)
+Code#106=<DUMMY>
+Code#107=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0C-LowGray Class,<형태>G5G-해당없음,<적용한도>TM3-LowGray계:Vết loang Gray 10(10Gray얼룩)
+Code#108=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0C-LowGray Class,<형태>G5G-해당없음,<색상>K04-Black,<적용한도>TM3-LowGray계:Phía trái/phải tối(좌우변어두움)
+Code#109=<DUMMY>
+Code#110=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2C6-LowGrayAD:Sự bất thường màu sắc của Gradation dưới(저계조 색이상)
+Code#111=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2FR-저계조 Gamma 틀어짐:Gradiation có Gamma(저계조 Gamma 틀어짐 )
+Code#112=<DUMMY>
+Code#113=<DUMMY>
+Code#114=<DUMMY>
+Code#115=<DUMMY>
+Code#116=<DUMMY>
+Code#117=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2TS-Fraction Dim(static electricity):48hrs Panel khởi động phần Dim(Điện tĩnh)
+Code#118=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>4JK-Fraction Dim_2(static electricity):120hrs Panel khởi động phần Dim_2(Điện tĩnh)
+Code#119=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>2T0-끝단: SLDD_1,<상세형태>J0A-해당없음:SLDD_1
+Code#120=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>2TD-부분 Dim,<상세형태>J0A-해당없음:Part DIM  (부분DIM)
+Code#121=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>27Z-Register Error:Register Error
+Code#122=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>280-ACK Fail:ACK Fail
+Code#123=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>281-Check Sum Error:Check Sum Error
+Code#124=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2C8-CSO Sound NG:CSO Sound NG (Tiếng bất thường)
+Code#125=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2E9-CSO 떨림음:Lỗi âm thanh CSO (CSO 떨림음)
+Code#126=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2EA-CSO기타:Lỗi khác (CSO 기타)
+Code#127=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2FN-OFF RS Error:OFF RS Error (Lỗi OFF RS)
+Code#128=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2GL-EDID:EDID (Shape)
+Code#129=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0G-Gradation Disorder:Bất thường Gradation (계조이상)
+Code#130=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0G-계조이상,<형태>H3G-IBAT: Sự bất thường của Gradation-IBAT (계조단차)
+Code#131=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0G-계조이상,<형태>H3H-IEXT: Sự bất thường màu sắc của Gradation-IEXT (계조색이상)
+Code#132=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0L-Over Current:Dòng điện quá mức
+Code#133=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G2Y-Vertical Noise:Noise Thẳng đứng (수직Noise)
+Code#134=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>ZF3-반짝이 Noise:Noise lấp lánh (반짝이 Noise)
+Code#135=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G30-Horizontal Noise:Noise phẳng (수평Noise)
+Code#136=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G3L-Image Insensibility:Hình ảnh không cảm nhận (영상무감)
+Code#137=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G5G-Don't define:Don't define (Không có loại tương ứng)
+Code#138=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G5N-Abnormal Screen:Màn hình bất thường
+Code#139=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G64-AI/ODC Can't Reading:Lỗi nhận thức AI/ODC
+Code#140=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G7Z-Corresponding Error:Lỗi truyền thông tin M4
+Code#141=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G84-Pallet NG (can't be corrected):Pallet NG (Pallet không thể xử lý)
+Code#142=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G8T-Short Test Error:Short Test Error
+Code#143=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>GHN-Low Current:Dòng điện thấp
+Code#144=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I52-BPC Error:BPC Error
+Code#145=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I53-Burnt Error:Burnt Error
+Code#146=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I54-FPGA Error:FPGA Error
+Code#147=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I56-Abnormal Display(Unilateral):Một bên bất thường (편측이상)
+Code#148=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I57-Abnormal Display(Horizontal RT):RT ngang (가로RT)
+Code#149=<부품>A06-Circuit,<불량대분류>B05-Appearance,<형태>G1T-Damage,<부품(위치)>R3C-User Connector:Lỗi CNT (CNT불량)
+Code#150=<부품>A06-Circuit,<불량대분류>B05-Appearance,<형태>G5G-Don't define,<부품(위치)>R0G-Don't define:Ngoại quan PCB (PCB외관)
+Code#151=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>G4S-Chop,<부품(위치)>R0G-Don't define:Panel Bị đâm (Panel찍힘)
+Code#152=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>G56-Broken,<부품(위치)>R0G-Don't define:Panel broken (Panel파손)
+Code#153=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>G9H-Name Pen,<부품(위치)>R0G-Don't define:Ngoại quan Panel (Panel외관)
+Code#154=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>IHW-Bezel_Pad Mura,<부품(위치)>R0G-Don't define:Lỗi Bezel (Bezel 불량)
+Code#155=<부품>A0K-POL,<불량대분류>B04-Mura,<형태>G5G-Don't define:Vết ố Pol (Pol얼룩)
+Code#156=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G0V-Bubble:Pol bọt khí (Pol 기포)
+Code#157=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G21-Missing:Lỗi dán Pol (Pol부착불량)
+Code#158=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G4S-Chop:Pol bị đâm (Pol 찍힘)
+Code#159=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G52-탐:Cháy Pol (Pol탐)
+Code#160=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G5G-Don't define:Lỗi film bảo vệ Pol (Pol 보호필름불량)
+Code#161=<부품>A0K-POL,<불량대분류>B06-Foreign Material,<형태>G5G-Don't define:Dị vật Pol (Pol이물)
+Code#162=<부품>A1T-C-PCB,<불량대분류>B05-Appearance,<형태>G5G-Don't define,<연결정보>R0G-Don't define:Lỗi C-PCB (C-PCB불량)
+Code#163=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>5B4-진행성 흑점,<연결정보>L0H-해당없음:Điểm đen có khả năng phát sinh(진행성 흑점)
+Code#164=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>2FP-Laser Repair_실패,<연결정보>L3J-L/R 깨짐: L/R bị vỡ
+Code#165=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>2GM-PXL 수축,<연결정보>L0H-Don't define:Co rút PXL(PXL 수축)
+Code#166=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>535-Fade Out,<연결정보>L0H-Don't define: Fade Out
+Code#167=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>540-반휘반암,<연결정보>L0H-Don't define:Nửa sáng/Nửa tối
+Code#168=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>46U-CMO GIP:CMO GIP
+Code#169=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>46V-CMO Signal:CMO signal
+Code#170=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>UE3-CMO 수직 반짝이 Noise:CMO Noise nháy thẳng đứng
+Code#171=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>UDE-CMO RT Noise:CMO RT Noise
+Code#172=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>47P-CMO 얼룩,<적용한도>TLN-CMO얼룩:CMO Mura
+Code#173=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>UE5-CMO Off 8Line 가로선,<적용한도>TMH-8Line가로선:CMO OFF 8 Line đường dọc
+Code#174=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>UE6-CMO On 8Line 가로선,<적용한도>TMH-8Line가로선:CMO ON 8 Line đường dọc
+Code#175=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>UEC-CMO Black 뜸,<적용한도>TLM-CMO Black 뜸:CMO Hở Black phần giới hạn
+Code#176=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>UEC-OSLB 보상불량,<연결정보>L0H-해당없음:OSLB PD(OC)
+Code#177=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>UEC-OSLB 보상불량,<상세형태>J0A-해당없음:OSLB LD(OC)
+Code#178=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>UEC-OSLB 보상불량:vết loang OSLB(OC)
+Code#179=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>UEC-OSLB 보상불량:OSLB signal(OC)
+Code#180=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>UEC-OSLB 보상불량:OSLB signal(OS)
+Code#181=<부품>A0S-Don't define,<불량대분류>B0L-Don't define,<형태>G5G-Don't define:Don't define-Don't define
+Code#182=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>ZF2-532nm Repair,<상세형태>J0A-Don't define:532nm Repair LD
+Code#183=<부품>A06-회로,<불량대분류>B01-구동,<형태>58G-PGVDD Board bỏ sót:PGVDD Board 遗漏 PGVDD Board thiếu sót
+Code#184=<부품>A0G-Panel,<불량대분류>B01-구동,<형태>5B3-PGVDD Spec NG:PGVDD Spec NG
+
+
+[자주 사용하는 Code 조합(1)]
+Matrix(1,1)=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>G7H-Gate Dim:G-DIM không cùng PD(PD미동반 G-DIM)
+Matrix(2,1)=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>2QU-등간격가로선_GIP,<상세형태>J0A-해당없음:Vạch ngang khảng cách đều nhau_GIP(등간격가로선_GIP)
+Matrix(3,1)=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>2QV-Siganl(Side)_GIP:Một bên bất thường_GIP(편측구동불량_GIP)
+Matrix(4,1)=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>2QT-Multi_GIP:Multi_GIP(Multi_GIP)
+Matrix(5,1)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>28L-ADPD(SE),<연결정보>L0H-Don't define:ADPD1
+Matrix(6,1)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>28M-ADPD(SC1),<연결정보>L0H-Don't define:ADPD2
+Matrix(7,1)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>28N-ADPD(SC2),<연결정보>L0H-Don't define:ADPD3
+Matrix(8,1)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>541-AD-PD(IS),<연결정보>L0H-Don't define:ADPD4
+Matrix(1,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I4Y-On RF Bright Dot,<연결정보>L0H-Don't define:Điểm sáng On RF(On RF 휘점)
+Matrix(2,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I4Z-Black Brigt Dot,<연결정보>L0H-Don't define:Điểm sáng Black(BLACK 휘점)
+Matrix(3,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I50-64Gray Bright Dot,<연결정보>L0H-Don't define:Điểm sáng 64Gray(64Gray 휘점)
+Matrix(4,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G1N-Reverse Bright Dot,<연결정보>L0H-Don't define:Điểm sáng ngược lại(반전휘점)
+Matrix(5,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I3R-Progressive PD,<연결정보>L0H-Don't define:Điểm sáng phát sinh(진행성휘점)
+Matrix(6,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G6L-Torn of the CF,<연결정보>L0H-Don't define:CF bị bong tróc(CF뜯김)
+Matrix(7,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I2N-Drizzle,<연결정보>L0H-Don't define:Hạt mưa phùn(이슬비)
+Matrix(8,2)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L1G-Dark Dot 1P&Weak Dark Dot 3P:Điểm tối YẾU 4P(약암4P)
+Matrix(1,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5G-Don't define,<연결정보>L01-More than 3Connection:Điểm sáng điểm tối liền kề(휘암연결)
+Matrix(2,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5S-Bright&Dark Dot,<연결정보>L01-More than 3Connection:Điểm sáng điểm tối 4P(휘암4P)
+Matrix(3,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5T-Bright Dot,<연결정보>L01-More than 3Connection:Điểm sáng liền kề(휘점연결)
+Matrix(4,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>2GP-W Dark Dot Compensation,<연결정보>L0H-Don't define:Bù sáng nhầm điểm tối W(W암점 오보상)
+Matrix(5,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L01-More than 3Connection:Điểm tối liền kề(암점연결)
+Matrix(6,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L04-Numbers Over:OVER số lượng điểm tối(암점개수 OVER)
+Matrix(7,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L0G-Minimum Destance:Cự ly tối thiểu điểm tối(암점최소거리)
+Matrix(8,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L0Q-Density:Cụm điểm tối(암점무리)
+Matrix(1,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-Dark Dot,<연결정보>L13-2Connection:OVER 2 liền kề(2연결 OVER)
+Matrix(2,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3H-Light Bright Dot,<연결정보>L0H-Don't define:Điểm sáng nhẹ(약휘점)
+Matrix(3,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G5T-Bright Dot,<연결정보>L0Q-Density:Cụm điểm sáng(휘점무리)
+Matrix(4,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I51-White Dark Dot,<연결정보>L04-Numbers Over:Điểm tối W OVER(W암점 OVER)
+Matrix(5,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I55-Weak Dark Dot,<연결정보>L01-More than 3Connection: Điểm tối yếu liền kề(약암연결)
+Matrix(6,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I6A-White Dark Dot 4P,<연결정보>L0H-Don't define:Điểm tối W 4P (W암점4P)
+Matrix(7,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>I6B-White Weak Dark Dot,<연결정보>L0H-Don't define:Điểm tối yếu W(W약암)
+Matrix(8,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>22W-AMI Bright Dot PD(Special),<연결정보>L0H-Don't define:Điểm sáng AMI (đặc biệt)-Không có loại tương ứng
+Matrix(1,5)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-암점,<연결정보>L13-2Connection,<ADR>90V-WDR_Type1:WDR_Type1
+Matrix(2,5)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>G3B-암점,<연결정보>L13-2Connection,<ADR>90Y-WDR_Type4:WDR_Type4
+Matrix(3,5)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>5B3-DBPC 실패,<연결정보>L0H-해당없음: DBPC thất bại
+Matrix(4,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>I69-DLD Repair,<상세형태>J0A-해당없음:DLD_không cùng điểm tối(DLD_암점미동반)
+Matrix(5,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6W-Data Dim,<상세형태>J07-with Dark Dot:D-DIM cùng PD(PD동반 D-DIM)
+Matrix(6,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6W-Data Dim,<상세형태>J0A-Don't define:D-DIM không cùng PD(PD미동반 D-DIM)
+Matrix(7,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6W-Data Dim,<상세형태>J45-단일패턴:D-DIM Pattern đơn lẻ(PD미동반 D-DIM 단일패턴)
+Matrix(8,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G6Z-DG(Block),<상세형태>J0A-Don't define:LD trên 1 By 1 Green
+Matrix(1,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>I58-Side Line,<상세형태>J0A-Don't define:Viền LD(끝단LD)
+Matrix(2,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>5B2-SLDD LD,<상세형태>J0A-해당없음:SLDD LD(PAD)
+Matrix(3,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>5B2-SLDD LD,<상세형태>J07-암점동반:SLDD LD(PD동반)
+Matrix(4,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>5B2-SLDD LD,<상세형태>J09-이물성:SLDD PD
+Matrix(5,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>3XR-Partial Dim(SCRAP),<상세형태>J0A-해당없음:Part DIM (Scrap)(부분DIM(폐기))
+Matrix(6,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>G7J-GDS,<상세형태>J0A-Don't define:GDS(GDS Don't define)
+Matrix(7,6)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2C3-Width RT2:RT2 Ngang(가로RT2)
+Matrix(8,6)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>3C9-JB Sensing NG:JB Sensing NG
+Matrix(1,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GMY-White Chromaticity:White Chromaticity (Tọa độ màu White)
+Matrix(2,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GMZ-Red Chromaticity:Red Chromaticity (Tọa độ màu Red)
+Matrix(3,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GN0-Green Chromaticity:Green Chromaticity (Tọa độ màu Green)
+Matrix(4,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GN1-Blue Chromaticity:Blue Chromaticity (Tọa độ màu Blue)
+Matrix(5,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>GN5-White Luminance:White Luminance NG (Độ sáng White NG)
+Matrix(6,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>G52-탐:Cháy Panel(Panel탐)
+Matrix(7,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I21-Vth Max. NG:Vth Max. NG (Vth tối đa NG)
+Matrix(8,7)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I22-Vth Min. NG:Vth Min. NG (Vth mức tối thiếu NG)
+Matrix(1,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I23-Vth Range out:Vth Range out
+Matrix(2,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I24-DVth NG:DVth NG
+Matrix(3,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I25-Sensing Out:Sensing Out
+Matrix(4,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I2L-Luminance Uniformity NG:Luminance Uniformity NG
+Matrix(5,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I3Q-Color viewing angle:Color viewing angle (Góc nhìn màu NG)
+Matrix(6,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4Q-Gamut NG:Gamut NG
+Matrix(7,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4R-Red Luminance NG:Red Luminance NG (Độ sáng Red NG)
+Matrix(8,8)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4S-Blue Luminance NG:Blue Luminance NG (Độ sáng Blue NG)
+Matrix(1,9)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>I4T-Green Luminance NG:Green Luminance NG (Độ sáng Green NG)
+Matrix(2,9)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>64K-6 Gray Color Coordinate:6 Gray Color Coordinate (6 Gray 색좌표)
+Matrix(3,9)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>2T8-PD동반얼룩 Repair,<적용한도>TKP-PD동반 얼룩:RP vết loang cùng PD (PD동반얼룩 R/P)
+Matrix(4,9)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G5X-흑점,<적용한도>T5F-P_흑점:Điểm đen(흑점)
+Matrix(5,9)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>UFF-선형약암무리,<적용한도>TLR-선형약암무리:Cụm điểm tối yếu dạng đường
+Matrix(6,9)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3C-암점무리,<색상>K04-Black,<적용한도>T8U-원형암점무리:Mảng điểm tối hình tròn(원형암점무리)
+Matrix(7,9)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2K-선(Wave),<색상>K04-Black,<적용한도>T5H-P_흑선:Đường màu đen(흑선)
+Matrix(8,9)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2K-선(Wave),<색상>K0E-White,<적용한도>T5J-P_백선:Đường màu trắng(백선)
+
+[자주 사용하는 Code 조합(2)]
+Matrix(1,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0G-Hot bar,<형태>264-몽글이,<적용한도>T04-해당없음:Chuyển sang PQC(PQC 인계)
+Matrix(2,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G1R-백점,<적용한도>T56-P_백점:Điểm trắng(백점)
+Matrix(3,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3Q-원형,<색상>K06-Blue,<적용한도>T6G-P_원형얼룩_흑:Điểm trắng Blue (Blue백점)
+Matrix(4,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3Q-원형,<색상>K09-Green,<적용한도>T6G-P_원형얼룩_흑:Điểm trắng Green (Green백점)
+Matrix(5,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G3Q-원형,<색상>K0C-Red,<적용한도>T6G-P_원형얼룩_흑:Điểm trắng Red (Red백점)
+Matrix(6,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2S-세로띠형,<Map(위치)>Q23-Tab간격,<적용한도>T8K-P_세로B/DIM:B/DIM dọc(세로B/DIM)
+Matrix(7,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0D-Red Class,<형태>I9C-Vertical Difference Level,<적용한도>T04-해당없음:Bất thường Red(Red 단차)
+Matrix(8,1)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F06-Black Class,<형태>G27-Light leakage,<적용한도>T04-해당없음:Rò rỉ ảnh sáng (빛샘)
+Matrix(1,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F01-Unknown,<형태>G3A-Unknown,<적용한도>T04-해당없음:Lỗi Mura đặc biệt(특이얼룩)
+Matrix(2,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>G5G-Don't define,<적용한도>T04-해당없음:Lỗi Mura khác(기타얼룩)
+Matrix(3,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>583-모서리부정형,<적용한도>TMC-모서리부정형:Góc không định hình(모서리 부정형)
+Matrix(4,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>G3Q-원형,<적용한도>T6G-P_원형얼룩_흑:Loang nến/ hình tròn(원형 / 촛불 얼룩)
+Matrix(5,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>G4B-점형,<적용한도>T04-해당없음:Vết ố Moire(Moire 얼룩)
+Matrix(6,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F05-확인안함,<형태>G5G-해당없음,<적용한도>T04-해당없음:Dư ảnh GB BOX (GB BOX 잔상)
+Matrix(7,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>586-Corner abnormal color,<적용한도>T04-해당없음:Bất thường màu sắc ở góc
+Matrix(8,2)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>2T7-CB얼룩,<적용한도>TJC-CB얼룩:Vết ố CB(CB얼룩)
+Matrix(1,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G05-가로띠형,<적용한도>T62-P_가로띠_흑:Vạch Ngang(가로띠)
+Matrix(2,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G05-가로띠형,<Map(위치)>Q23-Tab간격,<적용한도>T8J-P_가로B/DIM:B/DIM ngang(가로B/DIM)
+Matrix(3,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G06-가로선형,<적용한도>T64-P_가로선_흑:Sọc ngang(가로선)
+Matrix(4,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G06-가로선형,<Map(위치)>Q0E-전면,<적용한도>T6A-P_전면가로선_흑:Vạch ngang cả màn hình (전면가로선)
+Matrix(5,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G1Y-부정형,<적용한도>T6J-P_부정형얼룩_흑:Mura không định hình(부정형얼룩)
+Matrix(6,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>ZB3-Stitch,<적용한도>TMJ-Stitch:Vết loang Stitch (스티치얼룩)
+Matrix(7,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2C-사선형,<적용한도>T6E-P_사선얼룩_흑:Vết loang chéo (사선 얼룩)
+Matrix(8,3)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2F-색감차,<적용한도>T8F-색이상:Lỗi khác biệt màu(색감차)
+Matrix(1,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2H-색이상,<적용한도>T8F-색이상:Bất thường màu sắc(색이상)
+Matrix(2,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2S-세로띠형,<적용한도>T66-P_세로띠_흑:Vạch DỌC (세로띠)
+Matrix(3,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2S-세로띠형,<색상>K0B-Magenta,<적용한도>TM2-XMB세로띠:Vạch dọc XMB (XMB세로띠)
+Matrix(4,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2T-세로선형,<적용한도>T68-P_세로선_흑:Sọc dọc(세로선)
+Matrix(5,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G2T-세로선형,<Map(위치)>Q0E-전면,<적용한도>T6C-P_전면세로선_흑:Sọc dọc cả màn hình (전면세로선)
+Matrix(6,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>581-Pinmiss,<적용한도>TM4-Pinmiss:Vết ố Pinmiss(Pinmiss 얼룩)
+Matrix(7,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>585-CST얼룩,<적용한도>TMF-CST얼룩:Vết ố CST(CST 얼룩)
+Matrix(8,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G50-타원형,<적용한도>T66-P_세로띠_흑:Vạch dọc hình tròn  (원형 세로띠)
+Matrix(1,5)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>G69-B&W,<적용한도>T12-T_조개얼룩:Vết loang hình sò(조개얼룩)
+Matrix(2,5)=<DUMMY>
+Matrix(3,5)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0C-LowGray Class,<형태>G5G-해당없음,<적용한도>TM3-LowGray계:Vết loang Gray 10(10Gray얼룩)
+Matrix(4,5)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0C-LowGray Class,<형태>G5G-해당없음,<색상>K04-Black,<적용한도>TM3-LowGray계:Phía trái/phải tối(좌우변어두움)
+Matrix(5,5)=<DUMMY>
+Matrix(6,5)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2C6-LowGrayAD:Sự bất thường màu sắc của Gradation dưới(저계조 색이상)
+Matrix(7,5)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2FR-저계조 Gamma 틀어짐:Gradiation có Gamma(저계조 Gamma 틀어짐 )
+Matrix(8,5)=<DUMMY>
+Matrix(1,6)=<DUMMY>
+Matrix(2,6)=<DUMMY>
+Matrix(3,6)=<DUMMY>
+Matrix(4,6)=<DUMMY>
+Matrix(5,6)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>2TS-Fraction Dim(static electricity):48hrs Panel khởi động phần Dim(Điện tĩnh)
+Matrix(6,6)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>4JK-Fraction Dim_2(static electricity):120hrs Panel khởi động phần Dim_2(Điện tĩnh)
+Matrix(7,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>2T0-끝단: SLDD_1,<상세형태>J0A-해당없음:SLDD_1
+Matrix(8,6)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>2TD-부분 Dim,<상세형태>J0A-해당없음:Part DIM  (부분DIM)
+Matrix(1,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>27Z-Register Error:Register Error
+Matrix(2,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>280-ACK Fail:ACK Fail
+Matrix(3,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>281-Check Sum Error:Check Sum Error
+Matrix(4,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2C8-CSO Sound NG:CSO Sound NG (Tiếng bất thường)
+Matrix(5,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2E9-CSO 떨림음:Lỗi âm thanh CSO (CSO 떨림음)
+Matrix(6,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2EA-CSO기타:Lỗi khác (CSO 기타)
+Matrix(7,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2FN-OFF RS Error:OFF RS Error (Lỗi OFF RS)
+Matrix(8,7)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>2GL-EDID:EDID (Shape)
+Matrix(1,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0G-Gradation Disorder:Bất thường Gradation (계조이상)
+Matrix(2,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0G-계조이상,<형태>H3G-IBAT: Sự bất thường của Gradation-IBAT (계조단차)
+Matrix(3,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0G-계조이상,<형태>H3H-IEXT: Sự bất thường màu sắc của Gradation-IEXT (계조색이상)
+Matrix(4,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G0L-Over Current:Dòng điện quá mức
+Matrix(5,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G2Y-Vertical Noise:Noise Thẳng đứng (수직Noise)
+Matrix(6,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>ZF3-반짝이 Noise:Noise lấp lánh (반짝이 Noise)
+Matrix(7,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G30-Horizontal Noise:Noise phẳng (수평Noise)
+Matrix(8,8)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G3L-Image Insensibility:Hình ảnh không cảm nhận (영상무감)
+Matrix(1,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G5G-Don't define:Don't define (Không có loại tương ứng)
+Matrix(2,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G5N-Abnormal Screen:Màn hình bất thường
+Matrix(3,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G64-AI/ODC Can't Reading:Lỗi nhận thức AI/ODC
+Matrix(4,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G7Z-Corresponding Error:Lỗi truyền thông tin M4
+Matrix(5,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G84-Pallet NG (can't be corrected):Pallet NG (Pallet không thể xử lý)
+Matrix(6,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>G8T-Short Test Error:Short Test Error
+Matrix(7,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>GHN-Low Current:Dòng điện thấp
+Matrix(8,9)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I52-BPC Error:BPC Error
+
+[자주 사용하는 Code 조합(3)]
+Matrix(1,1)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I53-Burnt Error:Burnt Error
+Matrix(2,1)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I54-FPGA Error:FPGA Error
+Matrix(3,1)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I56-Abnormal Display(Unilateral):Một bên bất thường (편측이상)
+Matrix(4,1)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>I57-Abnormal Display(Horizontal RT):RT ngang (가로RT)
+Matrix(5,1)=<부품>A06-Circuit,<불량대분류>B05-Appearance,<형태>G1T-Damage,<부품(위치)>R3C-User Connector:Lỗi CNT (CNT불량)
+Matrix(6,1)=<부품>A06-Circuit,<불량대분류>B05-Appearance,<형태>G5G-Don't define,<부품(위치)>R0G-Don't define:Ngoại quan PCB (PCB외관)
+Matrix(7,1)=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>G4S-Chop,<부품(위치)>R0G-Don't define:Panel Bị đâm (Panel찍힘)
+Matrix(8,1)=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>G56-Broken,<부품(위치)>R0G-Don't define:Panel broken (Panel파손)
+Matrix(1,2)=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>G9H-Name Pen,<부품(위치)>R0G-Don't define:Ngoại quan Panel (Panel외관)
+Matrix(2,2)=<부품>A0G-Panel,<불량대분류>B05-Appearance,<형태>IHW-Bezel_Pad Mura,<부품(위치)>R0G-Don't define:Lỗi Bezel (Bezel 불량)
+Matrix(3,2)=<부품>A0K-POL,<불량대분류>B04-Mura,<형태>G5G-Don't define:Vết ố Pol (Pol얼룩)
+Matrix(4,2)=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G0V-Bubble:Pol bọt khí (Pol 기포)
+Matrix(5,2)=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G21-Missing:Lỗi dán Pol (Pol부착불량)
+Matrix(6,2)=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G4S-Chop:Pol bị đâm (Pol 찍힘)
+Matrix(7,2)=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G52-탐:Cháy Pol (Pol탐)
+Matrix(8,2)=<부품>A0K-POL,<불량대분류>B05-Appearance,<형태>G5G-Don't define:Lỗi film bảo vệ Pol (Pol 보호필름불량)
+Matrix(1,3)=<부품>A0K-POL,<불량대분류>B06-Foreign Material,<형태>G5G-Don't define:Dị vật Pol (Pol이물)
+Matrix(2,3)=<부품>A1T-C-PCB,<불량대분류>B05-Appearance,<형태>G5G-Don't define,<연결정보>R0G-Don't define:Lỗi C-PCB (C-PCB불량)
+Matrix(3,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>5B4-진행성 흑점,<연결정보>L0H-해당없음:Điểm đen có khả năng phát sinh(진행성 흑점)
+Matrix(4,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>2FP-Laser Repair_실패,<연결정보>L3J-L/R 깨짐: L/R bị vỡ
+Matrix(5,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>2GM-PXL 수축,<연결정보>L0H-Don't define:Co rút PXL(PXL 수축)
+Matrix(6,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>535-Fade Out,<연결정보>L0H-Don't define: Fade Out
+Matrix(7,3)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>540-반휘반암,<연결정보>L0H-Don't define:Nửa sáng/Nửa tối
+Matrix(8,3)=<부품>A0G-Panel,<불량대분류>B27-GIP,<형태>46U-CMO GIP:CMO GIP
+Matrix(1,4)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>46V-CMO Signal:CMO signal
+Matrix(2,4)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>UE3-CMO 수직 반짝이 Noise:CMO Noise nháy thẳng đứng
+Matrix(3,4)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>UDE-CMO RT Noise:CMO RT Noise
+Matrix(4,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>47P-CMO 얼룩,<적용한도>TLN-CMO얼룩:CMO Mura
+Matrix(5,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>UE5-CMO Off 8Line 가로선,<적용한도>TMH-8Line가로선:CMO OFF 8 Line đường dọc
+Matrix(6,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>UE6-CMO On 8Line 가로선,<적용한도>TMH-8Line가로선:CMO ON 8 Line đường dọc
+Matrix(7,4)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F04-Don't define,<형태>UEC-CMO Black 뜸,<적용한도>TLM-CMO Black 뜸:CMO Hở Black phần giới hạn
+Matrix(8,4)=<부품>A0G-Panel,<불량대분류>B0D-PD,<형태>UEC-OSLB 보상불량,<연결정보>L0H-해당없음:OSLB PD(OC)
+Matrix(1,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>UEC-OSLB 보상불량,<상세형태>J0A-해당없음:OSLB LD(OC)
+Matrix(2,5)=<부품>A0G-Panel,<불량대분류>B04-Mura,<얼룩분류>F0A-Gray Class,<형태>UEC-OSLB 보상불량:vết loang OSLB(OC)
+Matrix(3,5)=<부품>A0G-Panel,<불량대분류>B01-Signal,<형태>UEC-OSLB 보상불량:OSLB signal(OC)
+Matrix(4,5)=<부품>A06-Circuit,<불량대분류>B01-Signal,<형태>UEC-OSLB 보상불량:OSLB signal(OS)
+Matrix(5,5)=<부품>A0S-Don't define,<불량대분류>B0L-Don't define,<형태>G5G-Don't define:Don't define-Don't define
+Matrix(6,5)=<부품>A0G-Panel,<불량대분류>B0B-LD,<형태>ZF2-532nm Repair,<상세형태>J0A-Don't define:532nm Repair LD
+Matrix(7,5)=<부품>A06-회로,<불량대분류>B01-구동,<형태>58G-PGVDD Board 누락:PGVDD Board thiếu sót PGVDD Board thiếu sót
+Matrix(8,5)=<부품>A0G-Panel,<불량대분류>B01-구동,<형태>5B3-PGVDD Spec NG:PGVDD Spec NG
+
+
+
+[Matrix 조합:Field#1,Field#2]
+A0G-Panel=B04-얼룩,B05-외관,B0B-LD,B0D-PD
+A0K-POL=B04-얼룩,B05-외관,B06-이물,B07-자재
+A0F-LCM=B01-구동
+A08-B/L=B01-구동,B04-얼룩,B05-외관,B06-이물
+A06-회로=B01-구동,B05-외관
+A01-기구물=B05-외관
+A03-부자재=B05-외관
+A0C-Drive IC=B0B-LD
+A0J-PCB=B0A-Bonding
+A0S-해당없음=B0L-해당없음
+
+[Panel-PD]
+G13-누름휘점=L0H-해당없음
+G1N-반전휘점=L0H-해당없음
+G3Y-이물휘점=L0H-해당없음
+G5G-해당없음=L01-3연결이상,L02-가로2연결,L04-개수Over,L0Q-Density
+G5T-휘점=L01-3연결이상,L02-가로2연결,L0G-최소거리,L0R-G,L0H-해당없음
+G89-Pinhole=L0H-해당없음
+
+[Panel-얼룩]
+<얼룩분류>=F02-잔상,F04-해당없음,F06-Black계,F08-C/T,F09-Flicker,F0A-Gray계
+<형태>=G05-가로띠형,G06-가로선형,G1B-돌기,G1P-반짝이,G1Y-부정형,G20-부정형빛샘,G27-빛샘,G2C-사선형,G2F-색감차,G2H-색이상,G2K-선(Wave),G2M-선형,G2T-세로선형,G3A-알수없음,G3F-액정무구동(미충진),G3Q-원형,G4B-점형,G4R-중력,G50-타원형,G55-테두리빛샘,G5G-해당없음,G8C-PXL 밝음무리,G8J-S/C(Line)
+
+[Panel-외관]
+G33-식각=R0G-해당없음
+G56-파손=R0G-해당없음
+G8L-Scratch=R0G-해당없음
+
+[Panel-LD]
+G4M-정전기(Data),G5G-해당없음,G6B-BG(전체패턴),G6H-BS(전체패턴),G6M-CG(Dim),G6R-CS(Dim),G9Y-정전기(Gate)
+
+[POL-얼룩]
+G1Q-백반,G5G-해당없음
+
+[POL-외관]
+G0V-기포,G14-눌림,G1D-뜸,G21-부착,G3K-연소,G4S-찍힘,G4Z-쿠닉,G5G-해당없음,G8L-Scratch
+
+[POL-이물]
+G2P-선형이물(실오라기),G4C-점형이물,G5G-해당없음
+
+[POL-자재]
+G5G-해당없음
+
+[PCB-Bonding]
+G1K-미압착
+
+[LCM-구동]
+G6N-CH NG,G7Z-M4통신에러,G84-Pallet 조치불가,G8T-Short Test 에러
+
+[Drive IC-LD]
+G4M-정전기(Data),G61-AG(특정패턴),G68-AS(특정패턴),G6B-BG(전체패턴),G6H-BS(전체패턴),G6M-CG(Dim),G6R-CS(Dim),G9Y-정전기(Gate)
+
+[B/L-구동]
+G0L-과전류,G1V-부분어두움,G49-점등불량,G5G-해당없음,G5N-화면이상,G63-AI 휘도가변 불량
+
+[B/L-얼룩]
+G1R-백점,G27-뱇샘,G2M-선형,G5G-해당없음,G5R-휘선,G5X-흑점,G8D-Ripple,G8R-Sheet주름
+
+[B/L-외관]
+G14-눌림=R0G-해당없음
+G4U-체결=R0P-B/L Screw,R2W-Sheet
+G56-파손=R0M-B/L CNT,R0Q-B/L Support Main,R3Z-Parts(Location)
+G5G-해당없음=R3Z-Parts(Location),R1W-Lamp Housing
+G8L-Scratch=R0G-해당없음
+
+[B/L-이물]
+G2P-선형이물(실오라기),G4C-점형이물
+
+[회로-구동]
+G0L-과전류,G0G-계조이상,G30-수평 Noise,G3L-영상무감,G5G-해당없음,G5N-화면이상,G64-AI/ODC 인식오류
+
+[회로-외관]
+G56-파손=R0G-해당없음
+
+[부자재-외관]
+G12-누락=R1Y-LCM Label
+G2X-수지(Si)=R0G-해당없음
+G56-파손=R1Y-LCM Label
+
+[기구물-외관]
+G1D-뜸=R38-Top Case
+G4S-찍힘=R38-Top Case
+G4U-체결=R38-Top Case
+G5G-해당없음=R0G-해당없음,R38-Top Case
+
+[해당없음-해당없음]
+G5G-해당없음,GAA-단종모델,GAB-개발모델
+
+[Panel-얼룩 Combi Code POPUP]
+POP(1)=추가입력:<색상>K04-Black,K05-Black&White,K09-Green,K0E-White
+POP(1)=추가입력:<경계/특징>M03-누름사라짐,M04-누름수준강함,M05-문지름검사,M0A-선명
+POP(1)=추가입력:<Map(위치)>Q01-국부,Q0E-전면,Q0G-주입구,Q23-tab간격
+
+[Panel-LD Combi Code POPUP]
+POP(1)=추가입력:<상세형태>J02-다선,J0F-휘점동반
+
+[B/L-얼룩 Combi Code POPUP]
+POP(1)=추가입력:<색상>K04-Black,K0E-White
+
+=

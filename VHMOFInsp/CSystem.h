@@ -70,6 +70,9 @@ public:
 	CEdit m_edtSyLWStartAddr1;
 	CEdit m_edtSyLWStartAddr2;
 	CComboBox m_cmbSyEcsEqpNumber;
+	CComboBox m_cmbSyRobotInspUnitNumber;
+	CEdit m_edtSyRobotLBStartAddr;
+	CEdit m_edtSyRobotLWStartAddr1;
 	CEdit m_edtSyMesServicePort;
 	CEdit m_edtSyMesNetwork;
 	CEdit m_edtSyMesDaemonPort;
@@ -82,6 +85,10 @@ public:
 	CEdit m_edtSyEasDaemonPort;
 	CEdit m_edtSyEasLocalSubject;
 	CEdit m_edtSyEasRemoteSubject;
+	CComboBox m_cmbSyDfsUse;
+	CIPAddressCtrl m_ipaSyDfsIPAddress;
+	CEdit m_edtSyDfsUserId;
+	CEdit m_edtSyDfsPassword;
 	CEdit m_edtSyModelFilePath;
 	CEdit m_edtSyPatternFilePath;
 	CEdit m_edtSyEdidFilePath;

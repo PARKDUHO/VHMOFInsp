@@ -63,18 +63,15 @@ UINT ThreadStatusRead_DIO(LPVOID pParam)
 			if (m_pApp->m_bLightCurationMute == FALSE)
 			{
 				m_pApp->m_bLightCurationMute = TRUE;
-				// 프로그램 처음 시작 시 MUTE I/O가 확인되면 강제로 한번은 MUTE 동작시킨다.
 				m_pApp->commApi->dio_LightCurtainMuteOnOff(TRUE);
 			}
-			else
+		}
+		else
+		{
+			if (m_pApp->m_bLightCurationMute == TRUE)
 			{
-				// MUTE SWITCH ON되면 LIGHT CURTAION MUTE 시킨다.
-				if (((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_1) == 0)
-					|| ((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_2) == 0)
-					)
-				{
-					m_pApp->commApi->dio_LightCurtainMuteOnOff(TRUE);
-				}
+				m_pApp->m_bLightCurationMute = FALSE;
+				m_pApp->commApi->dio_LightCurtainMuteOnOff(FALSE);
 			}
 		}
 		if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_ROBOT_IN_SENSOR_1)
@@ -997,6 +994,7 @@ void CVHMOFInspDlg::OnBnClickedBtnDioCtrlLedOn()
 void CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOff()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->m_bLightCurationMute = FALSE;
 	m_pApp->commApi->dio_LightCurtainMuteOnOff(OFF);
 }
 
@@ -1004,6 +1002,7 @@ void CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOff()
 void CVHMOFInspDlg::OnBnClickedBtnDioCtrlMuteOn()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->m_bLightCurationMute = TRUE;
 	m_pApp->commApi->dio_LightCurtainMuteOnOff(ON);
 }
 

@@ -327,9 +327,12 @@ BOOL CTestReady::Lf_FinalTestStart(int ch)
 	CTestPattern pattern_dlg;
 	pattern_dlg.m_nTargetCh = ch;
 
-	if (m_pApp->Lf_checkDoorOpenInterLock() == FALSE)
+	if (m_pApp->m_bUserIdIdle == TRUE)
 	{
-		goto ERR_EXCEPT;
+		if (m_pApp->Lf_checkDoorOpenInterLock() == FALSE)
+		{
+			goto ERR_EXCEPT;
+		}
 	}
 
 	if ((m_pApp->m_bUserIdPM == TRUE) || (m_pApp->m_bUserIdGieng == TRUE) || (m_pApp->m_bUserIdIdle == TRUE))

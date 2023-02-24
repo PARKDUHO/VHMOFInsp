@@ -1,0 +1,490 @@
+REASONCODE^DESCRIPTION^FIELD_1^FIELD_1_DESC^FIELD_2^FIELD_2_DESC^FIELD_3^FIELD_3_DESC^FIELD_4^FIELD_4_DESC^FIELD_5^FIELD_5_DESC
+A01-B05-G12-R2M^^A01^기구물^B05^외관^G12^누락^R2M^Screw^^
+A01-B05-G1D-R38^^A01^기구물^B05^외관^G1D^뜸^R38^Top Case^^
+A01-B05-G1T-R38^^A01^기구물^B05^외관^G1T^변형^R38^Top Case^^
+A01-B05-G22-R0G^^A01^기구물^B05^외관^G22^부착불량^R0G^해당없음^^
+A01-B05-G22-R11^^A01^기구물^B05^외관^G22^부착불량^R11^C/Shield^^
+A01-B05-G22-R2V^^A01^기구물^B05^외관^G22^부착불량^R2V^Serial Label^^
+A01-B05-G22-R36^^A01^기구물^B05^외관^G22^부착불량^R36^Tape^^
+A01-B05-G2W-R11^^A01^기구물^B05^외관^G2W^손상^R11^C/Shield^^
+A01-B05-G3P-R38^^A01^기구물^B05^외관^G3P^오염^R38^Top Case^^
+A01-B05-G4S-R38^^A01^기구물^B05^외관^G4S^찍힘^R38^Top Case^^
+A01-B05-G4V-R2M^^A01^기구물^B05^외관^G4V^체결불량^R2M^Screw^^
+A01-B05-G5G-R0G^^A01^기구물^B05^외관^G5G^해당없음^R0G^해당없음^^
+A01-B05-G5K-R38^^A01^기구물^B05^외관^G5K^혼입^R38^Top Case^^
+A01-B05-G8L-R38^^A01^기구물^B05^외관^G8L^Scratch^R38^Top Case^^
+A06-B05-G2W-R1G^^A06^회로^B05^외관^G2W^손상^R1G^FPC/FFC^^
+A06-B05-G3X-R3C^^A06^회로^B05^외관^G3X^이물^R3C^User Connector^^
+A06-B05-G4V-R1G^^A06^회로^B05^외관^G4V^체결불량^R1G^FPC/FFC^^
+A06-B05-G5G-R0G^^A06^회로^B05^외관^G5G^해당없음^R0G^해당없음^^
+A06-B0E-G0Z^^A06^회로^B0E^SMT^G0Z^냉땜^^^^
+A06-B0E-G12^^A06^회로^B0E^SMT^G12^누락^^^^
+A06-B0E-G3N^^A06^회로^B0E^SMT^G3N^오삽^^^^
+A06-B0E-G5G^^A06^회로^B0E^SMT^G5G^해당없음^^^^
+A06-B0E-G9A^^A06^회로^B0E^SMT^G9A^틀어짐^^^^
+A06-B0E-G9J^^A06^회로^B0E^SMT^G9J^미납^^^^
+A08-B05-G12-R0G^^A08^B/L^B05^외관^G12^누락^R0G^해당없음^^
+A08-B05-G1T-R0G^^A08^B/L^B05^외관^G1T^변형^R0G^해당없음^^
+A08-B05-G1T-R1Q^^A08^B/L^B05^외관^G1T^변형^R1Q^Inverter Connector^^
+A08-B05-G1T-R21^^A08^B/L^B05^외관^G1T^변형^R21^Nut^^
+A08-B05-G22-R1T^^A08^B/L^B05^외관^G22^부착불량^R1T^Label^^
+A08-B05-G28-R1Q^^A08^B/L^B05^외관^G28^빠짐^R1Q^Inverter Connector^^
+A08-B05-G2W-R1R^^A08^B/L^B05^외관^G2W^손상^R1R^Inverter Cover^^
+A08-B05-G38-R3E^^A08^B/L^B05^외관^G38^심선노출^R3E^Wire^^
+A08-B05-G3K-R1Q^^A08^B/L^B05^외관^G3K^연소^R1Q^Inverter Connector^^
+A08-B05-G4V-R0G^^A08^B/L^B05^외관^G4V^체결불량^R0G^해당없음^^
+A08-B05-G56-R0G^^A08^B/L^B05^외관^G56^파손^R0G^해당없음^^
+A08-B05-G5G-R0G^^A08^B/L^B05^외관^G5G^해당없음^R0G^해당없음^^
+A08-B05-G5G-R1T^^A08^B/L^B05^외관^G5G^해당없음^R1T^Label^^
+A0G-B04-F06-G3F-K02^^A0G^Panel^B04^얼룩^F06^Black계^G3F^액정무구동(미충진)^K02^해당없음
+A0G-B0B-G5G-J0M^^A0G^Panel^B0B^LD^G5G^해당없음^J0M^Pad부식^^
+A0G-B04-F06-G20-K02^^A0G^Panel^B04^얼룩^F06^Black계^G20^부정형빛샘^K02^해당없음
+A0G-B0D-G1B-L0Y^^A0G^Panel^B0D^PD^G1B^돌기^L0Y^R^^
+A0G-B0B-G71-J0A^^A0G^Panel^B0B^LD^G71^DO^J0A^해당없음^^
+A0G-B0B-G7L-J0A^^A0G^Panel^B0B^LD^G7L^GO^J0A^해당없음^^
+A0G-B0D-G13-L0G^^A0G^Panel^B0D^PD^G13^누름휘점^L0G^최소거리^^
+A0G-B05-G6P^^A0G^Panel^B05^외관^G6P^Crack^^^^
+A0G-B05-GCD^^A0G^Panel^B05^외관^GCD^Scribe^^^^
+A0G-B0D-G13-L0B^^A0G^Panel^B0D^PD^G13^누름휘점^L0B^세로2연결^^
+A0G-B0D-G13-L02^^A0G^Panel^B0D^PD^G13^누름휘점^L02^가로2연결^^
+A0G-B0D-G13-L04^^A0G^Panel^B0D^PD^G13^누름휘점^L04^개수Over^^
+A0G-B0D-G13-L0H^^A0G^Panel^B0D^PD^G13^누름휘점^L0H^해당없음^^
+A0G-B0D-G13-L0K^^A0G^Panel^B0D^PD^G13^누름휘점^L0K^B^^
+A0G-B0D-G13-L0Q^^A0G^Panel^B0D^PD^G13^누름휘점^L0Q^Density^^
+A0G-B0D-G13-L0R^^A0G^Panel^B0D^PD^G13^누름휘점^L0R^G^^
+A0G-B0D-G13-L0Y^^A0G^Panel^B0D^PD^G13^누름휘점^L0Y^R^^
+A0G-B0D-G1B-L0K^^A0G^Panel^B0D^PD^G1B^돌기^L0K^B^^
+A0G-B0D-G1B-L0R^^A0G^Panel^B0D^PD^G1B^돌기^L0R^G^^
+A08-B05-G5G-R21^^A08^B/L^B05^외관^G5G^해당없음^R21^Nut^^
+A08-B05-G5K-R0G^^A08^B/L^B05^외관^G5K^혼입^R0G^해당없음^^
+A08-B05-G5K-R1T^^A08^B/L^B05^외관^G5K^혼입^R1T^Label^^
+A08-B06-G0U^^A08^B/L^B06^이물^G0U^금속^^^^
+A08-B06-G2X^^A08^B/L^B06^이물^G2X^수지(Si)^^^^
+A08-B06-G35^^A08^B/L^B06^이물^G35^실오라기^^^^
+A08-B06-G4K^^A08^B/L^B06^이물^G4K^접착제^^^^
+A08-B06-G4P^^A08^B/L^B06^이물^G4P^종이^^^^
+A08-B06-G5G^^A08^B/L^B06^이물^G5G^해당없음^^^^
+A08-B06-G5Y^^A08^B/L^B06^이물^G5Y^ACF^^^^
+A08-B06-G6A^^A08^B/L^B06^이물^G6A^BA Tray^^^^
+A08-B06-G88^^A08^B/L^B06^이물^G88^PCB 가루^^^^
+A08-B06-G8B^^A08^B/L^B06^이물^G8B^POL 보호필름^^^^
+A08-B06-G8P^^A08^B/L^B06^이물^G8P^Sheet류^^^^
+A08-B06-G90^^A08^B/L^B06^이물^G90^Support Main^^^^
+A08-B07-G2V^^A08^B/L^B07^자재^G2V^속이물^^^^
+A0C-B05-G12^^A0C^TAB^B05^외관^G12^누락^^^^
+A0C-B05-G1C^^A0C^TAB^B05^외관^G1C^떨어짐^^^^
+A0C-B05-G4S^^A0C^TAB^B05^외관^G4S^찍힘^^^^
+A0C-B05-G56^^A0C^TAB^B05^외관^G56^파손^^^^
+A0C-B05-G5K^^A0C^TAB^B05^외관^G5K^혼입^^^^
+A0C-B05-G6P^^A0C^TAB^B05^외관^G6P^Crack^^^^
+A0C-B06-G3V^^A0C^TAB^B06^이물^G3V^유리가루^^^^
+A0C-B06-G5G^^A0C^TAB^B06^이물^G5G^해당없음^^^^
+A0C-B06-G66^^A0C^TAB^B06^이물^G66^AL^^^^
+A0C-B06-G6K^^A0C^TAB^B06^이물^G6K^C^^^^
+A0C-B06-G6S^^A0C^TAB^B06^이물^G6S^Cu^^^^
+A0C-B06-G6T^^A0C^TAB^B06^이물^G6T^CuSn^^^^
+A0C-B06-G7C^^A0C^TAB^B06^이물^G7C^Film^^^^
+A0C-B06-G8U^^A0C^TAB^B06^이물^G8U^Si^^^^
+A0C-B06-G91^^A0C^TAB^B06^이물^G91^Sus^^^^
+A0C-B0A-G19^^A0C^TAB^B0A^Bonding^G19^도전볼뭉침^^^^
+A0C-B0A-G3D^^A0C^TAB^B0A^Bonding^G3D^압착위치불량^^^^
+A0C-B0A-G5Z^^A0C^TAB^B0A^Bonding^G5Z^ACF미부착^^^^
+A0C-B0A-G60^^A0C^TAB^B0A^Bonding^G60^ACF부착불량^^^^
+A0C-B0C-G98^^A0C^TAB^B0C^M/A^G98^Θ축_틀어짐^^^^
+A0G-B01-G82^^A0G^Panel^B01^구동^G82^Open^^^^
+A0G-B01-G8S^^A0G^Panel^B01^구동^G8S^Short^^^^
+A0G-B05-G1L^^A0G^Panel^B05^외관^G1L^미연마^^^^
+A0G-B05-G33^^A0G^Panel^B05^외관^G33^식각^^^^
+A0G-B05-G56^^A0G^Panel^B05^외관^G56^파손^^^^
+A0G-B05-G5G^^A0G^Panel^B05^외관^G5G^해당없음^^^^
+A0G-B05-G6J^^A0G^Panel^B05^외관^G6J^Burr^^^^
+A0G-B05-G8L^^A0G^Panel^B05^외관^G8L^Scratch^^^^
+A0G-B05-G9H^^A0G^Panel^B05^외관^G9H^Name Pen^^^^
+A0G-B0B-G4M-J0A^^A0G^Panel^B0B^LD^G4M^정전기(Data)^J0A^해당없음^^
+A0G-B0B-G5G-J0A^^A0G^Panel^B0B^LD^G5G^해당없음^J0A^해당없음^^
+A0G-B0B-G5G-J0D^^A0G^Panel^B0B^LD^G5G^해당없음^J0D^휘선(누름시)^^
+A0G-B0B-G6Y-J09^^A0G^Panel^B0B^LD^G6Y^DDS^J09^이물성^^
+A0G-B0B-G6Y-J0A^^A0G^Panel^B0B^LD^G6Y^DDS^J0A^해당없음^^
+A0G-B0B-G6Y-J0N^^A0G^Panel^B0B^LD^G6Y^DDS^J0N^PTN불량^^
+A0G-B0B-G71-J05^^A0G^Panel^B0B^LD^G71^DO^J05^알수없음^^
+A0G-B0B-G71-J09^^A0G^Panel^B0B^LD^G71^DO^J09^이물성^^
+A0G-B0B-G72-J03^^A0G^Panel^B0B^LD^G72^DPO^J03^뜯김성^^
+A0G-B0B-G72-J05^^A0G^Panel^B0B^LD^G72^DPO^J05^알수없음^^
+A0G-B0B-G72-J0A^^A0G^Panel^B0B^LD^G72^DPO^J0A^해당없음^^
+A0G-B0B-G73-J05^^A0G^Panel^B0B^LD^G73^DPS^J05^알수없음^^
+A0G-B0B-G73-J09^^A0G^Panel^B0B^LD^G73^DPS^J09^이물성^^
+A0G-B0B-G73-J0N^^A0G^Panel^B0B^LD^G73^DPS^J0N^PTN불량^^
+A0G-B0B-G7H-J0A^^A0G^Panel^B0B^LD^G7H^Gate Dim^J0A^해당없음^^
+A0G-B0B-G7J-J05^^A0G^Panel^B0B^LD^G7J^GDS^J05^알수없음^^
+A0G-B0B-G7J-J09^^A0G^Panel^B0B^LD^G7J^GDS^J09^이물성^^
+A0G-B0B-G7J-J0N^^A0G^Panel^B0B^LD^G7J^GDS^J0N^PTN불량^^
+A0G-B0B-G7K-J09^^A0G^Panel^B0B^LD^G7K^GGS^J09^이물성^^
+A0G-B0B-G7K-J0A^^A0G^Panel^B0B^LD^G7K^GGS^J0A^해당없음^^
+A0G-B0B-G7K-J0N^^A0G^Panel^B0B^LD^G7K^GGS^J0N^PTN불량^^
+A0G-B0B-G7L-J05^^A0G^Panel^B0B^LD^G7L^GO^J05^알수없음^^
+A0G-B0B-G7L-J0N^^A0G^Panel^B0B^LD^G7L^GO^J0N^PTN불량^^
+A0G-B0B-G7M-J03^^A0G^Panel^B0B^LD^G7M^GPO^J03^뜯김성^^
+A0G-B0D-G5T-L01^^A0G^Panel^B0D^PD^G5T^휘점^L01^3연결이상^^
+A0G-B0D-G5T-L02^^A0G^Panel^B0D^PD^G5T^휘점^L02^가로2연결^^
+A0G-B0D-G5T-L04^^A0G^Panel^B0D^PD^G5T^휘점^L04^개수Over^^
+A0G-B0D-G5T-L0B^^A0G^Panel^B0D^PD^G5T^휘점^L0B^세로2연결^^
+A0G-B0D-G5T-L0G^^A0G^Panel^B0D^PD^G5T^휘점^L0G^최소거리^^
+A0G-B0D-G5T-L0H^^A0G^Panel^B0D^PD^G5T^휘점^L0H^해당없음^^
+A0G-B0D-G5T-L0K^^A0G^Panel^B0D^PD^G5T^휘점^L0K^B^^
+A0G-B0D-G5T-L0Q^^A0G^Panel^B0D^PD^G5T^휘점^L0Q^Density^^
+A0G-B0D-G6L-L0Y^^A0G^Panel^B0D^PD^G6L^CF뜯김^L0Y^R^^
+A0J-B05-G15^^A0J^PCB^B05^외관^G15^단선^^^^
+A0J-B05-G5G^^A0J^PCB^B05^외관^G5G^해당없음^^^^
+A0J-B05-G8S^^A0J^PCB^B05^외관^G8S^Short^^^^
+A0J-B06-G5G^^A0J^PCB^B06^이물^G5G^해당없음^^^^
+A0J-B0A-G1K^^A0J^PCB^B0A^Bonding^G1K^미압착^^^^
+A0J-B0A-G5Z^^A0J^PCB^B0A^Bonding^G5Z^ACF미부착^^^^
+A0J-B0C-G81^^A0J^PCB^B0C^M/A^G81^Θ축^^^^
+A0J-B0C-G96^^A0J^PCB^B0C^M/A^G96^X축^^^^
+A0K-B04-G2U^^A0K^POL^B04^얼룩^G2U^세정물기^^^^
+A0K-B04-G5G^^A0K^POL^B04^얼룩^G5G^해당없음^^^^
+A0K-B05-G0Q^^A0K^POL^B05^외관^G0Q^구겨짐^^^^
+A0K-B05-G0V^^A0K^POL^B05^외관^G0V^기포^^^^
+A0K-B05-G14^^A0K^POL^B05^외관^G14^눌림^^^^
+A0K-B05-G1D^^A0K^POL^B05^외관^G1D^뜸^^^^
+A0K-B05-G23^^A0K^POL^B05^외관^G23^부착정도^^^^
+A0K-B05-G3P^^A0K^POL^B05^외관^G3P^오염^^^^
+A0K-B05-G52^^A0K^POL^B05^외관^G52^탐^^^^
+A0K-B05-G5G^^A0K^POL^B05^외관^G5G^해당없음^^^^
+A0K-B05-G5K^^A0K^POL^B05^외관^G5K^혼입^^^^
+A0K-B06-G0J^^A0K^POL^B06^이물^G0J^고착형^^^^
+A0K-B06-G0U^^A0K^POL^B06^이물^G0U^금속^^^^
+A0K-B06-G1U^^A0K^POL^B06^이물^G1U^봉지^^^^
+A0K-B06-G37^^A0K^POL^B06^이물^G37^실오라기.외부^^^^
+A0K-B06-G3U^^A0K^POL^B06^이물^G3U^유기물뭉치^^^^
+A0K-B06-G3V^^A0K^POL^B06^이물^G3V^유리가루^^^^
+A0K-B07-G1Q^^A0K^POL^B07^자재^G1Q^백반^^^^
+A0K-B07-G4Z^^A0K^POL^B07^자재^G4Z^쿠닉^^^^
+A0K-B07-G5G^^A0K^POL^B07^자재^G5G^해당없음^^^^
+A0G-B04-F04-G4R-K02^^A0G^Panel^B04^얼룩^F04^해당없음^G4R^중력^K02^해당없음
+A0G-B04-F04-G5G-K02^^A0G^Panel^B04^얼룩^F04^해당없음^G5G^해당없음^K02^해당없음
+A0G-B04-F04-G5G-K05^^A0G^Panel^B04^얼룩^F04^해당없음^G5G^해당없음^K05^Black&White
+A0G-B04-F06-G20-K0E^^A0G^Panel^B04^얼룩^F06^Black계^G20^부정형빛샘^K0E^White
+A0G-B0B-G7M-J05^^A0G^Panel^B0B^LD^G7M^GPO^J05^알수없음^^
+A0G-B0B-G7M-J0A^^A0G^Panel^B0B^LD^G7M^GPO^J0A^해당없음^^
+A0G-B0B-G7N-J0K^^A0G^Panel^B0B^LD^G7N^GPS^J0K^ITO잔사^^
+A0G-B0B-G7N-J0N^^A0G^Panel^B0B^LD^G7N^GPS^J0N^PTN불량^^
+A0G-B0D-G5T-L0R^^A0G^Panel^B0D^PD^G5T^휘점^L0R^G^^
+A0G-B0D-G5T-L0Y^^A0G^Panel^B0D^PD^G5T^휘점^L0Y^R^^
+A0G-B0D-G6E-L0K^^A0G^Panel^B0D^PD^G6E^BM뜯김(내부)^L0K^B^^
+A0G-B0D-G6E-L0H^^A0G^Panel^B0D^PD^G6E^BM뜯김(내부)^L0H^해당없음^^
+A0G-B0D-G6E-L0R^^A0G^Panel^B0D^PD^G6E^BM뜯김(내부)^L0R^G^^
+A0G-B0D-G6F-L0H^^A0G^Panel^B0D^PD^G6F^BM뜯김(외곽)^L0H^해당없음^^
+A0G-B0D-G6E-L0Y^^A0G^Panel^B0D^PD^G6E^BM뜯김(내부)^L0Y^R^^
+A0G-B0D-G6L-L0H^^A0G^Panel^B0D^PD^G6L^CF뜯김^L0H^해당없음^^
+A0G-B0D-G6L-L0K^^A0G^Panel^B0D^PD^G6L^CF뜯김^L0K^B^^
+A0G-B0D-G6L-L0R^^A0G^Panel^B0D^PD^G6L^CF뜯김^L0R^G^^
+A0G-B04-F0A-G2T-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G2T^세로선형^K02^해당없음
+A0G-B04-F0A-G2T-K05^^A0G^Panel^B04^얼룩^F0A^Gray계^G2T^세로선형^K05^Black&White
+A0G-B04-F0A-G2T-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G2T^세로선형^K0E^White
+A0G-B04-F0A-G3Q-K01^^A0G^Panel^B04^얼룩^F0A^Gray계^G3Q^원형^K01^알수없음
+A0G-B04-F0A-G3Q-K04^^A0G^Panel^B04^얼룩^F0A^Gray계^G3Q^원형^K04^Black
+A0G-B04-F0A-G50-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G50^타원형^K0E^White
+A0G-B04-F0A-G5G-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G5G^해당없음^K02^해당없음
+A0G-B04-F0A-G5G-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G5G^해당없음^K0E^White
+A0G-B04-F0B-G1Y-K09^^A0G^Panel^B04^얼룩^F0B^Green계^G1Y^부정형^K09^Green
+A0G-B04-F0B-G4B-K09^^A0G^Panel^B04^얼룩^F0B^Green계^G4B^점형^K09^Green
+A0G-B04-F0D-G1Y-K0C^^A0G^Panel^B04^얼룩^F0D^Red계^G1Y^부정형^K0C^Red
+A0G-B04-F0D-G4B-K0C^^A0G^Panel^B04^얼룩^F0D^Red계^G4B^점형^K0C^Red
+A0G-B04-F0F-G20-K0E^^A0G^Panel^B04^얼룩^F0F^VAC^G20^부정형빛샘^K0E^White
+A06-B0E-G8S^^A06^회로^B0E^SMT^G8S^Short^^^^
+A08-B01-G5G^^A08^B/L^B01^구동^G5G^해당없음^^^^
+A08-B05-G12-R21^^A08^B/L^B05^외관^G12^누락^R21^Nut^^
+A08-B05-G2W-R0A^^A08^B/L^B05^외관^G2W^손상^R0A^수축 Tube^^
+A08-B05-G56-R1Q^^A08^B/L^B05^외관^G56^파손^R1Q^Inverter Connector^^
+A0G-B0B-G6W-J0A^^A0G^Panel^B0B^LD^G6W^Data Dim^J0A^해당없음^^
+A0G-B0B-G71-J0N^^A0G^Panel^B0B^LD^G71^DO^J0N^PTN불량^^
+A0G-B0B-G73-J0A^^A0G^Panel^B0B^LD^G73^DPS^J0A^해당없음^^
+A0G-B0B-G7J-J0A^^A0G^Panel^B0B^LD^G7J^GDS^J0A^해당없음^^
+A0G-B0B-G7L-J09^^A0G^Panel^B0B^LD^G7L^GO^J09^이물성^^
+A0G-B0D-G3H-L0Q^^A0G^Panel^B0D^PD^G3H^약휘점^L0Q^Density^^
+A0G-B0D-G3H-L0K^^A0G^Panel^B0D^PD^G3H^약휘점^L0K^B^^
+A0G-B0D-G13-L01^^A0G^Panel^B0D^PD^G13^누름휘점^L01^3연결이상^^
+A0G-B0D-G1N-L01^^A0G^Panel^B0D^PD^G1N^반전휘점^L01^3연결이상^^
+A0G-B0D-G1N-L02^^A0G^Panel^B0D^PD^G1N^반전휘점^L02^가로2연결^^
+A0G-B0D-G1N-L04^^A0G^Panel^B0D^PD^G1N^반전휘점^L04^개수Over^^
+A0G-B0D-G1N-L0B^^A0G^Panel^B0D^PD^G1N^반전휘점^L0B^세로2연결^^
+A0G-B0D-G1N-L0H^^A0G^Panel^B0D^PD^G1N^반전휘점^L0H^해당없음^^
+A0G-B0D-G1N-L0G^^A0G^Panel^B0D^PD^G1N^반전휘점^L0G^최소거리^^
+A0G-B0D-G1N-L0K^^A0G^Panel^B0D^PD^G1N^반전휘점^L0K^B^^
+A0G-B0D-G1N-L0Q^^A0G^Panel^B0D^PD^G1N^반전휘점^L0Q^Density^^
+A0G-B0D-G1N-L0Y^^A0G^Panel^B0D^PD^G1N^반전휘점^L0Y^R^^
+A0G-B0D-G1N-L0R^^A0G^Panel^B0D^PD^G1N^반전휘점^L0R^G^^
+A0G-B0D-G3B-L01^^A0G^Panel^B0D^PD^G3B^암점^L01^3연결이상^^
+A0G-B0D-G3B-L02^^A0G^Panel^B0D^PD^G3B^암점^L02^가로2연결^^
+A0G-B01-GC9^^A0G^Panel^B01^구동^GC9^분석용^^^^
+A0G-B01-G5N^^A0G^Panel^B01^구동^G5N^화면이상^^^^
+A0G-B05-G4S^^A0G^Panel^B05^외관^G4S^찍힘^^^^
+A0G-B0D-G3B-L04^^A0G^Panel^B0D^PD^G3B^암점^L04^개수Over^^
+A0G-B0D-G3B-L0B^^A0G^Panel^B0D^PD^G3B^암점^L0B^세로2연결^^
+A0G-B0D-G3B-L0G^^A0G^Panel^B0D^PD^G3B^암점^L0G^최소거리^^
+A0G-B0D-G3B-L0H^^A0G^Panel^B0D^PD^G3B^암점^L0H^해당없음^^
+A0G-B0D-G3B-L0Q^^A0G^Panel^B0D^PD^G3B^암점^L0Q^Density^^
+A0G-B0D-G3G-L04^^A0G^Panel^B0D^PD^G3G^약암점^L04^개수Over^^
+A0G-B0D-G3G-L0H^^A0G^Panel^B0D^PD^G3G^약암점^L0H^해당없음^^
+A0G-B0D-G3G-L0Q^^A0G^Panel^B0D^PD^G3G^약암점^L0Q^Density^^
+A0G-B0D-G3H-L04^^A0G^Panel^B0D^PD^G3H^약휘점^L04^개수Over^^
+A0G-B0D-G3H-L0H^^A0G^Panel^B0D^PD^G3H^약휘점^L0H^해당없음^^
+A0G-B04-F06-G4B-K04^^A0G^Panel^B04^얼룩^F06^Black계^G4B^점형^K04^Black
+A0G-B04-F06-G8K-K02^^A0G^Panel^B04^얼룩^F06^Black계^G8K^S/C(Spot)^K02^해당없음
+A0G-B04-F07-G1Y-K06^^A0G^Panel^B04^얼룩^F07^Blue계^G1Y^부정형^K06^Blue
+A0G-B04-F07-G3Q-K06^^A0G^Panel^B04^얼룩^F07^Blue계^G3Q^원형^K06^Blue
+A0G-B04-F07-G3Q-K09^^A0G^Panel^B04^얼룩^F07^Blue계^G3Q^원형^K09^Green
+A0G-B04-F07-G3Q-K0C^^A0G^Panel^B04^얼룩^F07^Blue계^G3Q^원형^K0C^Red
+A0G-B04-F07-G5G-K06^^A0G^Panel^B04^얼룩^F07^Blue계^G5G^해당없음^K06^Blue
+A0G-B04-F08-G2S-K02^^A0G^Panel^B04^얼룩^F08^C/T^G2S^세로띠형^K02^해당없음
+A0G-B04-F09-G5G-K02^^A0G^Panel^B04^얼룩^F09^Flicker^G5G^해당없음^K02^해당없음
+A0G-B04-F0A-G06-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G06^가로선형^K02^해당없음
+A0G-B04-F0A-G06-K04^^A0G^Panel^B04^얼룩^F0A^Gray계^G06^가로선형^K04^Black
+A0G-B04-F0A-G06-K05^^A0G^Panel^B04^얼룩^F0A^Gray계^G06^가로선형^K05^Black&White
+A0G-B04-F0A-G1Y-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G1Y^부정형^K02^해당없음
+A0G-B04-F0A-G1Y-K05^^A0G^Panel^B04^얼룩^F0A^Gray계^G1Y^부정형^K05^Black&White
+A0G-B04-F0A-G1Y-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G1Y^부정형^K0E^White
+A0G-B04-F0A-G20-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G20^부정형빛샘^K0E^White
+A0G-B04-F0A-G2F-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G2F^색감차^K02^해당없음
+A01-B05-G5G-R38^^A01^기구물^B05^외관^G5G^해당없음^R38^Top Case^^
+A08-B05-G56-R1T^^A08^B/L^B05^외관^G56^파손^R1T^Label^^
+A08-B06-G8U^^A08^B/L^B06^이물^G8U^Si^^^^
+A0C-B0C-G97^^A0C^TAB^B0C^M/A^G97^X축_틀어짐^^^^
+A0G-B0B-G73-J0K^^A0G^Panel^B0B^LD^G73^DPS^J0K^ITO잔사^^
+A0K-B05-G4S^^A0K^POL^B05^외관^G4S^찍힘^^^^
+A0G-B0B-G7N-J05^^A0G^Panel^B0B^LD^G7N^GPS^J05^알수없음^^
+A0G-B0D-G3H-L0Y^^A0G^Panel^B0D^PD^G3H^약휘점^L0Y^R^^
+A0G-B0D-G3H-L0R^^A0G^Panel^B0D^PD^G3H^약휘점^L0R^G^^
+A0G-B0D-G3Y-L01^^A0G^Panel^B0D^PD^G3Y^이물휘점^L01^3연결이상^^
+A0G-B0D-G3Y-L02^^A0G^Panel^B0D^PD^G3Y^이물휘점^L02^가로2연결^^
+A0G-B0D-G3Y-L04^^A0G^Panel^B0D^PD^G3Y^이물휘점^L04^개수Over^^
+A0G-B0D-G3Y-L0B^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0B^세로2연결^^
+A0G-B0D-G3Y-L0G^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0G^최소거리^^
+A0G-B0D-G3Y-L0H^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0H^해당없음^^
+A0G-B0D-G3Y-L0K^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0K^B^^
+A0G-B0D-G3Y-L0Q^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0Q^Density^^
+A0G-B0D-G3Y-L0R^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0R^G^^
+A0G-B0D-G3Y-L0Y^^A0G^Panel^B0D^PD^G3Y^이물휘점^L0Y^R^^
+A0G-B0D-G5S-L01^^A0G^Panel^B0D^PD^G5S^휘암점^L01^3연결이상^^
+A0G-B0D-G5S-L02^^A0G^Panel^B0D^PD^G5S^휘암점^L02^가로2연결^^
+A0G-B0D-G5S-L04^^A0G^Panel^B0D^PD^G5S^휘암점^L04^개수Over^^
+A0G-B0D-G5S-L0B^^A0G^Panel^B0D^PD^G5S^휘암점^L0B^세로2연결^^
+A0G-B0D-G5S-L0G^^A0G^Panel^B0D^PD^G5S^휘암점^L0G^최소거리^^
+A0G-B0D-G5S-L0H^^A0G^Panel^B0D^PD^G5S^휘암점^L0H^해당없음^^
+A0G-B0D-G89-L0H^^A0G^Panel^B0D^PD^G89^Pinhole^L0H^해당없음^^
+A0G-B0D-G89-L0K^^A0G^Panel^B0D^PD^G89^Pinhole^L0K^B^^
+A0G-B0D-G89-L0R^^A0G^Panel^B0D^PD^G89^Pinhole^L0R^G^^
+A0G-B0D-G89-L0Y^^A0G^Panel^B0D^PD^G89^Pinhole^L0Y^R^^
+A0G-B0D-GCF-L0H^^A0G^Panel^B0D^PD^GCF^이물백점^L0H^해당없음^^
+A0G-B0D-GCF-L0K^^A0G^Panel^B0D^PD^GCF^이물백점^L0K^B^^
+A0G-B0D-GCF-L0R^^A0G^Panel^B0D^PD^GCF^이물백점^L0R^G^^
+A0G-B0D-GCF-L0Y^^A0G^Panel^B0D^PD^GCF^이물백점^L0Y^R^^
+A0G-B0D-GCG-L0H^^A0G^Panel^B0D^PD^GCG^이물흑점^L0H^해당없음^^
+A0K-B05-G1J^^A0K^POL^B05^외관^G1J^미부착^^^^
+A01-B05-G2W-R38^^A01^기구물^B05^외관^G2W^손상^R38^Top Case^^
+A0K-B06-G85^^A0K^POL^B06^이물^G85^Panel Box가루^^^^
+A0C-B05-G0Y^^A0C^TAB^B05^외관^G0Y^꺽임^^^^
+A0C-B05-G59^^A0C^TAB^B05^외관^G59^펀칭불량^^^^
+A0C-B0M-G5G^^A0C^TAB^B0M^부품이상^G5G^해당없음^^^^
+A08-B04-G5G^^A08^B/L^B04^얼룩^G5G^해당없음^^^^
+A0C-B0M-G74^^A0C^TAB^B0M^부품이상^G74^DS(정전기)^^^^
+A0C-B0M-G82^^A0C^TAB^B0M^부품이상^G82^Open^^^^
+A0C-B0M-G8S^^A0C^TAB^B0M^부품이상^G8S^Short^^^^
+A0J-B05-G56^^A0J^PCB^B05^외관^G56^파손^^^^
+A0J-B05-G5K^^A0J^PCB^B05^외관^G5K^혼입^^^^
+A0J-B06-G87^^A0J^PCB^B06^이물^G87^Pb^^^^
+A0J-B06-G8Z^^A0J^PCB^B06^이물^G8Z^SR^^^^
+A0J-B0A-G60^^A0J^PCB^B0A^Bonding^G60^ACF부착불량^^^^
+A06-B05-G5D-R3S^^A06^회로^B05^외관^G5D^핀휨^R3S^User Connector Pin^^
+A06-B05-G1M-R3C^^A06^회로^B05^외관^G1M^밀림^R3C^User Connector^^
+A06-B05-G3X-R1G^^A06^회로^B05^외관^G3X^이물^R1G^FPC/FFC^^
+A06-B0M-G2Q^^A06^회로^B0M^부품이상^G2Q^성능이상^^^^
+A06-B0M-G3K^^A06^회로^B0M^부품이상^G3K^연소^^^^
+A06-B0M-G4G^^A06^회로^B0M^부품이상^G4G^접점불량^^^^
+A06-B0M-G5G^^A06^회로^B0M^부품이상^G5G^해당없음^^^^
+A06-B05-G1M-R3S^^A06^회로^B05^외관^G1M^밀림^R3S^User Connector Pin^^
+A06-B05-G1C-R3R^^A06^회로^B05^외관^G1C^떨어짐^R3R^PCB Pattern^^
+A06-B05-G2W-R3D^^A06^회로^B05^외관^G2W^손상^R3D^Vr^^
+A06-B05-G2W-R3C^^A06^회로^B05^외관^G2W^손상^R3C^User Connector^^
+A08-B01-GBT^^A08^B/L^B01^구동^GBT^Inverter 부품파손^^^^
+A08-B01-GBX^^A08^B/L^B01^구동^GBX^Lamp 파손^^^^
+A08-B04-G8Q^^A08^B/L^B04^얼룩^G8Q^Sheet오염^^^^
+A08-B04-G8R^^A08^B/L^B04^얼룩^G8R^Sheet주름^^^^
+A0S-B0L-GAA^^A0S^해당없음^B0L^해당없음^GAA^단종모델^^^^
+A0S-B0L-GAB^^A0S^해당없음^B0L^해당없음^GAB^개발모델^^^^
+A1N-B07-GJH^^A1N^FPR^B07^자재^GJH^Total Pitch^^^^
+A1N-B07-G4Z^^A1N^FPR^B07^자재^G4Z^쿠닉^^^^
+A1N-B05-GJG^^A1N^FPR^B05^외관^GJG^M/A^^^^
+A08-B04-GGH^^A08^B/L^B04^얼룩^GGH^백점_해당없음^^^^
+A08-B04-GGF^^A08^B/L^B04^얼룩^GGF^백점_눌림^^^^
+A08-B04-GGG^^A08^B/L^B04^얼룩^GGG^백점_이물^^^^
+A08-B04-GGN^^A08^B/L^B04^얼룩^GGN^화면가림_Sheet 조립 불량^^^^
+A08-B04-GGQ^^A08^B/L^B04^얼룩^GGQ^휘선_Lamp Housing 구겨짐^^^^
+A08-B04-GGU^^A08^B/L^B04^얼룩^GGU^Ripple_해당없음^^^^
+A0G-B04-F0A-G05-K04^^A0G^Panel^B04^얼룩^F0A^Gray계^G05^가로띠형^K04^Black
+A0G-B04-F0A-G05-K05^^A0G^Panel^B04^얼룩^F0A^Gray계^G05^가로띠형^K05^Black&White
+A0G-B04-F07-G06-K0E^^A0G^Panel^B04^얼룩^F07^Blue계^G06^가로선형^K0E^White
+A0G-B04-F0B-G06-K0E^^A0G^Panel^B04^얼룩^F0B^Green계^G06^가로선형^K0E^White
+A0G-B04-F0D-G06-K0E^^A0G^Panel^B04^얼룩^F0D^Red계^G06^가로선형^K0E^White
+A0G-B04-F0C-G0E-K02^^A0G^Panel^B04^얼룩^F0C^LowGray계^G0E^격자^K02^해당없음
+A0G-B04-F06-G0M-K05^^A0G^Panel^B04^얼룩^F06^Black계^G0M^교차띠형^K05^Black&White
+A0G-B04-F06-G2T-K05^^A0G^Panel^B04^얼룩^F06^Black계^G2T^세로선형^K05^Black&White
+A0G-B04-F06-G3Q-K02^^A0G^Panel^B04^얼룩^F06^Black계^G3Q^원형^K02^해당없음
+A0G-B04-F0A-G2K-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G2K^선(Wave)^K0E^White
+A0G-B04-F0A-G4B-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G4B^점형^K0E^White
+A0G-B04-F07-G4B-K0E^^A0G^Panel^B04^얼룩^F07^Blue계^G4B^점형^K0E^White
+A0G-B04-F0B-G4B-K0E^^A0G^Panel^B04^얼룩^F0B^Green계^G4B^점형^K0E^White
+A0G-B04-F0D-G4B-K0E^^A0G^Panel^B04^얼룩^F0D^Red계^G4B^점형^K0E^White
+A0G-B04-F03-G1Y-K02^^A0G^Panel^B04^얼룩^F03^특정PTN계^G1Y^부정형^K02^해당없음
+A0G-B04-F06-G1Y-K02^^A0G^Panel^B04^얼룩^F06^Black계^G1Y^부정형^K02^해당없음
+A0G-B04-F06-G2Z-K0E^^A0G^Panel^B04^얼룩^F06^Black계^G2Z^수직빛샘^K0E^White
+A0G-B04-F06-G31-K0E^^A0G^Panel^B04^얼룩^F06^Black계^G31^수평빛샘^K0E^White
+A0G-B04-F06-G8C-K0E^^A0G^Panel^B04^얼룩^F06^Black계^G8C^PXL 밝음무리^K0E^White
+A0G-B04-F0A-G2F-K06^^A0G^Panel^B04^얼룩^F0A^Gray계^G2F^색감차^K06^Blue
+A0G-B04-F0A-G2F-K0C^^A0G^Panel^B04^얼룩^F0A^Gray계^G2F^색감차^K0C^Red
+A0G-B04-F0A-G2C-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G2C^사선형^K0E^White
+A0G-B04-F0A-G2K-K05^^A0G^Panel^B04^얼룩^F0A^Gray계^G2K^선(Wave)^K05^Black&White
+A0G-B04-F0A-G2S-K05^^A0G^Panel^B04^얼룩^F0A^Gray계^G2S^세로띠형^K05^Black&White
+A0G-B04-F07-G2T-K0E^^A0G^Panel^B04^얼룩^F07^Blue계^G2T^세로선형^K0E^White
+A0G-B04-F0B-G2T-K0E^^A0G^Panel^B04^얼룩^F0B^Green계^G2T^세로선형^K0E^White
+A0G-B04-F0D-G2T-K0E^^A0G^Panel^B04^얼룩^F0D^Red계^G2T^세로선형^K0E^White
+A0G-B04-F0A-G2T-K04^^A0G^Panel^B04^얼룩^F0A^Gray계^G2T^세로선형^K04^Black
+A0G-B04-F0C-G2K-K04^^A0G^Panel^B04^얼룩^F0C^LowGray계^G2K^선(Wave)^K04^Black
+A0G-B04-F0C-G4B-K04^^A0G^Panel^B04^얼룩^F0C^LowGray계^G4B^점형^K04^Black
+A0G-B04-F0A-G3Q-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G3Q^원형^K02^해당없음
+A0G-B04-F02-G5G-K02^^A0G^Panel^B04^얼룩^F02^잔상^G5G^해당없음^K02^해당없음
+A0G-B04-F0A-G69-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G69^B&W^K02^해당없음
+A0G-B04-F0D-G69-K02^^A0G^Panel^B04^얼룩^F0D^Red계^G69^B&W^K02^해당없음
+A0G-B04-F07-G69-K02^^A0G^Panel^B04^얼룩^F07^Blue계^G69^B&W^K02^해당없음
+A0G-B04-F0B-G69-K02^^A0G^Panel^B04^얼룩^F0B^Green계^G69^B&W^K02^해당없음
+A0G-B04-F0A-G4R-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G4R^중력^K0E^White
+A0G-B04-F06-G8C-K05^^A0G^Panel^B04^얼룩^F06^Black계^G8C^PXL 밝음무리^K05^Black&White
+A0G-B04-F0A-G2K-K04^^A0G^Panel^B04^얼룩^F0A^Gray계^G2K^선(Wave)^K04^Black
+A0G-B04-F0A-G4B-K04^^A0G^Panel^B04^얼룩^F0A^Gray계^G4B^점형^K04^Black
+A0G-B04-F06-G06-K04^^A0G^Panel^B04^얼룩^F06^Black계^G06^가로선형^K04^Black
+A0G-B04-F06-G2T-K04^^A0G^Panel^B04^얼룩^F06^Black계^G2T^세로선형^K04^Black
+A0G-B04-F0A-G05-K03^^A0G^Panel^B04^얼룩^F0A^Gray계^G05^가로띠형^K03^확인안함
+A0G-B04-F08-G5G-K02^^A0G^Panel^B04^얼룩^F08^C/T^G5G^해당없음^K02^해당없음
+A0G-B04-F06-G8J-K05^^A0G^Panel^B04^얼룩^F06^Black계^G8J^S/C(Line)^K05^Black&White
+A0G-B04-F0A-G55-K02^^A0G^Panel^B04^얼룩^F0A^Gray계^G55^테두리빛샘^K02^해당없음
+A0G-B04-F0A-G55-K0E^^A0G^Panel^B04^얼룩^F0A^Gray계^G55^테두리빛샘^K0E^White
+A0G-B04-F0A-G2F-K09^^A0G^Panel^B04^얼룩^F0A^Gray계^G2F^색감차^K09^Green
+A0G-B05-GCB^^A0G^Panel^B05^외관^GCB^연마벨트S/C^^^^
+A0G-B04-T10^^A0G^Panel^B04^얼룩^T10^T_물방울얼룩^^^^
+A0G-B04-T16^^A0G^Panel^B04^얼룩^T16^T_Lens얼룩^^^^
+A0G-B04-T15^^A0G^Panel^B04^얼룩^T15^T_SCAN 얼룩^^^^
+A0G-B04-T2E^^A0G^Panel^B04^얼룩^T2E^F_조개얼룩^^^^
+A0G-B04-T3A^^A0G^Panel^B04^얼룩^T3A^C_Seal Gap_선형^^^^
+A0G-B04-T3B^^A0G^Panel^B04^얼룩^T3B^C_Seal Gap_국부적^^^^
+A0G-B04-T3Q^^A0G^Panel^B04^얼룩^T3Q^C_VAC^^^^
+A0G-B04-T4F^^A0G^Panel^B04^얼룩^T4F^T_엠보싱얼룩_흑^^^^
+A0G-B04-T4U^^A0G^Panel^B04^얼룩^T4U^C_주입구얼룩^^^^
+A0G-B04-T51^^A0G^Panel^B04^얼룩^T51^P_군집성 PI 손상-G^^^^
+A0G-B04-T54^^A0G^Panel^B04^얼룩^T54^P_기타2^^^^
+A0G-B04-T55^^A0G^Panel^B04^얼룩^T55^P_기타3^^^^
+A0G-B04-T5G^^A0G^Panel^B04^얼룩^T5G^P_Panel 눌림^^^^
+A0G-B04-T5H^^A0G^Panel^B04^얼룩^T5H^P_흑선^^^^
+A0G-B04-T5J^^A0G^Panel^B04^얼룩^T5J^P_백선^^^^
+A0G-B04-T5Q^^A0G^Panel^B04^얼룩^T5Q^C_빛샘^^^^
+A0G-B04-T60^^A0G^Panel^B04^얼룩^T60^P_잔상^^^^
+A0G-B04-T5Z^^A0G^Panel^B04^얼룩^T5Z^T_Flicker^^^^
+A0G-B04-T5V^^A0G^Panel^B04^얼룩^T5V^T_C/T^^^^
+A0G-B04-T64^^A0G^Panel^B04^얼룩^T64^P_가로선_흑^^^^
+A0G-B04-T63^^A0G^Panel^B04^얼룩^T63^P_가로띠_백^^^^
+A0G-B04-T65^^A0G^Panel^B04^얼룩^T65^P_가로선_백^^^^
+A0G-B04-T6A^^A0G^Panel^B04^얼룩^T6A^P_전면가로선_흑^^^^
+A0G-B04-T6C^^A0G^Panel^B04^얼룩^T6C^P_전면세로선_흑^^^^
+A0G-B04-T6E^^A0G^Panel^B04^얼룩^T6E^P_사선얼룩_흑^^^^
+A08-B01-GH4^^A08^B/L^B01^구동^GH4^Inverter 성능이상^^^^
+A0K-B07-GGY^^A0K^POL^B07^자재^GGY^PIT_점착제 눌림^^^^
+A0C-B0M-GGZ^^A0C^TAB^B0M^부품이상^GGZ^IC성능불량^^^^
+A0C-B06-GH1^^A0C^TAB^B06^이물^GH1^Sn^^^^
+A0K-B05-GCL^^A0K^POL^B05^외관^GCL^표면 Scratch^^^^
+A0K-B06-G5G^^A0K^POL^B06^이물^G5G^해당없음^^^^
+A08-B04-GJ3^^A08^B/L^B04^얼룩^GJ3^Sheet-Scratch_내부^^^^
+A0K-B07-GJL^^A0K^POL^B07^자재^GJL^내부이물_비액정계^^^^
+A0K-B06-GFN^^A0K^POL^B06^이물^GFN^물때^^^^
+A08-B04-GGM^^A08^B/L^B04^얼룩^GGM^색이상_해당없음^^^^
+A08-B04-GGL^^A08^B/L^B04^얼룩^GGL^색이상_Lamp 불량^^^^
+A08-B04-GGR^^A08^B/L^B04^얼룩^GGR^휘선_해당없음^^^^
+A08-B04-GGS^^A08^B/L^B04^얼룩^GGS^Ripple_도광판휨^^^^
+A08-B04-GGJ^^A08^B/L^B04^얼룩^GGJ^빛샘_기구간섭^^^^
+A08-B04-GGK^^A08^B/L^B04^얼룩^GGK^빛샘_해당없음^^^^
+A0G-B04-T0Z^^A0G^Panel^B04^얼룩^T0Z^T_깨알얼룩^^^^
+A0G-B04-T14^^A0G^Panel^B04^얼룩^T14^T_Chuck얼룩^^^^
+A0G-B04-T17^^A0G^Panel^B04^얼룩^T17^P_우네리^^^^
+A0G-B04-T35^^A0G^Panel^B04^얼룩^T35^C_과충진^^^^
+A0G-B04-T36^^A0G^Panel^B04^얼룩^T36^C_미충진^^^^
+A0G-B04-T48^^A0G^Panel^B04^얼룩^T48^C_내부S/C^^^^
+A0G-B04-T50^^A0G^Panel^B04^얼룩^T50^P_군집성 PI 손상-B^^^^
+A0G-B04-T52^^A0G^Panel^B04^얼룩^T52^P_군집성 PI 손상-R^^^^
+A0G-B04-T56^^A0G^Panel^B04^얼룩^T56^P_백점^^^^
+A0G-B04-T59^^A0G^Panel^B04^얼룩^T59^P_색감차^^^^
+A0G-B04-T5F^^A0G^Panel^B04^얼룩^T5F^P_흑점^^^^
+A0G-B04-T5K^^A0G^Panel^B04^얼룩^T5K^C_러빙세로선^^^^
+A0G-B04-T5S^^A0G^Panel^B04^얼룩^T5S^C_Dotting 자국^^^^
+A0G-B04-T66^^A0G^Panel^B04^얼룩^T66^P_세로띠_흑^^^^
+A0G-B04-T67^^A0G^Panel^B04^얼룩^T67^P_세로띠_백^^^^
+A0G-B04-T6B^^A0G^Panel^B04^얼룩^T6B^P_전면가로선_백^^^^
+A0K-B07-G8L^^A0K^POL^B07^자재^G8L^Scratch^^^^
+A08-B04-GGP^^A08^B/L^B04^얼룩^GGP^화면가림_해당없음^^^^
+A08-B04-GGT^^A08^B/L^B04^얼룩^GGT^Ripple_기구간섭^^^^
+A0G-B04-T0X^^A0G^Panel^B04^얼룩^T0X^T_타이어얼룩^^^^
+A0G-B04-T12^^A0G^Panel^B04^얼룩^T12^T_조개얼룩^^^^
+A0G-B04-T34^^A0G^Panel^B04^얼룩^T34^C_격자얼룩^^^^
+A0G-B04-T3H^^A0G^Panel^B04^얼룩^T3H^C_러빙얼룩^^^^
+A0G-B04-T3N^^A0G^Panel^B04^얼룩^T3N^C_얼룩성빛샘_TOUCH^^^^
+A0G-B04-T4E^^A0G^Panel^B04^얼룩^T4E^T_엠보싱얼룩_백^^^^
+A0G-B04-T53^^A0G^Panel^B04^얼룩^T53^P_기타1^^^^
+A0G-B04-T5L^^A0G^Panel^B04^얼룩^T5L^C_러빙Edge띠^^^^
+A0G-B04-T5M^^A0G^Panel^B04^얼룩^T5M^C_러빙S/C^^^^
+A0G-B04-T61^^A0G^Panel^B04^얼룩^T61^P_Even/Odd^^^^
+A0G-B04-T62^^A0G^Panel^B04^얼룩^T62^P_가로띠_흑^^^^
+A0G-B04-T69^^A0G^Panel^B04^얼룩^T69^P_세로선_백^^^^
+A0G-B04-T68^^A0G^Panel^B04^얼룩^T68^P_세로선_흑^^^^
+A0G-B04-T6D^^A0G^Panel^B04^얼룩^T6D^P_전면세로선_백^^^^
+A0G-B04-T6F^^A0G^Panel^B04^얼룩^T6F^P_사선얼룩_백^^^^
+A0G-B04-T6G^^A0G^Panel^B04^얼룩^T6G^P_원형얼룩_흑^^^^
+A0G-B04-T6J^^A0G^Panel^B04^얼룩^T6J^P_부정형얼룩_흑^^^^
+A0G-B04-T6H^^A0G^Panel^B04^얼룩^T6H^P_원형얼룩_백^^^^
+A0G-B04-T6K^^A0G^Panel^B04^얼룩^T6K^P_부정형얼룩_백^^^^
+A08-B01-GH5^^A08^B/L^B01^구동^GH5^Lamp 성능이상^^^^
+A0C-B0M-GH0^^A0C^TAB^B0M^부품이상^GH0^Bump 이물^^^^
+A0G-B01-GB4^^A0G^Panel^B01^구동^GB4^LOG Open^^^^
+A08-B04-GJ2^^A08^B/L^B04^얼룩^GJ2^Sheet-Scratch_표면^^^^
+A1N-B04-G5G^^A1N^FPR^B04^얼룩^G5G^해당없음^^^^
+A1N-B05-G0Q^^A1N^FPR^B05^외관^G0Q^구겨짐^^^^
+A1N-B05-G14^^A1N^FPR^B05^외관^G14^눌림^^^^
+A1N-B05-G1D^^A1N^FPR^B05^외관^G1D^뜸^^^^
+A1N-B05-G3M^^A1N^FPR^B05^외관^G3M^오부착^^^^
+A1N-B05-G52^^A1N^FPR^B05^외관^G52^탐^^^^
+A1N-B05-G5G^^A1N^FPR^B05^외관^G5G^해당없음^^^^
+A1N-B05-GCL^^A1N^FPR^B05^외관^GCL^표면 Scratch^^^^
+A1N-B06-G0U^^A1N^FPR^B06^이물^G0U^금속^^^^
+A1N-B06-G85^^A1N^FPR^B06^이물^G85^Panel Box가루^^^^
+A1N-B06-G37^^A1N^FPR^B06^이물^G37^실오라기.외부^^^^
+A1N-B07-G1Q^^A1N^FPR^B07^자재^G1Q^백반^^^^
+A1N-B07-G8L^^A1N^FPR^B07^자재^G8L^Scratch^^^^
+A1N-B07-GJJ^^A1N^FPR^B07^자재^GJJ^개별 Pitch 직진도^^^^
+A1N-B07-GJL^^A1N^FPR^B07^자재^GJL^내부이물_비액정계^^^^
+A1N-B05-G1J^^A1N^FPR^B05^외관^G1J^미부착^^^^
+A1N-B06-G3U^^A1N^FPR^B06^이물^G3U^유기물뭉치^^^^
+A1N-B07-GJF^^A1N^FPR^B07^자재^GJF^내부이물_실오라기^^^^
+A0K-B07-GJD^^A0K^POL^B07^자재^GJD^내부이물_액정계^^^^
+A1N-B06-G0J^^A1N^FPR^B06^이물^G0J^고착형^^^^
+A1N-B06-G1U^^A1N^FPR^B06^이물^G1U^봉지^^^^
+A1N-B05-G0V^^A1N^FPR^B05^외관^G0V^기포^^^^
+A1N-B07-GGY^^A1N^FPR^B07^자재^GGY^PIT_점착제 눌림^^^^
+A0C-B0A-G1K^^A0C^TAB^B0A^Bonding^G1K^미압착^^^^
+A0K-B07-GJF^^A0K^POL^B07^자재^GJF^내부이물_실오라기^^^^
+A1N-B05-G23^^A1N^FPR^B05^외관^G23^부착정도^^^^
+A1N-B05-G4S^^A1N^FPR^B05^외관^G4S^찍힘^^^^
+A1N-B05-G5K^^A1N^FPR^B05^외관^G5K^혼입^^^^
+A1N-B06-G3V^^A1N^FPR^B06^이물^G3V^유리가루^^^^
+A1N-B07-G5G^^A1N^FPR^B07^자재^G5G^해당없음^^^^
+A1N-B07-GJK^^A1N^FPR^B07^자재^GJK^내부 Pattern 반전^^^^
+A1N-B05-G4Y^^A1N^FPR^B05^외관^G4Y^층간박리^^^^
+A1N-B05-G3P^^A1N^FPR^B05^외관^G3P^오염^^^^
+A1N-B06-G5G^^A1N^FPR^B06^이물^G5G^해당없음^^^^
+A1N-B07-GJD^^A1N^FPR^B07^자재^GJD^내부이물_액정계^^^^

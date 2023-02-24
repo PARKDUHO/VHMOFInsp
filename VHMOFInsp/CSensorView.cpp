@@ -5,6 +5,7 @@
 #include "VHMOFInsp.h"
 #include "CSensorView.h"
 #include "CPassword.h"
+//#include "BufferDC.h"
 #include "afxdialogex.h"
 
 
@@ -46,6 +47,7 @@ BEGIN_MESSAGE_MAP(CSensorView, CDialog)
 	ON_BN_CLICKED(IDC_BTN_SV_RIGHT_DOOR_OPEN, &CSensorView::OnBnClickedBtnSvRightDoorOpen)
 	ON_BN_CLICKED(IDC_BTN_SV_LEFT_DOOR_CLOSE, &CSensorView::OnBnClickedBtnSvLeftDoorClose)
 	ON_BN_CLICKED(IDC_BTN_SV_RIGHT_DOOR_CLOSE, &CSensorView::OnBnClickedBtnSvRightDoorClose)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -354,8 +356,17 @@ HBRUSH CSensorView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 }
 
 
+BOOL CSensorView::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	//return TRUE;
+	return CDialog::OnEraseBkgnd(pDC);
+}
+
+
 void CSensorView::OnPaint()
 {
+	//CBufferDC dc(this); // device context for painting
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialog::OnPaint()을(를) 호출하지 마십시오.

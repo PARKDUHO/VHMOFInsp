@@ -6,8 +6,9 @@
 
 #define CODE_QSPI_USE					0
 #define CODE_PATTERN_POWER_SET_USE		0
-#define CODE_DFS_SETTING_USE			0
+#define CODE_DFS_SETTING_USE			1
 
+#define MES_COMBI_CODE_USE				0
 
 /////////////////////////////////////////////////////////////////////////////Đs
 #define PGM_VERSION						_T("1.0.0_R1")
@@ -17,7 +18,7 @@
 #define MLOG_MAX_LENGTH					16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_TCP_RECEIVE_OK			0
+#define DEBUG_TCP_RECEIVE_OK			1
 #define	DEBUG_GMES_TEST_SERVER			0
 #define DEBUG_TCP_COMM_LOG				0
 #define DEBUG_PALLET_ARRIVE				0
@@ -128,13 +129,19 @@
 #define INSP_TYPE_NONE_CARRIER			1
 
 /////////////////////////////////////////////////////////////////////////////
-#define ECS_OFFLINE						0
-#define ECS_ONLINE						1
+// LINE TYPE
+/////////////////////////////////////////////////////////////////////////////
+#define LINE_TYPE_CGA					0
+#define LINE_TYPE_CP					1
+#define LINE_TYPE_OQC					2
+#define LINE_TYPE_ASSEMBLY				3
 
 /////////////////////////////////////////////////////////////////////////////
 #define EQP_STATUS_RUN					1
 #define EQP_STATUS_IDLE					2
 #define EQP_STATUS_DOWN					3
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 //DIO
@@ -660,13 +667,6 @@ typedef enum _COLOR_IDX_{
 #define CMD_DIO_TIME_OUT					0xFF
 
 
-/////////////////////////////////////////////////////////////////////////////
-// LINE TYPE
-/////////////////////////////////////////////////////////////////////////////
-#define LINE_TYPE_CGA						0
-#define LINE_TYPE_CP						1
-#define LINE_TYPE_OQC						2
-#define LINE_TYPE_ASSEMBLY					3
 
 /////////////////////////////////////////////////////////////////////////////
 // MELSEC 통신 ErrorCode Define
@@ -780,6 +780,7 @@ enum
 	CONN_DIO1,
 	CONN_DIO2,
 	CONN_MELSEC,
+	CONN_DFS,
 	CONN_MAX
 };
 

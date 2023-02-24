@@ -42,6 +42,7 @@ CVHMOFInspApp::CVHMOFInspApp()
 	m_pCimNet			= new CCimNetCommApi;
 	pMelsecnetG			= new CMelsecnetG;
 	pModuleECS			= new CModuleECS;
+	lpFtpDFS			= new CFTPInterface;
 
 
 	m_pStaticMainLog = NULL;
@@ -876,13 +877,18 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 	Read_SysIniFile(_T("SYSTEM"),			_T("CARRIER_TYPE"),				&lpSystemInfo->m_nCarrierType);
 
 	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_ONLINE_MODE"),			&lpSystemInfo->m_nEcsOnLineMode);
-	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LB_START_ADDR"),		&sValue);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_EQP_LB_START_ADDR"),	&sValue);
 	lpSystemInfo->m_nLBStartAddr = _tcstol(sValue, NULL, 16);
-	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDR1"),	&sValue);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_EQP_LW_START_ADDR1"),	&sValue);
 	lpSystemInfo->m_nLWStartAddr1 = _tcstol(sValue, NULL, 16);
-	Read_SysIniFile(_T("SYSTEM"),			_T("MELSEC_LW_START_ADDR2"),	&sValue);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_EQP_LW_START_ADDR2"),	&sValue);
 	lpSystemInfo->m_nLWStartAddr2 = _tcstol(sValue, NULL, 16);
 	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_EQP_NUMBER"),			&lpSystemInfo->m_nEcsEqpNumber);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_ROBOT_INSP_UNIT_NUMBER"),	&lpSystemInfo->m_nRobotInspUnitNumber);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_ROBOT_LB_START_ADDR"),	&sValue);
+	lpSystemInfo->m_nRobotLBStartAddr = _tcstol(sValue, NULL, 16);
+	Read_SysIniFile(_T("SYSTEM"),			_T("ECS_ROBOT_LW_START_ADDR1"), &sValue);
+	lpSystemInfo->m_nRobotLWStartAddr1 = _tcstol(sValue, NULL, 16);
 
 	Read_SysIniFile(_T("MES"),				_T("MES_SERVICE"),				&lpSystemInfo->m_sMesServicePort);
 	Read_SysIniFile(_T("MES"),				_T("MES_NETWORK"),				&lpSystemInfo->m_sMesNetWork);
@@ -1673,6 +1679,166 @@ BOOL CVHMOFInspApp::Lf_checkDoorOpenInterLock()
 	}
 
 	return TRUE;
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+// FTP 접속/다운로드/업로드 코드 알고리즘
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CVHMOFInspApp::Gf_ftpConnectDFS()
+{
+	swprintf_s(lpFtpDFS->m_stFtpInfo.wszIpAddress, lpSystemInfo->m_sDfsIPAddress);
+	lpFtpDFS->m_stFtpInfo.nServerPort = 21;
+	lpFtpDFS->m_stFtpInfo.dwFlags = INTERNET_FLAG_PASSIVE;
+	swprintf_s(lpFtpDFS->m_stFtpInfo.wszUserName, lpSystemInfo->m_sDfsUserId);
+	swprintf_s(lpFtpDFS->m_stFtpInfo.wszPassword, lpSystemInfo->m_sDfsPassword);
+
+
+	Gf_writeMLog("<FTP> DFS SERVER Connecting...");
+
+	lpFtpDFS->ftp_Disconnect();
+	Sleep(300);
+
+	int timeOutDelay = 3000;  // 3000ms
+	if (lpFtpDFS->ftp_Connect(timeOutDelay) == FALSE)
+	{
+		Gf_writeMLog("<FTP> DFS SERVER Connect Fail.");
+		return FALSE;
+	}
+
+	Gf_writeMLog("<FTP> DFS SERVER Connect Success.");
+	Sleep(200);
+
+	return TRUE;
+}
+
+BOOL CVHMOFInspApp::Gf_ftpDisConnectDFS()
+{
+	Gf_writeMLog("<FTP> DFS SERVER Disconnect");
+	lpFtpDFS->ftp_Disconnect();
+
+	return TRUE;
+}
+
+CString CVHMOFInspApp::Gf_ftpGetModuleIniFilaName()
+{
+	CStringArray arrFileName;
+	CString strNewName;
+	CString strName;
+
+	if (lpFtpDFS->ftp_getFileNameList(&arrFileName, _T("*VN.ANSI*.ini")) == TRUE)
+	{
+		return arrFileName.GetAt(arrFileName.GetCount() - 1);
+	}
+	else
+	{
+		return _T("");
+	}
+}
+
+BOOL CVHMOFInspApp::Gf_ftpSetHomeDirectory()
+{
+	if (lpSystemInfo->m_sDfsIPAddress == _T("127.0.0.1"))
+	{
+		return lpFtpDFS->ftp_SetCurrentDirectory(_T("\\"));
+	}
+	else
+	{
+		return lpFtpDFS->ftp_SetCurrentDirectory(_T("~"));
+	}
+}
+
+BOOL CVHMOFInspApp::Gf_ftpSetCurrentDirectory(CString strPath)
+{
+	return lpFtpDFS->ftp_SetCurrentDirectory(strPath);
+}
+
+BOOL CVHMOFInspApp::Gf_ftpCreateDirectory(CFTPInterface* lpFtp, CString strDirectory)
+{
+	int fst = 0, lst = 0;
+	CString strToken;
+	CString strLog;
+
+
+	strLog.Format(_T("<FTP> FTP Create Directory => %s"), strDirectory);
+	Gf_writeMLog(strLog);
+	while (1)
+	{
+		lst = strDirectory.Find(_T("/"), fst);
+		if (lst != -1)
+		{
+			strToken = strDirectory.Mid(fst, (lst - fst));
+			if (!lpFtp->ftp_SetCurrentDirectory(strToken))
+			{
+				if (lpFtp->ftp_createDirectory(strToken) == FALSE)
+				{
+					Gf_writeMLog("<DFS> FTP Create Directory = > Fail");
+					return FALSE;
+				}
+				lpFtp->ftp_SetCurrentDirectory(strToken);
+			}
+			fst = lst + 1;
+			continue;
+		}
+		else
+		{
+			strToken = strDirectory.Mid(fst);
+
+			if (!lpFtp->ftp_SetCurrentDirectory(strToken))
+			{
+				if (lpFtp->ftp_createDirectory(strToken) == FALSE)
+				{
+					Gf_writeMLog("<DFS> FTP Create Directory = > Fail");
+					return FALSE;
+				}
+				lpFtp->ftp_SetCurrentDirectory(strToken);
+			}
+			break;
+		}
+	}
+
+	Gf_writeMLog("<DFS> FTP Create Directory = > Success");
+	return TRUE;
+}
+
+BOOL CVHMOFInspApp::Gf_ftpDownloadModuleIniFile()
+{
+	CString strDirectory;
+	CString strDownLoad, strFileName, strOldFileName;
+	CString strLog;
+	DWORD dwFlags = 0;
+	BOOL bReturn = TRUE;
+
+	if ((_access(".\\Module_Defect", 0)) == -1)
+		_mkdir(".\\Module_Defect");
+
+	strDirectory.Format(_T("DEFECT/MD"));
+	strLog.Format(_T("<FTP> Module Ini File Host Path => %s"), strDirectory);
+	Gf_writeMLog(strLog);
+
+	Gf_ftpSetHomeDirectory();
+	if (!lpFtpDFS->ftp_SetCurrentDirectory(strDirectory))
+	{
+		bReturn = FALSE;
+	}
+
+	strFileName = Gf_ftpGetModuleIniFilaName();
+
+	if (strFileName != _T(""))
+	{
+		strDownLoad.Format(_T("./Module_Defect/%s"), strFileName);
+		dwFlags = FTP_TRANSFER_TYPE_BINARY | INTERNET_FLAG_RELOAD;
+		if (lpFtpDFS->ftp_FileDownload(strDownLoad) == FALSE)
+		{
+			bReturn = FALSE;
+		}
+
+		Write_SysIniFile(_T("DFS"), _T("MODULE_DEFECT_INI"), strFileName);
+	}
+
+	return bReturn;
+	// FTP Download End
 }
 
 

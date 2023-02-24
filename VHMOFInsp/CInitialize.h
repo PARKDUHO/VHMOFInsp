@@ -19,6 +19,7 @@ enum {
 	INIT_DIO1,
 	INIT_DIO2,
 	INIT_MELSEC,
+	INIT_DFS,
 	INIT_MAX
 };
 
@@ -50,6 +51,8 @@ protected:
 public:
 
 protected:
+	LPSYSTEMINFO	lpSystemInfo;
+
 	void Lf_InitLocalValue();
 	void Lf_InitFontset();
 	void Lf_InitColorBrush();
@@ -63,6 +66,7 @@ protected:
 	void Lf_initConnQspi();
 	void Lf_initConnDIO();
 	void Lf_initConnMelsec();
+	void Lf_initConnDFS();
 
 
 private:

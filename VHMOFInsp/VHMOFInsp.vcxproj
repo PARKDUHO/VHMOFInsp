@@ -118,7 +118,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>./MelsecNetG/lib/_x64/MdFunc32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>./MelsecNetG/lib/_x64/MdFunc32.lib;./Libs/GiMCodeDll.lib;</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -171,7 +171,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>./MelsecNetG/lib/_x64/MdFunc32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>./MelsecNetG/lib/_x64/MdFunc32.lib;./Libs/GiMCodeDll.lib;</AdditionalDependencies>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -185,6 +185,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BufferDC.h" />
     <ClInclude Include="CAutoFirmware.h" />
     <ClInclude Include="CDefectResult.h" />
     <ClInclude Include="CErrorList.h" />
@@ -211,6 +212,8 @@
     <ClInclude Include="CTestReady.h" />
     <ClInclude Include="CUserID.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="FTPInterface.h" />
+    <ClInclude Include="GiMCodeDll.h" />
     <ClInclude Include="GradientStatic.h" />
     <ClInclude Include="IniProfileAPI.h" />
     <ClInclude Include="MelsecnetG.h" />
@@ -230,6 +233,7 @@
     <ClInclude Include="_GlobalDefine.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BufferDC.cpp" />
     <ClCompile Include="CAutoFirmware.cpp" />
     <ClCompile Include="CDefectResult.cpp" />
     <ClCompile Include="CErrorList.cpp" />
@@ -255,6 +259,7 @@
     <ClCompile Include="CTestPattern.cpp" />
     <ClCompile Include="CTestReady.cpp" />
     <ClCompile Include="CUserID.cpp" />
+    <ClCompile Include="FTPInterface.cpp" />
     <ClCompile Include="GradientStatic.cpp" />
     <ClCompile Include="IniProfileAPI.cpp" />
     <ClCompile Include="MelsecnetG.cpp" />

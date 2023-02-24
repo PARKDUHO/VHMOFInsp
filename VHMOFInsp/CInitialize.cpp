@@ -45,6 +45,7 @@ END_MESSAGE_MAP()
 BOOL CInitialize::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	lpSystemInfo = m_pApp->GetSystemInfo();
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	Lf_InitLocalValue();
@@ -390,6 +391,9 @@ void CInitialize::OnTimer(UINT_PTR nIDEvent)
 		Lf_initConnMelsec();
 		delayMs(10);
 
+		Lf_initConnDFS();
+		delayMs(10);
+
 		//////////////////////////////////////////////////////////////////
 		AfxGetApp()->GetMainWnd()->SendMessage(WM_UPDATE_SYSTEM_INFO, NULL, NULL);
 		//////////////////////////////////////////////////////////////////
@@ -403,6 +407,7 @@ void CInitialize::OnTimer(UINT_PTR nIDEvent)
 				return;
 			}
 		}
+
 		CDialog::OnOK();
 		//////////////////////////////////////////////////////////////////
 	}
@@ -682,4 +687,16 @@ void CInitialize::Lf_initConnMelsec()
 //		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("MELSEC ERROR"), errCode);
 	}
 	GetDlgItem(IDC_STT_INI_CONN_MELSEC)->Invalidate(FALSE);
+}
+
+
+void CInitialize::Lf_initConnDFS()
+{
+	// Defect Module 파일은 다운로드 OK/NG에 대한 UI표시는 하지 않는다.
+	if (lpSystemInfo->m_nDfsUse == TRUE)
+	{
+		m_pApp->Gf_ftpConnectDFS();
+		m_pApp->Gf_ftpDownloadModuleIniFile();
+		m_pApp->Gf_ftpDisConnectDFS();
+	}
 }

@@ -40,6 +40,7 @@
 
 #include "_GlobalDefine.h"
 #include "IniProfileAPI.h"
+#include "GiMCodeDll.h"
 #include "Struct.h"
 #include "GradientStatic.h"
 #include "XTabCtrl.h"

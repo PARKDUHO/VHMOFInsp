@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "VHMOFInsp.h"
 #include "CIOReadyCheck.h"
+//#include "BufferDC.h"
 #include "afxdialogex.h"
 
 
@@ -74,6 +75,7 @@ BEGIN_MESSAGE_MAP(CIOReadyCheck, CDialog)
 	ON_STN_CLICKED(IDC_STT_IR_JIG_TRAY_IN_READY, &CIOReadyCheck::OnStnClickedSttIrJigTrayInReady)
 	ON_STN_CLICKED(IDC_STT_IR_CH1_CLAMP_READY, &CIOReadyCheck::OnStnClickedSttIrCh1ClampReady)
 	ON_STN_CLICKED(IDC_STT_IR_CH2_CLAMP_READY, &CIOReadyCheck::OnStnClickedSttIrCh2ClampReady)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -409,8 +411,16 @@ HBRUSH CIOReadyCheck::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 }
 
 
+BOOL CIOReadyCheck::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	//return TRUE;
+	return CDialog::OnEraseBkgnd(pDC);
+}
+
 void CIOReadyCheck::OnPaint()
 {
+//	CBufferDC dc(this);
 	CPaintDC dc(this); // device context for painting
 					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
 					   // 그리기 메시지에 대해서는 CDialog::OnPaint()을(를) 호출하지 마십시오.
@@ -997,18 +1007,20 @@ void CIOReadyCheck::Lf_updateIOReadyStatus()
 	}
 
 
-	LockWindowUpdate();
-	GetDlgItem(IDC_STT_IR_REAR_DOOR_READY)->Invalidate(FALSE);
+	GetDlgItem(IDC_STT_IR_REAR_DOOR_READY)->InvalidateRect(FALSE);
 	GetDlgItem(IDC_STT_IR_FRONT_DOOR_READY)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_IR_FRONT_DOOR_HOLDING_READY)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_IR_ROBOT_IN_SENSOR_READY)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_IR_JIG_TILTING_DOWN_READY)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_IR_JIG_DOOR_CLOSE_READY)->Invalidate(FALSE);
 	GetDlgItem(IDC_STT_IR_JIG_TRAY_IN_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_CH1_CLAMP_READY)->Invalidate(FALSE);
-	GetDlgItem(IDC_STT_IR_CH2_CLAMP_READY)->Invalidate(FALSE);
-	UnlockWindowUpdate();
 
+	if (lpSystemInfo->m_nCarrierType == INSP_TYPE_CARRIER)
+	{
+		GetDlgItem(IDC_STT_IR_CH1_CLAMP_READY)->Invalidate(FALSE);
+		GetDlgItem(IDC_STT_IR_CH2_CLAMP_READY)->Invalidate(FALSE);
+	}
 }
+
 
 

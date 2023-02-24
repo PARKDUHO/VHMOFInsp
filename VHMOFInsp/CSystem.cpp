@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "VHMOFInsp.h"
 #include "CSystem.h"
+#include "CInitialize.h"
 #include "afxdialogex.h"
 
 
@@ -39,6 +40,9 @@ void CSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR1, m_edtSyLWStartAddr1);
 	DDX_Control(pDX, IDC_EDT_SY_LW_START_ADDR2, m_edtSyLWStartAddr2);
 	DDX_Control(pDX, IDC_CBO_SY_ECS_EQP_NUMBER, m_cmbSyEcsEqpNumber);
+	DDX_Control(pDX, IDC_CBO_SY_ROBOT_INSP_UNIT_NUMBER, m_cmbSyRobotInspUnitNumber);
+	DDX_Control(pDX, IDC_EDT_SY_ROBOT_LB_START_ADDR, m_edtSyRobotLBStartAddr);
+	DDX_Control(pDX, IDC_EDT_SY_ROBOT_LW_START_ADDR1, m_edtSyRobotLWStartAddr1);
 	DDX_Control(pDX, IDC_EDT_SY_MES_SERVICEPORT, m_edtSyMesServicePort);
 	DDX_Control(pDX, IDC_EDT_SY_MES_NETWORK, m_edtSyMesNetwork);
 	DDX_Control(pDX, IDC_EDT_SY_MES_DEMONPORT, m_edtSyMesDaemonPort);
@@ -51,6 +55,10 @@ void CSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDT_SY_EAS_DEMONPORT, m_edtSyEasDaemonPort);
 	DDX_Control(pDX, IDC_EDT_SY_EAS_LOCALSUBJECT, m_edtSyEasLocalSubject);
 	DDX_Control(pDX, IDC_EDT_SY_EAS_REMOTESUBJECT, m_edtSyEasRemoteSubject);
+	DDX_Control(pDX, IDC_CBO_SY_DFS_USE, m_cmbSyDfsUse);
+	DDX_Control(pDX, IDC_IPD_SY_DFS_IP_ADDRESS, m_ipaSyDfsIPAddress);
+	DDX_Control(pDX, IDC_EDT_SY_DFS_USERID, m_edtSyDfsUserId);
+	DDX_Control(pDX, IDC_EDT_SY_DFS_PASSWORD, m_edtSyDfsPassword);
 	DDX_Control(pDX, IDC_EDT_SY_MODEL_FILE_PATH, m_edtSyModelFilePath);
 	DDX_Control(pDX, IDC_EDT_SY_PATTERN_FILE_PATH, m_edtSyPatternFilePath);
 	DDX_Control(pDX, IDC_EDT_SY_EDID_FILE_PATH, m_edtSyEdidFilePath);
@@ -207,6 +215,9 @@ void CSystem::OnBnClickedBtnSySaveExit()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	Lf_saveSystemInfo();
 
+	CInitialize init_dlg;
+	init_dlg.DoModal();
+
 	CDialog::OnOK();
 }
 
@@ -341,6 +352,12 @@ void CSystem::Lf_InitDialogControl()
 	sdata.Format(_T("%04X"), lpSystemInfo->m_nLWStartAddr2);
 	m_edtSyLWStartAddr2.SetWindowText(sdata);
 	m_cmbSyEcsEqpNumber.SetCurSel(lpSystemInfo->m_nEcsEqpNumber);
+	m_cmbSyRobotInspUnitNumber.SetCurSel(lpSystemInfo->m_nRobotInspUnitNumber);
+	sdata.Format(_T("%04X"), lpSystemInfo->m_nRobotLBStartAddr);
+	m_edtSyRobotLBStartAddr.SetWindowText(sdata);
+	sdata.Format(_T("%04X"), lpSystemInfo->m_nRobotLWStartAddr1);
+	m_edtSyRobotLWStartAddr1.SetWindowText(sdata);
+
 
 	m_edtSyMesServicePort.SetWindowText(lpSystemInfo->m_sMesServicePort);
 	m_edtSyMesNetwork.SetWindowText(lpSystemInfo->m_sMesNetWork);
@@ -354,13 +371,10 @@ void CSystem::Lf_InitDialogControl()
 	m_edtSyEasDaemonPort.SetWindowText(lpSystemInfo->m_sEasDaemonPort);
 	m_edtSyEasLocalSubject.SetWindowText(lpSystemInfo->m_sEasLocalSubject);
 	m_edtSyEasRemoteSubject.SetWindowText(lpSystemInfo->m_sEasRemoteSubject);
-
-#if (CODE_DFS_SETTING_USE==1)
 	m_cmbSyDfsUse.SetCurSel(lpSystemInfo->m_nDfsUse);
 	m_ipaSyDfsIPAddress.SetWindowText(lpSystemInfo->m_sDfsIPAddress);
 	m_edtSyDfsUserId.SetWindowText(lpSystemInfo->m_sDfsUserId);
 	m_edtSyDfsPassword.SetWindowText(lpSystemInfo->m_sDfsPassword);
-#endif
 
 	m_edtSyModelFilePath.SetWindowText(lpSystemInfo->m_sDataFileModel);
 	m_edtSyPatternFilePath.SetWindowText(lpSystemInfo->m_sDataFilePattern);
@@ -390,18 +404,30 @@ void CSystem::Lf_saveSystemInfo()
 
 	m_edtSyLBStartAddr.GetWindowText(sdata);
 	lpSystemInfo->m_nLBStartAddr = _tcstol(sdata, NULL, 16);
-	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LB_START_ADDR"), sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_EQP_LB_START_ADDR"), sdata);
 
 	m_edtSyLWStartAddr1.GetWindowText(sdata);
 	lpSystemInfo->m_nLWStartAddr1 = _tcstol(sdata, NULL, 16);
-	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR1"), sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_EQP_LW_START_ADDR1"), sdata);
 
 	m_edtSyLWStartAddr2.GetWindowText(sdata);
 	lpSystemInfo->m_nLWStartAddr2 = _tcstol(sdata, NULL, 16);
-	Write_SysIniFile(_T("SYSTEM"), _T("MELSEC_LW_START_ADDR2"), sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_EQP_LW_START_ADDR2"), sdata);
 
 	lpSystemInfo->m_nEcsEqpNumber = m_cmbSyEcsEqpNumber.GetCurSel();
 	Write_SysIniFile(_T("SYSTEM"), _T("ECS_EQP_NUMBER"), lpSystemInfo->m_nEcsEqpNumber);
+
+	lpSystemInfo->m_nRobotInspUnitNumber = m_cmbSyRobotInspUnitNumber.GetCurSel();
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_ROBOT_INSP_UNIT_NUMBER"), lpSystemInfo->m_nRobotInspUnitNumber);
+
+	m_edtSyRobotLBStartAddr.GetWindowText(sdata);
+	lpSystemInfo->m_nRobotLBStartAddr = _tcstol(sdata, NULL, 16);
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_ROBOT_LB_START_ADDR"), sdata);
+
+	m_edtSyRobotLWStartAddr1.GetWindowText(sdata);
+	lpSystemInfo->m_nRobotLWStartAddr1 = _tcstol(sdata, NULL, 16);
+	Write_SysIniFile(_T("SYSTEM"), _T("ECS_ROBOT_LW_START_ADDR1"), sdata);
+
 
 	m_edtSyMesServicePort.GetWindowText(lpSystemInfo->m_sMesServicePort);
 	Write_SysIniFile(_T("MES"), _T("MES_SERVICE"), lpSystemInfo->m_sMesServicePort);
@@ -439,7 +465,6 @@ void CSystem::Lf_saveSystemInfo()
 	m_edtSyEasRemoteSubject.GetWindowText(lpSystemInfo->m_sEasRemoteSubject);
 	Write_SysIniFile(_T("EAS"), _T("EAS_REMOTE_SUBJECT"), lpSystemInfo->m_sEasRemoteSubject);
 
-#if (CODE_DFS_SETTING_USE==1)
 	lpSystemInfo->m_nDfsUse = m_cmbSyDfsUse.GetCurSel();
 	Write_SysIniFile(_T("DFS"), _T("DFS_USE"), lpSystemInfo->m_nDfsUse);
 
@@ -451,7 +476,7 @@ void CSystem::Lf_saveSystemInfo()
 
 	m_edtSyDfsPassword.GetWindowText(lpSystemInfo->m_sDfsPassword);
 	Write_SysIniFile(_T("DFS"), _T("DFS_PASSWORD"), lpSystemInfo->m_sDfsPassword);
-#endif
+
 
 	m_edtSyModelFilePath.GetWindowText(lpSystemInfo->m_sDataFileModel);
 	Write_SysIniFile(_T("SYSTEM"), _T("MODEL_FILE_PATH"), lpSystemInfo->m_sDataFileModel);

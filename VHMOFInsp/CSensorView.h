@@ -71,4 +71,5 @@ public:
 	afx_msg void OnBnClickedBtnSvRightDoorOpen();
 	afx_msg void OnBnClickedBtnSvLeftDoorClose();
 	afx_msg void OnBnClickedBtnSvRightDoorClose();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

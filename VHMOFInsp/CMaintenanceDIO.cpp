@@ -421,6 +421,8 @@ void CMaintenanceDIO::OnBnClickedBtnMoWriteDio1()
 			&& ((m_pApp->m_nDioOutBit[CH1][0] & DOUT_D1_MUTTING_2) == 0)
 			)
 		{
+			m_pApp->m_bLightCurationMute = TRUE;
+			m_pApp->commApi->dio_LightCurtainMuteOnOff(TRUE);
 			// Light Curtain Sequence 제어를 위하여 MUTE는 Delay를 주고 제어한다.
 			nDOut &= ~DOUT_D1_MUTTING_2;
 			if (m_pApp->commApi->dio_writeDioOutput(CH1, nDOut) == FALSE)
@@ -696,6 +698,7 @@ void CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOn()
 		return;
 	Lf_controlButtonEnable(FALSE);
 
+	m_pApp->m_bLightCurationMute = TRUE;
 	m_pApp->commApi->dio_LightCurtainMuteOnOff(ON);
 	Lf_setListCheck();
 
@@ -710,6 +713,7 @@ void CMaintenanceDIO::OnStnClickedSttMoLightCurtainMuteOff()
 		return;
 	Lf_controlButtonEnable(FALSE);
 
+	m_pApp->m_bLightCurationMute = FALSE;
 	m_pApp->commApi->dio_LightCurtainMuteOnOff(OFF);
 	Lf_setListCheck();
 
