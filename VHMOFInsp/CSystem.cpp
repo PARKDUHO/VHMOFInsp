@@ -59,6 +59,16 @@ void CSystem::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_IPD_SY_DFS_IP_ADDRESS, m_ipaSyDfsIPAddress);
 	DDX_Control(pDX, IDC_EDT_SY_DFS_USERID, m_edtSyDfsUserId);
 	DDX_Control(pDX, IDC_EDT_SY_DFS_PASSWORD, m_edtSyDfsPassword);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_FDOOR_UP, m_edtSyTimeoutFrontDoorUp);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_FDOOR_DOWN, m_edtSyTimeoutFrontDoorDown);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_RDOOR_UP, m_edtSyTimeoutRearDoorUp);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_RDOOR_DOWN, m_edtSyTimeoutRearDoorDown);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_JIG_UP, m_edtSyTimeoutJigTiltingUp);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_JIG_DOWN, m_edtSyTimeoutJigTiltingDown);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_ROBOT_IN, m_edtSyTimeoutRobotIn);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_ROBOT_OUT, m_edtSyTimeoutRobotOut);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_CARRIER_IN, m_edtSyTimeoutCarrierJigIn);
+	DDX_Control(pDX, IDC_EDT_SY_TIMEOUT_CARRIER_OUT, m_edtSyTimeoutCarrierJigOut);
 	DDX_Control(pDX, IDC_EDT_SY_MODEL_FILE_PATH, m_edtSyModelFilePath);
 	DDX_Control(pDX, IDC_EDT_SY_PATTERN_FILE_PATH, m_edtSyPatternFilePath);
 	DDX_Control(pDX, IDC_EDT_SY_EDID_FILE_PATH, m_edtSyEdidFilePath);
@@ -172,6 +182,8 @@ HBRUSH CSystem::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_MELSEC_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_MES_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_EAS_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_DFS_TIT)
+				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_TIME_OUT_TIT)
 				|| (pWnd->GetDlgCtrlID() == IDC_STT_SY_PATH_TIT)
 				)
 			{
@@ -288,6 +300,8 @@ void CSystem::Lf_InitFontset()
 	GetDlgItem(IDC_STT_SY_MELSEC_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SY_MES_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SY_EAS_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_SY_DFS_TIT)->SetFont(&m_Font[3]);
+	GetDlgItem(IDC_STT_SY_TIME_OUT_TIT)->SetFont(&m_Font[3]);
 	GetDlgItem(IDC_STT_SY_PATH_TIT)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(17, 7, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
@@ -375,6 +389,27 @@ void CSystem::Lf_InitDialogControl()
 	m_ipaSyDfsIPAddress.SetWindowText(lpSystemInfo->m_sDfsIPAddress);
 	m_edtSyDfsUserId.SetWindowText(lpSystemInfo->m_sDfsUserId);
 	m_edtSyDfsPassword.SetWindowText(lpSystemInfo->m_sDfsPassword);
+
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutFrontDoorUp);
+	m_edtSyTimeoutFrontDoorUp.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutFrontDoorDown);
+	m_edtSyTimeoutFrontDoorDown.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutRearDoorUp);
+	m_edtSyTimeoutRearDoorUp.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutRearDoorDown);
+	m_edtSyTimeoutRearDoorDown.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutJigTiltingUp);
+	m_edtSyTimeoutJigTiltingUp.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutJigTiltingDown);
+	m_edtSyTimeoutJigTiltingDown.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutRobotIn);
+	m_edtSyTimeoutRobotIn.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutRobotOut);
+	m_edtSyTimeoutRobotOut.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutCarrierJigIn);
+	m_edtSyTimeoutCarrierJigIn.SetWindowText(sdata);
+	sdata.Format(_T("%0.1f"), lpSystemInfo->m_fTimeoutCarrierJigOut);
+	m_edtSyTimeoutCarrierJigOut.SetWindowText(sdata);
 
 	m_edtSyModelFilePath.SetWindowText(lpSystemInfo->m_sDataFileModel);
 	m_edtSyPatternFilePath.SetWindowText(lpSystemInfo->m_sDataFilePattern);
@@ -476,6 +511,47 @@ void CSystem::Lf_saveSystemInfo()
 
 	m_edtSyDfsPassword.GetWindowText(lpSystemInfo->m_sDfsPassword);
 	Write_SysIniFile(_T("DFS"), _T("DFS_PASSWORD"), lpSystemInfo->m_sDfsPassword);
+
+
+	m_edtSyTimeoutFrontDoorUp.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutFrontDoorUp = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_FRONT_DOOR_UP"), sdata);
+
+	m_edtSyTimeoutFrontDoorDown.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutFrontDoorDown = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_FRONT_DOOR_DOWN"), sdata);
+
+	m_edtSyTimeoutRearDoorUp.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutRearDoorUp = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_REAR_DOOR_UP"), sdata);
+
+	m_edtSyTimeoutRearDoorDown.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutRearDoorDown = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_REAR_DOOR_DOWN"), sdata);
+
+	m_edtSyTimeoutJigTiltingUp.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutJigTiltingUp = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_JIG_TILTING_UP"), sdata);
+
+	m_edtSyTimeoutJigTiltingDown.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutJigTiltingDown = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_JIG_TILTING_DOWN"), sdata);
+
+	m_edtSyTimeoutRobotIn.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutRobotIn = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_ROBOT_IN"), sdata);
+
+	m_edtSyTimeoutRobotOut.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutRobotOut = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_ROBOT_OUT"), sdata);
+
+	m_edtSyTimeoutCarrierJigIn.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutCarrierJigIn = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_CARRIER_JIG_IN"), sdata);
+
+	m_edtSyTimeoutCarrierJigOut.GetWindowText(sdata);
+	lpSystemInfo->m_fTimeoutCarrierJigOut = (float)_tstof(sdata);
+	Write_SysIniFile(_T("SYSTEM"), _T("TIMEOUT_CARRIER_JIG_OUT"), sdata);
 
 
 	m_edtSyModelFilePath.GetWindowText(lpSystemInfo->m_sDataFileModel);

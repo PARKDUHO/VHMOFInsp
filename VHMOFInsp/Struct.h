@@ -201,6 +201,19 @@ typedef struct _ST_SYSTEMINFO_{
 	CString m_sDfsUserId;
 	CString m_sDfsPassword;
 
+	// TIME OUT 시간 설정 //
+	float m_fTimeoutFrontDoorUp;
+	float m_fTimeoutFrontDoorDown;
+	float m_fTimeoutRearDoorUp;
+	float m_fTimeoutRearDoorDown;
+	float m_fTimeoutJigTiltingUp;
+	float m_fTimeoutJigTiltingDown;
+	float m_fTimeoutRobotIn;
+	float m_fTimeoutRobotOut;
+	float m_fTimeoutCarrierJigIn;
+	float m_fTimeoutCarrierJigOut;
+
+
 	// DATA FILE Download 설정 //
 	CString m_sDataFileModel;
 	CString m_sDataFilePattern;

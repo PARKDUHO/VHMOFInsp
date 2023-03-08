@@ -12,6 +12,7 @@
 /////////////////////////////////////////////////////////////////////////////
 #define ECS_ROBOT_UNIT_1					0
 #define ECS_ROBOT_UNIT_2					1
+#define ECS_ROBOT_UNIT_3					2
 
 ////////////////////////////////////////////////////////////
 #define ECS_RESTART							0x0001
@@ -74,8 +75,11 @@ public:
 	BOOL ecs_NormalOperation();
 	BOOL ecs_GlassPositionData();
 	BOOL ecs_LostGlassDataRequest(int type, char* pid);
-	BOOL ecs_LoadingType1Normal();
-	BOOL ecs_UnLoadingType5Normal();
+	BOOL ecs_InterlockType1Load();
+	BOOL ecs_InterlockType1UnLoad();
+	BOOL ecs_InterlockType5UnLoad();
+	BOOL ecs_InterlockType10Load();
+	BOOL ecs_InterlockType10UnLoad();
 
 
 

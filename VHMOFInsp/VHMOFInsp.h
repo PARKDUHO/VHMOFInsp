@@ -91,11 +91,16 @@ public:
 	void main_parse_FirmwareVersion(int ch, char* recvPacket);
 	void main_parse_GoToBootSection(int ch, char* recvPacket);
 
+	// TCP/IP 통신 Protocol (QSPI Board)
+	BOOL qspi_tcpProcessPacket(int ch, char* recvPacket);
+	void qspi_parse_GoToBootSection(int ch, char* recvPacket);
+	void qspi_parse_FirmwareVersion(int ch, char* recvPacket);
+
 
 	// UDP 통신 Protocol (DIO Board)
 	void Lf_initCreateUdpSocket();
 	BOOL Lf_initLocalHostIPAddress();
-	BOOL udp_sendPacketUDP_DIO(int ch, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 100);
+	BOOL udp_sendPacketUDP_DIO(int ch, int target, int nID, int nCommand, int nSize, char* pdata, int recvACK = ACK, int waitTime = 300);
 	BOOL udp_procWaitRecvACK_DIO(int ch, int cmd, DWORD waitTime);
 	void udp_processDioPacket(int ch, CString strPacket);
 	BOOL udp_procParseDIO(int ch, CString packet);

@@ -89,6 +89,19 @@ public:
 	CIPAddressCtrl m_ipaSyDfsIPAddress;
 	CEdit m_edtSyDfsUserId;
 	CEdit m_edtSyDfsPassword;
+
+	CEdit m_edtSyTimeoutFrontDoorUp;
+	CEdit m_edtSyTimeoutFrontDoorDown;
+	CEdit m_edtSyTimeoutRearDoorUp;
+	CEdit m_edtSyTimeoutRearDoorDown;
+	CEdit m_edtSyTimeoutJigTiltingUp;
+	CEdit m_edtSyTimeoutJigTiltingDown;
+	CEdit m_edtSyTimeoutRobotIn;
+	CEdit m_edtSyTimeoutRobotOut;
+	CEdit m_edtSyTimeoutCarrierJigIn;
+	CEdit m_edtSyTimeoutCarrierJigOut;
+
+
 	CEdit m_edtSyModelFilePath;
 	CEdit m_edtSyPatternFilePath;
 	CEdit m_edtSyEdidFilePath;

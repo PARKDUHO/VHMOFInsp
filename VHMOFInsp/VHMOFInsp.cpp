@@ -906,6 +906,18 @@ BOOL CVHMOFInspApp::Gf_LoadSystemData()
 	Read_SysIniFile(_T("DFS"),				_T("DFS_IP_ADDRESS"),			&lpSystemInfo->m_sDfsIPAddress);
 	Read_SysIniFile(_T("DFS"),				_T("DFS_USER_ID"),				&lpSystemInfo->m_sDfsUserId);
 	Read_SysIniFile(_T("DFS"),				_T("DFS_PASSWORD"),				&lpSystemInfo->m_sDfsPassword);
+
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_FRONT_DOOR_UP"),	&lpSystemInfo->m_fTimeoutFrontDoorUp);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_FRONT_DOOR_DOWN"),	&lpSystemInfo->m_fTimeoutFrontDoorDown);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_REAR_DOOR_UP"),		&lpSystemInfo->m_fTimeoutRearDoorUp);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_REAR_DOOR_DOWN"),	&lpSystemInfo->m_fTimeoutRearDoorDown);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_JIG_TILTING_UP"),	&lpSystemInfo->m_fTimeoutJigTiltingUp);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_JIG_TILTING_DOWN"), &lpSystemInfo->m_fTimeoutJigTiltingDown);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_ROBOT_IN"),			&lpSystemInfo->m_fTimeoutRobotIn);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_ROBOT_OUT"),		&lpSystemInfo->m_fTimeoutRobotOut);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_CARRIER_JIG_IN"),	&lpSystemInfo->m_fTimeoutCarrierJigIn);
+	Read_SysIniFile(_T("SYSTEM"),			_T("TIMEOUT_CARRIER_JIG_OUT"),	&lpSystemInfo->m_fTimeoutCarrierJigOut);
+
 	Read_SysIniFile(_T("SYSTEM"),			_T("MODEL_FILE_PATH"),			&lpSystemInfo->m_sDataFileModel);
 	Read_SysIniFile(_T("SYSTEM"),			_T("PATTERN_FILE_PATH"),		&lpSystemInfo->m_sDataFilePattern);
 	Read_SysIniFile(_T("SYSTEM"),			_T("EDID_PATH"),				&lpSystemInfo->m_sDataFileEdid);
@@ -1460,7 +1472,7 @@ void CVHMOFInspApp::main_parse_FirmwareVersion(int ch, char* recvPacket)
 
 	CString strLog = _T("");
 
-	strLog.Format(_T("<PG> CH-%d MCU Version [%s]"), ch+1, m_pApp->m_sPgFWVersion[ch]);
+	strLog.Format(_T("<PG> CH-%d PG Board MCU Version [%s]"), ch+1, m_pApp->m_sPgFWVersion[ch]);
 	m_pApp->Gf_writeMLog(strLog);
 
 }
@@ -1537,13 +1549,6 @@ BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(int ch, int target, int nID, int nComm
 	// Packet의 마지막에 String의 끝을 알리기 위하여 NULL을 추가한다.
 	sendPacket[packetlen] = 0x00;
 
-	// Send Log를 기록
-#if	(DEBUG_TCP_COMM_LOG==1)
-	CString sLog;
-	sLog.Format(_T("<UDP Send> [%s] %s"), ip, char_To_wchar(sendPacket));
-	m_pApp->Gf_writeMLog(sLog);
-#endif
-
 	// 생성된 Packet을 전송.
 	UINT ret = TRUE;
 	m_nAckCmdDio[ch] = 0;
@@ -1551,6 +1556,14 @@ BOOL CVHMOFInspApp::udp_sendPacketUDP_DIO(int ch, int target, int nID, int nComm
 	CString ip;
 	if (ch == CH1)		ip.Format(_T("%s"), UDP_DIO_BOARD1_IP);
 	if (ch == CH2)		ip.Format(_T("%s"), UDP_DIO_BOARD2_IP);
+
+	// Send Log를 기록
+#if	(DEBUG_TCP_COMM_LOG==1)
+	CString sLog;
+	sLog.Format(_T("<UDP Send> [%s] %s"), ip, char_To_wchar(sendPacket));
+	m_pApp->Gf_writeMLog(sLog);
+#endif
+
 	m_pUDPSocket->SendTo(sendPacket, packetlen, UDP_SOCKET_PORT, ip);//m_pUDPSocket->SendToUDP(ip, packetlen, sendPacket);
 
 	// ACK Receive	
@@ -1681,6 +1694,67 @@ BOOL CVHMOFInspApp::Lf_checkDoorOpenInterLock()
 	return TRUE;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TCP/IP 통신 Protocol (QSPI Board)
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CVHMOFInspApp::qspi_tcpProcessPacket(int ch, char* recvPacket)
+{
+	char szbuf[10] = { 0, };
+	int recvCMD = 0;
+	int recvLen = 0;
+	int recvRet = 0;
+
+	sscanf_s(&recvPacket[PACKET_PT_CMD], "%02X%04X%01X", &recvCMD, &recvLen, &recvRet);
+
+	// Message 처리
+	switch (recvCMD)
+	{
+		case CMD_CTRL_GOTO_BOOT_SECTION:
+		{
+			qspi_parse_GoToBootSection(ch, recvPacket);
+			break;
+		}
+		case CMD_CTRL_FW_VERSION:
+		{
+			qspi_parse_FirmwareVersion(ch, recvPacket);
+			break;
+		}
+	}
+
+	// ACK Receive Check는 모든 Packet처리가 완료된 이후 Set한다.
+	//m_nAckCmd[recvCMD] = TRUE;
+
+	return TRUE;
+}
+
+void CVHMOFInspApp::qspi_parse_GoToBootSection(int ch, char* recvPacket)
+{
+	CString strPacket;
+	int nPos = PACKET_PT_RET;
+
+	if (recvPacket[PACKET_PT_RET] == '0')
+	{
+		m_nDownloadReadyAckCount++;
+	}
+}
+
+void CVHMOFInspApp::qspi_parse_FirmwareVersion(int ch, char* recvPacket)
+{
+	CString strPacket;
+	int nPos = PACKET_PT_DATA;
+
+	strPacket.Format(_T("%S"), recvPacket);
+
+	m_pApp->m_sQspiFWVersion[ch] = strPacket.Mid(PACKET_PT_DATA, strPacket.GetLength() - 17);
+
+
+	CString strLog = _T("");
+
+	strLog.Format(_T("<PG> CH-%d QSPI Board Version [%s]"), ch + 1, m_pApp->m_sQspiFWVersion[ch]);
+	m_pApp->Gf_writeMLog(strLog);
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

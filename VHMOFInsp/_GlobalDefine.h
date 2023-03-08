@@ -4,154 +4,150 @@
 #define _GOLBAL_DEFINE_
 
 
-#define CODE_QSPI_USE					0
-#define CODE_PATTERN_POWER_SET_USE		0
-#define CODE_DFS_SETTING_USE			1
+#define CODE_QSPI_USE						0
+#define CODE_PATTERN_POWER_SET_USE			0
+#define CODE_DFS_SETTING_USE				1
 
-#define MES_COMBI_CODE_USE				0
+#define MES_COMBI_CODE_USE					0
 
 /////////////////////////////////////////////////////////////////////////////Đs
-#define PGM_VERSION						_T("1.0.0_R1")
-#define DEFAULT_FONT					_T("Tahoma")
+#define PGM_VERSION							_T("1.0.0_R1")
+#define DEFAULT_FONT						_T("Tahoma")
 
 /////////////////////////////////////////////////////////////////////////////
-#define MLOG_MAX_LENGTH					16*1024
+#define MLOG_MAX_LENGTH						16*1024
 
 /////////////////////////////////////////////////////////////////////////////
-#define DEBUG_TCP_RECEIVE_OK			1
-#define	DEBUG_GMES_TEST_SERVER			0
-#define DEBUG_TCP_COMM_LOG				0
-#define DEBUG_PALLET_ARRIVE				0
-#define DEBUG_DIO_SKIP					0
-#define DEBUG_ROBOT_WAIT_CHECK_ON		1
-#define DEBUG_PG1_TEST_ONLY				1
-#define DEBUG_JIG_HOME_SENSOR_PASS		0
-#define DEBUG_DIO_ALARM_DISABLE			0
+#define DEBUG_TCP_RECEIVE_OK				0
+#define	DEBUG_GMES_TEST_SERVER				0
+#define DEBUG_TCP_COMM_LOG					0
+#define DEBUG_PALLET_ARRIVE					0
+#define DEBUG_DIO_SKIP						0
+#define DEBUG_ROBOT_WAIT_CHECK_ON			1
+#define DEBUG_PG1_TEST_ONLY					0
+#define DEBUG_JIG_HOME_SENSOR_PASS			0
+#define DEBUG_DIO_ALARM_DISABLE				0
 
 /////////////////////////////////////////////////////////////////////////////
-#define TCP_MAIN1_MCU_IP				_T("192.168.1.13")	// 13
-#define TCP_MAIN2_MCU_IP				_T("192.168.1.14")	// 14
+#define TCP_MAIN1_MCU_IP					_T("192.168.1.13")
+#define TCP_MAIN2_MCU_IP					_T("192.168.1.14")
 
-#define TCP_MAIN1_FPGA_IP				_T("192.168.1.3")
-#define TCP_MAIN2_FPGA_IP				_T("192.168.1.4")
+#define TCP_MAIN1_FPGA_IP					_T("192.168.1.3")
+#define TCP_MAIN2_FPGA_IP					_T("192.168.1.4")
 
-#define UDP_DIO_BOARD1_IP				_T("192.168.1.20")
-#define UDP_DIO_BOARD2_IP				_T("192.168.1.21")
+#define UDP_DIO_BOARD1_IP					_T("192.168.1.20")
+#define UDP_DIO_BOARD2_IP					_T("192.168.1.21")
 
-#define TCP_SPI_BOARD1_IP				_T("192.168.1.30")
-#define TCP_SPI_BOARD2_IP				_T("192.168.1.31")
+#define TCP_SPI_BOARD1_IP					_T("192.168.1.30")
+#define TCP_SPI_BOARD2_IP					_T("192.168.1.31")
 
-#define TCP_MAIN_PORT					50001
-#define TCP_SPI_PORT					50004
+#define TCP_MAIN_PORT						50001
+#define TCP_SPI_PORT						50004
 
 /////////////////////////////////////////////////////////////////////////////
-#define PACKET_SIZE						1024*64
+#define PACKET_SIZE							1024*64
 
 /////////////////////////////////////////////////////////////////////////////
 // ON/OFF와 TRUE/FALSE에 관련된 Define은 여기에서 한다.
 /////////////////////////////////////////////////////////////////////////////
-#define _OFF_							0
-#define _ON_							1
+#define _OFF_								0
+#define _ON_								1
 
-#define OFF								FALSE
-#define ON								TRUE
+#define OFF									FALSE
+#define ON									TRUE
 
-#define _DISABLE_						0
-#define _ENABLE_						1
+#define _DISABLE_							0
+#define _ENABLE_							1
 
-#define POWER_OFF						0
-#define POWER_ON						1
+#define POWER_OFF							0
+#define POWER_ON							1
 
-#define NACK							0
-#define ACK								1
+#define NACK								0
+#define ACK									1
 
-#define _CLEAR_							0
-#define _SET_							1
+#define _CLEAR_								0
+#define _SET_								1
 
-#define QTY_OK							0
-#define QTY_NG							1
+#define QTY_OK								0
+#define QTY_NG								1
 
-#define ROOM_LED_ON						0
-#define ROOM_LED_OFF					1
-
-/////////////////////////////////////////////////////////////////////////////
-#define PTN_LIST_MAX					500
-#define HOTKEY_LIST_MAX					10
+#define ROOM_LED_ON							0
+#define ROOM_LED_OFF						1
 
 /////////////////////////////////////////////////////////////////////////////
-#define OFF_LINE						0
-#define IN_LINE							1
+#define PTN_LIST_MAX						500
+#define HOTKEY_LIST_MAX						10
 
 /////////////////////////////////////////////////////////////////////////////
-#define SIGNAL_TYPE_LVDS				0
-#define SIGNAL_TYPE_DP					1
-#define SIGNAL_TYPE_ALPLD				2
+#define OFF_LINE							0
+#define IN_LINE								1
 
 /////////////////////////////////////////////////////////////////////////////
-#define ALPDP_INIT_NONE					0
-#define ALPDP_INIT_X2146				1
-#define ALPDP_INIT_X2180				2
+#define SIGNAL_TYPE_LVDS					0
+#define SIGNAL_TYPE_DP						1
+#define SIGNAL_TYPE_ALPLD					2
 
 /////////////////////////////////////////////////////////////////////////////
-#define SINGLE							0
-#define DUAL							1
-#define QUAD							2
+#define ALPDP_INIT_NONE						0
+#define ALPDP_INIT_X2146					1
+#define ALPDP_INIT_X2180					2
 
 /////////////////////////////////////////////////////////////////////////////
-#define SIG_6BIT						0
-#define SIG_8BIT						1
-#define SIG_10BIT						2
-#define SIG_12BIT						3
+#define SINGLE								0
+#define DUAL								1
+#define QUAD								2
 
 /////////////////////////////////////////////////////////////////////////////
-#define I2C_LINE_ODC					0
-#define I2C_LINE_GENERIC				3
-
-#define I2C_ADDR_BYTE					0
-#define I2C_ADDR_WORD					1
-
-/////////////////////////////////////////////////////////////////////////////
-#define MSG_ERROR						0
-#define MSG_WARNING						1
-
+#define SIG_6BIT							0
+#define SIG_8BIT							1
+#define SIG_10BIT							2
+#define SIG_12BIT							3
 
 /////////////////////////////////////////////////////////////////////////////
-#define CH1								0
-#define CH2								1
-#define MAX_CH							2
+#define I2C_LINE_ODC						0
+#define I2C_LINE_GENERIC					3
+
+#define I2C_ADDR_BYTE						0
+#define I2C_ADDR_WORD						1
 
 /////////////////////////////////////////////////////////////////////////////
-#define CLAMP_LOCK						0
-#define CLAMP_UNLOCK					1
+#define MSG_ERROR							0
+#define MSG_WARNING							1
+
 
 /////////////////////////////////////////////////////////////////////////////
-#define INSP_TYPE_CARRIER				0
-#define INSP_TYPE_NONE_CARRIER			1
+#define CH1									0
+#define CH2									1
+#define MAX_CH								2
+
+/////////////////////////////////////////////////////////////////////////////
+#define CLAMP_LOCK							0
+#define CLAMP_UNLOCK						1
+
+/////////////////////////////////////////////////////////////////////////////
+#define INSP_TYPE_CARRIER					0
+#define INSP_TYPE_NONE_CARRIER				1
 
 /////////////////////////////////////////////////////////////////////////////
 // LINE TYPE
 /////////////////////////////////////////////////////////////////////////////
-#define LINE_TYPE_CGA					0
-#define LINE_TYPE_CP					1
-#define LINE_TYPE_OQC					2
-#define LINE_TYPE_ASSEMBLY				3
+#define LINE_TYPE_CGA						0
+#define LINE_TYPE_CP						1
+#define LINE_TYPE_OQC						2
+#define LINE_TYPE_GIB						3
+#define LINE_TYPE_ASSEMBLY					4
 
 /////////////////////////////////////////////////////////////////////////////
-#define EQP_STATUS_RUN					1
-#define EQP_STATUS_IDLE					2
-#define EQP_STATUS_DOWN					3
+#define EQP_STATUS_RUN						1
+#define EQP_STATUS_IDLE						2
+#define EQP_STATUS_DOWN						3
 
 
 
 /////////////////////////////////////////////////////////////////////////////
 //DIO
 /////////////////////////////////////////////////////////////////////////////
-#define AIF_NORMAL_CYLINDER_WAIT_TIME	5000
-#define AIF_DOOR_OPEN_CLOSE_WAIT_TIME	15000
-#define AIF_ROBOT_IN_SENSOR_WAIT_TIME	30000
-#define AIF_ROBOT_OUT_SENSOR_WAIT_TIME	30000
-#define AIF_CARRIER_JIG_IN_WAIT_TIME	10000
-#define AIF_JIG_TILTING_WAIT_TIME		30000
+#define AIF_NORMAL_CYLINDER_WAIT_TIME		3000
 
 
 static CString strNameDIN1[40] =
@@ -623,8 +619,9 @@ typedef enum _COLOR_IDX_{
 #define CMD_QSPI_SPI_FLASH_WRITE			0x75
 #define CMD_QSPI_SPI_FLASH_READ				0x76
 #define CMD_QSPI_SPI_FLASH_STATUS_READ		0x77
-#define CMD_QSPI_I2C_INITIALIZE				0x7A
-#define CMD_QSPI_I2C_WRITE					0x7B
+#define CMD_QSPI_SPI_DP855_WRITE			0x78
+#define CMD_QSPI_SPI_DP855_READ				0x79
+#define CMD_QSPI_LEVEL_SELECT				0x7A
 #define CMD_QSPI_I2C_READ					0x7C
 #define CMD_QSPI_I2C_ENABLE					0x7D
 #define CMD_QSPI_GPIO_INITIALIZE			0x80

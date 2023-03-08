@@ -18,7 +18,8 @@ static CString	sRetString;
 static void ProcessMessage()
 {
 	MSG msg;
-	if( PeekMessage( &msg, 0, 0, 500, PM_REMOVE ) )
+	//if (PeekMessage( &msg, 0, 0, 500, PM_REMOVE ) )
+	if (PeekMessage(&msg, 0, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
@@ -208,6 +209,14 @@ static void Read_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, TCHAR *wszRetString)
 
 	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\Operation.ini"));
 	wcscpy_s(wszRetString, (wcslen(wszData)+1), wszData);
+}
+
+static void Read_SysIniFile(LPCWSTR lpTitle, LPCWSTR lpKey, float* fRetValue)
+{
+	wchar_t wszData[100] = { 0, };
+
+	::GetPrivateProfileString(lpTitle, lpKey, 0, wszData, sizeof(wszData), _T(".\\Operation.ini"));
+	*fRetValue = (float)_tstof(wszData);
 }
 
 static void Write_ModelFile(LPCWSTR lpModelName, LPCWSTR lpTitle, LPCWSTR lpKey, LPCWSTR lpValue)

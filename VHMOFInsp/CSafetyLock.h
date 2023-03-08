@@ -59,4 +59,5 @@ public:
 	CListBox m_lstSlAlarmList;
 	afx_msg void OnBnClickedBtnSlSensorView();
 	CButton m_btnSlSensorView;
+	afx_msg void OnBnClickedBtnSlBuzzOff();
 };

@@ -55,10 +55,9 @@ public:
 	BOOL main_getReceivePacket(char* m_szRcvPacket, int ch, int ackWaitTime);
 	char gszMainRcvPacket[MAX_CH][256];
 
-	BOOL qspi_setSendQuery(int ch, int nCommand, int nLength, char* pData, int recvACK, int waitTime);
+	BOOL qspi_setSendQuery(int ch, int nCommand, int nLength, char* pData, int recvACK, int waitTime=1000);
 	BOOL qspi_procWaitRecvACK(int ch, int cmd, DWORD waitTime);
 	BOOL Lf_setQSPI_SPI_Init(int ch);
-	BOOL Lf_setQSPI_RelayOnOff(int ch, int onoff);
 	BOOL Lf_setQSPI_FlashEraseSector(int ch, int start, int end);
 	BOOL Lf_setQSPI_FlashEraseBlock(int ch, int start, int end);
 	BOOL Lf_setQSPI_FlashEraseChip(int ch);
@@ -67,15 +66,21 @@ public:
 	BOOL Lf_getQSPI_FlashStatusRead(int ch);
 	BOOL Lf_getQSPI_FlashStatusRead_Temp(int ch);//테스트용(20.12.17)
 	BOOL Lf_setQSPI_I2C_Enable(int ch, int nEnable);
-	BOOL Lf_setQSPI_I2C_Init(int ch);
-	BOOL Lf_setQSPI_I2cWrite(int ch, int slave, int startReg, int addrType, int wrLength, BYTE* wrpData);
 	BOOL Lf_getQSPI_I2cRead(int ch, int slave, int startReg, int addrType, int wrLength, BYTE* wrpData);
 	BOOL Lf_setQSPI_GPIO_Init(int ch);
 	BOOL Lf_setQSPI_GpioWriteBit(int ch);
 	BOOL Lf_setQspiGPIO_GTRL(int ch, int IO, int onoff);
 	BOOL Lf_getQSPI_GpioReadBit(int ch, char* szData);
+
+	BOOL qspi_RelayOnOff(int ch, int onoff);
+	BOOL qspi_DP855SpiWrite(int ch, int writeAddr, int writeSize, char* pWriteData);
+	BOOL qspi_DP855SpiRead(int ch, int readAddr, int readSize, char* pReadData);
+	BOOL qspi_LevelSelect(int ch, int levelSel);
 	BOOL qspi_AreYouReady(int ch);
 	BOOL qspi_getFWVersion(int ch);
+	BOOL qspi_setGoToBootSection(int ch);
+	BOOL qspi_setDownloadFirmware(int ch, char* szData, int dataSize);
+	BOOL qspi_setDownloadComplete(int ch);
 
 
 	//GI DIO Board 변경
@@ -110,6 +115,7 @@ public:
 	BOOL dio_LedLampOn();
 	BOOL dio_LedLampOff();
 	BOOL dio_TowerLampOnOff(BOOL bRED, BOOL bYELLOW, BOOL bGREEN, BOOL bBUZZER);
+	BOOL dio_TowerLampBuzzOff(BOOL bBUZZER);
 	BOOL dio_AdsorptionOnOff(int ch, BOOL bOnOff);
 	BOOL dio_AdsorptionCheck(int ch);
 

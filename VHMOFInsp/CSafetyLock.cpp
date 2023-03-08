@@ -38,6 +38,7 @@ BEGIN_MESSAGE_MAP(CSafetyLock, CDialog)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BTN_SL_OK, &CSafetyLock::OnBnClickedBtnSlOk)
 	ON_BN_CLICKED(IDC_BTN_SL_SENSOR_VIEW, &CSafetyLock::OnBnClickedBtnSlSensorView)
+	ON_BN_CLICKED(IDC_BTN_SL_BUZZ_OFF, &CSafetyLock::OnBnClickedBtnSlBuzzOff)
 END_MESSAGE_MAP()
 
 
@@ -239,6 +240,7 @@ void CSafetyLock::Lf_InitFontset()
 	GetDlgItem(IDC_STT_SL_ALARM_LIST)->SetFont(&m_Font[3]);
 
 	m_Font[4].CreateFont(30, 12, 0, 0, FW_BOLD, 0, 0, 0, 0, 0, 0, 0, 0, DEFAULT_FONT);
+	GetDlgItem(IDC_BTN_SL_BUZZ_OFF)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_BTN_SL_OK)->SetFont(&m_Font[4]);
 	GetDlgItem(IDC_BTN_SL_SENSOR_VIEW)->SetFont(&m_Font[4]);
 
@@ -275,6 +277,8 @@ void CSafetyLock::Lf_InitDlgDesign()
 	CWnd* dlgItem = GetDlgItem(IDC_STT_SL_TOP);
 	dlgItem->SetWindowPos(0, 0, 0, DialogWidth, (int)(DialogHeight * 0.20), SWP_NOREDRAW);
 
+	dlgItem = GetDlgItem(IDC_BTN_SL_BUZZ_OFF);
+	dlgItem->SetWindowPos(0, 20, (int)(DialogHeight * 0.90), 200, 60, SWP_NOREDRAW);
 	dlgItem = GetDlgItem(IDC_EDT_SL_PASSWORD);
 	dlgItem->SetWindowPos(0, (int)(DialogWidth / 2 - 210), (int)(DialogHeight * 0.90), 200, 60, SWP_NOREDRAW);
 	dlgItem = GetDlgItem(IDC_BTN_SL_OK);
@@ -340,4 +344,10 @@ void CSafetyLock::Lf_openDlgSensorView()
 {
 	CSensorView sensor_dlg;
 	sensor_dlg.DoModal();
+}
+
+void CSafetyLock::OnBnClickedBtnSlBuzzOff()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_pApp->commApi->dio_TowerLampBuzzOff(OFF);
 }

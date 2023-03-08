@@ -928,7 +928,7 @@ BOOL CTestReady::Lf_aif_RobotInSensorCheck()
 		delayMs(1);
 
 		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_ROBOT_IN_SENSOR_WAIT_TIME)
+		if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutRobotIn * 1000))
 			break;
 	}
 
@@ -960,7 +960,7 @@ BOOL CTestReady::Lf_aif_RobotOutSensorCheck()
 		delayMs(1);
 
 		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_ROBOT_OUT_SENSOR_WAIT_TIME)
+		if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutRobotOut * 1000))
 			break;
 	}
 
@@ -992,7 +992,7 @@ BOOL CTestReady::Lf_aif_CarrierJigInCheck()
 		delayMs(1);
 
 		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_CARRIER_JIG_IN_WAIT_TIME)
+		if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutCarrierJigIn * 1000))
 			break;
 	}
 
@@ -1022,7 +1022,7 @@ BOOL CTestReady::Lf_aif_CarrierJigOutCheck()
 		delayMs(1);
 
 		eTick = ::GetTickCount();
-		if ((eTick - sTick) > AIF_CARRIER_JIG_IN_WAIT_TIME)
+		if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutCarrierJigOut * 1000))
 			break;
 	}
 

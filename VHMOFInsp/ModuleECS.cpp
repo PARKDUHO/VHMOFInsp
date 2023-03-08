@@ -22,13 +22,13 @@ UINT ThreadModuleECS(LPVOID pParam)
 		Sleep(10);
 	}
 }
-UINT ThreadModuleECS_LoadingType1(LPVOID pParam)
+UINT ThreadModuleECS_Type1Load(LPVOID pParam)
 {
 	while (1)
 	{
 		if (m_pApp->bConnectInfo[CONN_MELSEC] == TRUE)
 		{
-			m_pApp->pModuleECS->ecs_LoadingType1Normal();
+			m_pApp->pModuleECS->ecs_InterlockType1Load();
 		}
 		Sleep(10);
 	}
@@ -42,7 +42,7 @@ CModuleECS::CModuleECS()
 
 
 	AfxBeginThread(ThreadModuleECS, this);
-	AfxBeginThread(ThreadModuleECS_LoadingType1, this);
+	AfxBeginThread(ThreadModuleECS_Type1Load, this);
 }
 
 CModuleECS::~CModuleECS()
@@ -412,9 +412,13 @@ BOOL CModuleECS::ecs_TakeOutReport(int ch)
 
 	// Step1. PID(Take Out Report Data) 정보를 Setting 한다.
 	if((lpSystemInfo->m_nLineType== LINE_TYPE_CGA) || (lpSystemInfo->m_nLineType == LINE_TYPE_CP))
+	{
 		devno = lpSystemInfo->m_nLWStartAddr1 + 0x0090;
-	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
+	}
+	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_GIB) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
+	{
 		devno = lpSystemInfo->m_nLWStartAddr1 + 0x0030;
+	}
 
 	memcpy(sendData, lpEcsGlassData[ch]->PanelID, 16);
 	sendLen = 16;
@@ -429,7 +433,7 @@ BOOL CModuleECS::ecs_TakeOutReport(int ch)
 		devno = lpSystemInfo->m_nLBStartAddr + 0x0060;
 		ecs_writeDataLB(devno, ECS_CGA_CP_TAKE_OUT_REPORT, ON);
 	}
-	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
+	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_GIB) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
 	{
 		devno = lpSystemInfo->m_nLBStartAddr + 0x0010;
 		ecs_writeDataLB(devno, ECS_OQC_ASSM_TAKE_OUT_REPORT, ON);
@@ -483,7 +487,7 @@ BOOL CModuleECS::ecs_TakeOutReport(int ch)
 		devno = lpSystemInfo->m_nLBStartAddr + 0x0060;
 		ecs_writeDataLB(devno, ECS_CGA_CP_TAKE_OUT_REPORT, OFF);
 	}
-	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
+	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_GIB) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
 	{
 		devno = lpSystemInfo->m_nLBStartAddr + 0x0010;
 		ecs_writeDataLB(devno, ECS_OQC_ASSM_TAKE_OUT_REPORT, OFF);
@@ -608,7 +612,7 @@ BOOL CModuleECS::ecs_LostGlassDataRequest(int type, char* pid)
 	{
 		devno = lpSystemInfo->m_nLWStartAddr1 + 0x0080;
 	}
-	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
+	else if ((lpSystemInfo->m_nLineType == LINE_TYPE_OQC) || (lpSystemInfo->m_nLineType == LINE_TYPE_GIB) || (lpSystemInfo->m_nLineType == LINE_TYPE_ASSEMBLY))
 	{
 		devno = lpSystemInfo->m_nLWStartAddr1 + 0x0020;
 	}
@@ -697,7 +701,7 @@ BOOL CModuleECS::ecs_LostGlassDataRequest(int type, char* pid)
 }
 
 
-BOOL CModuleECS::ecs_LoadingType1Normal()
+BOOL CModuleECS::ecs_InterlockType1Load()
 {
 	BOOL ret = TRUE;
 	LONG devno, devnoROBOT = 0, devnoEQP = 0;
@@ -823,14 +827,14 @@ BOOL CModuleECS::ecs_LoadingType1Normal()
 	return ret;
 }
 
-
-BOOL CModuleECS::ecs_UnLoadingType5Normal()
+BOOL CModuleECS::ecs_InterlockType5UnLoad()
 {
 	BOOL ret = TRUE;
 	LONG devno, devnoROBOT = 0, devnoEQP = 0;
 	WORD readData[6] = { 0, };
 	WORD sendData[64] = { 0, };
 	LONG readSize = 0, sendSize = 0;
+	DWORD sTick, eTIck;
 
 	devnoEQP = lpSystemInfo->m_nLBStartAddr + 0x0130;
 	if (lpSystemInfo->m_nRobotInspUnitNumber == ECS_ROBOT_UNIT_1)
@@ -846,87 +850,227 @@ BOOL CModuleECS::ecs_UnLoadingType5Normal()
 	ecs_writeDataLB(devnoEQP, ECS_EQP_NORMAL_STATUS, ON);
 
 	// Step2. 화상 물류 Normal Status Bit 감시
-	readData[0] = ecs_readDataLB(devnoROBOT);
-	if (readData[0] & ECS_ROBOT_NORMAL_STATUS)
+	sTick = ::GetTickCount();
+	while (1)
 	{
-		m_pApp->Gf_writeMLog(_T("<UNLOADING> ROBOT 'NORMAL STATUS' = 1"));
+		eTIck = ::GetTickCount();
+		if ((eTIck - sTick) > 3000)
+		{
+			ecs_writeDataLB(devnoEQP, ECS_EQP_NORMAL_STATUS, OFF);
+			return FALSE;
+		}
+		readData[0] = ecs_readDataLB(devnoROBOT);
+		if (readData[0] & ECS_ROBOT_NORMAL_STATUS)
+		{
+			m_pApp->Gf_writeMLog(_T("<UNLOADING> ROBOT 'NORMAL STATUS' = 1"));
+			break;
+		}
+	}
 
-		devno = lpSystemInfo->m_nLWStartAddr1 + 0x0200;
-		sendSize = 128; // WORD Type이기에 64Byte*2=128Byte로 Read 한다.
-		memcpy(sendData, lpEcsGlassData, sendSize);
-		m_pApp->pMelsecnetG->mnetg_mdSendEx(PLC_DEVIDE_TYPE_LW, devno, &sendSize, sendData);
+	// Step3. 검사기 Glass Data Request Data Write (LW)
+	devno = lpSystemInfo->m_nLWStartAddr1 + 0x0200;
+	sendSize = 128; // WORD Type이기에 64Byte*2=128Byte로 Read 한다.
+	memcpy(sendData, lpEcsGlassData, sendSize);
+	m_pApp->pMelsecnetG->mnetg_mdSendEx(PLC_DEVIDE_TYPE_LW, devno, &sendSize, sendData);
 
-		// Step3. 검사기 Glass Data Request Bit ON
-		ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, ON);
+	// Step3. 검사기 Glass Data Request Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, ON);
 
-		// Step4. Delay Ms (500ms) : 물류 ROBOT에서 Glass Data를 Read하기 위한 강제 Delay. Report Confirm 신호가 없다
-		delayMs(500);
+	// Step4. Delay Ms (500ms) : 물류 ROBOT에서 Glass Data를 Read하기 위한 강제 Delay. Report Confirm 신호가 없다
+	delayMs(500);
 
-		// Step5. 검사기 Unload Request Bit ON
-		ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, ON);
+	// Step5. 검사기 Unload Request Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, ON);
 
-		// Step6. Loading 중비가 끝나면 검사기 Rear Door Open 한다.
-		if (m_pApp->commApi->dio_RearDoorOpen() == FALSE)
+	// Step6. Loading 중비가 끝나면 검사기 Rear Door Open 한다.
+	if (m_pApp->commApi->dio_RearDoorOpen() == FALSE)
+	{
+		ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
+		ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
+		return FALSE;
+	}
+
+	// Step7. 검사기 Unload Enable Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, ON);
+
+	// Step8. 화상물류 Unload Complete Bit 감시
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		eTIck = ::GetTickCount();
+		if ((eTIck - sTick) > 30000)
 		{
 			ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
 			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
 			return FALSE;
 		}
 
-		// Step7. 검사기 Unload Enable Bit ON
-		ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, ON);
-
-		// Step8. 화상물류 Unload Complete Bit 감시
-		DWORD sTick, eTIck;
-		sTick = ::GetTickCount();
-		while (1)
+		readData[0] = ecs_readDataLB(devnoROBOT);
+		if (readData[0] & ECS_ROBOT_UNLOAD_COMPLETE)
 		{
-			eTIck = ::GetTickCount();
-			if ((eTIck - sTick) > 30000)
-			{
-				ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
-				ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
-				ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
-				return FALSE;
-			}
+			m_pApp->Gf_writeMLog(_T("<LOADING> ROBOT 'UNLOAD COMPLETE' = 1"));
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_COMPLETE_CONFIRM, ON);
+			delayMs(500);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_COMPLETE_CONFIRM, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
 
-			readData[0] = ecs_readDataLB(devnoROBOT);
-			if (readData[0] & ECS_ROBOT_UNLOAD_COMPLETE)
+			// Step10. 화상물류 BUSY=0, UNLOAD NONINTERFERENCE=1 Bit 감시
+			sTick = ::GetTickCount();
+			while (1)
 			{
-				m_pApp->Gf_writeMLog(_T("<LOADING> ROBOT 'UNLOAD COMPLETE' = 1"));
-				ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_COMPLETE_CONFIRM, ON);
-				delayMs(500);
-				ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_COMPLETE_CONFIRM, OFF);
-				ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
-				ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
-
-				// Step10. 화상물류 BUSY=0, UNLOAD NONINTERFERENCE=1 Bit 감시
-				sTick = ::GetTickCount();
-				while (1)
+				eTIck = ::GetTickCount();
+				if ((eTIck - sTick) > 3000)
 				{
-					eTIck = ::GetTickCount();
-					if ((eTIck - sTick) > 3000)
-					{
-						ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
-						return FALSE;
-					}
-					readData[0] = ecs_readDataLB(devnoROBOT);
-					if (((readData[0] & ECS_ROBOT_BUSY) == 0)
-						&& ((readData[0] & ECS_ROBOT_UNLOAD_NONINTERFERENCE) != 0)
-						)
-					{
-						ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
-						ret = TRUE;
-						break;
-					}
-					delayMs(1);
+					ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
+					return FALSE;
 				}
+				readData[0] = ecs_readDataLB(devnoROBOT);
+				if (((readData[0] & ECS_ROBOT_BUSY) == 0)
+					&& ((readData[0] & ECS_ROBOT_UNLOAD_NONINTERFERENCE) != 0)
+					)
+				{
+					ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
+					ret = TRUE;
+					break;
+				}
+				delayMs(1);
 			}
-			delayMs(1);
 		}
+		delayMs(1);
 	}
 
 	return ret;
 }
+
+
+BOOL CModuleECS::ecs_InterlockType10Load()
+{
+	BOOL ret = TRUE;
+
+
+	return ret;
+}
+
+
+BOOL CModuleECS::ecs_InterlockType10UnLoad()
+{
+	BOOL ret = TRUE;
+	LONG devno, devnoROBOT = 0, devnoEQP = 0;
+	WORD readData[6] = { 0, };
+	WORD sendData[64] = { 0, };
+	LONG readSize = 0, sendSize = 0;
+	DWORD sTick, eTIck;
+
+	devnoEQP = lpSystemInfo->m_nLBStartAddr + 0x00F0;
+	if (lpSystemInfo->m_nRobotInspUnitNumber == ECS_ROBOT_UNIT_1)
+	{
+		devnoROBOT = lpSystemInfo->m_nRobotLBStartAddr + 0x0150;
+	}
+	else if (lpSystemInfo->m_nRobotInspUnitNumber == ECS_ROBOT_UNIT_2)
+	{
+		devnoROBOT = lpSystemInfo->m_nRobotLBStartAddr + 0x0160;
+	}
+
+	// Step1. 검사기 Normal Status Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_NORMAL_STATUS, ON);
+
+	// Step2. 화상 물류 Normal Status Bit 감시
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		eTIck = ::GetTickCount();
+		if ((eTIck - sTick) > 3000)
+		{
+			ecs_writeDataLB(devnoEQP, ECS_EQP_NORMAL_STATUS, OFF);
+			return FALSE;
+		}
+		readData[0] = ecs_readDataLB(devnoROBOT);
+		if (readData[0] & ECS_ROBOT_NORMAL_STATUS)
+		{
+			m_pApp->Gf_writeMLog(_T("<UNLOADING> ROBOT 'NORMAL STATUS' = 1"));
+			break;
+		}
+	}
+
+	// Step3. 검사기 Glass Data Request Data Write (LW)
+	devno = lpSystemInfo->m_nLWStartAddr1 + 0x0200;
+	sendSize = 128; // WORD Type이기에 64Byte*2=128Byte로 Read 한다.
+	memcpy(sendData, lpEcsGlassData, sendSize);
+	m_pApp->pMelsecnetG->mnetg_mdSendEx(PLC_DEVIDE_TYPE_LW, devno, &sendSize, sendData);
+
+	// Step3. 검사기 Glass Data Request Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, ON);
+
+	// Step4. Delay Ms (500ms) : 물류 ROBOT에서 Glass Data를 Read하기 위한 강제 Delay. Report Confirm 신호가 없다
+	delayMs(500);
+
+	// Step5. 검사기 Unload Request Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, ON);
+
+	// Step6. Loading 중비가 끝나면 검사기 Rear Door Open 한다.
+	if (m_pApp->commApi->dio_RearDoorOpen() == FALSE)
+	{
+		ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
+		ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
+		return FALSE;
+	}
+
+	// Step7. 검사기 Unload Enable Bit ON
+	ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, ON);
+
+	// Step8. 화상물류 Unload Complete Bit 감시
+	sTick = ::GetTickCount();
+	while (1)
+	{
+		eTIck = ::GetTickCount();
+		if ((eTIck - sTick) > 30000)
+		{
+			ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
+			return FALSE;
+		}
+
+		readData[0] = ecs_readDataLB(devnoROBOT);
+		if (readData[0] & ECS_ROBOT_UNLOAD_COMPLETE)
+		{
+			m_pApp->Gf_writeMLog(_T("<LOADING> ROBOT 'UNLOAD COMPLETE' = 1"));
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_COMPLETE_CONFIRM, ON);
+			delayMs(500);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_COMPLETE_CONFIRM, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_GLASS_DATA_REPORT, OFF);
+			ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_REQUEST, OFF);
+
+			// Step10. 화상물류 BUSY=0, UNLOAD NONINTERFERENCE=1 Bit 감시
+			sTick = ::GetTickCount();
+			while (1)
+			{
+				eTIck = ::GetTickCount();
+				if ((eTIck - sTick) > 3000)
+				{
+					ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
+					return FALSE;
+				}
+				readData[0] = ecs_readDataLB(devnoROBOT);
+				if (((readData[0] & ECS_ROBOT_BUSY) == 0)
+					&& ((readData[0] & ECS_ROBOT_UNLOAD_NONINTERFERENCE) != 0)
+					)
+				{
+					ecs_writeDataLB(devnoEQP, ECS_EQP_UNLOAD_ENABLE, OFF);
+					ret = TRUE;
+					break;
+				}
+				delayMs(1);
+			}
+		}
+		delayMs(1);
+	}
+
+	return ret;
+}
+
+
 
 

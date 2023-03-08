@@ -75,7 +75,13 @@ protected:
 	BOOL Lf_fwPowerMcuDownloadStart(int ch);
 
 
-
+	// QSPI Board Firmware  File Download
+	BOOL Lf_QSpi_checkDownloadReady1(int ch);
+	BOOL Lf_QSpi_TcpReConnection(int ch);
+	BOOL Lf_QSpi_checkDownloadReady2(int ch);
+	BOOL Lf_QSpi_sendFirmwareFile(int ch);
+	BOOL Lf_QSpi_sendDownloadComplete(int ch);
+	BOOL Lf_fwQspiMcuDownloadStart(int ch);
 
 private:
 	CFont m_Font[FONT_IDX_MAX];

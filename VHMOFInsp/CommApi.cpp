@@ -563,9 +563,15 @@ BOOL CCommApi::qspi_procWaitRecvACK(int ch, int cmd, DWORD waitTime)
 					sscanf_s(&m_szQspiRecvData[CH1][PACKET_PT_CMD], "%02X", &recvCmd);
 					if (recvCmd == cmd)
 					{
-						if (m_szQspiRecvData[CH1][PACKET_PT_RET] != '0')
+						if (m_szQspiRecvData[CH1][PACKET_PT_RET] == '0')
+						{
+							m_pApp->qspi_tcpProcessPacket(ch, m_szQspiRecvData[CH1]);
+							return TRUE;
+						}
+						else
+						{
 							return FALSE;
-						return TRUE;
+						}
 					}
 				}
 			}
@@ -579,11 +585,15 @@ BOOL CCommApi::qspi_procWaitRecvACK(int ch, int cmd, DWORD waitTime)
 					sscanf_s(&m_szQspiRecvData[CH2][PACKET_PT_CMD], "%02X", &recvCmd);
 					if (recvCmd == cmd)
 					{
-						if (m_szQspiRecvData[CH2][PACKET_PT_RET] != '0')
+						if (m_szQspiRecvData[CH2][PACKET_PT_RET] == '0')
+						{
+							m_pApp->qspi_tcpProcessPacket(ch, m_szQspiRecvData[CH2]);
+							return TRUE;
+						}
+						else
 						{
 							return FALSE;
 						}
-						return TRUE;
 					}
 				}
 			}
@@ -602,14 +612,6 @@ BOOL CCommApi::Lf_setQSPI_SPI_Init(int ch)
 	sprintf_s(szPacket, "%02d%01d%01d%02d", lpModelInfo->m_nSpiClock, lpModelInfo->m_nSpiLevel, lpModelInfo->m_nSpiPullUp, 8/*lpModelInfo->m_nQspiReadClock*/);
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_SPI_INITIALIZE, length, szPacket, ACK, 2000);
-}
-BOOL CCommApi::Lf_setQSPI_RelayOnOff(int onoff, int ch)
-{
-	char szPacket[1024 * 32];
-	int length;
-	sprintf_s(szPacket, "%01d", onoff);
-	length = (int)strlen(szPacket);
-	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_SPI_RELAY_ONOFF, length, szPacket, ACK, 2000);
 }
 BOOL CCommApi::Lf_setQSPI_FlashEraseSector(int ch, int start, int end)
 {
@@ -697,32 +699,7 @@ BOOL CCommApi::Lf_setQSPI_I2C_Enable(int ch, int nEnable)
 	length = (int)strlen(szPacket);
 	return m_pApp->TCP_sendPacket(ch, CMD_QSPI_I2C_ENABLE, length, szPacket, ACK, 2000);
 }
-BOOL CCommApi::Lf_setQSPI_I2C_Init(int ch)
-{
-	char szPacket[1024 * 32];
-	int length;
-	int nI2cFre;
-	nI2cFre = main_makeI2cClock(lpModelInfo->m_nI2cFrequency);
 
-	
-	sprintf_s(szPacket, "%03d%01d%01d%03d%02d", nI2cFre, lpModelInfo->m_nI2cLevel, lpModelInfo->m_nI2cPullUp, 32,lpModelInfo->m_nI2cPageWriteDelay);
-	length = (int)strlen(szPacket);
-	return m_pApp->TCP_sendPacket(ch,CMD_QSPI_I2C_INITIALIZE, length, szPacket, ACK, 2000);
-}
-BOOL CCommApi::Lf_setQSPI_I2cWrite(int ch, int slave, int startReg, int addrType, int wrLength, BYTE* wrpData)
-{
-	//m_pApp->commApi->Lf_setQSPI_I2C_Enable(ch, _ON_);
-	char szPacket[1024 * 32];
-	int length;
-	sprintf_s(szPacket, "%02X%04X%01d%04X", slave, startReg, addrType, wrLength);
-	length = (int)strlen(szPacket);
-	memcpy(&szPacket[length], wrpData, wrLength);
-
-	length += wrLength;
-	BOOL ret = m_pApp->TCP_sendPacket(ch,CMD_QSPI_I2C_WRITE, length, szPacket, ACK, 2000);
-	//m_pApp->commApi->Lf_setQSPI_I2C_Enable(ch, _OFF_);
-	return ret;
-}
 BOOL CCommApi::Lf_getQSPI_I2cRead(int ch, int slave, int startReg, int addrType, int wrLength, BYTE* rdpData)
 {
 	//m_pApp->commApi->Lf_setQSPI_I2C_Enable(ch, _ON_);
@@ -797,10 +774,68 @@ BOOL CCommApi::Lf_getQSPI_GpioReadBit(int ch, char* szData)
 	return FALSE;
 }
 #endif
+BOOL CCommApi::qspi_RelayOnOff(int ch, int onoff)
+{
+	char szPacket[512];
+	int length;
+	sprintf_s(szPacket, "%01d", onoff);
+	length = (int)strlen(szPacket);
+	if (qspi_setSendQuery(ch, CMD_QSPI_SPI_RELAY_ONOFF, length, szPacket, ACK) == TRUE)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL CCommApi::qspi_DP855SpiWrite(int ch, int writeAddr, int writeSize, char* pWriteData)
+{
+	char szPacket[1024 * 17];
+	int length;
+
+	sprintf_s(szPacket, "%02X%08X%04X", 0x20, writeAddr, writeSize);
+	length = (int)strlen(szPacket);
+
+	memcpy(szPacket, pWriteData, writeSize);
+	length = length + writeSize;
+
+	if (qspi_setSendQuery(ch, CMD_QSPI_SPI_DP855_WRITE, length, szPacket, ACK) == TRUE)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL CCommApi::qspi_DP855SpiRead(int ch, int readAddr, int readSize, char* pReadData)
+{
+	char szPacket[1024 * 16];
+	int length;
+
+	sprintf_s(szPacket, "%02X%08X%04X", 0x02, readAddr, readSize);
+	length = (int)strlen(szPacket);
+
+	if (qspi_setSendQuery(ch, CMD_QSPI_SPI_DP855_READ, length, szPacket, ACK) == TRUE)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL CCommApi::qspi_LevelSelect(int ch, int levelSel)
+{
+	char szPacket[512];
+	int length;
+	sprintf_s(szPacket, "%01d%01d", levelSel, levelSel);
+	length = (int)strlen(szPacket);
+	if (qspi_setSendQuery(ch, CMD_QSPI_LEVEL_SELECT, length, szPacket, ACK) == TRUE)
+	{
+		return TRUE;
+	}
+	return FALSE;
+}
 
 BOOL CCommApi::qspi_AreYouReady(int ch)
 {
-	if (qspi_setSendQuery(ch,CMD_QSPI_ARE_YOU_READY, 0, "", ACK, 2000) == TRUE)
+	if (qspi_setSendQuery(ch,CMD_QSPI_ARE_YOU_READY, 0, "", ACK) == TRUE)
 	{
 		return TRUE;
 	}
@@ -813,15 +848,44 @@ BOOL CCommApi::qspi_getFWVersion(int ch)
 	char szData[128];
 	memset(szData, 0x00, 128);
 	m_pApp->m_sQspiFWVersion[ch].Empty();
-	if (qspi_setSendQuery(ch, CMD_QSPI_GET_FW_VERSION, 0, "", ACK, 2000) == TRUE)
+	if (qspi_setSendQuery(ch, CMD_QSPI_GET_FW_VERSION, 0, "", ACK) == TRUE)
 	{
-		sscanf_s(&m_szQspiRecvData[ch][PACKET_PT_LEN], "%04x", &length);
-		memcpy(&szData, &m_szQspiRecvData[ch][PACKET_PT_DATA], length-1);
-		m_pApp->m_sQspiFWVersion[ch] = char_To_wchar(szData);
 		return TRUE;
 	}
 	return FALSE;
 }
+
+BOOL CCommApi::qspi_setGoToBootSection(int ch)
+{
+	BOOL ret;
+
+	ret = qspi_setSendQuery(ch, CMD_CTRL_GOTO_BOOT_SECTION, 0, "", ACK);
+
+	return ret;
+}
+
+BOOL CCommApi::qspi_setDownloadFirmware(int ch, char* szData, int dataSize)
+{
+	BOOL ret;
+
+	ret = qspi_setSendQuery(ch, CMD_CTRL_FW_DOWNLOAD, dataSize, szData, ACK);
+
+	return ret;
+}
+
+BOOL CCommApi::qspi_setDownloadComplete(int ch)
+{
+	BOOL ret;
+
+	//main_udp_wait();
+	//ret = m_pApp->rs232_sendPacket(ch, CMD_CTRL_FW_COMPLETE, 0, "");
+	ret = qspi_setSendQuery(ch, CMD_CTRL_FW_COMPLETE, 0, "", ACK);
+
+	return ret;
+}
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CCommApi::main_setGoToBootSection(int ch)
@@ -1172,7 +1236,7 @@ BOOL CCommApi::dio_writeDioPortOnOff(int ch, int OutBit, int onoff)
 	delayMs(1);
 	ret = m_pApp->udp_sendPacketUDP_DIO(ch, TARGET_DIO, 0, CMD_DIO_OUTPUT, length, szPacket, ACK);
 	delayMs(1);
-	//Critical_Dio[ch].Unlock();//(22.11.18)
+	Critical_Dio[ch].Unlock();//(22.11.18)
 
 	return ret;
 }
@@ -1283,7 +1347,7 @@ BOOL CCommApi::dio_RearDoorOpen()
 		while (1)
 		{
 			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutRearDoorUp*1000))
 				break;
 
 			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_UP)
@@ -1326,7 +1390,7 @@ BOOL CCommApi::dio_RearDoorClose()
 		while (1)
 		{
 			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutRearDoorDown * 1000))
 				break;
 
 			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_REAR_DOOR_LEFT_CYLINDER_DOWN)
@@ -1372,7 +1436,7 @@ BOOL CCommApi::dio_FrontDoorOpen()
 		while (1)
 		{
 			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutFrontDoorUp * 1000))
 				break;
 
 			if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_UP)
@@ -1413,7 +1477,7 @@ BOOL CCommApi::dio_FrontDoorClose()
 		while (1)
 		{
 			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_DOOR_OPEN_CLOSE_WAIT_TIME)
+			if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutFrontDoorDown * 1000))
 				break;
 
 			if ((m_pApp->m_nDioInBit[CH1][2] & DIN_D1_FRONT_DOOR_LEFT_CYLINDER_DOWN)
@@ -1747,7 +1811,7 @@ BOOL CCommApi::dio_JigTiltingUp()
 		while (1)
 		{
 			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+			if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutJigTiltingUp * 1000))
 				break;
 
 			if (m_pApp->m_nDioInBit[CH1][4] & DIN_D1_JIG_UP_3_SENSOR)
@@ -1860,7 +1924,7 @@ BOOL CCommApi::dio_JigTiltingDown()
 		while (1)
 		{
 			eTick = ::GetTickCount();
-			if ((eTick - sTick) > AIF_JIG_TILTING_WAIT_TIME)
+			if ((eTick - sTick) > (lpSystemInfo->m_fTimeoutJigTiltingDown * 1000))
 				break;
 
 			if ((m_pApp->m_nDioInBit[CH1][3] & DIN_D1_JIG_DOWN_1_SENSOR)
@@ -1980,6 +2044,15 @@ BOOL CCommApi::dio_TowerLampOnOff(BOOL bRED, BOOL bYELLOW, BOOL bGREEN, BOOL bBU
 	if (bBUZZER == TRUE)	DOutData |= DOUT_D1_TOWER_LAMP_BUZZER;
 
 	bRet = m_pApp->commApi->dio_writeDioOutput(CH1, DOutData);
+
+	return bRet;
+}
+
+BOOL CCommApi::dio_TowerLampBuzzOff(BOOL bBUZZER)
+{
+	BOOL bRet;
+
+	bRet = m_pApp->commApi->dio_writeDioPortOnOff(CH1, DOUT_D1_TOWER_LAMP_BUZZER, bBUZZER);
 
 	return bRet;
 }

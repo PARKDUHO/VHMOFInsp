@@ -267,6 +267,7 @@ void CAutoFirmware::OnBnClickedBtnAfDownloadStart()
 
 	if (target == FW_TARGET_MAIN_MCU)			Lf_fwMainMcuDownloadStart(ch);
 	else if (target == FW_TARGET_POWER_MCU)		Lf_fwPowerMcuDownloadStart(ch);
+	else if (target == FW_TARGET_QSPI_BOARD)	Lf_fwQspiMcuDownloadStart(ch);
 
 	GetDlgItem(IDC_CMB_AF_TARGET)->EnableWindow(TRUE);
 	GetDlgItem(IDC_CMB_AF_CH_SELECT)->EnableWindow(TRUE);
@@ -495,6 +496,8 @@ void CAutoFirmware::Lf_parseDataRecord(CString strRecord, BYTE* pData)
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Main Board MCU Firmware Download
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 BOOL CAutoFirmware::Lf_checkDownloadReady1(int ch)
 {
@@ -977,6 +980,236 @@ FW_POWER_MCU_ERR_EXCEPT:
 	// Error Exception. Initialize.
 	Lf_readyInitialize();
 	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Firmware Download Error"));
+
+	m_downloadStatus = 2;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
+	return FALSE;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// QSPI Board MCU Firmware Download
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BOOL CAutoFirmware::Lf_QSpi_checkDownloadReady1(int ch)
+{
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("QSPI Go To Boot Section!"));
+	m_pApp->m_nDownloadReadyAckCount = 0;
+
+	for (int i = 0; i < 5; i++)
+	{
+		m_pApp->m_nDownloadCountUp = TRUE;
+		m_pApp->commApi->qspi_setGoToBootSection(ch);
+		delayMs(200);
+
+		if (m_pApp->m_nDownloadReadyAckCount >= 3)
+		{
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+BOOL CAutoFirmware::Lf_QSpi_TcpReConnection(int ch)
+{
+	BOOL bRet = FALSE;
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("QSPI TCP/IP ReConnection!"));
+
+	m_pApp->m_pSocketTCPMain->tcp_SPI_DisConnection(ch);
+	delayMs(200);
+
+	for (int cnt = 0; cnt < 2; cnt++)
+	{
+		if (ch == CH1)
+		{
+			bRet = m_pApp->m_pSocketTCPMain->tcp_SPI_Connection(TCP_SPI_BOARD1_IP, TCP_SPI_PORT, CH1);
+		}
+		else if (ch == CH2)
+		{
+			bRet = m_pApp->m_pSocketTCPMain->tcp_SPI_Connection(TCP_SPI_BOARD2_IP, TCP_SPI_PORT, CH2);
+		}
+
+		if (bRet == TRUE)
+			break;
+	}
+
+	return bRet;
+}
+
+BOOL CAutoFirmware::Lf_QSpi_checkDownloadReady2(int ch)
+{
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("QSPI Firmware Download Ready Check (Boot)"));
+	m_pApp->m_nDownloadReadyAckCount = 0;
+
+	for (int i = 0; i < 10; i++)
+	{
+		m_pApp->m_nDownloadCountUp = TRUE;
+		m_pApp->commApi->qspi_setGoToBootSection(ch);
+		delayMs(200);
+
+		if (m_pApp->m_nDownloadReadyAckCount >= 5)
+		{
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+BOOL CAutoFirmware::Lf_QSpi_sendFirmwareFile(int ch)
+{
+	BOOL bRet = FALSE;
+	int startAddr = 0;
+	int packetLen = 0;
+	char szpacket[4096] = { 0, };
+	CString strpacket = _T("");
+	int nsize = 0;
+
+	int nProg, nLoop = 0;
+	int nsendPageCnt = 0;
+	int nRemainPageCnt = 0;
+	char szTempBuf[4096];
+
+	nsendPageCnt = m_nFirmwareDataLen / FW_PACKET_SIZE;
+	nRemainPageCnt = m_nFirmwareDataLen % FW_PACKET_SIZE;
+
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Firmware File Downloading!"));
+
+	for (nLoop = 0; nLoop < nsendPageCnt; nLoop++)
+	{
+		memset((char*)szTempBuf, 0, sizeof(szTempBuf));
+
+		startAddr = nLoop * FW_PACKET_SIZE;
+		sprintf_s(szTempBuf, "%05X", startAddr);
+
+		packetLen = (int)strlen(szTempBuf);
+
+		memcpy((char*)(&szTempBuf[packetLen]), (char*)(szParsingData + (nLoop * FW_PACKET_SIZE)), FW_PACKET_SIZE);
+
+		bRet = m_pApp->commApi->qspi_setDownloadFirmware(ch, (char*)szTempBuf, (packetLen + FW_PACKET_SIZE));
+
+		nProg = (startAddr * 100) / m_nFirmwareDataLen;
+		m_progAfProgress.SetPos(nProg);
+		CString strPro;
+		strPro.Format(_T("( %d %% )"), nProg);
+		GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(strPro);
+
+		if (bRet == FALSE)
+		{
+			//free(szParsingData);
+			return FALSE;
+		}
+
+		delayMs(1);
+	}
+	if (nRemainPageCnt != 0)
+	{
+		memset((char*)szTempBuf, 0, sizeof(szTempBuf));
+
+		startAddr = nLoop * FW_PACKET_SIZE;
+		sprintf_s(szTempBuf, "%05X", startAddr);
+
+		packetLen = (int)strlen(szTempBuf);
+
+		memcpy((char*)(&szTempBuf[packetLen]), (char*)(szParsingData + (nLoop * FW_PACKET_SIZE)), FW_PACKET_SIZE);
+
+		bRet = m_pApp->commApi->qspi_setDownloadFirmware(ch, (char*)szTempBuf, (packetLen + FW_PACKET_SIZE));
+
+		nProg = (startAddr * 100) / m_nFirmwareDataLen;
+		m_progAfProgress.SetPos(nProg);
+
+		CString strPro;
+		strPro.Format(_T("( %d %% )"), nProg);
+		GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(strPro);
+
+		if (bRet == FALSE)
+		{
+			return FALSE;
+		}
+	}
+
+	return TRUE;
+}
+
+BOOL CAutoFirmware::Lf_QSpi_sendDownloadComplete(int ch)
+{
+	return m_pApp->commApi->qspi_setDownloadComplete(ch);
+}
+
+BOOL CAutoFirmware::Lf_fwQspiMcuDownloadStart(int ch)
+{
+	m_progAfProgress.SetPos(0);
+	int nRetryCount = 0;
+
+	m_downloadStatus = 0;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
+	// Step1. Download Ready Check - App
+	if (Lf_QSpi_checkDownloadReady1(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("QSPI FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_22);
+		goto FW_QSPI_MCU_ERR_EXCEPT;
+	}
+
+	// Step2. TCP ReConnection - BootSection
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Wait 5Sec..."));
+	delayMs(5000);
+	if (Lf_QSpi_TcpReConnection(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("QSPI FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_23);
+		goto FW_QSPI_MCU_ERR_EXCEPT;
+	}
+
+	// Step3. Download Ready Check - Boot
+	if (Lf_QSpi_checkDownloadReady2(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("QSPI FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_24);
+		goto FW_QSPI_MCU_ERR_EXCEPT;
+	}
+
+	// Step4. Download Start
+	delayMs(100);
+	if (Lf_QSpi_sendFirmwareFile(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("QSPI FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_25);
+		goto FW_QSPI_MCU_ERR_EXCEPT;
+	}
+
+	// Step5. Download Complete Check
+	delayMs(100);
+	if (Lf_QSpi_sendDownloadComplete(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("QSPI FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_26);
+		goto FW_QSPI_MCU_ERR_EXCEPT;
+	}
+
+	// Step6. TCP ReConnection - App Section
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("Wait 5Sec..."));
+	delayMs(5000);
+	if (Lf_QSpi_TcpReConnection(ch) == FALSE)
+	{
+		m_pApp->Gf_ShowMessageBox(MSG_ERROR, _T("QSPI FIRMWARE DOWNLOAD FAIL"), ERROR_CODE_27);
+		goto FW_QSPI_MCU_ERR_EXCEPT;
+	}
+
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("QSPI Firmware Download Complete!"));
+
+	// Step4. Download Initialize & Ready
+	Lf_readyInitialize();
+
+	m_progAfProgress.SetPos(100);
+	GetDlgItem(IDC_STT_AF_PERCENT)->SetWindowText(_T("( 100 % )"));
+
+	m_downloadStatus = 1;
+	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);
+
+	return TRUE;
+
+FW_QSPI_MCU_ERR_EXCEPT:
+	// Error Exception. Initialize.
+	Lf_readyInitialize();
+	GetDlgItem(IDC_STT_AF_STATUS)->SetWindowText(_T("QSPI Firmware Download Error."));
 
 	m_downloadStatus = 2;
 	GetDlgItem(IDC_STT_AF_STATUS)->Invalidate(FALSE);

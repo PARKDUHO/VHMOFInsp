@@ -224,13 +224,16 @@ END_MESSAGE_MAP()
 // CVHMOFInspDlg 메시지 처리기
 LRESULT CVHMOFInspDlg::OnUdpReceiveDio(WPARAM wParam, LPARAM lParam)
 {
-	CString sLog;
 	CString strIP, strPacket;
 
 	strIP.Format(_T("%s"), char_To_wchar((char*)lParam));
 	strPacket.Format(_T("%s"), char_To_wchar((char*)wParam));
 
+#if (DEBUG_TCP_COMM_LOG==1)
+	CString sLog;
 	sLog.Format(_T("<UDP Recv> [%s] %s"), strIP, strPacket);
+	m_pApp->Gf_writeMLog(sLog);
+#endif
 
 	if (strIP == UDP_DIO_BOARD1_IP)		m_pApp->udp_processDioPacket(CH1, strPacket);
 	if (strIP == UDP_DIO_BOARD2_IP)		m_pApp->udp_processDioPacket(CH2, strPacket);
